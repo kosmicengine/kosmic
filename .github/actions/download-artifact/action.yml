@@ -1,0 +1,20 @@
+name: Download Kosmic artifact
+description: Download the Kosmic artifact.
+
+inputs:
+  name:
+    description: The artifact name.
+    default: ${{ github.job }}
+  path:
+    description: The path to download and extract to.
+    required: true
+    default: ./
+
+runs:
+  using: composite
+  steps:
+    - name: Download Kosmic Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.name }}
+        path: ${{ inputs.path }}

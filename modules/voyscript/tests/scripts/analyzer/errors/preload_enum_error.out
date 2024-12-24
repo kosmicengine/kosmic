@@ -1,0 +1,3 @@
+VOYTEST_ANALYZER_ERROR
+>> ERROR at line 6: Cannot assign a value of type "enum_from_outer.voy.Named" as "preload_enum_error.voy.LocalNamed".
+>> ERROR at line 6: Value of type "enum_from_outer.voy.Named" cannot be assigned to a variable of type "preload_enum_error.voy.LocalNamed".

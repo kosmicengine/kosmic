@@ -1,0 +1,5 @@
+const preloaded: VoyScript = preload("voyscript_to_preload.notest.voy")
+
+func test():
+	var preloaded_instance: preloaded = preloaded.new()
+	print(preloaded_instance.something())

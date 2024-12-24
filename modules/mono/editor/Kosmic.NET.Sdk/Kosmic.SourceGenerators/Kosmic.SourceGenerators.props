@@ -1,0 +1,10 @@
+<Project>
+  <ItemGroup>
+    <!-- $(KosmicProjectDir) is defined by Kosmic.NET.Sdk -->
+    <CompilerVisibleProperty Include="KosmicDisabledSourceGenerators" />
+    <CompilerVisibleProperty Include="KosmicProjectDir" />
+    <CompilerVisibleProperty Include="KosmicProjectDirBase64" />
+    <CompilerVisibleProperty Include="KosmicSourceGenerators" />
+    <CompilerVisibleProperty Include="IsGodotToolsProject" />
+  </ItemGroup>
+</Project>

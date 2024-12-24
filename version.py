@@ -1,0 +1,9 @@
+short_name = "kosmic"
+name = "Kosmic Engine"
+major = 1
+minor = 0
+patch = 1
+status = "dev"
+module_config = ""
+website = "https://kosmicengine.org"
+docs = "latest"

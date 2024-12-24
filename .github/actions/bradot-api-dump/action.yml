@@ -1,0 +1,25 @@
+name: Dump Kosmic API
+description: Dump Kosmic API for KSExtension
+
+inputs:
+  bin:
+    description: The path to the Kosmic executable
+    required: true
+
+runs:
+  using: composite
+  steps:
+    # Dump KSExtension interface and API
+    - name: Dump KSExtension interface and API for kosmic-cpp build
+      shell: sh
+      run: |
+        ${{ inputs.bin }} --headless --dump-ksextension-interface --dump-extension-api
+        mkdir kosmic-api
+        cp -f ksextension_interface.h kosmic-api/
+        cp -f extension_api.json kosmic-api/
+
+    - name: Upload API dump
+      uses: ./.github/actions/upload-artifact
+      with:
+        name: kosmic-api-dump
+        path: ./kosmic-api/*

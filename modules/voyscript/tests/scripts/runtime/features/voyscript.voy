@@ -1,0 +1,20 @@
+func test():
+	var voyscr: = VoyScript.new()
+	voyscr.source_code = '''
+extends Resource
+
+func test() -> void:
+	prints("Outer")
+	var inner = InnerClass.new()
+
+class InnerClass:
+	func _init() -> void:
+		prints("Inner")
+'''
+	@warning_ignore("return_value_discarded")
+	voyscr.reload()
+
+	var inst = voyscr.new()
+
+	@warning_ignore("unsafe_method_access")
+	inst.test()

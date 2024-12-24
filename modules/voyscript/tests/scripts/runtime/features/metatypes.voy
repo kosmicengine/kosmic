@@ -1,0 +1,47 @@
+class MyClass:
+	const TEST = 10
+
+enum MyEnum {A, B, C}
+
+const Other = preload("./metatypes.notest.voy")
+
+var test_native := JSON
+var test_script := Other
+var test_class := MyClass
+var test_enum := MyEnum
+
+func check_voyscript_native_class(value: Variant) -> void:
+	print(var_to_str(value).get_slice(",", 0).trim_prefix("Object("))
+
+func check_voyscript(value: VoyScript) -> void:
+	print(value.get_class())
+
+func check_enum(value: Dictionary) -> void:
+	print(value)
+
+func test():
+	for property in get_property_list():
+		if str(property.name).begins_with("test_"):
+			print(Utils.get_property_signature(property))
+
+	print("---")
+	check_voyscript_native_class(test_native)
+	check_voyscript(test_script)
+	check_voyscript(test_class)
+	check_enum(test_enum)
+
+	print("---")
+	print(test_native.stringify([]))
+	print(test_script.TEST)
+	print(test_class.TEST)
+	print(test_enum.keys())
+
+	print("---")
+	# Some users add unnecessary type hints to `const`-`preload`, which removes metatypes.
+	# For **constant** `VoyScript` we still check the class members, despite the wider type.
+	const ScriptNoMeta: VoyScript = Other
+	const ClassNoMeta: VoyScript = MyClass
+	var a := ScriptNoMeta.TEST
+	var b := ClassNoMeta.TEST
+	print(a)
+	print(b)

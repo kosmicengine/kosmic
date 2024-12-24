@@ -1,0 +1,5 @@
+const Constants = preload("voyscript_to_preload.notest.voy")
+
+func test():
+	var a := Constants.A
+	print(a)

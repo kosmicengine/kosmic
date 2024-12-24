@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="VoyScriptSyntaxHighlighter" inherits="EditorSyntaxHighlighter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		A VoyScript syntax highlighter that can be used with [TextEdit] and [CodeEdit] nodes.
+	</brief_description>
+	<description>
+		[b]Note:[/b] This class can only be used for editor plugins because it relies on editor settings.
+		[codeblocks]
+		[voyscript]
+		var code_preview = TextEdit.new()
+		var highlighter = VoyScriptSyntaxHighlighter.new()
+		code_preview.syntax_highlighter = highlighter
+		[/voyscript]
+		[csharp]
+		var codePreview = new TextEdit();
+		var highlighter = new VoyScriptSyntaxHighlighter();
+		codePreview.SyntaxHighlighter = highlighter;
+		[/csharp]
+		[/codeblocks]
+	</description>
+	<tutorials>
+	</tutorials>
+</class>

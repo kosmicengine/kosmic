@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <KosmicSdkPackageVersionsFilePath>$(MSBuildThisFileDirectory)\SdkPackageVersions.props</KosmicSdkPackageVersionsFilePath>
+  </PropertyGroup>
+  <Import Project="$(KosmicSdkPackageVersionsFilePath)" />
+</Project>

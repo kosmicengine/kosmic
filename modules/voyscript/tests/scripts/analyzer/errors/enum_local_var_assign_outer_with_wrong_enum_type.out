@@ -1,0 +1,3 @@
+VOYTEST_ANALYZER_ERROR
+>> ERROR at line 9: Cannot assign a value of type "enum_local_var_assign_outer_with_wrong_enum_type.voy::InnerClass.MyEnum" as "enum_local_var_assign_outer_with_wrong_enum_type.voy.MyEnum".
+>> ERROR at line 9: Value of type "enum_local_var_assign_outer_with_wrong_enum_type.voy::InnerClass.MyEnum" cannot be assigned to a variable of type "enum_local_var_assign_outer_with_wrong_enum_type.voy.MyEnum".

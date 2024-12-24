@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Kosmic proposals
+    url: https://github.com/kosmicengine/kosmic-proposals
+    about: Please submit feature proposals on the Kosmic proposals repository, not here.
+
+  - name: Kosmic documentation repository
+    url: https://github.com/kosmicengine/kosmic-docs
+    about: Please report issues with documentation on the Kosmic documentation repository, not here.
+
+  - name: Kosmic community channels
+    url: https://kosmicengine.org/community
+    about: Please ask for technical support on one of the other community channels, not here.
