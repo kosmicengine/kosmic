@@ -310,8 +310,8 @@ void OpenXRHand::_update_skeleton() {
 		Quaternion(),
 
 		// SKELETON_RIG_HUMANOID bone adjustment. This rotation performs:
-		// OpenXR Z+ -> Godot Humanoid Y-  (Back along the bone)
-		// OpenXR Y+ -> Godot Humanoid Z- (Out the back of the hand)
+		// OpenXR Z+ -> Kosmic Humanoid Y-  (Back along the bone)
+		// OpenXR Y+ -> Kosmic Humanoid Z- (Out the back of the hand)
 		Quaternion(0.0, -Math_SQRT12, Math_SQRT12, 0.0),
 	};
 
@@ -343,7 +343,7 @@ void OpenXRHand::_update_skeleton() {
 						confidences[i] = XRPose::XR_TRACKING_CONFIDENCE_HIGH;
 						positions[i] = Vector3(pose.position.x * ws, pose.position.y * ws, pose.position.z * ws);
 
-						// TODO get inverse of position, we'll do this later. For now we're ignoring bone positions which generally works better anyway
+						// TODO: Get inverse of position, we'll do this later. For now we're ignoring bone positions which generally works better anyway
 					} else {
 						confidences[i] = XRPose::XR_TRACKING_CONFIDENCE_LOW;
 					}

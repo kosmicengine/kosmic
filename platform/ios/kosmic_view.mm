@@ -75,12 +75,12 @@ static const float earth_gravity = 9.80665;
 	if ([driverName isEqualToString:@"vulkan"] || [driverName isEqualToString:@"metal"]) {
 #if defined(TARGET_OS_SIMULATOR) && TARGET_OS_SIMULATOR
 		if (@available(iOS 13, *)) {
-			layer = [GodotMetalLayer layer];
+			layer = [KosmicMetalLayer layer];
 		} else {
 			return nil;
 		}
 #else
-		layer = [GodotMetalLayer layer];
+		layer = [KosmicMetalLayer layer];
 #endif
 	} else if ([driverName isEqualToString:@"opengl3"]) {
 #pragma clang diagnostic push
@@ -260,7 +260,7 @@ static const float earth_gravity = 9.80665;
 	}
 
 	if (self.delegate) {
-		BOOL delegateFinishedSetup = [self.delegate godotViewFinishedSetup:self];
+		BOOL delegateFinishedSetup = [self.delegate kosmicViewFinishedSetup:self];
 
 		if (!delegateFinishedSetup) {
 			return;

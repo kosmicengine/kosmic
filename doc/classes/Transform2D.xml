@@ -127,7 +127,7 @@
 				// Rotating the Transform2D in any way preserves its scale.
 				myTransform = myTransform.Rotated(Mathf.Tau / 2.0f);
 
-				KS.Print(myTransform.GetScale()); // Prints (2, 4)
+				GD.Print(myTransform.GetScale()); // Prints (2, 4)
 				[/csharp]
 				[/codeblocks]
 				[b]Note:[/b] If the value returned by [method determinant] is negative, the scale is also negative.

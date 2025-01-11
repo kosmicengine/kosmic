@@ -44,7 +44,7 @@ class TileProxiesManagerDialog : public ConfirmationDialog {
 	KSCLASS(TileProxiesManagerDialog, ConfirmationDialog);
 
 private:
-	int commited_actions_count = 0;
+	int committed_actions_count = 0;
 	Ref<TileSet> tile_set;
 
 	TileMapCell from;

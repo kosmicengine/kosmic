@@ -25,8 +25,8 @@ namespace KosmicTools.ProjectEditor
 
     public static partial class ProjectUtils
     {
-        [GeneratedRegex(@"\s*'\$\(GodotTargetPlatform\)'\s*==\s*'(?<platform>[A-z]+)'\s*", RegexOptions.IgnoreCase)]
-        private static partial Regex GodotTargetPlatformConditionRegex();
+        [GeneratedRegex(@"\s*'\$\(KosmicTargetPlatform\)'\s*==\s*'(?<platform>[A-z]+)'\s*", RegexOptions.IgnoreCase)]
+        private static partial Regex KosmicTargetPlatformConditionRegex();
 
         private static readonly string[] _platformNames =
         {
@@ -83,20 +83,20 @@ namespace KosmicTools.ProjectEditor
         public static void EnsureKosmicSdkIsUpToDate(MSBuildProject project)
         {
             var root = project.Root;
-            string godotSdkAttrValue = ProjectGenerator.KosmicSdkAttrValue;
+            string kosmicSdkAttrValue = ProjectGenerator.KosmicSdkAttrValue;
 
             if (!string.IsNullOrEmpty(root.Sdk) &&
-                root.Sdk.Trim().Equals(godotSdkAttrValue, StringComparison.OrdinalIgnoreCase))
+                root.Sdk.Trim().Equals(kosmicSdkAttrValue, StringComparison.OrdinalIgnoreCase))
                 return;
 
-            root.Sdk = godotSdkAttrValue;
+            root.Sdk = kosmicSdkAttrValue;
             project.HasUnsavedChanges = true;
         }
 
         private static void EnsureTargetFrameworkMatchesMinimumRequirement(MSBuildProject project)
         {
             var root = project.Root;
-            string minTfmValue = ProjectGenerator.GodotMinimumRequiredTfm;
+            string minTfmValue = ProjectGenerator.KosmicMinimumRequiredTfm;
             var minTfmVersion = NuGetFramework.Parse(minTfmValue).Version;
 
             ProjectPropertyGroupElement? mainPropertyGroup = null;
@@ -203,9 +203,9 @@ namespace KosmicTools.ProjectEditor
 
             static bool ConditionMatchesKosmicPlatform(string condition)
             {
-                // Check if the condition is checking the 'GodotTargetPlatform' for one of the
+                // Check if the condition is checking the 'KosmicTargetPlatform' for one of the
                 // Godot platforms with built-in support in the Kosmic.NET.Sdk.
-                var match = GodotTargetPlatformConditionRegex().Match(condition);
+                var match = KosmicTargetPlatformConditionRegex().Match(condition);
                 if (match.Success)
                 {
                     string platform = match.Groups["platform"].Value;

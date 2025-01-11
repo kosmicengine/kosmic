@@ -16,9 +16,9 @@
 		[csharp]
 		public async Task SomeFunction()
 		{
-		    KS.Print("Timer started.");
+		    GD.Print("Timer started.");
 		    await ToSignal(GetTree().CreateTimer(1.0f), SceneTreeTimer.SignalName.Timeout);
-		    KS.Print("Timer ended.");
+		    GD.Print("Timer ended.");
 		}
 		[/csharp]
 		[/codeblocks]

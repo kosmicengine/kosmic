@@ -1,8 +1,8 @@
 using System;
-using Godot;
+using Kosmic;
 using JetBrains.Rider.PathLocator;
 using Newtonsoft.Json;
-using OS = GodotTools.Utils.OS;
+using OS = KosmicTools.Utils.OS;
 
 namespace KosmicTools.Ides.Rider;
 

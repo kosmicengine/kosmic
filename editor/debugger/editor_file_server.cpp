@@ -125,7 +125,7 @@ void EditorFileServer::poll() {
 	char header[4];
 	Error err = tcp_peer->get_data((uint8_t *)&header, 4);
 	ERR_FAIL_COND(err != OK);
-	ERR_FAIL_COND(header[0] != 'G');
+	ERR_FAIL_COND(header[0] != 'K');
 	ERR_FAIL_COND(header[1] != 'R');
 	ERR_FAIL_COND(header[2] != 'F');
 	ERR_FAIL_COND(header[3] != 'S');

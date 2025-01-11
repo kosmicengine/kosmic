@@ -187,7 +187,7 @@ void ProjectDialog::_validate_path() {
 		return;
 	}
 
-	// TODO: The following 5 lines could be simplified if OS.get_user_home_dir() or SYSTEM_DIR_HOME is implemented. See: https://github.com/godotengine/godot-proposals/issues/4851.
+	// TODO: The following 5 lines could be simplified if OS.get_user_home_dir() or SYSTEM_DIR_HOME is implemented. See: https://github.com/godotengine/kosmic-proposals/issues/4851.
 #ifdef WINDOWS_ENABLED
 	String home_dir = OS::get_singleton()->get_environment("USERPROFILE");
 #else
@@ -499,7 +499,7 @@ void ProjectDialog::ok_pressed() {
 		if (!nonempty_confirmation) {
 			nonempty_confirmation = memnew(ConfirmationDialog);
 			nonempty_confirmation->set_title(TTR("Warning: This folder is not empty"));
-			nonempty_confirmation->set_text(TTR("You are about to create a Godot project in a non-empty folder.\nThe entire contents of this folder will be imported as project resources!\n\nAre you sure you wish to continue?"));
+			nonempty_confirmation->set_text(TTR("You are about to create a Kosmic project in a non-empty folder.\nThe entire contents of this folder will be imported as project resources!\n\nAre you sure you wish to continue?"));
 			nonempty_confirmation->get_ok_button()->connect(SceneStringName(pressed), callable_mp(this, &ProjectDialog::_nonempty_confirmation_ok_pressed));
 			add_child(nonempty_confirmation);
 		}

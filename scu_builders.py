@@ -16,17 +16,17 @@ _max_includes_per_scu = 1024
 
 def clear_out_stale_files(output_folder, extension, fresh_files):
     output_folder = os.path.abspath(output_folder)
-    # print("clear_out_stale_files from folder: " + output_folder)
+    #print("clear_out_stale_files from folder: " + output_folder)
 
     if not os.path.isdir(output_folder):
-        # folder does not exist or has not been created yet,
+        # Folder does not exist or has not been created yet,
         # no files to clearout. (this is not an error)
         return
 
     for file in glob.glob(output_folder + "/*." + extension):
         file = Path(file)
         if file not in fresh_files:
-            # print("removed stale file: " + str(file))
+            #print("removed stale file: " + str(file))
             os.remove(file)
 
 
@@ -68,7 +68,7 @@ def write_output_file(file_count, include_list, start_line, end_line, output_fol
     output_folder = os.path.abspath(output_folder)
 
     if not os.path.isdir(output_folder):
-        # create
+        # Create
         os.mkdir(output_folder)
         if not os.path.isdir(output_folder):
             print_error(f'SCU: "{output_folder}" could not be created.')
@@ -190,7 +190,7 @@ def process_folder(folders, sought_exceptions=[], includes_per_scu=0, extension=
     global _scu_folders
     _scu_folders.add(main_folder)
 
-    # main folder (first)
+    # Main folder (first)
     found_includes, found_exceptions = find_files_in_folder(
         main_folder, "", found_includes, extension, sought_exceptions, found_exceptions
     )
@@ -203,10 +203,10 @@ def process_folder(folders, sought_exceptions=[], includes_per_scu=0, extension=
 
     found_includes = sorted(found_includes)
 
-    # calculate how many lines to write in each file
+    # Calculate how many lines to write in each file
     total_lines = len(found_includes)
 
-    # adjust number of output files according to whether DEV or release
+    # Adjust number of output files according to whether DEV or release
     num_output_files = 1
 
     if includes_per_scu == 0:
@@ -231,7 +231,7 @@ def process_folder(folders, sought_exceptions=[], includes_per_scu=0, extension=
     for file_count in range(0, num_output_files):
         end_line = start_line + lines_per_file
 
-        # special case to cover rounding error in final file
+        # Special case to cover rounding error in final file
         if file_count == (num_output_files - 1):
             end_line = len(found_includes)
 
@@ -266,9 +266,9 @@ def generate_scu_files(max_includes_per_scu):
 
     curr_folder = os.path.abspath("./")
 
-    # check we are running from the correct folder
+    # Check we are running from the correct folder
     if folder_not_found("core") or folder_not_found("platform") or folder_not_found("scene"):
-        raise RuntimeError("scu_builders.py must be run from the godot folder.")
+        raise RuntimeError("scu_builders.py must be run from the Kosmic folder.")
         return
 
     process_folder(["core"])

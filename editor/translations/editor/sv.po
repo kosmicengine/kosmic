@@ -1,7 +1,7 @@
 # Swedish translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # bergmarklund <davemcgroin@gmail.com>, 2017, 2018.
 # Christoffer Sundbom <christoffer_karlsson@live.se>, 2017, 2021, 2023.
 # Jakob Sinclair <sinclair.jakob@mailbox.org>, 2018.
@@ -43,11 +43,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-09-14 08:09+0000\n"
 "Last-Translator: Isak Waltin <isak@waltin.se>\n"
-"Language-Team: Swedish <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Swedish <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/sv/>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
@@ -2467,8 +2467,8 @@ msgstr "[tom]"
 msgid "[unsaved]"
 msgstr "[inte sparad]"
 
-msgid "%s - Godot Engine"
-msgstr "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
+msgstr "%s - Kosmic Engine"
 
 msgid "Dock Position"
 msgstr "Panelposition"

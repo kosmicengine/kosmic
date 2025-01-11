@@ -36,7 +36,7 @@
 		    Error error = _expression.Parse(command);
 		    if (error != Error.Ok)
 		    {
-		        KS.Print(_expression.GetErrorText());
+		        GD.Print(_expression.GetErrorText());
 		        return;
 		    }
 		    Variant result = _expression.Execute();

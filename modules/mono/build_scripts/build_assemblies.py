@@ -218,7 +218,7 @@ def build_kosmic_api(msbuild_tool, module_dir, output_dir, push_nupkgs_local, pr
         if precision == "double":
             args += ["/p:KosmicFloat64=true"]
         if no_deprecated:
-            args += ["/p:GodotNoDeprecated=true"]
+            args += ["/p:KosmicNoDeprecated=true"]
         if werror:
             args += ["/p:TreatWarningsAsErrors=true"]
 
@@ -303,8 +303,8 @@ def generate_sdk_package_versions():
     props = """<Project>
   <PropertyGroup>
     <PackageVersion_KosmicSharp>{0}</PackageVersion_KosmicSharp>
-    <PackageVersion_Godot_NET_Sdk>{0}</PackageVersion_Godot_NET_Sdk>
-    <PackageVersion_Godot_SourceGenerators>{0}</PackageVersion_Godot_SourceGenerators>
+    <PackageVersion_Kosmic_NET_Sdk>{0}</PackageVersion_Kosmic_NET_Sdk>
+    <PackageVersion_Kosmic_SourceGenerators>{0}</PackageVersion_Kosmic_SourceGenerators>
     <KosmicVersionConstants>{1}</KosmicVersionConstants>
   </PropertyGroup>
 </Project>
@@ -346,15 +346,15 @@ def build_all(
     # Generate SdkPackageVersions.props and VersionDocsUrl constant
     generate_sdk_package_versions()
 
-    # Godot API
+    # Kosmic API
     exit_code = build_kosmic_api(
         msbuild_tool, module_dir, output_dir, push_nupkgs_local, precision, no_deprecated, werror
     )
     if exit_code != 0:
         return exit_code
 
-    # GodotTools
-    sln = os.path.join(module_dir, "editor/GodotTools/GodotTools.sln")
+    # KosmicTools
+    sln = os.path.join(module_dir, "editor/KosmicTools/KosmicTools.sln")
     args = ["/restore", "/t:Build", "/p:Configuration=" + ("Debug" if dev_debug else "Release")] + (
         ["/p:KosmicPlatform=" + kosmic_platform] if kosmic_platform else []
     )
@@ -373,7 +373,7 @@ def build_all(
     if precision == "double":
         args += ["/p:KosmicFloat64=true"]
     if no_deprecated:
-        args += ["/p:GodotNoDeprecated=true"]
+        args += ["/p:KosmicNoDeprecated=true"]
     sln = os.path.join(module_dir, "editor/Kosmic.NET.Sdk/Kosmic.NET.Sdk.sln")
     exit_code = run_msbuild(msbuild_tool, sln=sln, chdir_to=module_dir, msbuild_args=args)
     if exit_code != 0:
@@ -386,15 +386,15 @@ def main():
     import argparse
     import sys
 
-    parser = argparse.ArgumentParser(description="Builds all Godot .NET solutions")
-    parser.add_argument("--godot-output-dir", type=str, required=True)
+    parser = argparse.ArgumentParser(description="Builds all Kosmic .NET solutions")
+    parser.add_argument("--kosmic-output-dir", type=str, required=True)
     parser.add_argument(
         "--dev-debug",
         action="store_true",
         default=False,
-        help="Build GodotTools and Kosmic.NET.Sdk with 'Configuration=Debug'",
+        help="Build KosmicTools and Kosmic.NET.Sdk with 'Configuration=Debug'",
     )
-    parser.add_argument("--godot-platform", type=str, default="")
+    parser.add_argument("--kosmic-platform", type=str, default="")
     parser.add_argument("--mono-prefix", type=str, default="")
     parser.add_argument("--push-nupkgs-local", type=str, default="")
     parser.add_argument(

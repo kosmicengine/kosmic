@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
-using Godot;
-using GodotTools.Build;
-using GodotTools.Utils;
+using Kosmic;
+using KosmicTools.Build;
+using KosmicTools.Utils;
 
 namespace KosmicTools.Inspector
 {
     public partial class InspectorPlugin : EditorInspectorPlugin
     {
-        public override bool _CanHandle(KosmicObject godotObject)
+        public override bool _CanHandle(KosmicObject kosmicObject)
         {
-            foreach (var script in EnumerateScripts(godotObject))
+            foreach (var script in EnumerateScripts(kosmicObject))
             {
                 if (script is CSharpScript)
                 {
@@ -20,9 +20,9 @@ namespace KosmicTools.Inspector
             return false;
         }
 
-        public override void _ParseBegin(KosmicObject godotObject)
+        public override void _ParseBegin(KosmicObject kosmicObject)
         {
-            foreach (var script in EnumerateScripts(godotObject))
+            foreach (var script in EnumerateScripts(kosmicObject))
             {
                 if (script is not CSharpScript)
                     continue;
@@ -53,9 +53,9 @@ namespace KosmicTools.Inspector
             }
         }
 
-        private static IEnumerable<Script> EnumerateScripts(KosmicObject godotObject)
+        private static IEnumerable<Script> EnumerateScripts(KosmicObject kosmicObject)
         {
-            var script = godotObject.GetScript().As<Script>();
+            var script = kosmicObject.GetScript().As<Script>();
             while (script != null)
             {
                 yield return script;

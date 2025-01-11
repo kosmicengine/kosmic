@@ -533,7 +533,7 @@ namespace Kosmic.NativeInterop
 
         public static partial int kosmicsharp_node_path_hash(in kosmic_node_path p_self);
 
-        // GD, etc
+        // KS, etc
 
         internal static partial void kosmicsharp_bytes_to_var(scoped in kosmic_packed_byte_array p_bytes,
             kosmic_bool p_allow_objects,

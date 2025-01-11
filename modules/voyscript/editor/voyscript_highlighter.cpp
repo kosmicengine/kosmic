@@ -850,12 +850,12 @@ void VoyScriptSyntaxHighlighter::_update_cache() {
 		comment_marker_colors[COMMENT_MARKER_WARNING] = Color(0.72, 0.61, 0.48);
 		comment_marker_colors[COMMENT_MARKER_NOTICE] = Color(0.56, 0.67, 0.51);
 	} else {
-		function_definition_color = Color(0.051, 0.725, 0.843);
-		global_function_color = Color(0.733, 0.604, 0.969);
-		node_path_color = Color(0.102, 0.737, 0.612);
-		node_ref_color = Color(0.255, 0.651, 0.71);
-		annotation_color = Color(0.878, 0.686, 0.408);
-		string_name_color = Color(0.62, 0.808, 0.416);
+		function_definition_color = Color(0, 0.6, 0.6);
+		global_function_color = Color(0.36, 0.18, 0.72);
+		node_path_color = Color(0.18, 0.55, 0);
+		node_ref_color = Color(0.0, 0.5, 0);
+		annotation_color = Color(0.8, 0.37, 0);
+		string_name_color = Color(0.8, 0.56, 0.45);
 		comment_marker_colors[COMMENT_MARKER_CRITICAL] = Color(0.8, 0.14, 0.14);
 		comment_marker_colors[COMMENT_MARKER_WARNING] = Color(0.75, 0.39, 0.03);
 		comment_marker_colors[COMMENT_MARKER_NOTICE] = Color(0.24, 0.54, 0.09);

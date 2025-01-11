@@ -350,10 +350,10 @@ static Error _configure_pixel_format(HDC hDC) {
 	return OK;
 }
 
-PFNWGLCREATECONTEXT gd_wglCreateContext;
-PFNWGLMAKECURRENT gd_wglMakeCurrent;
-PFNWGLDELETECONTEXT gd_wglDeleteContext;
-PFNWGLGETPROCADDRESS gd_wglGetProcAddress;
+PFNWGLCREATECONTEXT ks_wglCreateContext;
+PFNWGLMAKECURRENT ks_wglMakeCurrent;
+PFNWGLDELETECONTEXT ks_wglDeleteContext;
+PFNWGLGETPROCADDRESS ks_wglGetProcAddress;
 
 Error GLManagerNative_Windows::_create_context(GLWindow &win, GLDisplay &gl_display) {
 	Error err = _configure_pixel_format(win.hDC);
@@ -365,21 +365,21 @@ Error GLManagerNative_Windows::_create_context(GLWindow &win, GLDisplay &gl_disp
 	if (!module) {
 		return ERR_CANT_CREATE;
 	}
-	gd_wglCreateContext = (PFNWGLCREATECONTEXT)GetProcAddress(module, "wglCreateContext");
-	gd_wglMakeCurrent = (PFNWGLMAKECURRENT)GetProcAddress(module, "wglMakeCurrent");
-	gd_wglDeleteContext = (PFNWGLDELETECONTEXT)GetProcAddress(module, "wglDeleteContext");
-	gd_wglGetProcAddress = (PFNWGLGETPROCADDRESS)GetProcAddress(module, "wglGetProcAddress");
-	if (!gd_wglCreateContext || !gd_wglMakeCurrent || !gd_wglDeleteContext || !gd_wglGetProcAddress) {
+	ks_wglCreateContext = (PFNWGLCREATECONTEXT)GetProcAddress(module, "wglCreateContext");
+	ks_wglMakeCurrent = (PFNWGLMAKECURRENT)GetProcAddress(module, "wglMakeCurrent");
+	ks_wglDeleteContext = (PFNWGLDELETECONTEXT)GetProcAddress(module, "wglDeleteContext");
+	ks_wglGetProcAddress = (PFNWGLGETPROCADDRESS)GetProcAddress(module, "wglGetProcAddress");
+	if (!ks_wglCreateContext || !ks_wglMakeCurrent || !ks_wglDeleteContext || !ks_wglGetProcAddress) {
 		return ERR_CANT_CREATE;
 	}
 
-	gl_display.hRC = gd_wglCreateContext(win.hDC);
+	gl_display.hRC = ks_wglCreateContext(win.hDC);
 	if (!gl_display.hRC) // Are We Able To Get A Rendering Context?
 	{
 		return ERR_CANT_CREATE; // Return FALSE
 	}
 
-	if (!gd_wglMakeCurrent(win.hDC, gl_display.hRC)) {
+	if (!ks_wglMakeCurrent(win.hDC, gl_display.hRC)) {
 		ERR_PRINT("Could not attach OpenGL context to newly created window: " + format_error_message(GetLastError()));
 	}
 
@@ -393,39 +393,39 @@ Error GLManagerNative_Windows::_create_context(GLWindow &win, GLDisplay &gl_disp
 	}; //zero indicates the end of the array
 
 	PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = nullptr; //pointer to the method
-	wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)gd_wglGetProcAddress("wglCreateContextAttribsARB");
+	wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)ks_wglGetProcAddress("wglCreateContextAttribsARB");
 
 	if (wglCreateContextAttribsARB == nullptr) //OpenGL 3.0 is not supported
 	{
-		gd_wglDeleteContext(gl_display.hRC);
+		ks_wglDeleteContext(gl_display.hRC);
 		gl_display.hRC = nullptr;
 		return ERR_CANT_CREATE;
 	}
 
 	HGLRC new_hRC = wglCreateContextAttribsARB(win.hDC, nullptr, attribs);
 	if (!new_hRC) {
-		gd_wglDeleteContext(gl_display.hRC);
+		ks_wglDeleteContext(gl_display.hRC);
 		gl_display.hRC = nullptr;
 		return ERR_CANT_CREATE;
 	}
 
-	if (!gd_wglMakeCurrent(win.hDC, nullptr)) {
+	if (!ks_wglMakeCurrent(win.hDC, nullptr)) {
 		ERR_PRINT("Could not detach OpenGL context from newly created window: " + format_error_message(GetLastError()));
 	}
 
-	gd_wglDeleteContext(gl_display.hRC);
+	ks_wglDeleteContext(gl_display.hRC);
 	gl_display.hRC = new_hRC;
 
-	if (!gd_wglMakeCurrent(win.hDC, gl_display.hRC)) // Try to activate the rendering context.
+	if (!ks_wglMakeCurrent(win.hDC, gl_display.hRC)) // Try to activate the rendering context.
 	{
 		ERR_PRINT("Could not attach OpenGL context to newly created window with replaced OpenGL context: " + format_error_message(GetLastError()));
-		gd_wglDeleteContext(gl_display.hRC);
+		ks_wglDeleteContext(gl_display.hRC);
 		gl_display.hRC = nullptr;
 		return ERR_CANT_CREATE;
 	}
 
 	if (!wglSwapIntervalEXT) {
-		wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)gd_wglGetProcAddress("wglSwapIntervalEXT");
+		wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)ks_wglGetProcAddress("wglSwapIntervalEXT");
 	}
 
 	return OK;
@@ -476,7 +476,7 @@ void GLManagerNative_Windows::release_current() {
 		return;
 	}
 
-	if (!gd_wglMakeCurrent(_current_window->hDC, nullptr)) {
+	if (!ks_wglMakeCurrent(_current_window->hDC, nullptr)) {
 		ERR_PRINT("Could not detach OpenGL context from window marked current: " + format_error_message(GetLastError()));
 	}
 
@@ -497,7 +497,7 @@ void GLManagerNative_Windows::window_make_current(DisplayServer::WindowID p_wind
 	}
 
 	const GLDisplay &disp = get_display(win.gldisplay_id);
-	if (!gd_wglMakeCurrent(win.hDC, disp.hRC)) {
+	if (!ks_wglMakeCurrent(win.hDC, disp.hRC)) {
 		ERR_PRINT("Could not switch OpenGL context to other window: " + format_error_message(GetLastError()));
 	}
 

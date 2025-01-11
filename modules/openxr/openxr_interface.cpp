@@ -337,10 +337,10 @@ void OpenXRInterface::_load_action_map() {
 OpenXRInterface::ActionSet *OpenXRInterface::create_action_set(const String &p_action_set_name, const String &p_localized_name, const int p_priority) {
 	ERR_FAIL_NULL_V(openxr_api, nullptr);
 
-	// find if it already exists
+	// Find if it already exists
 	for (int i = 0; i < action_sets.size(); i++) {
 		if (action_sets[i]->action_set_name == p_action_set_name) {
-			// already exists in this set
+			// Already exists in this set
 			return nullptr;
 		}
 	}
@@ -374,7 +374,7 @@ OpenXRInterface::Action *OpenXRInterface::create_action(ActionSet *p_action_set,
 
 	for (int i = 0; i < p_action_set->actions.size(); i++) {
 		if (p_action_set->actions[i]->action_name == p_action_name) {
-			// already exists in this set
+			// Already exists in this set
 			return nullptr;
 		}
 	}
@@ -387,8 +387,8 @@ OpenXRInterface::Action *OpenXRInterface::create_action(ActionSet *p_action_set,
 	Action *action = memnew(Action);
 	if (p_action_type == OpenXRAction::OPENXR_ACTION_POSE) {
 		// We can't have dual action names in OpenXR hence we added _pose,
-		// but default, aim and grip and default pose action names in Godot so rename them on the tracker.
-		// NOTE need to decide on whether we should keep the naming convention or rename it on Godots side
+		// but default, aim and grip and default pose action names in Kosmic so rename them on the tracker.
+		// NOTE: Need to decide on whether we should keep the naming convention or rename it on Kosmic's side
 		if (p_action_name == "default_pose") {
 			action->action_name = "default";
 		} else if (p_action_name == "aim_pose") {
@@ -406,7 +406,7 @@ OpenXRInterface::Action *OpenXRInterface::create_action(ActionSet *p_action_set,
 	action->action_rid = openxr_api->action_create(p_action_set->action_set_rid, p_action_name, p_localized_name, p_action_type, tracker_rids);
 	p_action_set->actions.push_back(action);
 
-	// we link our actions back to our trackers so we know which actions to check when we're processing our trackers
+	// We link our actions back to our trackers so we know which actions to check when we're processing our trackers
 	for (int i = 0; i < p_trackers.size(); i++) {
 		if (!p_trackers[i]->actions.has(action)) {
 			p_trackers[i]->actions.push_back(action);
@@ -678,7 +678,7 @@ bool OpenXRInterface::initialize() {
 }
 
 void OpenXRInterface::uninitialize() {
-	// Our OpenXR driver will clean itself up properly when Godot exits, so we just do some basic stuff here
+	// Our OpenXR driver will clean itself up properly when Kosmic exits, so we just do some basic stuff here
 
 	// end the session if we need to?
 

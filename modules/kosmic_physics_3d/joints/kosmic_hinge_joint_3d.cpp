@@ -30,7 +30,7 @@
 /**************************************************************************/
 
 /*
-Adapted to Godot from the Bullet library.
+Adapted to Kosmic from the Bullet library.
 */
 
 /*
@@ -50,7 +50,7 @@ subject to the following restrictions:
 
 #include "kosmic_hinge_joint_3d.h"
 
-KosmicHingeJoint3D::KosmicHingeJoint3D(GodotBody3D *rbA, GodotBody3D *rbB, const Transform3D &frameA, const Transform3D &frameB) :
+KosmicHingeJoint3D::KosmicHingeJoint3D(KosmicBody3D *rbA, KosmicBody3D *rbB, const Transform3D &frameA, const Transform3D &frameB) :
 		KosmicJoint3D(_arr, 2) {
 	A = rbA;
 	B = rbB;
@@ -66,7 +66,7 @@ KosmicHingeJoint3D::KosmicHingeJoint3D(GodotBody3D *rbA, GodotBody3D *rbB, const
 	B->add_constraint(this, 1);
 }
 
-KosmicHingeJoint3D::KosmicHingeJoint3D(GodotBody3D *rbA, GodotBody3D *rbB, const Vector3 &pivotInA, const Vector3 &pivotInB,
+KosmicHingeJoint3D::KosmicHingeJoint3D(KosmicBody3D *rbA, KosmicBody3D *rbB, const Vector3 &pivotInA, const Vector3 &pivotInB,
 		const Vector3 &axisInA, const Vector3 &axisInB) :
 		KosmicJoint3D(_arr, 2) {
 	A = rbA;

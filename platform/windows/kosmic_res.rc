@@ -4,8 +4,8 @@
 #define RT_MANIFEST 24
 #endif
 
-KOSMIC_ICON ICON platform/windows/godot.ico
-1 RT_MANIFEST "godot.manifest"
+KOSMIC_ICON ICON platform/windows/kosmic.ico
+1 RT_MANIFEST "kosmic.manifest"
 
 1 VERSIONINFO
 FILEVERSION     VERSION_MAJOR,VERSION_MINOR,VERSION_PATCH,0
@@ -17,13 +17,13 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "CompanyName",            "Godot Engine"
+            VALUE "CompanyName",            "Kosmic Engine"
             VALUE "FileDescription",        VERSION_NAME
             VALUE "FileVersion",            VERSION_NUMBER
             VALUE "ProductName",            VERSION_NAME
             VALUE "Licence",                "MIT"
-            VALUE "LegalCopyright",         "(c) 2007-present Juan Linietsky, Ariel Manzur and Godot Engine contributors"
-            VALUE "Info",                   "https://godotengine.org"
+            VALUE "LegalCopyright",         "(c) 2024-present Kosmic Engine contributors. (c) 2007-present Juan Linietsky, Ariel Manzur and Godot Engine contributors"
+            VALUE "Info",                   "https://kosmicengine.org"
             VALUE "ProductVersion",         VERSION_FULL_BUILD
         END
     END

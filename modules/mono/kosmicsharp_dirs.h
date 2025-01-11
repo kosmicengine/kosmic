@@ -29,8 +29,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef KOSMICSHARP_DIRS_H
-#define KOSMICSHARP_DIRS_H
+#ifndef kosmicSHARP_DIRS_H
+#define kosmicSHARP_DIRS_H
 
 #include "core/string/ustring.h"
 
@@ -50,4 +50,4 @@ String get_data_editor_tools_dir();
 
 } // namespace KosmicSharpDirs
 
-#endif // KOSMICSHARP_DIRS_H
+#endif // kosmicSHARP_DIRS_H

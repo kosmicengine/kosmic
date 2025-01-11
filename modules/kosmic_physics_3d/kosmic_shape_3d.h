@@ -193,7 +193,7 @@ public:
 	KosmicSphereShape3D();
 };
 
-class GodotBoxShape3D : public KosmicShape3D {
+class KosmicBoxShape3D : public KosmicShape3D {
 	Vector3 half_extents;
 	void _setup(const Vector3 &p_half_extents);
 
@@ -215,7 +215,7 @@ public:
 	virtual void set_data(const Variant &p_data) override;
 	virtual Variant get_data() const override;
 
-	GodotBoxShape3D();
+	KosmicBoxShape3D();
 };
 
 class KosmicCapsuleShape3D : public KosmicShape3D {
@@ -473,7 +473,7 @@ struct KosmicFaceShape3D : public KosmicShape3D {
 	KosmicFaceShape3D();
 };
 
-struct GodotMotionShape3D : public KosmicShape3D {
+struct KosmicMotionShape3D : public KosmicShape3D {
 	KosmicShape3D *shape = nullptr;
 	Vector3 motion;
 
@@ -509,7 +509,7 @@ struct GodotMotionShape3D : public KosmicShape3D {
 	virtual void set_data(const Variant &p_data) override {}
 	virtual Variant get_data() const override { return Variant(); }
 
-	GodotMotionShape3D() { configure(AABB()); }
+	KosmicMotionShape3D() { configure(AABB()); }
 };
 
 #endif // KOSMIC_SHAPE_3D_H

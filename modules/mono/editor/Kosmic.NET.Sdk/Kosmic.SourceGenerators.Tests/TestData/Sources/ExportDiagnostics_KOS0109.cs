@@ -1,9 +1,9 @@
-using Godot;
+using Kosmic;
 using Kosmic.Collections;
 
 [Tool]
-public partial class ExportDiagnostics_GD0109 : Node
+public partial class ExportDiagnostics_KS0109 : Node
 {
     [Export, ExportToolButton("")]
-    public Callable {|GD0109:MyButton|};
+    public Callable {|KS0109:MyButton|};
 }

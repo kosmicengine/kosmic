@@ -1,7 +1,7 @@
 # Ukrainian translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Aleksandr <XpycT.TOP@gmail.com>, 2017.
 # Yuri Chornoivan <yurchor@ukr.net>, 2018, 2019, 2020, 2021, 2022, 2024.
 # Андрій Бандура <andriykopanytsia@gmail.com>, 2018.
@@ -54,11 +54,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Ukrainian (Godot Engine)\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-09-03 22:09+0000\n"
 "Last-Translator: BakaloMykhailo <bakaloukr@gmail.com>\n"
-"Language-Team: Ukrainian <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Ukrainian <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
@@ -2528,8 +2528,8 @@ msgstr "[порожньо]"
 msgid "[unsaved]"
 msgstr "[не збережено]"
 
-msgid "%s - Godot Engine"
-msgstr "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
+msgstr "%s - Kosmic Engine"
 
 msgid "Move this dock right one tab."
 msgstr "Перемістіть цю панель на одну вкладку праворуч."
@@ -12851,7 +12851,7 @@ msgid "4D vector parameter."
 msgstr "Параметр 4D вектора."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
@@ -12860,7 +12860,7 @@ msgstr ""
 "або світла. Не використовуйте це для написання вбудованих оголошень функцій."
 
 msgid ""
-"Custom Kosmic Shader Language expression, which is placed on top of the "
+"Custom Godot Shader Language expression, which is placed on top of the "
 "resulted shader. You can place various function definitions inside and call "
 "it later in the Expressions. You can also declare varyings, parameters and "
 "constants."

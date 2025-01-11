@@ -20,7 +20,7 @@ namespace Kosmic.SourceGenerators
             if (context.IsKosmicSourceGeneratorDisabled("ScriptProperties"))
                 return;
 
-            INamedTypeSymbol[] godotClasses = context
+            INamedTypeSymbol[] kosmicClasses = context
                 .Compilation.SyntaxTrees
                 .SelectMany(tree =>
                     tree.GetRoot().DescendantNodes()
@@ -45,13 +45,13 @@ namespace Kosmic.SourceGenerators
                 .Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default)
                 .ToArray();
 
-            if (godotClasses.Length > 0)
+            if (kosmicClasses.Length > 0)
             {
                 var typeCache = new MarshalUtils.TypeCache(context.Compilation);
 
-                foreach (var godotClass in godotClasses)
+                foreach (var kosmicClass in kosmicClasses)
                 {
-                    VisitKosmicScriptClass(context, typeCache, godotClass);
+                    VisitKosmicScriptClass(context, typeCache, kosmicClass);
                 }
             }
         }
@@ -69,14 +69,14 @@ namespace Kosmic.SourceGenerators
             bool hasNamespace = classNs.Length != 0;
 
             bool isInnerClass = symbol.ContainingType != null;
-            bool isToolClass = symbol.GetAttributes().Any(a => a.AttributeClass?.IsGodotToolAttribute() ?? false);
+            bool isToolClass = symbol.GetAttributes().Any(a => a.AttributeClass?.IsKosmicToolAttribute() ?? false);
 
             string uniqueHint = symbol.FullQualifiedNameOmitGlobal().SanitizeQualifiedNameForUniqueHint()
                                 + "_ScriptProperties.generated";
 
             var source = new StringBuilder();
 
-            source.Append("using Godot;\n");
+            source.Append("using Kosmic;\n");
             source.Append("using Kosmic.NativeInterop;\n");
             source.Append("\n");
 
@@ -122,8 +122,8 @@ namespace Kosmic.SourceGenerators
                 .Where(s => !s.IsStatic && s.Kind == SymbolKind.Field && !s.IsImplicitlyDeclared)
                 .Cast<IFieldSymbol>();
 
-            var godotClassProperties = propertySymbols.WhereIsKosmicCompatibleType(typeCache).ToArray();
-            var godotClassFields = fieldSymbols.WhereIsKosmicCompatibleType(typeCache).ToArray();
+            var kosmicClassProperties = propertySymbols.WhereIsKosmicCompatibleType(typeCache).ToArray();
+            var kosmicClassFields = fieldSymbols.WhereIsKosmicCompatibleType(typeCache).ToArray();
 
             source.Append("#pragma warning disable CS0109 // Disable warning about redundant 'new' keyword\n");
 
@@ -136,7 +136,7 @@ namespace Kosmic.SourceGenerators
 
             // Generate cached StringNames for methods and properties, for fast lookup
 
-            foreach (var property in godotClassProperties)
+            foreach (var property in kosmicClassProperties)
             {
                 string propertyName = property.PropertySymbol.Name;
 
@@ -153,7 +153,7 @@ namespace Kosmic.SourceGenerators
                 source.Append("\";\n");
             }
 
-            foreach (var field in godotClassFields)
+            foreach (var field in kosmicClassFields)
             {
                 string fieldName = field.FieldSymbol.Name;
 
@@ -172,13 +172,13 @@ namespace Kosmic.SourceGenerators
 
             source.Append("    }\n"); // class KosmicInternal
 
-            if (godotClassProperties.Length > 0 || godotClassFields.Length > 0)
+            if (kosmicClassProperties.Length > 0 || kosmicClassFields.Length > 0)
             {
 
                 // Generate SetKosmicClassPropertyValue
 
-                bool allPropertiesAreReadOnly = godotClassFields.All(fi => fi.FieldSymbol.IsReadOnly) &&
-                                                godotClassProperties.All(pi => pi.PropertySymbol.IsReadOnly || pi.PropertySymbol.SetMethod!.IsInitOnly);
+                bool allPropertiesAreReadOnly = kosmicClassFields.All(fi => fi.FieldSymbol.IsReadOnly) &&
+                                                kosmicClassProperties.All(pi => pi.PropertySymbol.IsReadOnly || pi.PropertySymbol.SetMethod!.IsInitOnly);
 
                 if (!allPropertiesAreReadOnly)
                 {
@@ -187,7 +187,7 @@ namespace Kosmic.SourceGenerators
                     source.Append("    protected override bool SetKosmicClassPropertyValue(in kosmic_string_name name, ");
                     source.Append("in kosmic_variant value)\n    {\n");
 
-                    foreach (var property in godotClassProperties)
+                    foreach (var property in kosmicClassProperties)
                     {
                         if (property.PropertySymbol.IsReadOnly || property.PropertySymbol.SetMethod!.IsInitOnly)
                             continue;
@@ -196,7 +196,7 @@ namespace Kosmic.SourceGenerators
                             property.PropertySymbol.Type, property.Type, source);
                     }
 
-                    foreach (var field in godotClassFields)
+                    foreach (var field in kosmicClassFields)
                     {
                         if (field.FieldSymbol.IsReadOnly)
                             continue;
@@ -211,7 +211,7 @@ namespace Kosmic.SourceGenerators
                 }
 
                 // Generate GetKosmicClassPropertyValue
-                bool allPropertiesAreWriteOnly = godotClassFields.Length == 0 && godotClassProperties.All(pi => pi.PropertySymbol.IsWriteOnly);
+                bool allPropertiesAreWriteOnly = kosmicClassFields.Length == 0 && kosmicClassProperties.All(pi => pi.PropertySymbol.IsWriteOnly);
 
                 if (!allPropertiesAreWriteOnly)
                 {
@@ -220,7 +220,7 @@ namespace Kosmic.SourceGenerators
                     source.Append("    protected override bool GetKosmicClassPropertyValue(in kosmic_string_name name, ");
                     source.Append("out kosmic_variant value)\n    {\n");
 
-                    foreach (var property in godotClassProperties)
+                    foreach (var property in kosmicClassProperties)
                     {
                         if (property.PropertySymbol.IsWriteOnly)
                             continue;
@@ -229,7 +229,7 @@ namespace Kosmic.SourceGenerators
                             property.PropertySymbol.Type, property.Type, source);
                     }
 
-                    foreach (var field in godotClassFields)
+                    foreach (var field in kosmicClassFields)
                     {
                         GeneratePropertyGetter(field.FieldSymbol.Name,
                             field.FieldSymbol.Type, field.Type, source);
@@ -245,7 +245,7 @@ namespace Kosmic.SourceGenerators
 
                 source.Append("    /// <summary>\n")
                     .Append("    /// Get the property information for all the properties declared in this class.\n")
-                    .Append("    /// This method is used by Godot to register the available properties in the editor.\n")
+                    .Append("    /// This method is used by Kosmic to register the available properties in the editor.\n")
                     .Append("    /// Do not call this method.\n")
                     .Append("    /// </summary>\n");
 
@@ -261,13 +261,13 @@ namespace Kosmic.SourceGenerators
 
                 // To retain the definition order (and display categories correctly), we want to
                 //  iterate over fields and properties at the same time, sorted by line number.
-                var godotClassPropertiesAndFields = Enumerable.Empty<KosmicPropertyOrFieldData>()
-                    .Concat(godotClassProperties.Select(propertyData => new KosmicPropertyOrFieldData(propertyData)))
-                    .Concat(godotClassFields.Select(fieldData => new KosmicPropertyOrFieldData(fieldData)))
+                var kosmicClassPropertiesAndFields = Enumerable.Empty<KosmicPropertyOrFieldData>()
+                    .Concat(kosmicClassProperties.Select(propertyData => new KosmicPropertyOrFieldData(propertyData)))
+                    .Concat(kosmicClassFields.Select(fieldData => new KosmicPropertyOrFieldData(fieldData)))
                     .OrderBy(data => data.Symbol.Locations[0].Path())
                     .ThenBy(data => data.Symbol.Locations[0].StartLine());
 
-                foreach (var member in godotClassPropertiesAndFields)
+                foreach (var member in kosmicClassPropertiesAndFields)
                 {
                     foreach (var groupingInfo in DetermineGroupingPropertyInfo(member.Symbol))
                         AppendGroupingPropertyInfo(source, groupingInfo);
@@ -678,7 +678,7 @@ namespace Kosmic.SourceGenerators
             static string GetTypeName(INamedTypeSymbol memberSymbol)
             {
                 if (memberSymbol.GetAttributes()
-                    .Any(a => a.AttributeClass?.IsGodotGlobalClassAttribute() ?? false))
+                    .Any(a => a.AttributeClass?.IsKosmicGlobalClassAttribute() ?? false))
                 {
                     return memberSymbol.Name;
                 }

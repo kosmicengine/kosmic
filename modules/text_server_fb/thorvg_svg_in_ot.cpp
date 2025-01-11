@@ -37,7 +37,7 @@
 #include <kosmic_cpp/kosmic.hpp>
 #include <kosmic_cpp/templates/vector.hpp>
 
-using namespace godot;
+using namespace Kosmic;
 
 #elif defined(KOSMIC_MODULE)
 // Headers for building as built-in module.

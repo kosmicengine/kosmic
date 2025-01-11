@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 
 namespace NamespaceA
 {
@@ -11,7 +11,7 @@ namespace NamespaceA
 // SameName again but different namespace
 namespace NamespaceB
 {
-    partial class {|GD0003:SameName|} : KosmicObject
+    partial class {|KS0003:SameName|} : KosmicObject
     {
         private int _field;
     }

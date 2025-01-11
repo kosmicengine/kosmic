@@ -34,7 +34,7 @@
 #include "../csharp_script.h"
 #include "../interop_types.h"
 #include "../managed_callable.h"
-#include "../mono_gd/gd_mono_cache.h"
+#include "../mono_ks/ks_mono_cache.h"
 #include "../signal_awaiter_utils.h"
 #include "../utils/path_utils.h"
 
@@ -213,7 +213,7 @@ void kosmicsharp_internal_refcounted_disposed(Object *p_ptr, GCHandleIntPtr p_gc
 
 int32_t kosmicsharp_internal_signal_awaiter_connect(Object *p_source, StringName *p_signal, Object *p_target, GCHandleIntPtr p_awaiter_handle_ptr) {
 	StringName signal = p_signal ? *p_signal : StringName();
-	return (int32_t)gd_mono_connect_signal_awaiter(p_source, signal, p_target, p_awaiter_handle_ptr);
+	return (int32_t)ks_mono_connect_signal_awaiter(p_source, signal, p_target, p_awaiter_handle_ptr);
 }
 
 GCHandleIntPtr kosmicsharp_internal_unmanaged_get_script_instance_managed(Object *p_unmanaged, bool *r_has_cs_script_instance) {
@@ -282,7 +282,7 @@ GCHandleIntPtr kosmicsharp_internal_unmanaged_instance_binding_create_managed(Ob
 
 	ERR_FAIL_NULL_V(strong_gchandle.value, { nullptr });
 
-	gchandle = MonoGCHandleData(strong_gchandle, ksmono::GCHandleType::STRONG_HANDLE);
+	gchandle = MonoGCHandleData(strong_gchandle, gdmono::GCHandleType::STRONG_HANDLE);
 	script_binding.inited = true;
 
 	// Tie managed to unmanaged
@@ -1374,7 +1374,7 @@ void kosmicsharp_weakref(Object *p_ptr, Ref<RefCounted> *r_weak_ref) {
 
 	if (rc) {
 		Ref<RefCounted> r = rc;
-		if (!r.is_valid()) {
+		if (r.is_null()) {
 			return;
 		}
 

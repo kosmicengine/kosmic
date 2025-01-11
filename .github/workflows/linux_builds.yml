@@ -29,7 +29,7 @@ jobs:
             cache-name: linux-editor-mono
             target: editor
             sconsflags: module_mono_enabled=yes
-            bin: ./bin/godot.linuxbsd.editor.x86_64.mono
+            bin: ./bin/kosmic.linuxbsd.editor.x86_64.mono
             build-mono: true
             tests: false # Disabled due freeze caused by mix Mono build and CI
             doc-test: true
@@ -43,11 +43,11 @@ jobs:
             target: editor
             # Debug symbols disabled as they're huge on this build and we hit the 14 GB limit for runners.
             sconsflags: dev_build=yes scu_build=yes debug_symbols=no precision=double use_asan=yes use_ubsan=yes linker=gold
-            bin: ./bin/godot.linuxbsd.editor.dev.double.x86_64.san
+            bin: ./bin/kosmic.linuxbsd.editor.dev.double.x86_64.san
             build-mono: false
             tests: true
             proj-test: true
-            # Generate an API dump for godot-cpp tests.
+            # Generate an API dump for kosmic-cpp tests.
             api-dump: true
             # Skip 2GiB artifact speeding up action.
             artifact: false
@@ -57,7 +57,7 @@ jobs:
             cache-name: linux-editor-llvm-sanitizers
             target: editor
             sconsflags: dev_build=yes use_asan=yes use_ubsan=yes use_llvm=yes linker=lld
-            bin: ./bin/godot.linuxbsd.editor.dev.x86_64.llvm.san
+            bin: ./bin/kosmic.linuxbsd.editor.dev.x86_64.llvm.san
             build-mono: false
             tests: true
             # Skip 2GiB artifact speeding up action.
@@ -71,7 +71,7 @@ jobs:
             target: editor
             tests: true
             sconsflags: dev_build=yes use_tsan=yes use_llvm=yes linker=lld
-            bin: ./bin/godot.linuxbsd.editor.dev.x86_64.llvm.san
+            bin: ./bin/kosmic.linuxbsd.editor.dev.x86_64.llvm.san
             build-mono: false
             # Skip 2GiB artifact speeding up action.
             artifact: false
@@ -81,7 +81,7 @@ jobs:
             cache-name: linux-template-mono
             target: template_release
             sconsflags: module_mono_enabled=yes
-            bin: ./bin/godot.linuxbsd.template_release.x86_64.mono
+            bin: ./bin/kosmic.linuxbsd.template_release.x86_64.mono
             build-mono: false
             tests: true
             artifact: true
@@ -91,7 +91,7 @@ jobs:
             cache-name: linux-template-minimal
             target: template_release
             sconsflags: modules_enabled_by_default=no disable_3d=yes disable_advanced_gui=yes deprecated=no minizip=no
-            bin: ./bin/godot.linuxbsd.template_release.x86_64
+            bin: ./bin/kosmic.linuxbsd.template_release.x86_64
             tests: true
             artifact: true
             cache-limit: 1
@@ -122,19 +122,19 @@ jobs:
           sudo rm -rf /usr/local/lib/android
           echo "Disk usage after:" && df -h
 
-      - name: Restore Godot build cache
-        uses: ./.github/actions/godot-cache-restore
+      - name: Restore Kosmic build cache
+        uses: ./.github/actions/kosmic-cache-restore
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
 
       - name: Setup Python and SCons
         if: '!matrix.legacy-scons'
-        uses: ./.github/actions/godot-deps
+        uses: ./.github/actions/kosmic-deps
 
       - name: Setup Python and SCons (legacy versions)
         if: matrix.legacy-scons
-        uses: ./.github/actions/godot-deps
+        uses: ./.github/actions/kosmic-deps
         with:
           # Sync with Ensure*Version in SConstruct.
           python-version: 3.8
@@ -153,7 +153,7 @@ jobs:
           dotnet-version: '8.0.100'
 
       - name: Compilation
-        uses: ./.github/actions/godot-build
+        uses: ./.github/actions/kosmic-build
         with:
           sconsflags: ${{ env.SCONSFLAGS }} ${{ matrix.sconsflags }}
           platform: linuxbsd
@@ -161,8 +161,8 @@ jobs:
           tests: ${{ matrix.tests }}
           scons-cache-limit: ${{ matrix.cache-limit }}
 
-      - name: Save Godot build cache
-        uses: ./.github/actions/godot-cache-save
+      - name: Save Kosmic build cache
+        uses: ./.github/actions/kosmic-cache-save
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
@@ -176,13 +176,13 @@ jobs:
         if: matrix.build-mono
         run: |
           dotnet --info
-          ./modules/mono/build_scripts/build_assemblies.py --godot-output-dir=./bin --godot-platform=linuxbsd --werror
+          ./modules/mono/build_scripts/build_assemblies.py --kosmic-output-dir=./bin --kosmic-platform=linuxbsd --werror
 
       - name: Prepare artifact
         if: matrix.artifact
         run: |
-          strip bin/godot.*
-          chmod +x bin/godot.*
+          strip bin/kosmic.*
+          chmod +x bin/kosmic.*
 
       - name: Upload artifact
         uses: ./.github/actions/upload-artifact
@@ -190,8 +190,8 @@ jobs:
         with:
           name: ${{ matrix.cache-name }}
 
-      - name: Dump Godot API
-        uses: ./.github/actions/godot-api-dump
+      - name: Dump Kosmic API
+        uses: ./.github/actions/kosmic-api-dump
         if: matrix.api-dump
         with:
           bin: ${{ matrix.bin }}
@@ -224,15 +224,15 @@ jobs:
           ./misc/scripts/validate_extension_api.sh "${{ matrix.bin }}"
 
       # Download and run the test project
-      - name: Test Godot project
-        uses: ./.github/actions/godot-project-test
+      - name: Test Kosmic project
+        uses: ./.github/actions/kosmic-project-test
         if: matrix.proj-test
         with:
           bin: ${{ matrix.bin }}
 
       # Test the project converter
       - name: Test project converter
-        uses: ./.github/actions/godot-converter-test
+        uses: ./.github/actions/kosmic-converter-test
         if: matrix.proj-conv
         with:
           bin: ${{ matrix.bin }}

@@ -37,7 +37,7 @@
 #import <AppKit/AppKit.h>
 #import <Foundation/Foundation.h>
 
-@interface GodotButtonView : NSView {
+@interface KosmicButtonView : NSView {
 	NSTrackingArea *tracking_area;
 	NSPoint offset;
 	CGFloat spacing;

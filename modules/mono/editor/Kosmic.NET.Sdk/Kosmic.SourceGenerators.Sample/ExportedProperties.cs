@@ -115,7 +115,7 @@ namespace Kosmic.SourceGenerators.Sample
         [Export] private Double PropertyDouble { get; set; } = 10;
         [Export] private String PropertyString { get; set; } = "foo";
 
-        // Godot structs
+        // Kosmic structs
         [Export] private Vector2 PropertyVector2 { get; set; } = new(10f, 10f);
         [Export] private Vector2I PropertyVector2I { get; set; } = Vector2I.Up;
         [Export] private Rect2 PropertyRect2 { get; set; } = new(new Vector2(10f, 10f), new Vector2(10f, 10f));
@@ -188,15 +188,15 @@ namespace Kosmic.SourceGenerators.Sample
             new() { { "foo", 10 }, { Vector2.Up, Colors.Chocolate } };
 
         [Export]
-        private Kosmic.Collections.Array PropertyGodotArray { get; set; } =
+        private Kosmic.Collections.Array PropertyKosmicArray { get; set; } =
             new() { "foo", 10, Vector2.Up, Colors.Chocolate };
 
         [Export]
-        private Kosmic.Collections.Dictionary<string, bool> PropertyGodotGenericDictionary { get; set; } =
+        private Kosmic.Collections.Dictionary<string, bool> PropertyKosmicGenericDictionary { get; set; } =
             new() { { "foo", true }, { "bar", false } };
 
         [Export]
-        private Kosmic.Collections.Array<int> PropertyGodotGenericArray { get; set; } =
+        private Kosmic.Collections.Array<int> PropertyKosmicGenericArray { get; set; } =
             new() { 0, 1, 2, 3, 4, 5, 6 };
     }
 }

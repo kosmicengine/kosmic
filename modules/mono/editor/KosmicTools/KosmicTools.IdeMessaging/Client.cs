@@ -7,8 +7,8 @@ using System.Net.Sockets;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using GodotTools.IdeMessaging.Requests;
-using GodotTools.IdeMessaging.Utils;
+using KosmicTools.IdeMessaging.Requests;
+using KosmicTools.IdeMessaging.Utils;
 
 namespace KosmicTools.IdeMessaging
 {
@@ -21,10 +21,10 @@ namespace KosmicTools.IdeMessaging
 
         private string MetaFilePath { get; }
         private DateTime? metaFileModifiedTime;
-        private KosmicIdeMetadata godotIdeMetadata;
+        private KosmicIdeMetadata kosmicIdeMetadata;
         private readonly FileSystemWatcher fsWatcher;
 
-        public string KosmicEditorExecutablePath => godotIdeMetadata.EditorExecutablePath;
+        public string KosmicEditorExecutablePath => kosmicIdeMetadata.EditorExecutablePath;
 
         private readonly IMessageHandler messageHandler;
 
@@ -117,18 +117,18 @@ namespace KosmicTools.IdeMessaging
             }
         }
 
-        public Client(string identity, string godotProjectDir, IMessageHandler messageHandler, ILogger logger)
+        public Client(string identity, string kosmicProjectDir, IMessageHandler messageHandler, ILogger logger)
         {
             this.identity = identity;
             this.messageHandler = messageHandler;
             this.logger = logger;
 
-            string projectMetadataDir = Path.Combine(godotProjectDir, ".kosmic", "mono", "metadata");
+            string projectMetadataDir = Path.Combine(kosmicProjectDir, ".kosmic", "mono", "metadata");
             // FileSystemWatcher requires an existing directory
             if (!Directory.Exists(projectMetadataDir))
             {
                 // Check if the non hidden version exists
-                string nonHiddenProjectMetadataDir = Path.Combine(godotProjectDir, "kosmic", "mono", "metadata");
+                string nonHiddenProjectMetadataDir = Path.Combine(kosmicProjectDir, "kosmic", "mono", "metadata");
                 if (Directory.Exists(nonHiddenProjectMetadataDir))
                 {
                     projectMetadataDir = nonHiddenProjectMetadataDir;
@@ -166,9 +166,9 @@ namespace KosmicTools.IdeMessaging
 
                 var metadata = ReadMetadataFile();
 
-                if (metadata != null && metadata != godotIdeMetadata)
+                if (metadata != null && metadata != kosmicIdeMetadata)
                 {
-                    godotIdeMetadata = metadata.Value;
+                    kosmicIdeMetadata = metadata.Value;
                     _ = Task.Run(ConnectToServer);
                 }
             }
@@ -206,7 +206,7 @@ namespace KosmicTools.IdeMessaging
 
                 if (metadata != null)
                 {
-                    godotIdeMetadata = metadata.Value;
+                    kosmicIdeMetadata = metadata.Value;
                     _ = Task.Run(ConnectToServer);
                 }
             }
@@ -282,18 +282,18 @@ namespace KosmicTools.IdeMessaging
 
             try
             {
-                logger.LogInfo("Connecting to Godot Ide Server");
+                logger.LogInfo("Connecting to Kosmic Ide Server");
 
-                await tcpClient.ConnectAsync(IPAddress.Loopback, godotIdeMetadata.Port);
+                await tcpClient.ConnectAsync(IPAddress.Loopback, kosmicIdeMetadata.Port);
 
-                logger.LogInfo("Connection open with Godot Ide Server");
+                logger.LogInfo("Connection open with Kosmic Ide Server");
 
                 await AcceptClient(tcpClient);
             }
             catch (SocketException e)
             {
                 if (e.SocketErrorCode == SocketError.ConnectionRefused)
-                    logger.LogError("The connection to the Godot Ide Server was refused");
+                    logger.LogError("The connection to the Kosmic Ide Server was refused");
                 else
                     throw;
             }
@@ -317,7 +317,7 @@ namespace KosmicTools.IdeMessaging
 
                 if (!File.Exists(MetaFilePath))
                 {
-                    logger.LogInfo("There is no Godot Ide Server running");
+                    logger.LogInfo("There is no Kosmic Ide Server running");
                     return;
                 }
 
@@ -325,12 +325,12 @@ namespace KosmicTools.IdeMessaging
 
                 if (metadata != null)
                 {
-                    godotIdeMetadata = metadata.Value;
+                    kosmicIdeMetadata = metadata.Value;
                     _ = Task.Run(ConnectToServer);
                 }
                 else
                 {
-                    logger.LogError("Failed to read Godot Ide metadata file");
+                    logger.LogError("Failed to read Kosmic Ide metadata file");
                 }
             }
         }
@@ -340,7 +340,7 @@ namespace KosmicTools.IdeMessaging
         {
             if (!IsConnected)
             {
-                logger.LogError("Cannot write request. Not connected to the Godot Ide Server.");
+                logger.LogError("Cannot write request. Not connected to the Kosmic Ide Server.");
                 return null;
             }
 
@@ -353,7 +353,7 @@ namespace KosmicTools.IdeMessaging
         {
             if (!IsConnected)
             {
-                logger.LogError("Cannot write request. Not connected to the Godot Ide Server.");
+                logger.LogError("Cannot write request. Not connected to the Kosmic Ide Server.");
                 return null;
             }
 

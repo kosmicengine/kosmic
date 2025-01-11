@@ -38,10 +38,10 @@
 #include "servers/physics_server_2d.h"
 
 class KosmicSpace2D;
-class GodotBody2D;
+class KosmicBody2D;
 class KosmicConstraint2D;
 
-class GodotArea2D : public KosmicCollisionObject2D {
+class KosmicArea2D : public KosmicCollisionObject2D {
 	PhysicsServer2D::AreaSpaceOverrideMode gravity_override_mode = PhysicsServer2D::AREA_SPACE_OVERRIDE_DISABLED;
 	PhysicsServer2D::AreaSpaceOverrideMode linear_damping_override_mode = PhysicsServer2D::AREA_SPACE_OVERRIDE_DISABLED;
 	PhysicsServer2D::AreaSpaceOverrideMode angular_damping_override_mode = PhysicsServer2D::AREA_SPACE_OVERRIDE_DISABLED;
@@ -59,8 +59,8 @@ class GodotArea2D : public KosmicCollisionObject2D {
 
 	Callable area_monitor_callback;
 
-	SelfList<GodotArea2D> monitor_query_list;
-	SelfList<GodotArea2D> moved_list;
+	SelfList<KosmicArea2D> monitor_query_list;
+	SelfList<KosmicArea2D> moved_list;
 
 	struct BodyKey {
 		RID rid;
@@ -80,8 +80,8 @@ class GodotArea2D : public KosmicCollisionObject2D {
 		}
 
 		_FORCE_INLINE_ BodyKey() {}
-		BodyKey(GodotBody2D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
-		BodyKey(GodotArea2D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
+		BodyKey(KosmicBody2D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
+		BodyKey(KosmicArea2D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
 	};
 
 	struct BodyState {
@@ -107,11 +107,11 @@ public:
 	void set_area_monitor_callback(const Callable &p_callback);
 	_FORCE_INLINE_ bool has_area_monitor_callback() const { return area_monitor_callback.is_valid(); }
 
-	_FORCE_INLINE_ void add_body_to_query(GodotBody2D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
-	_FORCE_INLINE_ void remove_body_from_query(GodotBody2D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
+	_FORCE_INLINE_ void add_body_to_query(KosmicBody2D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
+	_FORCE_INLINE_ void remove_body_from_query(KosmicBody2D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
 
-	_FORCE_INLINE_ void add_area_to_query(GodotArea2D *p_area, uint32_t p_area_shape, uint32_t p_self_shape);
-	_FORCE_INLINE_ void remove_area_from_query(GodotArea2D *p_area, uint32_t p_area_shape, uint32_t p_self_shape);
+	_FORCE_INLINE_ void add_area_to_query(KosmicArea2D *p_area, uint32_t p_area_shape, uint32_t p_self_shape);
+	_FORCE_INLINE_ void remove_area_from_query(KosmicArea2D *p_area, uint32_t p_area_shape, uint32_t p_self_shape);
 
 	void set_param(PhysicsServer2D::AreaParameter p_param, const Variant &p_value);
 	Variant get_param(PhysicsServer2D::AreaParameter p_param) const;
@@ -153,11 +153,11 @@ public:
 
 	void compute_gravity(const Vector2 &p_position, Vector2 &r_gravity) const;
 
-	GodotArea2D();
-	~GodotArea2D();
+	KosmicArea2D();
+	~KosmicArea2D();
 };
 
-void GodotArea2D::add_body_to_query(GodotBody2D *p_body, uint32_t p_body_shape, uint32_t p_area_shape) {
+void KosmicArea2D::add_body_to_query(KosmicBody2D *p_body, uint32_t p_body_shape, uint32_t p_area_shape) {
 	BodyKey bk(p_body, p_body_shape, p_area_shape);
 	monitored_bodies[bk].inc();
 	if (!monitor_query_list.in_list()) {
@@ -165,7 +165,7 @@ void GodotArea2D::add_body_to_query(GodotBody2D *p_body, uint32_t p_body_shape, 
 	}
 }
 
-void GodotArea2D::remove_body_from_query(GodotBody2D *p_body, uint32_t p_body_shape, uint32_t p_area_shape) {
+void KosmicArea2D::remove_body_from_query(KosmicBody2D *p_body, uint32_t p_body_shape, uint32_t p_area_shape) {
 	BodyKey bk(p_body, p_body_shape, p_area_shape);
 	monitored_bodies[bk].dec();
 	if (get_space() && !monitor_query_list.in_list()) {
@@ -173,7 +173,7 @@ void GodotArea2D::remove_body_from_query(GodotBody2D *p_body, uint32_t p_body_sh
 	}
 }
 
-void GodotArea2D::add_area_to_query(GodotArea2D *p_area, uint32_t p_area_shape, uint32_t p_self_shape) {
+void KosmicArea2D::add_area_to_query(KosmicArea2D *p_area, uint32_t p_area_shape, uint32_t p_self_shape) {
 	BodyKey bk(p_area, p_area_shape, p_self_shape);
 	monitored_areas[bk].inc();
 	if (!monitor_query_list.in_list()) {
@@ -181,7 +181,7 @@ void GodotArea2D::add_area_to_query(GodotArea2D *p_area, uint32_t p_area_shape, 
 	}
 }
 
-void GodotArea2D::remove_area_from_query(GodotArea2D *p_area, uint32_t p_area_shape, uint32_t p_self_shape) {
+void KosmicArea2D::remove_area_from_query(KosmicArea2D *p_area, uint32_t p_area_shape, uint32_t p_self_shape) {
 	BodyKey bk(p_area, p_area_shape, p_self_shape);
 	monitored_areas[bk].dec();
 	if (get_space() && !monitor_query_list.in_list()) {

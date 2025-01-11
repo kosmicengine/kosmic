@@ -169,9 +169,9 @@ Error RemoteFilesystemClient::_synchronize_with_server(const String &p_host, int
 	// Connection OK, now send the current file state.
 	print_verbose("Remote Filesystem: Connection OK.");
 
-	// Header (GRFS) - Godot Remote File System
+	// Header (KRFS) - Kosmic Remote File System
 	print_verbose("Remote Filesystem: Sending header");
-	tcp_client->put_u8('G');
+	tcp_client->put_u8('K');
 	tcp_client->put_u8('R');
 	tcp_client->put_u8('F');
 	tcp_client->put_u8('S');

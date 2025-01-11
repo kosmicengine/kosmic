@@ -88,7 +88,7 @@
 
 class WaylandThread {
 public:
-	// Messages used for exchanging information between Godot's and Wayland's thread.
+	// Messages used for exchanging information between Kosmic's and Wayland's thread.
 	class Message : public RefCounted {
 	public:
 		Message() {}
@@ -275,7 +275,7 @@ public:
 		WaylandThread *wayland_thread;
 	};
 
-	// "High level" Godot-side screen data.
+	// "High level" Kosmic-side screen data.
 	struct ScreenData {
 		// Geometry data.
 		Point2i position;
@@ -404,7 +404,7 @@ public:
 
 		// Used for delta calculations.
 		// NOTE: The wp_pointer_gestures protocol keeps track of the total scale of
-		// the pinch gesture, while godot instead wants its delta.
+		// the pinch gesture, while Kosmic instead wants its delta.
 		wl_fixed_t old_pinch_scale = 0;
 
 		struct wl_surface *cursor_surface = nullptr;
@@ -955,6 +955,8 @@ public:
 	void window_create(DisplayServer::WindowID p_window_id, int p_width, int p_height);
 
 	struct wl_surface *window_get_wl_surface(DisplayServer::WindowID p_window_id) const;
+
+	void window_start_resize(DisplayServer::WindowResizeEdge p_edge, DisplayServer::WindowID p_window);
 
 	void window_set_max_size(DisplayServer::WindowID p_window_id, const Size2i &p_size);
 	void window_set_min_size(DisplayServer::WindowID p_window_id, const Size2i &p_size);

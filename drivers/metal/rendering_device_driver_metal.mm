@@ -591,7 +591,7 @@ uint8_t *RenderingDeviceDriverMetal::texture_map(TextureID p_texture, const Text
 		offset += bytes_per_layer * mipExtent.depth * (p_subresource.layer - 1);
 	}
 
-	// TODO: Confirm with rendering team that there is no other way Godot may attempt to map a texture with multiple mipmaps or array layers.
+	// TODO: Confirm with rendering team that there is no other way Kosmic may attempt to map a texture with multiple mipmaps or array layers.
 
 	// NOTE: It is not possible to create a buffer-backed texture with mipmaps or array layers,
 	//  as noted in the is_valid_linear function, so the offset calculation SHOULD always be zero.
@@ -825,7 +825,7 @@ void RenderingDeviceDriverMetal::fence_free(FenceID p_fence) {
 #pragma mark - Semaphores
 
 RDD::SemaphoreID RenderingDeviceDriverMetal::semaphore_create() {
-	// Metal doesn't use semaphores, as their purpose within Godot is to ensure ordering of command buffer execution.
+	// Metal doesn't use semaphores, as their purpose within Kosmic is to ensure ordering of command buffer execution.
 	return SemaphoreID(1);
 }
 
@@ -3880,7 +3880,7 @@ uint64_t RenderingDeviceDriverMetal::get_total_memory_used() {
 }
 
 uint64_t RenderingDeviceDriverMetal::get_lazily_memory_used() {
-	return 0; // TODO: Track this (grep for memoryless in Godot's Metal backend).
+	return 0; // TODO: Track this (grep for memoryless in Kosmic's Metal backend).
 }
 
 uint64_t RenderingDeviceDriverMetal::limit_get(Limit p_limit) {
@@ -3983,6 +3983,10 @@ uint64_t RenderingDeviceDriverMetal::limit_get(Limit p_limit) {
 			return (uint64_t)limits.subgroupSupportedShaderStages;
 		case LIMIT_SUBGROUP_OPERATIONS:
 			return (uint64_t)limits.subgroupSupportedOperations;
+		case LIMIT_METALFX_TEMPORAL_SCALER_MIN_SCALE:
+			return (uint64_t)((1.0 / limits.temporalScalerInputContentMaxScale) * 1000'000);
+		case LIMIT_METALFX_TEMPORAL_SCALER_MAX_SCALE:
+			return (uint64_t)((1.0 / limits.temporalScalerInputContentMinScale) * 1000'000);
 		UNKNOWN(LIMIT_VRS_TEXEL_WIDTH);
 		UNKNOWN(LIMIT_VRS_TEXEL_HEIGHT);
 		UNKNOWN(LIMIT_VRS_MAX_FRAGMENT_WIDTH);
@@ -4018,6 +4022,10 @@ bool RenderingDeviceDriverMetal::has_feature(Features p_feature) {
 			return false;
 		case SUPPORTS_FRAGMENT_SHADER_WITH_ONLY_SIDE_EFFECTS:
 			return true;
+		case SUPPORTS_METALFX_SPATIAL:
+			return device_properties->features.metal_fx_spatial;
+		case SUPPORTS_METALFX_TEMPORAL:
+			return device_properties->features.metal_fx_temporal;
 		default:
 			return false;
 	}
@@ -4082,7 +4090,7 @@ Error RenderingDeviceDriverMetal::_create_device() {
 	ERR_FAIL_NULL_V(device_queue, ERR_CANT_CREATE);
 
 	device_scope = [MTLCaptureManager.sharedCaptureManager newCaptureScopeWithCommandQueue:device_queue];
-	device_scope.label = @"Godot Frame";
+	device_scope.label = @"Kosmic Frame";
 	[device_scope beginScope]; // Allow Xcode to capture the first frame, if desired.
 
 	resource_cache = std::make_unique<MDResourceCache>(this);
@@ -4130,7 +4138,7 @@ Error RenderingDeviceDriverMetal::initialize(uint32_t p_device_index, uint32_t p
 
 	// The Metal renderer requires Apple4 family. This is 2017 era A11 chips and newer.
 	if (device_properties->features.highestFamily < MTLGPUFamilyApple4) {
-		String error_string = vformat("Your Apple GPU does not support the following features, which are required to use Metal-based renderers in Godot:\n\n");
+		String error_string = vformat("Your Apple GPU does not support the following features, which are required to use Metal-based renderers in Kosmic:\n\n");
 		if (!device_properties->features.imageCubeArray) {
 			error_string += "- No support for image cube arrays.\n";
 		}

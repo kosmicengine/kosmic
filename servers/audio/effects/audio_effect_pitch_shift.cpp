@@ -34,7 +34,7 @@
 #include "core/math/math_funcs.h"
 #include "servers/audio_server.h"
 
-/* Thirdparty code, so disable clang-format with Godot style */
+/* Thirdparty code, so disable clang-format with Kosmic style */
 /* clang-format off */
 
 /****************************************************************************
@@ -283,7 +283,7 @@ void SMBPitchShift::smbFft(float *fftBuffer, long fftFrameSize, long sign)
 }
 
 
-/* Godot code again */
+/* Kosmic code again */
 /* clang-format on */
 
 void AudioEffectPitchShiftInstance::process(const AudioFrame *p_src_frames, AudioFrame *p_dst_frames, int p_frame_count) {

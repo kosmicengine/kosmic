@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 
 namespace Kosmic.SourceGenerators.Sample
 {

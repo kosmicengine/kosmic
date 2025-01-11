@@ -215,7 +215,9 @@ void register_editor_types() {
 	EditorPlugins::add_by_type<ControlEditorPlugin>();
 	EditorPlugins::add_by_type<CPUParticles3DEditorPlugin>();
 	EditorPlugins::add_by_type<CurveEditorPlugin>();
-	EditorPlugins::add_by_type<DebugAdapterServer>();
+	if (!Engine::get_singleton()->is_recovery_mode_hint()) {
+		EditorPlugins::add_by_type<DebugAdapterServer>();
+	}
 	EditorPlugins::add_by_type<FontEditorPlugin>();
 	EditorPlugins::add_by_type<GPUParticles3DEditorPlugin>();
 	EditorPlugins::add_by_type<GPUParticlesCollisionSDF3DEditorPlugin>();
@@ -296,7 +298,7 @@ void register_editor_types() {
 
 	// Required as KSExtensions can register docs at init time way before this
 	// class is actually instantiated.
-	EditorHelp::init_gdext_pointers();
+	EditorHelp::init_ksext_pointers();
 
 	OS::get_singleton()->benchmark_end_measure("Editor", "Register Types");
 }

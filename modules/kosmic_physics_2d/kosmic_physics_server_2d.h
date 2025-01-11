@@ -61,8 +61,8 @@ class KosmicPhysicsServer2D : public PhysicsServer2D {
 
 	mutable RID_PtrOwner<KosmicShape2D, true> shape_owner;
 	mutable RID_PtrOwner<KosmicSpace2D, true> space_owner;
-	mutable RID_PtrOwner<GodotArea2D, true> area_owner;
-	mutable RID_PtrOwner<GodotBody2D, true> body_owner;
+	mutable RID_PtrOwner<KosmicArea2D, true> area_owner;
+	mutable RID_PtrOwner<KosmicBody2D, true> body_owner;
 	mutable RID_PtrOwner<KosmicJoint2D, true> joint_owner;
 
 	static KosmicPhysicsServer2D *kosmic_singleton;

@@ -36,7 +36,7 @@
 #include "key_mapping_macos.h"
 #include "native_menu_macos.h"
 
-@implementation GodotMenuDelegate
+@implementation KosmicMenuDelegate
 
 - (void)doNothing:(id)sender {
 }
@@ -64,7 +64,7 @@
 
 - (void)menu:(NSMenu *)menu willHighlightItem:(NSMenuItem *)item {
 	if (item) {
-		GodotMenuItem *value = [item representedObject];
+		KosmicMenuItem *value = [item representedObject];
 		if (value && value->hover_callback.is_valid()) {
 			// If custom callback is set, use it.
 			Variant ret;
@@ -88,7 +88,7 @@
 			NSUInteger item_modifiers = [menu_item keyEquivalentModifierMask];
 
 			if (ev_modifiers == item_modifiers) {
-				GodotMenuItem *value = [menu_item representedObject];
+				KosmicMenuItem *value = [menu_item representedObject];
 				if (value) {
 					if (value->key_callback.is_valid()) {
 						// If custom callback is set, use it.

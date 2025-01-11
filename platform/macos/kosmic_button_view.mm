@@ -31,7 +31,7 @@
 
 #include "kosmic_button_view.h"
 
-@implementation GodotButtonView
+@implementation KosmicButtonView
 
 - (id)initWithFrame:(NSRect)frame {
 	self = [super initWithFrame:frame];

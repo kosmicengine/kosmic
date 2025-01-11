@@ -33,32 +33,32 @@
 
 // JNIEnv is only valid within the thread it belongs to, in a multi threading environment
 // we can't cache it.
-// For Godot we call most access methods from our thread and we thus get a valid JNIEnv
+// For Kosmic we call most access methods from our thread and we thus get a valid JNIEnv
 // from get_jni_env(). For one or two we expect to pass the environment
 
-// TODO we could probably create a base class for this...
+// TODO: We could probably create a base class for this...
 
 KosmicJavaWrapper::KosmicJavaWrapper(JNIEnv *p_env, jobject p_activity, jobject p_kosmic_instance) {
 	kosmic_instance = p_env->NewGlobalRef(p_kosmic_instance);
 	activity = p_env->NewGlobalRef(p_activity);
 
-	// get info about our Godot class so we can get pointers and stuff...
-	kosmic_class = p_env->FindClass("org/godotengine/godot/Godot");
+	// Get info about our Kosmic class so we can get pointers and stuff...
+	kosmic_class = p_env->FindClass("org/kosmicengine/kosmic/Kosmic");
 	if (kosmic_class) {
 		kosmic_class = (jclass)p_env->NewGlobalRef(kosmic_class);
 	} else {
-		// this is a pretty serious fail.. bail... pointers will stay 0
+		// This is a pretty serious fail.. bail... pointers will stay 0
 		return;
 	}
 	activity_class = p_env->FindClass("android/app/Activity");
 	if (activity_class) {
 		activity_class = (jclass)p_env->NewGlobalRef(activity_class);
 	} else {
-		// this is a pretty serious fail.. bail... pointers will stay 0
+		// This is a pretty serious fail.. bail... pointers will stay 0
 		return;
 	}
 
-	// get some Godot method pointers...
+	// Get some Kosmic method pointers...
 	_restart = p_env->GetMethodID(kosmic_class, "restart", "()V");
 	_finish = p_env->GetMethodID(kosmic_class, "forceQuit", "(I)Z");
 	_set_keep_screen_on = p_env->GetMethodID(kosmic_class, "setKeepScreenOn", "(Z)V");
@@ -80,10 +80,10 @@ KosmicJavaWrapper::KosmicJavaWrapper(JNIEnv *p_env, jobject p_activity, jobject 
 	_vibrate = p_env->GetMethodID(kosmic_class, "vibrate", "(II)V");
 	_get_input_fallback_mapping = p_env->GetMethodID(kosmic_class, "getInputFallbackMapping", "()Ljava/lang/String;");
 	_on_kosmic_setup_completed = p_env->GetMethodID(kosmic_class, "onKosmicSetupCompleted", "()V");
-	_on_kosmic_main_loop_started = p_env->GetMethodID(kosmic_class, "onGodotMainLoopStarted", "()V");
-	_on_kosmic_terminating = p_env->GetMethodID(kosmic_class, "onGodotTerminating", "()V");
+	_on_kosmic_main_loop_started = p_env->GetMethodID(kosmic_class, "onKosmicMainLoopStarted", "()V");
+	_on_kosmic_terminating = p_env->GetMethodID(kosmic_class, "onKosmicTerminating", "()V");
 	_create_new_kosmic_instance = p_env->GetMethodID(kosmic_class, "createNewKosmicInstance", "([Ljava/lang/String;)I");
-	_get_render_view = p_env->GetMethodID(kosmic_class, "getRenderView", "()Lorg/godotengine/godot/KosmicRenderView;");
+	_get_render_view = p_env->GetMethodID(kosmic_class, "getRenderView", "()Lorg/kosmicengine/kosmic/KosmicRenderView;");
 	_begin_benchmark_measure = p_env->GetMethodID(kosmic_class, "nativeBeginBenchmarkMeasure", "(Ljava/lang/String;Ljava/lang/String;)V");
 	_end_benchmark_measure = p_env->GetMethodID(kosmic_class, "nativeEndBenchmarkMeasure", "(Ljava/lang/String;Ljava/lang/String;)V");
 	_dump_benchmark = p_env->GetMethodID(kosmic_class, "nativeDumpBenchmark", "(Ljava/lang/String;)V");
@@ -328,9 +328,14 @@ Error KosmicJavaWrapper::show_file_picker(const String &p_current_directory, con
 		jstring j_current_directory = env->NewStringUTF(p_current_directory.utf8().get_data());
 		jstring j_filename = env->NewStringUTF(p_filename.utf8().get_data());
 		jint j_mode = p_mode;
-		jobjectArray j_filters = env->NewObjectArray(p_filters.size(), env->FindClass("java/lang/String"), nullptr);
-		for (int i = 0; i < p_filters.size(); ++i) {
-			jstring j_filter = env->NewStringUTF(p_filters[i].get_slice(";", 0).utf8().get_data());
+		Vector<String> filters;
+		for (const String &E : p_filters) {
+			filters.append_array(E.get_slicec(';', 0).split(",")); // Add extensions.
+			filters.append_array(E.get_slicec(';', 2).split(",")); // Add MIME types.
+		}
+		jobjectArray j_filters = env->NewObjectArray(filters.size(), env->FindClass("java/lang/String"), nullptr);
+		for (int i = 0; i < filters.size(); ++i) {
+			jstring j_filter = env->NewStringUTF(filters[i].utf8().get_data());
 			env->SetObjectArrayElement(j_filters, i, j_filter);
 			env->DeleteLocalRef(j_filter);
 		}

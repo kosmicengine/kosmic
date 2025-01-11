@@ -196,6 +196,7 @@ static uint64_t quit_after = 0;
 static OS::ProcessID editor_pid = 0;
 #ifdef TOOLS_ENABLED
 static bool found_project = false;
+static bool recovery_mode = false;
 static bool auto_build_solutions = false;
 static String debug_server_uri;
 static bool wait_for_import = false;
@@ -511,7 +512,7 @@ void Main::print_help_option(const char *p_option, const char *p_description, CL
 void Main::print_help(const char *p_binary) {
 	print_header(true);
 	print_help_copyright("Free and open source software under the terms of the MIT license.");
-	print_help_copyright("(c) 2024-present Kosmic Engine contributors. (c) 2014-2024 Godot Engine contributors. (c) 2007-2024 Juan Linietsky, Ariel Manzur.");
+	print_help_copyright("(c) 2007-present 2007-present Juan Linietsky, Ariel Manzur & Godot Engine contributors.");
 
 	print_help_title("Usage");
 	OS::get_singleton()->print("  %s \u001b[96m[options] [path to scene or \"project.kosmic\" file]\u001b[0m\n", p_binary);
@@ -544,6 +545,7 @@ void Main::print_help(const char *p_binary) {
 #ifdef TOOLS_ENABLED
 	print_help_option("-e, --editor", "Start the editor instead of running the scene.\n", CLI_OPTION_AVAILABILITY_EDITOR);
 	print_help_option("-p, --project-manager", "Start the project manager, even if a project is auto-detected.\n", CLI_OPTION_AVAILABILITY_EDITOR);
+	print_help_option("--recovery-mode", "Start the editor in recovery mode, which disables features that can typically cause startup crashes, such as tool scripts, editor plugins, KSExtension addons, and others.\n", CLI_OPTION_AVAILABILITY_EDITOR);
 	print_help_option("--debug-server <uri>", "Start the editor debug server (<protocol>://<host/IP>[:port], e.g. tcp://127.0.0.1:6007)\n", CLI_OPTION_AVAILABILITY_EDITOR);
 	print_help_option("--dap-port <port>", "Use the specified port for the VoyScript Debugger Adaptor protocol. Recommended port range [1024, 49151].\n", CLI_OPTION_AVAILABILITY_EDITOR);
 #if defined(MODULE_VOYSCRIPT_ENABLED) && !defined(VOYSCRIPT_NO_LSP)
@@ -1389,6 +1391,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 			if (N) {
 				if (N->get() == "safe") {
 					separate_thread_render = 0;
+
 				} else if (N->get() == "separate") {
 					separate_thread_render = 1;
 				} else {
@@ -1408,6 +1411,8 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 			editor = true;
 		} else if (arg == "-p" || arg == "--project-manager") { // starts project manager
 			project_manager = true;
+		} else if (arg == "--recovery-mode") { // Enables recovery mode.
+			recovery_mode = true;
 		} else if (arg == "--debug-server") {
 			if (N) {
 				debug_server_uri = N->get();
@@ -1842,6 +1847,9 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 		Engine::get_singleton()->set_editor_hint(true);
 		Engine::get_singleton()->set_extension_reloading_enabled(true);
 
+		// Create initialization lock file to detect crashes during startup.
+		OS::get_singleton()->create_lock_file();
+
 		main_args.push_back("--editor");
 		if (!init_windowed && !init_fullscreen) {
 			init_maximized = true;
@@ -1857,13 +1865,22 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 	if (project_manager) {
 		Engine::get_singleton()->set_project_manager_hint(true);
 	}
+
+	if (recovery_mode) {
+		if (project_manager || !editor) {
+			OS::get_singleton()->print("Error: Recovery mode can only be used in the editor. Aborting.\n");
+			goto error;
+		}
+
+		Engine::get_singleton()->set_recovery_mode_hint(true);
+	}
 #endif
 
 	OS::get_singleton()->set_cmdline(execpath, main_args, user_args);
 
 	Engine::get_singleton()->set_physics_ticks_per_second(GLOBAL_DEF_BASIC(PropertyInfo(Variant::INT, "physics/common/physics_ticks_per_second", PROPERTY_HINT_RANGE, "1,1000,1"), 60));
 	Engine::get_singleton()->set_max_physics_steps_per_frame(GLOBAL_DEF_BASIC(PropertyInfo(Variant::INT, "physics/common/max_physics_steps_per_frame", PROPERTY_HINT_RANGE, "1,100,1"), 8));
-	Engine::get_singleton()->set_physics_jitter_fix(GLOBAL_DEF("physics/common/physics_jitter_fix", 0.5));
+	Engine::get_singleton()->set_physics_jitter_fix(GLOBAL_DEF(PropertyInfo(Variant::FLOAT, "physics/common/physics_jitter_fix", PROPERTY_HINT_RANGE, "0,2,0.001,or_greater"), 0.5));
 	Engine::get_singleton()->set_max_fps(GLOBAL_DEF(PropertyInfo(Variant::INT, "application/run/max_fps", PROPERTY_HINT_RANGE, "0,1000,1"), 0));
 	if (max_fps >= 0) {
 		Engine::get_singleton()->set_max_fps(max_fps);
@@ -1900,10 +1917,10 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 		display_driver = NULL_DISPLAY_DRIVER;
 	}
 
-	GLOBAL_DEF(PropertyInfo(Variant::INT, "network/limits/debugger/max_chars_per_second", PROPERTY_HINT_RANGE, "0, 4096, 1, or_greater"), 32768);
-	GLOBAL_DEF(PropertyInfo(Variant::INT, "network/limits/debugger/max_queued_messages", PROPERTY_HINT_RANGE, "0, 8192, 1, or_greater"), 2048);
-	GLOBAL_DEF(PropertyInfo(Variant::INT, "network/limits/debugger/max_errors_per_second", PROPERTY_HINT_RANGE, "0, 200, 1, or_greater"), 400);
-	GLOBAL_DEF(PropertyInfo(Variant::INT, "network/limits/debugger/max_warnings_per_second", PROPERTY_HINT_RANGE, "0, 200, 1, or_greater"), 400);
+	GLOBAL_DEF(PropertyInfo(Variant::INT, "network/limits/debugger/max_chars_per_second", PROPERTY_HINT_RANGE, "256,4096,1,or_greater"), 32768);
+	GLOBAL_DEF(PropertyInfo(Variant::INT, "network/limits/debugger/max_queued_messages", PROPERTY_HINT_RANGE, "128,8192,1,or_greater"), 2048);
+	GLOBAL_DEF(PropertyInfo(Variant::INT, "network/limits/debugger/max_errors_per_second", PROPERTY_HINT_RANGE, "1,200,1,or_greater"), 400);
+	GLOBAL_DEF(PropertyInfo(Variant::INT, "network/limits/debugger/max_warnings_per_second", PROPERTY_HINT_RANGE, "1,200,1,or_greater"), 400);
 
 	EngineDebugger::initialize(debug_uri, skip_breakpoints, breakpoints, []() {
 		if (editor_pid) {
@@ -2450,7 +2467,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 		}
 	}
 
-	GLOBAL_DEF("internationalization/locale/include_text_server_data", false);
+	GLOBAL_DEF_BASIC("internationalization/locale/include_text_server_data", false);
 
 	OS::get_singleton()->_allow_hidpi = GLOBAL_DEF("display/window/dpi/allow_hidpi", true);
 	OS::get_singleton()->_allow_layered = GLOBAL_DEF("display/window/per_pixel_transparency/allowed", false);
@@ -2642,6 +2659,10 @@ error:
 
 	if (show_help) {
 		print_help(execpath);
+	}
+
+	if (editor) {
+		OS::get_singleton()->remove_lock_file();
 	}
 
 	EngineDebugger::deinitialize();
@@ -2911,10 +2932,6 @@ Error Main::setup2(bool p_show_boot_logo) {
 			}
 		}
 
-		// Store this in a globally accessible place, so we can retrieve the rendering drivers
-		// list from the display driver for the editor UI.
-		OS::get_singleton()->set_display_driver_id(display_driver_idx);
-
 		Vector2i *window_position = nullptr;
 		Vector2i position = init_custom_pos;
 		if (init_use_custom_pos) {
@@ -3172,7 +3189,7 @@ Error Main::setup2(bool p_show_boot_logo) {
 			}
 		}
 
-		Color clear = GLOBAL_DEF_BASIC("rendering/environment/defaults/default_clear_color", Color(0.051, 0.067, 0.09));
+		Color clear = GLOBAL_DEF_BASIC("rendering/environment/defaults/default_clear_color", Color(0.3, 0.3, 0.3));
 		RenderingServer::get_singleton()->set_default_clear_color(clear);
 
 		if (p_show_boot_logo) {
@@ -3326,7 +3343,7 @@ Error Main::setup2(bool p_show_boot_logo) {
 	if (ClassDB::class_exists("CSharpScript")) {
 		extensions.push_back("cs");
 	}
-	extensions.push_back("gdshader");
+	extensions.push_back("voyshader");
 	GLOBAL_DEF_NOVAL(PropertyInfo(Variant::PACKED_STRING_ARRAY, "editor/script/search_in_file_extensions"), extensions); // Note: should be defined after Scene level modules init to see .NET.
 
 	OS::get_singleton()->benchmark_end_measure("Startup", "Scene");
@@ -3552,6 +3569,8 @@ int Main::start() {
 			editor = true;
 		} else if (E->get() == "-p" || E->get() == "--project-manager") {
 			project_manager = true;
+		} else if (E->get() == "--recovery-mode") {
+			recovery_mode = true;
 		} else if (E->get() == "--install-android-build-template") {
 			install_android_build_template = true;
 #endif // TOOLS_ENABLED
@@ -3666,7 +3685,7 @@ int Main::start() {
 #ifndef MODULE_MONO_ENABLED
 		// Hack to define .NET-specific project settings even on non-.NET builds,
 		// so that we don't lose their descriptions and default values in DocTools.
-		// Default values should be synced with mono_gd/gd_mono.cpp.
+		// Default values should be synced with mono_ks/ks_mono.cpp.
 		GLOBAL_DEF("dotnet/project/assembly_name", "");
 		GLOBAL_DEF("dotnet/project/solution_directory", "");
 		GLOBAL_DEF(PropertyInfo(Variant::INT, "dotnet/project/assembly_reload_attempts", PROPERTY_HINT_RANGE, "1,16,1,or_greater"), 3);
@@ -3924,7 +3943,7 @@ int Main::start() {
 						scn.instantiate();
 						scn->set_path(info.path);
 						scn->reload_from_file();
-						ERR_CONTINUE_MSG(!scn.is_valid(), vformat("Failed to instantiate an autoload, can't load from path: %s.", info.path));
+						ERR_CONTINUE_MSG(scn.is_null(), vformat("Failed to instantiate an autoload, can't load from path: %s.", info.path));
 
 						if (scn.is_valid()) {
 							n = scn->instantiate();
@@ -4134,7 +4153,7 @@ int Main::start() {
 
 #ifdef TOOLS_ENABLED
 			if (editor) {
-				if (game_path != String(GLOBAL_GET("application/run/main_scene")) || !editor_node->has_scenes_in_session()) {
+				if (!recovery_mode && (game_path != String(GLOBAL_GET("application/run/main_scene")) || !editor_node->has_scenes_in_session())) {
 					Error serr = editor_node->load_scene(local_game_path);
 					if (serr != OK) {
 						ERR_PRINT("Failed to load scene");
@@ -4216,6 +4235,10 @@ int Main::start() {
 			// Load SSL Certificates from Editor Settings (or builtin)
 			Crypto::load_default_certificates(
 					EditorSettings::get_singleton()->get_setting("network/tls/editor_tls_certificates").operator String());
+		}
+
+		if (recovery_mode) {
+			Engine::get_singleton()->set_recovery_mode_hint(true);
 		}
 #endif
 	}

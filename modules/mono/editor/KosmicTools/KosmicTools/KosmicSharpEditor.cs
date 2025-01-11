@@ -1,24 +1,24 @@
-using Godot;
-using GodotTools.Core;
-using GodotTools.Export;
-using GodotTools.Utils;
+using Kosmic;
+using KosmicTools.Core;
+using KosmicTools.Export;
+using KosmicTools.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using GodotTools.Build;
-using GodotTools.Ides;
-using GodotTools.Ides.Rider;
-using GodotTools.Inspector;
-using GodotTools.Internals;
-using GodotTools.ProjectEditor;
+using KosmicTools.Build;
+using KosmicTools.Ides;
+using KosmicTools.Ides.Rider;
+using KosmicTools.Inspector;
+using KosmicTools.Internals;
+using KosmicTools.ProjectEditor;
 using JetBrains.Annotations;
-using static GodotTools.Internals.Globals;
+using static KosmicTools.Internals.Globals;
 using Environment = System.Environment;
-using File = GodotTools.Utils.File;
-using OS = GodotTools.Utils.OS;
+using File = KosmicTools.Utils.File;
+using OS = KosmicTools.Utils.OS;
 using Path = System.IO.Path;
 
 namespace KosmicTools
@@ -260,7 +260,7 @@ namespace KosmicTools
 
                     var args = new List<string>
                     {
-                        Path.Combine(KosmicSharpDirs.DataEditorToolsDir, "GodotTools.OpenVisualStudio.dll"),
+                        Path.Combine(KosmicSharpDirs.DataEditorToolsDir, "KosmicTools.OpenVisualStudio.dll"),
                         KosmicSharpDirs.ProjectSlnPath,
                         line >= 0 ? $"{scriptPath};{line + 1};{col + 1}" : scriptPath
                     };

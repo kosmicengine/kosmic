@@ -44,7 +44,7 @@ TEST_CASE("[TranslationServer] Translation operations") {
 
 	Ref<Translation> t2 = memnew(Translation);
 	t2->set_locale("uk");
-	t2->add_message("Hello Godot", String(U"你好戈多"));
+	t2->add_message("Hello Kosmic", String(U"你好科斯米克"));
 
 	TranslationServer *ts = TranslationServer::get_singleton();
 

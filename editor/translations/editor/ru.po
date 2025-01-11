@@ -1,7 +1,7 @@
 # Russian translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Аркадий Авас <savvot@gmail.com>, 2018.
 # Artem Varaksa <aymfst@gmail.com>, 2018.
 # B10nicMachine <shumik1337@gmail.com>, 2017.
@@ -203,11 +203,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-09-08 19:09+0000\n"
 "Last-Translator: fingerionam <hurdanukka@gufum.com>\n"
-"Language-Team: Russian <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Russian <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -2141,7 +2141,7 @@ msgstr ""
 "Нажмите, чтобы скопировать номер версии."
 
 msgid "Godot Engine contributors"
-msgstr "Авторы Godot Engine"
+msgstr "Авторы Kosmic Engine"
 
 msgid "Project Founders"
 msgstr "Основатели проекта"
@@ -2692,8 +2692,8 @@ msgstr "[пусто]"
 msgid "[unsaved]"
 msgstr "[не сохранено]"
 
-msgid "%s - Godot Engine"
-msgstr "%s — Godot Engine"
+msgid "%s - Kosmic Engine"
+msgstr "%s — Kosmic Engine"
 
 msgid "Move this dock right one tab."
 msgstr "Переместить эту панель на одну вкладку вправо."
@@ -13946,7 +13946,7 @@ msgstr ""
 "Прямоугольная область со строкой описания для улучшения организации графа."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
@@ -13955,7 +13955,7 @@ msgstr ""
 "вершины/фрагмента/света, не используйте его для записи объявления функций."
 
 msgid ""
-"Custom Kosmic Shader Language expression, which is placed on top of the "
+"Custom Godot Shader Language expression, which is placed on top of the "
 "resulted shader. You can place various function definitions inside and call "
 "it later in the Expressions. You can also declare varyings, parameters and "
 "constants."

@@ -18,13 +18,13 @@
 		[/voyscript]
 		[csharp]
 		Kosmic.Collections.Array array = ["First", 2, 3, "Last"];
-		KS.Print(array[0]); // Prints "First"
-		KS.Print(array[2]); // Prints 3
-		KS.Print(array[^1]); // Prints "Last"
+		GD.Print(array[0]); // Prints "First"
+		GD.Print(array[2]); // Prints 3
+		GD.Print(array[^1]); // Prints "Last"
 
 		array[1] = "Second";
-		KS.Print(array[1]); // Prints "Second"
-		KS.Print(array[^3]); // Prints "Second"
+		GD.Print(array[1]); // Prints "Second"
+		GD.Print(array[^3]); // Prints "Second"
 		[/csharp]
 		[/codeblocks]
 		[b]Note:[/b] Arrays are always passed by [b]reference[/b]. To get a copy of an array that can be modified independently of the original array, use [method duplicate].
@@ -184,16 +184,16 @@
 				public override void _Ready()
 				{
 				    // Prints True (3/3 elements evaluate to true).
-				    KS.Print(new Kosmic.Collections.Array&gt;int&lt; { 6, 10, 6 }.All(GreaterThan5));
+				    GD.Print(new Kosmic.Collections.Array&gt;int&lt; { 6, 10, 6 }.All(GreaterThan5));
 				    // Prints False (1/3 elements evaluate to true).
-				    KS.Print(new Kosmic.Collections.Array&gt;int&lt; { 4, 10, 4 }.All(GreaterThan5));
+				    GD.Print(new Kosmic.Collections.Array&gt;int&lt; { 4, 10, 4 }.All(GreaterThan5));
 				    // Prints False (0/3 elements evaluate to true).
-				    KS.Print(new Kosmic.Collections.Array&gt;int&lt; { 4, 4, 4 }.All(GreaterThan5));
+				    GD.Print(new Kosmic.Collections.Array&gt;int&lt; { 4, 4, 4 }.All(GreaterThan5));
 				    // Prints True (0/0 elements evaluate to true).
-				    KS.Print(new Kosmic.Collections.Array&gt;int&lt; { }.All(GreaterThan5));
+				    GD.Print(new Kosmic.Collections.Array&gt;int&lt; { }.All(GreaterThan5));
 
 				    // Same as the first line above, but using a lambda function.
-				    KS.Print(new Kosmic.Collections.Array&gt;int&lt; { 6, 10, 6 }.All(element =&gt; element &gt; 5)); // Prints True
+				    GD.Print(new Kosmic.Collections.Array&gt;int&lt; { 6, 10, 6 }.All(element =&gt; element &gt; 5)); // Prints True
 				}
 				[/csharp]
 				[/codeblocks]
@@ -361,7 +361,7 @@
 				Kosmic.Collections.Array array = [];
 				array.Resize(5);
 				array.Fill(2);
-				KS.Print(array); // Prints [2, 2, 2, 2, 2]
+				GD.Print(array); // Prints [2, 2, 2, 2, 2]
 				[/csharp]
 				[/codeblocks]
 				[b]Note:[/b] If [param value] is a [Variant] passed by reference ([Object]-derived, [Array], [Dictionary], etc.), the array will be filled with references to the same [param value], which are not duplicates.
@@ -410,7 +410,7 @@
 				    return number % 2 == 0
 
 				func _ready():
-				    print([1, 3, 4, 7].find_custom(is_even.bind())) # prints 2
+				    print([1, 3, 4, 7].find_custom(is_even.bind())) # Prints 2
 				[/voyscript]
 				[/codeblocks]
 			</description>
@@ -462,10 +462,10 @@
 				[csharp]
 				Kosmic.Collections.Array arr = ["inside", 7];
 				// By C# convention, this method is renamed to `Contains`.
-				KS.Print(arr.Contains("inside"));  // Prints True
-				KS.Print(arr.Contains("outside")); // Prints False
-				KS.Print(arr.Contains(7));         // Prints True
-				KS.Print(arr.Contains("7"));       // Prints False
+				GD.Print(arr.Contains("inside"));  // Prints True
+				GD.Print(arr.Contains("outside")); // Prints False
+				GD.Print(arr.Contains(7));         // Prints True
+				GD.Print(arr.Contains("7"));       // Prints False
 				[/csharp]
 				[/codeblocks]
 				In VoyScript, this is equivalent to the [code]in[/code] operator:
@@ -574,7 +574,7 @@
 				[/voyscript]
 				[csharp]
 				Kosmic.Collections.Array array = [1, 2, 3.25f, "Hi"];
-				KS.Print(array.PickRandom()); // May print 1, 2, 3.25, or "Hi".
+				GD.Print(array.PickRandom()); // May print 1, 2, 3.25, or "Hi".
 				[/csharp]
 				[/codeblocks]
 				[b]Note:[/b] Like many similar functions in the engine (such as [method @GlobalScope.randi] or [method shuffle]), this method uses a common, global random seed. To get a predictable outcome from this method, see [method @GlobalScope.seed].
@@ -637,10 +637,10 @@
 				If [method max] is not desirable, this method may also be used to implement a custom comparator:
 				[codeblock]
 				func _ready():
-				    var arr = [Vector2(5, 0), Vector2(3, 4), Vector2(1, 2)]
+				    var arr = [Vector2i(5, 0), Vector2i(3, 4), Vector2i(1, 2)]
 
 				    var longest_vec = arr.reduce(func(max, vec): return vec if is_length_greater(vec, max) else max)
-				    print(longest_vec) # Prints Vector2(3, 4).
+				    print(longest_vec) # Prints (3, 4)
 
 				func is_length_greater(a, b):
 				    return a.length() &gt; b.length()
@@ -652,11 +652,11 @@
 
 				func _ready():
 				    var arr = [1, 2, 3, 4, 5]
-				    # Increment count if it's even, else leaves count the same.
+				    # If the current element is even, increment count, otherwise leave count the same.
 				    var even_count = arr.reduce(func(count, next): return count + 1 if is_even(next) else count, 0)
 				    print(even_count) # Prints 2
 				[/codeblock]
-				See also [method map], [method filter], [method any] and [method all].
+				See also [method map], [method filter], [method any], and [method all].
 			</description>
 		</method>
 		<method name="remove_at">
@@ -757,7 +757,7 @@
 				[csharp]
 				Kosmic.Collections.Array numbers = [10, 5, 2.5, 8];
 				numbers.Sort();
-				KS.Print(numbers); // Prints [2.5, 5, 8, 10]
+				GD.Print(numbers); // Prints [2.5, 5, 8, 10]
 				[/csharp]
 				[/codeblocks]
 				[b]Note:[/b] The sorting algorithm used is not [url=https://en.wikipedia.org/wiki/Sorting_algorithm#Stability]stable[/url]. This means that equivalent elements (such as [code]2[/code] and [code]2.0[/code]) may have their order changed when calling [method sort].
@@ -819,7 +819,7 @@
 				// Note that concatenation is not possible with C#'s native Array type.
 				Kosmic.Collections.Array array1 = ["One", 2];
 				Kosmic.Collections.Array array2 = [3, "Four"];
-				KS.Print(array1 + array2); // Prints ["One", 2, 3, "Four"]
+				GD.Print(array1 + array2); // Prints ["One", 2, 3, "Four"]
 				[/csharp]
 				[/codeblocks]
 				[b]Note:[/b] For existing arrays, [method append_array] is much more efficient than concatenation and assignment with the [code]+=[/code] operator.

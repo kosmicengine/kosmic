@@ -281,9 +281,9 @@
 				    { 210, default },
 				};
 
-				KS.Print(myDict.ContainsKey("Godot")); // Prints True
-				KS.Print(myDict.ContainsKey(210));     // Prints True
-				KS.Print(myDict.ContainsKey(4));       // Prints False
+				GD.Print(myDict.ContainsKey("Godot")); // Prints True
+				GD.Print(myDict.ContainsKey(210));     // Prints True
+				GD.Print(myDict.ContainsKey(4));       // Prints False
 				[/csharp]
 				[/codeblocks]
 				In VoyScript, this is equivalent to the [code]in[/code] operator:
@@ -320,8 +320,8 @@
 				var dict1 = new Kosmic.Collections.Dictionary{{"A", 10}, {"B", 2}};
 				var dict2 = new Kosmic.Collections.Dictionary{{"A", 10}, {"B", 2}};
 
-				// Kosmic.Collections.Dictionary has no Hash() method. Use KS.Hash() instead.
-				KS.Print(KS.Hash(dict1) == KS.Hash(dict2)); // Prints True
+				// Kosmic.Collections.Dictionary has no Hash() method. Use GD.Hash() instead.
+				GD.Print(GD.Hash(dict1) == GD.Hash(dict2)); // Prints True
 				[/csharp]
 				[/codeblocks]
 				[b]Note:[/b] Dictionaries with the same entries but in a different order will not have the same hash.
@@ -425,11 +425,11 @@
 
 				// Overwriting of existing keys is disabled by default.
 				dict.Merge(otherDict);
-				KS.Print(dict); // { "item": "sword", "quantity": 2, "color": "silver" }
+				GD.Print(dict); // { "item": "sword", "quantity": 2, "color": "silver" }
 
 				// With overwriting of existing keys enabled.
 				dict.Merge(otherDict, true);
-				KS.Print(dict); // { "item": "sword", "quantity": 15, "color": "silver" }
+				GD.Print(dict); // { "item": "sword", "quantity": 15, "color": "silver" }
 				[/csharp]
 				[/codeblocks]
 				[b]Note:[/b] [method merge] is [i]not[/i] recursive. Nested dictionaries are considered as keys that can be overwritten or not depending on the value of [param overwrite], but they will never be merged together.

@@ -269,6 +269,7 @@ void TextServerExtension::_bind_methods() {
 
 	KSVIRTUAL_BIND(_shaped_get_span_count, "shaped");
 	KSVIRTUAL_BIND(_shaped_get_span_meta, "shaped", "index");
+	KSVIRTUAL_BIND(_shaped_get_span_embedded_object, "shaped", "index");
 	KSVIRTUAL_BIND(_shaped_set_span_update_font, "shaped", "index", "fonts", "size", "opentype_features");
 
 	KSVIRTUAL_BIND(_shaped_text_substr, "shaped", "start", "length");
@@ -1188,8 +1189,14 @@ int64_t TextServerExtension::shaped_get_span_count(const RID &p_shaped) const {
 }
 
 Variant TextServerExtension::shaped_get_span_meta(const RID &p_shaped, int64_t p_index) const {
-	Variant ret = false;
+	Variant ret;
 	KSVIRTUAL_CALL(_shaped_get_span_meta, p_shaped, p_index, ret);
+	return ret;
+}
+
+Variant TextServerExtension::shaped_get_span_embedded_object(const RID &p_shaped, int64_t p_index) const {
+	Variant ret;
+	KSVIRTUAL_CALL(_shaped_get_span_embedded_object, p_shaped, p_index, ret);
 	return ret;
 }
 

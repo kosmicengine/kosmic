@@ -69,7 +69,7 @@ void VoyScriptTextDocument::didOpen(const Variant &p_param) {
 }
 
 void VoyScriptTextDocument::didClose(const Variant &p_param) {
-	// Left empty on purpose. Godot does nothing special on closing a document,
+	// Left empty on purpose. Kosmic does nothing special on closing a document,
 	// but it satisfies LSP clients that require didClose be implemented.
 }
 
@@ -308,7 +308,7 @@ Dictionary VoyScriptTextDocument::resolve(const Dictionary &p_params) {
 	} else if (data.is_string()) {
 		String query = data;
 
-		Vector<String> param_symbols = query.split(SYMBOL_SEPERATOR, false);
+		Vector<String> param_symbols = query.split(SYMBOL_SEPARATOR, false);
 
 		if (param_symbols.size() >= 2) {
 			StringName class_name = param_symbols[0];

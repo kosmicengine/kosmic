@@ -32,14 +32,14 @@
 #include "signal_awaiter_utils.h"
 
 #include "csharp_script.h"
-#include "mono_gd/gd_mono_cache.h"
+#include "mono_ks/ks_mono_cache.h"
 
-Error gd_mono_connect_signal_awaiter(Object *p_source, const StringName &p_signal, Object *p_target, GCHandleIntPtr p_awaiter_handle_ptr) {
+Error ks_mono_connect_signal_awaiter(Object *p_source, const StringName &p_signal, Object *p_target, GCHandleIntPtr p_awaiter_handle_ptr) {
 	ERR_FAIL_NULL_V(p_source, ERR_INVALID_DATA);
 	ERR_FAIL_NULL_V(p_target, ERR_INVALID_DATA);
 
 	// TODO: Use pooling for ManagedCallable instances.
-	MonoGCHandleData awaiter_handle(p_awaiter_handle_ptr, ksmono::GCHandleType::STRONG_HANDLE);
+	MonoGCHandleData awaiter_handle(p_awaiter_handle_ptr, gdmono::GCHandleType::STRONG_HANDLE);
 	SignalAwaiterCallable *awaiter_callable = memnew(SignalAwaiterCallable(p_target, awaiter_handle, p_signal));
 	Callable callable = Callable(awaiter_callable);
 

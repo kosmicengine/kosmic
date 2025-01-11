@@ -1,6 +1,6 @@
-using Godot;
-using GodotTools.Build;
-using GodotTools.Internals;
+using Kosmic;
+using KosmicTools.Build;
+using KosmicTools.Internals;
 using JetBrains.Annotations;
 
 namespace KosmicTools

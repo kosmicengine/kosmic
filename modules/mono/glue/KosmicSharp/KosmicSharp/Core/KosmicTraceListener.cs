@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace Kosmic
 {
-    internal class GodotTraceListener : TraceListener
+    internal class KosmicTraceListener : TraceListener
     {
         public override void Write(string message)
         {

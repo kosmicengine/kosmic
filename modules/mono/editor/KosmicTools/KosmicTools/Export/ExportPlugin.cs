@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -6,11 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using GodotTools.Build;
-using GodotTools.Internals;
-using Directory = GodotTools.Utils.Directory;
-using File = GodotTools.Utils.File;
-using OS = GodotTools.Utils.OS;
+using KosmicTools.Build;
+using KosmicTools.Internals;
+using Directory = KosmicTools.Utils.Directory;
+using File = KosmicTools.Utils.File;
+using OS = KosmicTools.Utils.OS;
 using Path = System.IO.Path;
 using System.Globalization;
 
@@ -237,13 +237,13 @@ namespace KosmicTools.Export
 
                     if (config.UseTempDir)
                     {
-                        publishOutputDir = Path.Combine(Path.GetTempPath(), "godot-publish-dotnet",
+                        publishOutputDir = Path.Combine(Path.GetTempPath(), "kosmic-publish-dotnet",
                             $"{System.Environment.ProcessId}-{buildConfig}-{runtimeIdentifier}");
                         _tempFolders.Add(publishOutputDir);
                     }
                     else
                     {
-                        publishOutputDir = Path.Combine(KosmicSharpDirs.ProjectBaseOutputPath, "godot-publish-dotnet",
+                        publishOutputDir = Path.Combine(KosmicSharpDirs.ProjectBaseOutputPath, "kosmic-publish-dotnet",
                             $"{buildConfig}-{runtimeIdentifier}");
                     }
 
@@ -473,7 +473,7 @@ namespace KosmicTools.Export
         {
             base._ExportEnd();
 
-            string aotTempDir = Path.Combine(Path.GetTempPath(), $"godot-aot-{System.Environment.ProcessId}");
+            string aotTempDir = Path.Combine(Path.GetTempPath(), $"kosmic-aot-{System.Environment.ProcessId}");
 
             if (Directory.Exists(aotTempDir))
                 Directory.Delete(aotTempDir, recursive: true);

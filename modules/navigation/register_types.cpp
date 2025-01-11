@@ -55,11 +55,11 @@ NavigationMeshGenerator *_nav_mesh_generator = nullptr;
 #endif // DISABLE_DEPRECATED
 
 NavigationServer3D *new_navigation_server_3d() {
-	return memnew(GodotNavigationServer3D);
+	return memnew(KosmicNavigationServer3D);
 }
 
 NavigationServer2D *new_navigation_server_2d() {
-	return memnew(GodotNavigationServer2D);
+	return memnew(KosmicNavigationServer2D);
 }
 
 void initialize_navigation_module(ModuleInitializationLevel p_level) {

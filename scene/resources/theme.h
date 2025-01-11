@@ -156,6 +156,7 @@ public:
 	void set_font(const StringName &p_name, const StringName &p_theme_type, const Ref<Font> &p_font);
 	virtual Ref<Font> get_font(const StringName &p_name, const StringName &p_theme_type) const;
 	bool has_font(const StringName &p_name, const StringName &p_theme_type) const;
+	bool has_font_no_default(const StringName &p_name, const StringName &p_theme_type) const;
 	bool has_font_nocheck(const StringName &p_name, const StringName &p_theme_type) const;
 	void rename_font(const StringName &p_old_name, const StringName &p_name, const StringName &p_theme_type);
 	void clear_font(const StringName &p_name, const StringName &p_theme_type);
@@ -167,6 +168,7 @@ public:
 	void set_font_size(const StringName &p_name, const StringName &p_theme_type, int p_font_size);
 	virtual int get_font_size(const StringName &p_name, const StringName &p_theme_type) const;
 	bool has_font_size(const StringName &p_name, const StringName &p_theme_type) const;
+	bool has_font_size_no_default(const StringName &p_name, const StringName &p_theme_type) const;
 	bool has_font_size_nocheck(const StringName &p_name, const StringName &p_theme_type) const;
 	void rename_font_size(const StringName &p_old_name, const StringName &p_name, const StringName &p_theme_type);
 	void clear_font_size(const StringName &p_name, const StringName &p_theme_type);

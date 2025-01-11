@@ -77,8 +77,8 @@ for f in sys.argv[1:]:
         while line.strip() == "" and line != "":  # Skip empty lines at the top
             line = fileread.readline()
 
-        if line.find("/**********") == -1:  # Godot header starts this way
-            # Maybe starting with a non-Godot comment, abort header magic
+        if line.find("/**********") == -1:  # Kosmic header starts this way
+            # Maybe starting with a non-Kosmic comment, abort header magic
             header_done = True
 
         while not header_done:  # Handle header now

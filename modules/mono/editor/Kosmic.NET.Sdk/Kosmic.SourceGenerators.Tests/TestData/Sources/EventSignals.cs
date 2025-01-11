@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 
 public partial class EventSignals : KosmicObject
 {
@@ -8,11 +8,11 @@ public partial class EventSignals : KosmicObject
     private struct MyStruct { }
 
     [Signal]
-    private delegate void {|GD0201:MyInvalidSignal|}();
+    private delegate void {|KS0201:MyInvalidSignal|}();
 
     [Signal]
-    private delegate void MyInvalidParameterTypeSignalEventHandler(MyStruct {|GD0202:myStruct|});
+    private delegate void MyInvalidParameterTypeSignalEventHandler(MyStruct {|KS0202:myStruct|});
 
     [Signal]
-    private delegate MyStruct {|GD0203:MyInvalidReturnTypeSignalEventHandler|}();
+    private delegate MyStruct {|KS0203:MyInvalidReturnTypeSignalEventHandler|}();
 }

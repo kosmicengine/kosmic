@@ -36,7 +36,7 @@
 		[/voyscript]
 		[csharp]
 		// ServerNode.cs
-		using Godot;
+		using Kosmic;
 		using System.Collections.Generic;
 
 		public partial class ServerNode : Node
@@ -56,8 +56,8 @@
 		        {
 		            PacketPeerUdp peer = _server.TakeConnection();
 		            byte[] packet = peer.GetPacket();
-		            KS.Print($"Accepted Peer: {peer.GetPacketIP()}:{peer.GetPacketPort()}");
-		            KS.Print($"Received Data: {packet.GetStringFromUtf8()}");
+		            GD.Print($"Accepted Peer: {peer.GetPacketIP()}:{peer.GetPacketPort()}");
+		            GD.Print($"Received Data: {packet.GetStringFromUtf8()}");
 		            // Reply so it knows we received the message.
 		            peer.PutPacket(packet);
 		            // Keep a reference so we can keep contacting the remote peer.
@@ -93,7 +93,7 @@
 		[/voyscript]
 		[csharp]
 		// ClientNode.cs
-		using Godot;
+		using Kosmic;
 
 		public partial class ClientNode : Node
 		{
@@ -114,7 +114,7 @@
 		        }
 		        if (_udp.GetAvailablePacketCount() &gt; 0)
 		        {
-		            KS.Print($"Connected: {_udp.GetPacket().GetStringFromUtf8()}");
+		            GD.Print($"Connected: {_udp.GetPacket().GetStringFromUtf8()}");
 		            _connected = true;
 		        }
 		    }

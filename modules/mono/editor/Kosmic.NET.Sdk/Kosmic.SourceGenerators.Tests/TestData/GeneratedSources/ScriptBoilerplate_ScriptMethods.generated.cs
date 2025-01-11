@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 using Kosmic.NativeInterop;
 
 partial class ScriptBoilerplate
@@ -23,7 +23,7 @@ partial class ScriptBoilerplate
     /// Do not call this method.
     /// </summary>
     [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-    internal new static global::System.Collections.Generic.List<global::Kosmic.Bridge.MethodInfo> GetGodotMethodList()
+    internal new static global::System.Collections.Generic.List<global::Kosmic.Bridge.MethodInfo> GetKosmicMethodList()
     {
         var methods = new global::System.Collections.Generic.List<global::Kosmic.Bridge.MethodInfo>(2);
         methods.Add(new(name: MethodName.@_Process, returnVal: new(type: (global::Kosmic.Variant.Type)0, name: "", hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)6, exported: false), flags: (global::Kosmic.MethodFlags)1, arguments: new() { new(type: (global::Kosmic.Variant.Type)3, name: "delta", hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)6, exported: false),  }, defaultArguments: null));

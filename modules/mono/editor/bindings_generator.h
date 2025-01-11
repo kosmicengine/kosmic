@@ -169,14 +169,14 @@ class BindingsGenerator {
 		bool is_static = false;
 
 		/**
-		 * Virtual methods ("virtual" as defined by the Godot API) are methods that by default do nothing,
+		 * Virtual methods ("virtual" as defined by the Kosmic API) are methods that by default do nothing,
 		 * but can be overridden by the user to add custom functionality.
 		 * e.g.: _ready, _process, etc.
 		 */
 		bool is_virtual = false;
 
 		/**
-		 * Determines if the call should fallback to Godot's object.Call(string, params) in C#.
+		 * Determines if the call should fallback to Kosmic's object.Call(string, params) in C#.
 		 */
 		bool requires_object_call = false;
 
@@ -826,9 +826,9 @@ class BindingsGenerator {
 
 	const String _get_generic_type_parameters(const TypeInterface &p_itype, const List<TypeReference> &p_generic_type_parameters);
 
-	StringName _get_type_name_from_meta(Variant::Type p_type, GodotTypeInfo::Metadata p_meta);
-	StringName _get_int_type_name_from_meta(GodotTypeInfo::Metadata p_meta);
-	StringName _get_float_type_name_from_meta(GodotTypeInfo::Metadata p_meta);
+	StringName _get_type_name_from_meta(Variant::Type p_type, KosmicTypeInfo::Metadata p_meta);
+	StringName _get_int_type_name_from_meta(KosmicTypeInfo::Metadata p_meta);
+	StringName _get_float_type_name_from_meta(KosmicTypeInfo::Metadata p_meta);
 
 	bool _arg_default_value_from_variant(const Variant &p_val, ArgumentInterface &r_iarg);
 	bool _arg_default_value_is_assignable_to_type(const Variant &p_val, const TypeInterface &p_arg_type);

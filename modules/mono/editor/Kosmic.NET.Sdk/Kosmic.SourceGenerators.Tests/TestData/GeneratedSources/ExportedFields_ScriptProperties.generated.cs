@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 using Kosmic.NativeInterop;
 
 partial class ExportedFields
@@ -233,17 +233,17 @@ partial class ExportedFields
         /// </summary>
         public new static readonly global::Kosmic.StringName @_fieldKosmicDictionary = "_fieldKosmicDictionary";
         /// <summary>
-        /// Cached name for the '_fieldGodotArray' field.
+        /// Cached name for the '_fieldKosmicArray' field.
         /// </summary>
-        public new static readonly global::Kosmic.StringName @_fieldGodotArray = "_fieldGodotArray";
+        public new static readonly global::Kosmic.StringName @_fieldKosmicArray = "_fieldKosmicArray";
         /// <summary>
-        /// Cached name for the '_fieldGodotGenericDictionary' field.
+        /// Cached name for the '_fieldKosmicGenericDictionary' field.
         /// </summary>
-        public new static readonly global::Kosmic.StringName @_fieldGodotGenericDictionary = "_fieldGodotGenericDictionary";
+        public new static readonly global::Kosmic.StringName @_fieldKosmicGenericDictionary = "_fieldKosmicGenericDictionary";
         /// <summary>
-        /// Cached name for the '_fieldGodotGenericArray' field.
+        /// Cached name for the '_fieldKosmicGenericArray' field.
         /// </summary>
-        public new static readonly global::Kosmic.StringName @_fieldGodotGenericArray = "_fieldGodotGenericArray";
+        public new static readonly global::Kosmic.StringName @_fieldKosmicGenericArray = "_fieldKosmicGenericArray";
         /// <summary>
         /// Cached name for the '_fieldEmptyInt64Array' field.
         /// </summary>
@@ -477,16 +477,16 @@ partial class ExportedFields
             this.@_fieldKosmicDictionary = global::Kosmic.NativeInterop.VariantUtils.ConvertTo<global::Kosmic.Collections.Dictionary>(value);
             return true;
         }
-        if (name == PropertyName.@_fieldGodotArray) {
-            this.@_fieldGodotArray = global::Kosmic.NativeInterop.VariantUtils.ConvertTo<global::Kosmic.Collections.Array>(value);
+        if (name == PropertyName.@_fieldKosmicArray) {
+            this.@_fieldKosmicArray = global::Kosmic.NativeInterop.VariantUtils.ConvertTo<global::Kosmic.Collections.Array>(value);
             return true;
         }
-        if (name == PropertyName.@_fieldGodotGenericDictionary) {
-            this.@_fieldGodotGenericDictionary = global::Kosmic.NativeInterop.VariantUtils.ConvertToDictionary<string, bool>(value);
+        if (name == PropertyName.@_fieldKosmicGenericDictionary) {
+            this.@_fieldKosmicGenericDictionary = global::Kosmic.NativeInterop.VariantUtils.ConvertToDictionary<string, bool>(value);
             return true;
         }
-        if (name == PropertyName.@_fieldGodotGenericArray) {
-            this.@_fieldGodotGenericArray = global::Kosmic.NativeInterop.VariantUtils.ConvertToArray<int>(value);
+        if (name == PropertyName.@_fieldKosmicGenericArray) {
+            this.@_fieldKosmicGenericArray = global::Kosmic.NativeInterop.VariantUtils.ConvertToArray<int>(value);
             return true;
         }
         if (name == PropertyName.@_fieldEmptyInt64Array) {
@@ -723,16 +723,16 @@ partial class ExportedFields
             value = global::Kosmic.NativeInterop.VariantUtils.CreateFrom<global::Kosmic.Collections.Dictionary>(this.@_fieldKosmicDictionary);
             return true;
         }
-        if (name == PropertyName.@_fieldGodotArray) {
-            value = global::Kosmic.NativeInterop.VariantUtils.CreateFrom<global::Kosmic.Collections.Array>(this.@_fieldGodotArray);
+        if (name == PropertyName.@_fieldKosmicArray) {
+            value = global::Kosmic.NativeInterop.VariantUtils.CreateFrom<global::Kosmic.Collections.Array>(this.@_fieldKosmicArray);
             return true;
         }
-        if (name == PropertyName.@_fieldGodotGenericDictionary) {
-            value = global::Kosmic.NativeInterop.VariantUtils.CreateFromDictionary(this.@_fieldGodotGenericDictionary);
+        if (name == PropertyName.@_fieldKosmicGenericDictionary) {
+            value = global::Kosmic.NativeInterop.VariantUtils.CreateFromDictionary(this.@_fieldKosmicGenericDictionary);
             return true;
         }
-        if (name == PropertyName.@_fieldGodotGenericArray) {
-            value = global::Kosmic.NativeInterop.VariantUtils.CreateFromArray(this.@_fieldGodotGenericArray);
+        if (name == PropertyName.@_fieldKosmicGenericArray) {
+            value = global::Kosmic.NativeInterop.VariantUtils.CreateFromArray(this.@_fieldKosmicGenericArray);
             return true;
         }
         if (name == PropertyName.@_fieldEmptyInt64Array) {
@@ -806,9 +806,9 @@ partial class ExportedFields
         properties.Add(new(type: (global::Kosmic.Variant.Type)22, name: PropertyName.@_fieldNodePath, hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
         properties.Add(new(type: (global::Kosmic.Variant.Type)23, name: PropertyName.@_fieldRid, hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
         properties.Add(new(type: (global::Kosmic.Variant.Type)27, name: PropertyName.@_fieldKosmicDictionary, hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
-        properties.Add(new(type: (global::Kosmic.Variant.Type)28, name: PropertyName.@_fieldGodotArray, hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
-        properties.Add(new(type: (global::Kosmic.Variant.Type)27, name: PropertyName.@_fieldGodotGenericDictionary, hint: (global::Kosmic.PropertyHint)23, hintString: "4/0:;1/0:", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
-        properties.Add(new(type: (global::Kosmic.Variant.Type)28, name: PropertyName.@_fieldGodotGenericArray, hint: (global::Kosmic.PropertyHint)23, hintString: "2/0:", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
+        properties.Add(new(type: (global::Kosmic.Variant.Type)28, name: PropertyName.@_fieldKosmicArray, hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
+        properties.Add(new(type: (global::Kosmic.Variant.Type)27, name: PropertyName.@_fieldKosmicGenericDictionary, hint: (global::Kosmic.PropertyHint)23, hintString: "4/0:;1/0:", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
+        properties.Add(new(type: (global::Kosmic.Variant.Type)28, name: PropertyName.@_fieldKosmicGenericArray, hint: (global::Kosmic.PropertyHint)23, hintString: "2/0:", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
         properties.Add(new(type: (global::Kosmic.Variant.Type)31, name: PropertyName.@_fieldEmptyInt64Array, hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
         return properties;
     }

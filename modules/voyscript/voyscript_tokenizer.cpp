@@ -1183,6 +1183,10 @@ void VoyScriptTokenizerText::check_indent() {
 		int indent_count = 0;
 
 		if (current_indent_char != ' ' && current_indent_char != '\t' && current_indent_char != '\r' && current_indent_char != '\n' && current_indent_char != '#') {
+			if (current_indent_char == '/' && _peek() == '/') {
+				// Handle comment.
+			}
+			
 			// First character of the line is not whitespace, so we clear all indentation levels.
 			// Unless we are in a continuation or in multiline mode (inside expression).
 			if (line_continuation || multiline_mode) {
@@ -1379,8 +1383,16 @@ void VoyScriptTokenizerText::_skip_whitespace() {
 				newline(!is_bol); // Don't create new line token if line is empty.
 				check_indent();
 				break;
-			case '#': {
-				// Comment.
+			case '#':
+			case '/': {
+				if (_peek() == '/' && _peek_next() == '/') {
+					_advance(); // Consume the first '/'
+					_advance(); // Consume the second '/'
+				} else if (_peek() != '#') {
+					break; // Not a comment
+				}
+
+				// Process the comment
 #ifdef TOOLS_ENABLED
 				String comment;
 				while (_peek() != '\n' && !_is_at_end()) {
@@ -1392,6 +1404,7 @@ void VoyScriptTokenizerText::_skip_whitespace() {
 					_advance();
 				}
 #endif // TOOLS_ENABLED
+
 				if (_is_at_end()) {
 					return;
 				}

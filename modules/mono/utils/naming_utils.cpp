@@ -53,7 +53,7 @@ const HashMap<String, String> pascal_case_name_overrides = _create_hashmap_from_
 		{ "SkeletonModification3DCCDIK", "SkeletonModification3DCcdik" },
 		{ "SkeletonModification3DFABRIK", "SkeletonModification3DFabrik" },
 		{ "System", "System_" },
-		{ "Thread", "GodotThread" },
+		{ "Thread", "KosmicThread" },
 });
 
 // Hardcoded collection of PascalCase part conversions.

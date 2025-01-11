@@ -1,7 +1,7 @@
 # Spanish (Argentina) translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Diego López <diegodario21@gmail.com>, 2017.
 # Lisandro Lorea <lisandrolorea@gmail.com>, 2016-2018, 2019, 2020, 2021, 2022.
 # Roger Blanco Ribera <roger.blancoribera@gmail.com>, 2016-2018.
@@ -34,11 +34,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-03-18 13:37+0000\n"
 "Last-Translator: Franco Ezequiel Ibañez <francoibanez.dev@gmail.com>\n"
-"Language-Team: Spanish (Argentina) <https://hosted.weblate.org/projects/godot-"
+"Language-Team: Spanish (Argentina) <https://hosted.weblate.org/projects/kosmic-"
 "engine/godot/es_AR/>\n"
 "Language: es_AR\n"
 "MIME-Version: 1.0\n"
@@ -1386,7 +1386,7 @@ msgid "Thanks from the Godot community!"
 msgstr "Gracias de parte de la comunidad Godot!"
 
 msgid "Godot Engine contributors"
-msgstr "Colaboradores de Godot Engine"
+msgstr "Colaboradores de Kosmic Engine"
 
 msgid "Project Founders"
 msgstr "Fundadores del Proyecto"
@@ -6783,7 +6783,7 @@ msgstr ""
 "(Sólo modo Fragmento/Luz) (Vector) Suma de la derivada absoluta en 'x' e 'y'."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""

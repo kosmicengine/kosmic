@@ -59,8 +59,8 @@ class KosmicPhysicsServer3D : public PhysicsServer3D {
 
 	mutable RID_PtrOwner<KosmicShape3D, true> shape_owner;
 	mutable RID_PtrOwner<KosmicSpace3D, true> space_owner;
-	mutable RID_PtrOwner<GodotArea3D, true> area_owner;
-	mutable RID_PtrOwner<GodotBody3D, true> body_owner;
+	mutable RID_PtrOwner<KosmicArea3D, true> area_owner;
+	mutable RID_PtrOwner<KosmicBody3D, true> body_owner;
 	mutable RID_PtrOwner<KosmicSoftBody3D, true> soft_body_owner;
 	mutable RID_PtrOwner<KosmicJoint3D, true> joint_owner;
 

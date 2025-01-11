@@ -5,6 +5,6 @@
     <CompilerVisibleProperty Include="KosmicProjectDir" />
     <CompilerVisibleProperty Include="KosmicProjectDirBase64" />
     <CompilerVisibleProperty Include="KosmicSourceGenerators" />
-    <CompilerVisibleProperty Include="IsGodotToolsProject" />
+    <CompilerVisibleProperty Include="IsKosmicToolsProject" />
   </ItemGroup>
 </Project>

@@ -140,7 +140,7 @@ public partial struct Variant : IDisposable
             Type.Callable => AsCallable(),
             Type.Signal => AsSignal(),
             Type.Dictionary => AsKosmicDictionary(),
-            Type.Array => AsGodotArray(),
+            Type.Array => AsKosmicArray(),
             Type.PackedByteArray => AsByteArray(),
             Type.PackedInt32Array => AsInt32Array(),
             Type.PackedInt64Array => AsInt64Array(),
@@ -338,7 +338,7 @@ public partial struct Variant : IDisposable
         VariantUtils.ConvertToDictionary<TKey, TValue>((kosmic_variant)NativeVar);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Collections.Array<T> AsGodotArray<[MustBeVariant] T>() =>
+    public Collections.Array<T> AsKosmicArray<[MustBeVariant] T>() =>
         VariantUtils.ConvertToArray<T>((kosmic_variant)NativeVar);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -374,7 +374,7 @@ public partial struct Variant : IDisposable
         VariantUtils.ConvertToDictionary((kosmic_variant)NativeVar);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Collections.Array AsGodotArray() =>
+    public Collections.Array AsKosmicArray() =>
         VariantUtils.ConvertToArray((kosmic_variant)NativeVar);
 
     // Explicit conversion operators to supported types
@@ -527,7 +527,7 @@ public partial struct Variant : IDisposable
     public static explicit operator Collections.Dictionary(Variant from) => from.AsKosmicDictionary();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static explicit operator Collections.Array(Variant from) => from.AsGodotArray();
+    public static explicit operator Collections.Array(Variant from) => from.AsKosmicArray();
 
     // While we provide implicit conversion operators, normal methods are still needed for
     // casts that are not done implicitly (e.g.: raw array to Span, enum to integer, etc).

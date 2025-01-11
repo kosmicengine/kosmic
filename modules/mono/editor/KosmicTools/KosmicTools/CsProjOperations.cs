@@ -1,6 +1,6 @@
-using Godot;
+using Kosmic;
 using System;
-using GodotTools.ProjectEditor;
+using KosmicTools.ProjectEditor;
 
 namespace KosmicTools
 {

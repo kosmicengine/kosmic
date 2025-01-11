@@ -30,7 +30,7 @@
 /**************************************************************************/
 
 /*
-Adapted to Godot from the Jolt Physics library.
+Adapted to Kosmic from the Jolt Physics library.
 */
 
 /*

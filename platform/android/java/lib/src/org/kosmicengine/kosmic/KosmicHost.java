@@ -43,49 +43,49 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Denotate a component (e.g: Activity, Fragment) that hosts the {@link Godot} engine.
+ * Denotate a component (e.g: Activity, Fragment) that hosts the {@link Kosmic} engine.
  */
 public interface KosmicHost {
 	/**
-	 * Provides a set of command line parameters to setup the {@link Godot} engine.
+	 * Provides a set of command line parameters to setup the {@link Kosmic} engine.
 	 */
 	default List<String> getCommandLine() {
 		return Collections.emptyList();
 	}
 
 	/**
-	 * Invoked on the render thread when setup of the {@link Godot} engine is complete.
+	 * Invoked on the render thread when setup of the {@link Kosmic} engine is complete.
 	 */
 	default void onKosmicSetupCompleted() {}
 
 	/**
-	 * Invoked on the render thread when the {@link Godot} engine main loop has started.
+	 * Invoked on the render thread when the {@link Kosmic} engine main loop has started.
 	 */
-	default void onGodotMainLoopStarted() {}
+	default void onKosmicMainLoopStarted() {}
 
 	/**
-	 * Invoked on the render thread to terminate the given {@link Godot} engine instance.
+	 * Invoked on the render thread to terminate the given {@link Kosmic} engine instance.
 	 */
-	default void onKosmicForceQuit(Godot instance) {}
+	default void onKosmicForceQuit(Kosmic instance) {}
 
 	/**
-	 * Invoked on the render thread to terminate the {@link Godot} engine instance with the given id.
-	 * @param godotInstanceId id of the Godot instance to terminate. See {@code onNewKosmicInstanceRequested}
+	 * Invoked on the render thread to terminate the {@link Kosmic} engine instance with the given id.
+	 * @param kosmicInstanceId id of the Kosmic instance to terminate. See {@code onNewKosmicInstanceRequested}
 	 *
 	 * @return true if successful, false otherwise.
 	 */
-	default boolean onKosmicForceQuit(int godotInstanceId) {
+	default boolean onKosmicForceQuit(int kosmicInstanceId) {
 		return false;
 	}
 
 	/**
-	 * Invoked on the render thread when the Godot instance wants to be restarted. It's up to the host
+	 * Invoked on the render thread when the Kosmic instance wants to be restarted. It's up to the host
 	 * to perform the appropriate action(s).
 	 */
-	default void onKosmicRestartRequested(Godot instance) {}
+	default void onKosmicRestartRequested(Kosmic instance) {}
 
 	/**
-	 * Invoked on the render thread when a new Godot instance is requested. It's up to the host to
+	 * Invoked on the render thread when a new Kosmic instance is requested. It's up to the host to
 	 * perform the appropriate action(s).
 	 *
 	 * @param args Arguments used to initialize the new instance.
@@ -97,19 +97,19 @@ public interface KosmicHost {
 	}
 
 	/**
-	 * Provide access to the Activity hosting the {@link Godot} engine.
+	 * Provide access to the Activity hosting the {@link Kosmic} engine.
 	 */
 	Activity getActivity();
 
 	/**
-	 * Provide access to the hosted {@link Godot} engine.
+	 * Provide access to the hosted {@link Kosmic} engine.
 	 */
-	Godot getGodot();
+	Kosmic getKosmic();
 
 	/**
-	 * Returns a set of {@link KosmicPlugin} to be registered with the hosted {@link Godot} engine.
+	 * Returns a set of {@link KosmicPlugin} to be registered with the hosted {@link Kosmic} engine.
 	 */
-	default Set<KosmicPlugin> getHostPlugins(Godot engine) {
+	default Set<KosmicPlugin> getHostPlugins(Kosmic engine) {
 		return Collections.emptySet();
 	}
 

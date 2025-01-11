@@ -286,9 +286,9 @@ TEST_CASE("[String] Testing for empty string") {
 }
 
 TEST_CASE("[String] Contains") {
-	String s = "C:\\Godot\\project\\string_test.tscn";
+	String s = "C:\\Kosmic\\project\\string_test.tscn";
 	CHECK(s.contains(":\\"));
-	CHECK(s.contains("Godot"));
+	CHECK(s.contains("Kosmic"));
 	CHECK(s.contains(String("project\\string_test")));
 	CHECK(s.contains(String("\\string_test.tscn")));
 
@@ -299,8 +299,8 @@ TEST_CASE("[String] Contains") {
 }
 
 TEST_CASE("[String] Contains case insensitive") {
-	String s = "C:\\Godot\\project\\string_test.tscn";
-	CHECK(s.containsn("Godot"));
+	String s = "C:\\Kosmic\\project\\string_test.tscn";
+	CHECK(s.containsn("Kosmic"));
 	CHECK(s.containsn("kosmic"));
 	CHECK(s.containsn(String("Project\\string_test")));
 	CHECK(s.containsn(String("\\string_Test.tscn")));
@@ -1458,7 +1458,7 @@ TEST_CASE("[String] Checking string is empty when it should be") {
 	if (!success) {
 		state = false;
 	}
-	String b = "Godot";
+	String b = "Kosmic";
 	success = b[b.size()] == 0;
 	if (!success) {
 		state = false;
@@ -1469,7 +1469,7 @@ TEST_CASE("[String] Checking string is empty when it should be") {
 		state = false;
 	}
 
-	const String d = "Godot";
+	const String d = "Kosmic";
 	success = d[d.size()] == 0;
 	if (!success) {
 		state = false;
@@ -1595,7 +1595,7 @@ TEST_CASE("[String] Count and countn functionality") {
 	s = "TestTestTest";
 	MULTICHECK_STRING_EQ(s, count, "TestTest", 1);
 
-	s = "TestGodotTestGodotTestGodot";
+	s = "TestKosmicTestKosmicTestKosmic";
 	MULTICHECK_STRING_EQ(s, count, "Test", 3);
 
 	s = "TestTestTestTest";
@@ -1664,12 +1664,12 @@ TEST_CASE("[String] dedent") {
 }
 
 TEST_CASE("[String] Path functions") {
-	static const char *path[8] = { "C:\\Godot\\project\\test.tscn", "/Godot/project/test.xscn", "../Godot/project/test.scn", "Godot\\test.doc", "C:\\test.", "res://test", "user://test", "/.test" };
-	static const char *base_dir[8] = { "C:\\Godot\\project", "/Godot/project", "../Godot/project", "Godot", "C:\\", "res://", "user://", "/" };
-	static const char *base_name[8] = { "C:\\Godot\\project\\test", "/Godot/project/test", "../Godot/project/test", "Godot\\test", "C:\\test", "res://test", "user://test", "/" };
+	static const char *path[8] = { "C:\\Kosmic\\project\\test.tscn", "/Kosmic/project/test.xscn", "../Kosmic/project/test.scn", "Kosmic\\test.doc", "C:\\test.", "res://test", "user://test", "/.test" };
+	static const char *base_dir[8] = { "C:\\Kosmic\\project", "/Kosmic/project", "../Kosmic/project", "Kosmic", "C:\\", "res://", "user://", "/" };
+	static const char *base_name[8] = { "C:\\Kosmic\\project\\test", "/Kosmic/project/test", "../Kosmic/project/test", "Kosmic\\test", "C:\\test", "res://test", "user://test", "/" };
 	static const char *ext[8] = { "tscn", "xscn", "scn", "doc", "", "", "", "test" };
 	static const char *file[8] = { "test.tscn", "test.xscn", "test.scn", "test.doc", "test.", "test", "test", ".test" };
-	static const char *simplified[8] = { "C:/Godot/project/test.tscn", "/Godot/project/test.xscn", "../Godot/project/test.scn", "Godot/test.doc", "C:/test.", "res://test", "user://test", "/.test" };
+	static const char *simplified[8] = { "C:/Kosmic/project/test.tscn", "/Kosmic/project/test.xscn", "../Kosmic/project/test.scn", "Kosmic/test.doc", "C:/test.", "res://test", "user://test", "/.test" };
 	static const bool abs[8] = { true, true, false, false, true, true, true, true };
 
 	for (int i = 0; i < 8; i++) {
@@ -1706,8 +1706,8 @@ TEST_CASE("[String] hash") {
 }
 
 TEST_CASE("[String] uri_encode/unescape") {
-	String s = "Godot Engine:'docs'";
-	String t = "Godot%20Engine%3A%27docs%27";
+	String s = "Kosmic Engine:'docs'";
+	String t = "Kosmic%20Engine%3A%27docs%27";
 
 	String x1 = "T%C4%93%C5%A1t";
 	static const uint8_t u8str[] = { 0x54, 0xC4, 0x93, 0xC5, 0xA1, 0x74, 0x00 };
@@ -1834,7 +1834,7 @@ TEST_CASE("[String] Reverse") {
 }
 
 TEST_CASE("[String] SHA1/SHA256/MD5") {
-	String s = "Godot";
+	String s = "Kosmic";
 	String sha1 = "a1e91f39b9fce6a9998b14bdbe2aa2b39dc2d201";
 	static uint8_t sha1_buf[20] = {
 		0xA1, 0xE9, 0x1F, 0x39, 0xB9, 0xFC, 0xE6, 0xA9, 0x99, 0x8B, 0x14, 0xBD, 0xBE, 0x2A, 0xA2, 0xB3,
@@ -2051,7 +2051,7 @@ TEST_CASE("[String][URL] Parse URL") {
 	CHECK_URL("https://godotengine.org/", "https://", "godotengine.org", 0, "/", "", Error::OK);
 	CHECK_URL("godotengine.org/", "", "godotengine.org", 0, "/", "", Error::OK);
 	CHECK_URL("HTTPS://godotengine.org/", "https://", "godotengine.org", 0, "/", "", Error::OK);
-	CHECK_URL("https://KOSMICENGINE.ORG/", "https://", "godotengine.org", 0, "/", "", Error::OK);
+	CHECK_URL("https://GODOTENGINE.ORG/", "https://", "godotengine.org", 0, "/", "", Error::OK);
 	CHECK_URL("http://godotengine.org", "http://", "godotengine.org", 0, "", "", Error::OK);
 	CHECK_URL("https://godotengine.org:8080", "https://", "godotengine.org", 8080, "", "", Error::OK);
 	CHECK_URL("https://godotengine.org/blog", "https://", "godotengine.org", 0, "/blog", "", Error::OK);

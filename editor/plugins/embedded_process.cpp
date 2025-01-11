@@ -67,8 +67,8 @@ void EmbeddedProcess::_notification(int p_what) {
 			focus_style_box = get_theme_stylebox(SNAME("FocusViewport"), EditorStringName(EditorStyles));
 			Ref<StyleBoxFlat> focus_style_box_flat = focus_style_box;
 			if (focus_style_box_flat.is_valid()) {
-				margin_top_left = Point2i(focus_style_box_flat->get_corner_radius(CORNER_TOP_LEFT), focus_style_box_flat->get_corner_radius(CORNER_TOP_LEFT));
-				margin_bottom_right = Point2i(focus_style_box_flat->get_corner_radius(CORNER_BOTTOM_RIGHT), focus_style_box_flat->get_corner_radius(CORNER_BOTTOM_RIGHT));
+				margin_top_left = Point2i(focus_style_box_flat->get_border_width(SIDE_LEFT), focus_style_box_flat->get_border_width(SIDE_TOP));
+				margin_bottom_right = Point2i(focus_style_box_flat->get_border_width(SIDE_RIGHT), focus_style_box_flat->get_border_width(SIDE_BOTTOM));
 			} else if (focus_style_box.is_valid()) {
 				margin_top_left = Point2i(focus_style_box->get_margin(SIDE_LEFT), focus_style_box->get_margin(SIDE_TOP));
 				margin_bottom_right = Point2i(focus_style_box->get_margin(SIDE_RIGHT), focus_style_box->get_margin(SIDE_BOTTOM));
@@ -297,6 +297,7 @@ void EmbeddedProcess::_check_focused_process_id() {
 		focused_process_id = process_id;
 		if (focused_process_id == current_process_id) {
 			// The embedded process got the focus.
+			emit_signal(SNAME("embedded_process_focused"));
 			if (has_focus()) {
 				// Redraw to updated the focus style.
 				queue_redraw();
@@ -313,6 +314,7 @@ void EmbeddedProcess::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("embedding_completed"));
 	ADD_SIGNAL(MethodInfo("embedding_failed"));
 	ADD_SIGNAL(MethodInfo("embedded_process_updated"));
+	ADD_SIGNAL(MethodInfo("embedded_process_focused"));
 }
 
 EmbeddedProcess::EmbeddedProcess() {

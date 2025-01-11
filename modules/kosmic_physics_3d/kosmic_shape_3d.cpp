@@ -315,7 +315,7 @@ KosmicSphereShape3D::KosmicSphereShape3D() {}
 
 /********** BOX *************/
 
-void GodotBoxShape3D::project_range(const Vector3 &p_normal, const Transform3D &p_transform, real_t &r_min, real_t &r_max) const {
+void KosmicBoxShape3D::project_range(const Vector3 &p_normal, const Transform3D &p_transform, real_t &r_min, real_t &r_max) const {
 	// no matter the angle, the box is mirrored anyway
 	Vector3 local_normal = p_transform.basis.xform_inv(p_normal);
 
@@ -326,7 +326,7 @@ void GodotBoxShape3D::project_range(const Vector3 &p_normal, const Transform3D &
 	r_max = distance + length;
 }
 
-Vector3 GodotBoxShape3D::get_support(const Vector3 &p_normal) const {
+Vector3 KosmicBoxShape3D::get_support(const Vector3 &p_normal) const {
 	Vector3 point(
 			(p_normal.x < 0) ? -half_extents.x : half_extents.x,
 			(p_normal.y < 0) ? -half_extents.y : half_extents.y,
@@ -335,7 +335,7 @@ Vector3 GodotBoxShape3D::get_support(const Vector3 &p_normal) const {
 	return point;
 }
 
-void GodotBoxShape3D::get_supports(const Vector3 &p_normal, int p_max, Vector3 *r_supports, int &r_amount, FeatureType &r_type) const {
+void KosmicBoxShape3D::get_supports(const Vector3 &p_normal, int p_max, Vector3 *r_supports, int &r_amount, FeatureType &r_type) const {
 	static const int next[3] = { 1, 2, 0 };
 	static const int next2[3] = { 2, 0, 1 };
 
@@ -418,17 +418,17 @@ void GodotBoxShape3D::get_supports(const Vector3 &p_normal, int p_max, Vector3 *
 	r_supports[0] = point;
 }
 
-bool GodotBoxShape3D::intersect_segment(const Vector3 &p_begin, const Vector3 &p_end, Vector3 &r_result, Vector3 &r_normal, int &r_face_index, bool p_hit_back_faces) const {
+bool KosmicBoxShape3D::intersect_segment(const Vector3 &p_begin, const Vector3 &p_end, Vector3 &r_result, Vector3 &r_normal, int &r_face_index, bool p_hit_back_faces) const {
 	AABB aabb_ext(-half_extents, half_extents * 2.0);
 
 	return aabb_ext.intersects_segment(p_begin, p_end, &r_result, &r_normal);
 }
 
-bool GodotBoxShape3D::intersect_point(const Vector3 &p_point) const {
+bool KosmicBoxShape3D::intersect_point(const Vector3 &p_point) const {
 	return (Math::abs(p_point.x) < half_extents.x && Math::abs(p_point.y) < half_extents.y && Math::abs(p_point.z) < half_extents.z);
 }
 
-Vector3 GodotBoxShape3D::get_closest_point_to(const Vector3 &p_point) const {
+Vector3 KosmicBoxShape3D::get_closest_point_to(const Vector3 &p_point) const {
 	int outside = 0;
 	Vector3 min_point;
 
@@ -478,7 +478,7 @@ Vector3 GodotBoxShape3D::get_closest_point_to(const Vector3 &p_point) const {
 	return min_point;
 }
 
-Vector3 GodotBoxShape3D::get_moment_of_inertia(real_t p_mass) const {
+Vector3 KosmicBoxShape3D::get_moment_of_inertia(real_t p_mass) const {
 	real_t lx = half_extents.x;
 	real_t ly = half_extents.y;
 	real_t lz = half_extents.z;
@@ -486,21 +486,21 @@ Vector3 GodotBoxShape3D::get_moment_of_inertia(real_t p_mass) const {
 	return Vector3((p_mass / 3.0) * (ly * ly + lz * lz), (p_mass / 3.0) * (lx * lx + lz * lz), (p_mass / 3.0) * (lx * lx + ly * ly));
 }
 
-void GodotBoxShape3D::_setup(const Vector3 &p_half_extents) {
+void KosmicBoxShape3D::_setup(const Vector3 &p_half_extents) {
 	half_extents = p_half_extents.abs();
 
 	configure(AABB(-half_extents, half_extents * 2));
 }
 
-void GodotBoxShape3D::set_data(const Variant &p_data) {
+void KosmicBoxShape3D::set_data(const Variant &p_data) {
 	_setup(p_data);
 }
 
-Variant GodotBoxShape3D::get_data() const {
+Variant KosmicBoxShape3D::get_data() const {
 	return half_extents;
 }
 
-GodotBoxShape3D::GodotBoxShape3D() {}
+KosmicBoxShape3D::KosmicBoxShape3D() {}
 
 /********** CAPSULE *************/
 

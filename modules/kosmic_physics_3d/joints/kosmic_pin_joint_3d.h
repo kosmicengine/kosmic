@@ -33,7 +33,7 @@
 #define KOSMIC_PIN_JOINT_3D_H
 
 /*
-Adapted to Godot from the Bullet library.
+Adapted to Kosmic from the Bullet library.
 */
 
 #include "../kosmic_joint_3d.h"
@@ -57,11 +57,11 @@ subject to the following restrictions:
 class KosmicPinJoint3D : public KosmicJoint3D {
 	union {
 		struct {
-			GodotBody3D *A;
-			GodotBody3D *B;
+			KosmicBody3D *A;
+			KosmicBody3D *B;
 		};
 
-		GodotBody3D *_arr[2] = {};
+		KosmicBody3D *_arr[2] = {};
 	};
 
 	real_t m_tau = 0.3; //bias
@@ -89,7 +89,7 @@ public:
 	Vector3 get_position_a() { return m_pivotInA; }
 	Vector3 get_position_b() { return m_pivotInB; }
 
-	KosmicPinJoint3D(GodotBody3D *p_body_a, const Vector3 &p_pos_a, GodotBody3D *p_body_b, const Vector3 &p_pos_b);
+	KosmicPinJoint3D(KosmicBody3D *p_body_a, const Vector3 &p_pos_a, KosmicBody3D *p_body_b, const Vector3 &p_pos_b);
 	~KosmicPinJoint3D();
 };
 

@@ -4,10 +4,10 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using Godot;
+using Kosmic;
 using Kosmic.NativeInterop;
 using Kosmic.SourceGenerators.Internal;
-using GodotTools.IdeMessaging.Requests;
+using KosmicTools.IdeMessaging.Requests;
 
 namespace KosmicTools.Internals
 {
@@ -46,7 +46,7 @@ namespace KosmicTools.Internals
 
         public static bool KosmicIsRealTDouble() => kosmic_icall_Internal_KosmicIsRealTDouble();
 
-        public static void GodotMainIteration() => kosmic_icall_Internal_GodotMainIteration();
+        public static void KosmicMainIteration() => kosmic_icall_Internal_KosmicMainIteration();
 
         public static bool IsAssembliesReloadingNeeded() => kosmic_icall_Internal_IsAssembliesReloadingNeeded();
 
@@ -134,7 +134,7 @@ namespace KosmicTools.Internals
 
         private static partial bool kosmic_icall_Internal_KosmicIsRealTDouble();
 
-        private static partial void kosmic_icall_Internal_GodotMainIteration();
+        private static partial void kosmic_icall_Internal_KosmicMainIteration();
 
         private static partial bool kosmic_icall_Internal_IsAssembliesReloadingNeeded();
 

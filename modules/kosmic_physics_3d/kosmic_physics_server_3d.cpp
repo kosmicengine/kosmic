@@ -64,7 +64,7 @@ RID KosmicPhysicsServer3D::sphere_shape_create() {
 	return rid;
 }
 RID KosmicPhysicsServer3D::box_shape_create() {
-	KosmicShape3D *shape = memnew(GodotBoxShape3D);
+	KosmicShape3D *shape = memnew(KosmicBoxShape3D);
 	RID rid = shape_owner.make_rid(shape);
 	shape->set_self(rid);
 	return rid;
@@ -146,7 +146,7 @@ RID KosmicPhysicsServer3D::space_create() {
 	RID id = space_owner.make_rid(space);
 	space->set_self(id);
 	RID area_id = area_create();
-	GodotArea3D *area = area_owner.get_or_null(area_id);
+	KosmicArea3D *area = area_owner.get_or_null(area_id);
 	ERR_FAIL_NULL_V(area, RID());
 	space->set_default_area(area);
 	area->set_space(space);
@@ -216,14 +216,14 @@ int KosmicPhysicsServer3D::space_get_contact_count(RID p_space) const {
 }
 
 RID KosmicPhysicsServer3D::area_create() {
-	GodotArea3D *area = memnew(GodotArea3D);
+	KosmicArea3D *area = memnew(KosmicArea3D);
 	RID rid = area_owner.make_rid(area);
 	area->set_self(rid);
 	return rid;
 }
 
 void KosmicPhysicsServer3D::area_set_space(RID p_area, RID p_space) {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	KosmicSpace3D *space = nullptr;
@@ -241,7 +241,7 @@ void KosmicPhysicsServer3D::area_set_space(RID p_area, RID p_space) {
 }
 
 RID KosmicPhysicsServer3D::area_get_space(RID p_area) const {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, RID());
 
 	KosmicSpace3D *space = area->get_space();
@@ -252,7 +252,7 @@ RID KosmicPhysicsServer3D::area_get_space(RID p_area) const {
 }
 
 void KosmicPhysicsServer3D::area_add_shape(RID p_area, RID p_shape, const Transform3D &p_transform, bool p_disabled) {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	KosmicShape3D *shape = shape_owner.get_or_null(p_shape);
@@ -262,7 +262,7 @@ void KosmicPhysicsServer3D::area_add_shape(RID p_area, RID p_shape, const Transf
 }
 
 void KosmicPhysicsServer3D::area_set_shape(RID p_area, int p_shape_idx, RID p_shape) {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	KosmicShape3D *shape = shape_owner.get_or_null(p_shape);
@@ -273,21 +273,21 @@ void KosmicPhysicsServer3D::area_set_shape(RID p_area, int p_shape_idx, RID p_sh
 }
 
 void KosmicPhysicsServer3D::area_set_shape_transform(RID p_area, int p_shape_idx, const Transform3D &p_transform) {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	area->set_shape_transform(p_shape_idx, p_transform);
 }
 
 int KosmicPhysicsServer3D::area_get_shape_count(RID p_area) const {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, -1);
 
 	return area->get_shape_count();
 }
 
 RID KosmicPhysicsServer3D::area_get_shape(RID p_area, int p_shape_idx) const {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, RID());
 
 	KosmicShape3D *shape = area->get_shape(p_shape_idx);
@@ -297,21 +297,21 @@ RID KosmicPhysicsServer3D::area_get_shape(RID p_area, int p_shape_idx) const {
 }
 
 Transform3D KosmicPhysicsServer3D::area_get_shape_transform(RID p_area, int p_shape_idx) const {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, Transform3D());
 
 	return area->get_shape_transform(p_shape_idx);
 }
 
 void KosmicPhysicsServer3D::area_remove_shape(RID p_area, int p_shape_idx) {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	area->remove_shape(p_shape_idx);
 }
 
 void KosmicPhysicsServer3D::area_clear_shapes(RID p_area) {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	while (area->get_shape_count()) {
@@ -320,7 +320,7 @@ void KosmicPhysicsServer3D::area_clear_shapes(RID p_area) {
 }
 
 void KosmicPhysicsServer3D::area_set_shape_disabled(RID p_area, int p_shape_idx, bool p_disabled) {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 	ERR_FAIL_INDEX(p_shape_idx, area->get_shape_count());
 	FLUSH_QUERY_CHECK(area);
@@ -332,7 +332,7 @@ void KosmicPhysicsServer3D::area_attach_object_instance_id(RID p_area, ObjectID 
 		KosmicSpace3D *space = space_owner.get_or_null(p_area);
 		p_area = space->get_default_area()->get_self();
 	}
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 	area->set_instance_id(p_id);
 }
@@ -342,7 +342,7 @@ ObjectID KosmicPhysicsServer3D::area_get_object_instance_id(RID p_area) const {
 		KosmicSpace3D *space = space_owner.get_or_null(p_area);
 		p_area = space->get_default_area()->get_self();
 	}
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, ObjectID());
 	return area->get_instance_id();
 }
@@ -352,13 +352,13 @@ void KosmicPhysicsServer3D::area_set_param(RID p_area, AreaParameter p_param, co
 		KosmicSpace3D *space = space_owner.get_or_null(p_area);
 		p_area = space->get_default_area()->get_self();
 	}
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 	area->set_param(p_param, p_value);
 }
 
 void KosmicPhysicsServer3D::area_set_transform(RID p_area, const Transform3D &p_transform) {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 	area->set_transform(p_transform);
 }
@@ -368,49 +368,49 @@ Variant KosmicPhysicsServer3D::area_get_param(RID p_area, AreaParameter p_param)
 		KosmicSpace3D *space = space_owner.get_or_null(p_area);
 		p_area = space->get_default_area()->get_self();
 	}
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, Variant());
 
 	return area->get_param(p_param);
 }
 
 Transform3D KosmicPhysicsServer3D::area_get_transform(RID p_area) const {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, Transform3D());
 
 	return area->get_transform();
 }
 
 void KosmicPhysicsServer3D::area_set_collision_layer(RID p_area, uint32_t p_layer) {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	area->set_collision_layer(p_layer);
 }
 
 uint32_t KosmicPhysicsServer3D::area_get_collision_layer(RID p_area) const {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, 0);
 
 	return area->get_collision_layer();
 }
 
 void KosmicPhysicsServer3D::area_set_collision_mask(RID p_area, uint32_t p_mask) {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	area->set_collision_mask(p_mask);
 }
 
 uint32_t KosmicPhysicsServer3D::area_get_collision_mask(RID p_area) const {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, 0);
 
 	return area->get_collision_mask();
 }
 
 void KosmicPhysicsServer3D::area_set_monitorable(RID p_area, bool p_monitorable) {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 	FLUSH_QUERY_CHECK(area);
 
@@ -418,21 +418,21 @@ void KosmicPhysicsServer3D::area_set_monitorable(RID p_area, bool p_monitorable)
 }
 
 void KosmicPhysicsServer3D::area_set_monitor_callback(RID p_area, const Callable &p_callback) {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	area->set_monitor_callback(p_callback.is_valid() ? p_callback : Callable());
 }
 
 void KosmicPhysicsServer3D::area_set_ray_pickable(RID p_area, bool p_enable) {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	area->set_ray_pickable(p_enable);
 }
 
 void KosmicPhysicsServer3D::area_set_area_monitor_callback(RID p_area, const Callable &p_callback) {
-	GodotArea3D *area = area_owner.get_or_null(p_area);
+	KosmicArea3D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	area->set_area_monitor_callback(p_callback.is_valid() ? p_callback : Callable());
@@ -441,14 +441,14 @@ void KosmicPhysicsServer3D::area_set_area_monitor_callback(RID p_area, const Cal
 /* BODY API */
 
 RID KosmicPhysicsServer3D::body_create() {
-	GodotBody3D *body = memnew(GodotBody3D);
+	KosmicBody3D *body = memnew(KosmicBody3D);
 	RID rid = body_owner.make_rid(body);
 	body->set_self(rid);
 	return rid;
 }
 
 void KosmicPhysicsServer3D::body_set_space(RID p_body, RID p_space) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	KosmicSpace3D *space = nullptr;
@@ -466,7 +466,7 @@ void KosmicPhysicsServer3D::body_set_space(RID p_body, RID p_space) {
 }
 
 RID KosmicPhysicsServer3D::body_get_space(RID p_body) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, RID());
 
 	KosmicSpace3D *space = body->get_space();
@@ -477,21 +477,21 @@ RID KosmicPhysicsServer3D::body_get_space(RID p_body) const {
 }
 
 void KosmicPhysicsServer3D::body_set_mode(RID p_body, BodyMode p_mode) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_mode(p_mode);
 }
 
 PhysicsServer3D::BodyMode KosmicPhysicsServer3D::body_get_mode(RID p_body) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, BODY_MODE_STATIC);
 
 	return body->get_mode();
 }
 
 void KosmicPhysicsServer3D::body_add_shape(RID p_body, RID p_shape, const Transform3D &p_transform, bool p_disabled) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	KosmicShape3D *shape = shape_owner.get_or_null(p_shape);
@@ -501,7 +501,7 @@ void KosmicPhysicsServer3D::body_add_shape(RID p_body, RID p_shape, const Transf
 }
 
 void KosmicPhysicsServer3D::body_set_shape(RID p_body, int p_shape_idx, RID p_shape) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	KosmicShape3D *shape = shape_owner.get_or_null(p_shape);
@@ -511,21 +511,21 @@ void KosmicPhysicsServer3D::body_set_shape(RID p_body, int p_shape_idx, RID p_sh
 	body->set_shape(p_shape_idx, shape);
 }
 void KosmicPhysicsServer3D::body_set_shape_transform(RID p_body, int p_shape_idx, const Transform3D &p_transform) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_shape_transform(p_shape_idx, p_transform);
 }
 
 int KosmicPhysicsServer3D::body_get_shape_count(RID p_body) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, -1);
 
 	return body->get_shape_count();
 }
 
 RID KosmicPhysicsServer3D::body_get_shape(RID p_body, int p_shape_idx) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, RID());
 
 	KosmicShape3D *shape = body->get_shape(p_shape_idx);
@@ -535,7 +535,7 @@ RID KosmicPhysicsServer3D::body_get_shape(RID p_body, int p_shape_idx) const {
 }
 
 void KosmicPhysicsServer3D::body_set_shape_disabled(RID p_body, int p_shape_idx, bool p_disabled) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	ERR_FAIL_INDEX(p_shape_idx, body->get_shape_count());
 	FLUSH_QUERY_CHECK(body);
@@ -544,21 +544,21 @@ void KosmicPhysicsServer3D::body_set_shape_disabled(RID p_body, int p_shape_idx,
 }
 
 Transform3D KosmicPhysicsServer3D::body_get_shape_transform(RID p_body, int p_shape_idx) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, Transform3D());
 
 	return body->get_shape_transform(p_shape_idx);
 }
 
 void KosmicPhysicsServer3D::body_remove_shape(RID p_body, int p_shape_idx) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->remove_shape(p_shape_idx);
 }
 
 void KosmicPhysicsServer3D::body_clear_shapes(RID p_body) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	while (body->get_shape_count()) {
@@ -567,63 +567,63 @@ void KosmicPhysicsServer3D::body_clear_shapes(RID p_body) {
 }
 
 void KosmicPhysicsServer3D::body_set_enable_continuous_collision_detection(RID p_body, bool p_enable) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_continuous_collision_detection(p_enable);
 }
 
 bool KosmicPhysicsServer3D::body_is_continuous_collision_detection_enabled(RID p_body) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, false);
 
 	return body->is_continuous_collision_detection_enabled();
 }
 
 void KosmicPhysicsServer3D::body_set_collision_layer(RID p_body, uint32_t p_layer) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_collision_layer(p_layer);
 }
 
 uint32_t KosmicPhysicsServer3D::body_get_collision_layer(RID p_body) const {
-	const GodotBody3D *body = body_owner.get_or_null(p_body);
+	const KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, 0);
 
 	return body->get_collision_layer();
 }
 
 void KosmicPhysicsServer3D::body_set_collision_mask(RID p_body, uint32_t p_mask) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_collision_mask(p_mask);
 }
 
 uint32_t KosmicPhysicsServer3D::body_get_collision_mask(RID p_body) const {
-	const GodotBody3D *body = body_owner.get_or_null(p_body);
+	const KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, 0);
 
 	return body->get_collision_mask();
 }
 
 void KosmicPhysicsServer3D::body_set_collision_priority(RID p_body, real_t p_priority) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_collision_priority(p_priority);
 }
 
 real_t KosmicPhysicsServer3D::body_get_collision_priority(RID p_body) const {
-	const GodotBody3D *body = body_owner.get_or_null(p_body);
+	const KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, 0);
 
 	return body->get_collision_priority();
 }
 
 void KosmicPhysicsServer3D::body_attach_object_instance_id(RID p_body, ObjectID p_id) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	if (body) {
 		body->set_instance_id(p_id);
 		return;
@@ -639,61 +639,61 @@ void KosmicPhysicsServer3D::body_attach_object_instance_id(RID p_body, ObjectID 
 }
 
 ObjectID KosmicPhysicsServer3D::body_get_object_instance_id(RID p_body) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, ObjectID());
 
 	return body->get_instance_id();
 }
 
 void KosmicPhysicsServer3D::body_set_user_flags(RID p_body, uint32_t p_flags) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 }
 
 uint32_t KosmicPhysicsServer3D::body_get_user_flags(RID p_body) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, 0);
 
 	return 0;
 }
 
 void KosmicPhysicsServer3D::body_set_param(RID p_body, BodyParameter p_param, const Variant &p_value) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_param(p_param, p_value);
 }
 
 Variant KosmicPhysicsServer3D::body_get_param(RID p_body, BodyParameter p_param) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, 0);
 
 	return body->get_param(p_param);
 }
 
 void KosmicPhysicsServer3D::body_reset_mass_properties(RID p_body) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	return body->reset_mass_properties();
 }
 
 void KosmicPhysicsServer3D::body_set_state(RID p_body, BodyState p_state, const Variant &p_variant) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_state(p_state, p_variant);
 }
 
 Variant KosmicPhysicsServer3D::body_get_state(RID p_body, BodyState p_state) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, Variant());
 
 	return body->get_state(p_state);
 }
 
 void KosmicPhysicsServer3D::body_apply_central_impulse(RID p_body, const Vector3 &p_impulse) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	_update_shapes();
@@ -703,7 +703,7 @@ void KosmicPhysicsServer3D::body_apply_central_impulse(RID p_body, const Vector3
 }
 
 void KosmicPhysicsServer3D::body_apply_impulse(RID p_body, const Vector3 &p_impulse, const Vector3 &p_position) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	_update_shapes();
@@ -713,7 +713,7 @@ void KosmicPhysicsServer3D::body_apply_impulse(RID p_body, const Vector3 &p_impu
 }
 
 void KosmicPhysicsServer3D::body_apply_torque_impulse(RID p_body, const Vector3 &p_impulse) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	_update_shapes();
@@ -723,7 +723,7 @@ void KosmicPhysicsServer3D::body_apply_torque_impulse(RID p_body, const Vector3 
 }
 
 void KosmicPhysicsServer3D::body_apply_central_force(RID p_body, const Vector3 &p_force) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->apply_central_force(p_force);
@@ -731,7 +731,7 @@ void KosmicPhysicsServer3D::body_apply_central_force(RID p_body, const Vector3 &
 }
 
 void KosmicPhysicsServer3D::body_apply_force(RID p_body, const Vector3 &p_force, const Vector3 &p_position) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->apply_force(p_force, p_position);
@@ -739,7 +739,7 @@ void KosmicPhysicsServer3D::body_apply_force(RID p_body, const Vector3 &p_force,
 }
 
 void KosmicPhysicsServer3D::body_apply_torque(RID p_body, const Vector3 &p_torque) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->apply_torque(p_torque);
@@ -747,7 +747,7 @@ void KosmicPhysicsServer3D::body_apply_torque(RID p_body, const Vector3 &p_torqu
 }
 
 void KosmicPhysicsServer3D::body_add_constant_central_force(RID p_body, const Vector3 &p_force) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->add_constant_central_force(p_force);
@@ -755,7 +755,7 @@ void KosmicPhysicsServer3D::body_add_constant_central_force(RID p_body, const Ve
 }
 
 void KosmicPhysicsServer3D::body_add_constant_force(RID p_body, const Vector3 &p_force, const Vector3 &p_position) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->add_constant_force(p_force, p_position);
@@ -763,7 +763,7 @@ void KosmicPhysicsServer3D::body_add_constant_force(RID p_body, const Vector3 &p
 }
 
 void KosmicPhysicsServer3D::body_add_constant_torque(RID p_body, const Vector3 &p_torque) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->add_constant_torque(p_torque);
@@ -771,7 +771,7 @@ void KosmicPhysicsServer3D::body_add_constant_torque(RID p_body, const Vector3 &
 }
 
 void KosmicPhysicsServer3D::body_set_constant_force(RID p_body, const Vector3 &p_force) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_constant_force(p_force);
@@ -781,13 +781,13 @@ void KosmicPhysicsServer3D::body_set_constant_force(RID p_body, const Vector3 &p
 }
 
 Vector3 KosmicPhysicsServer3D::body_get_constant_force(RID p_body) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, Vector3());
 	return body->get_constant_force();
 }
 
 void KosmicPhysicsServer3D::body_set_constant_torque(RID p_body, const Vector3 &p_torque) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_constant_torque(p_torque);
@@ -797,14 +797,14 @@ void KosmicPhysicsServer3D::body_set_constant_torque(RID p_body, const Vector3 &
 }
 
 Vector3 KosmicPhysicsServer3D::body_get_constant_torque(RID p_body) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, Vector3());
 
 	return body->get_constant_torque();
 }
 
 void KosmicPhysicsServer3D::body_set_axis_velocity(RID p_body, const Vector3 &p_axis_velocity) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	_update_shapes();
@@ -818,7 +818,7 @@ void KosmicPhysicsServer3D::body_set_axis_velocity(RID p_body, const Vector3 &p_
 }
 
 void KosmicPhysicsServer3D::body_set_axis_lock(RID p_body, BodyAxis p_axis, bool p_lock) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_axis_lock(p_axis, p_lock);
@@ -826,13 +826,13 @@ void KosmicPhysicsServer3D::body_set_axis_lock(RID p_body, BodyAxis p_axis, bool
 }
 
 bool KosmicPhysicsServer3D::body_is_axis_locked(RID p_body, BodyAxis p_axis) const {
-	const GodotBody3D *body = body_owner.get_or_null(p_body);
+	const KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, false);
 	return body->is_axis_locked(p_axis);
 }
 
 void KosmicPhysicsServer3D::body_add_collision_exception(RID p_body, RID p_body_b) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->add_exception(p_body_b);
@@ -840,7 +840,7 @@ void KosmicPhysicsServer3D::body_add_collision_exception(RID p_body, RID p_body_
 }
 
 void KosmicPhysicsServer3D::body_remove_collision_exception(RID p_body, RID p_body_b) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->remove_exception(p_body_b);
@@ -848,7 +848,7 @@ void KosmicPhysicsServer3D::body_remove_collision_exception(RID p_body, RID p_bo
 }
 
 void KosmicPhysicsServer3D::body_get_collision_exceptions(RID p_body, List<RID> *p_exceptions) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	for (int i = 0; i < body->get_exceptions().size(); i++) {
@@ -857,61 +857,61 @@ void KosmicPhysicsServer3D::body_get_collision_exceptions(RID p_body, List<RID> 
 }
 
 void KosmicPhysicsServer3D::body_set_contacts_reported_depth_threshold(RID p_body, real_t p_threshold) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 }
 
 real_t KosmicPhysicsServer3D::body_get_contacts_reported_depth_threshold(RID p_body) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, 0);
 	return 0;
 }
 
 void KosmicPhysicsServer3D::body_set_omit_force_integration(RID p_body, bool p_omit) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_omit_force_integration(p_omit);
 }
 
 bool KosmicPhysicsServer3D::body_is_omitting_force_integration(RID p_body) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, false);
 	return body->get_omit_force_integration();
 }
 
 void KosmicPhysicsServer3D::body_set_max_contacts_reported(RID p_body, int p_contacts) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	body->set_max_contacts_reported(p_contacts);
 }
 
 int KosmicPhysicsServer3D::body_get_max_contacts_reported(RID p_body) const {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, -1);
 	return body->get_max_contacts_reported();
 }
 
 void KosmicPhysicsServer3D::body_set_state_sync_callback(RID p_body, const Callable &p_callable) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	body->set_state_sync_callback(p_callable);
 }
 
 void KosmicPhysicsServer3D::body_set_force_integration_callback(RID p_body, const Callable &p_callable, const Variant &p_udata) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	body->set_force_integration_callback(p_callable, p_udata);
 }
 
 void KosmicPhysicsServer3D::body_set_ray_pickable(RID p_body, bool p_enable) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	body->set_ray_pickable(p_enable);
 }
 
 bool KosmicPhysicsServer3D::body_test_motion(RID p_body, const MotionParameters &p_parameters, MotionResult *r_result) {
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, false);
 	ERR_FAIL_NULL_V(body->get_space(), false);
 	ERR_FAIL_COND_V(body->get_space()->is_locked(), false);
@@ -928,7 +928,7 @@ PhysicsDirectBodyState3D *KosmicPhysicsServer3D::body_get_direct_state(RID p_bod
 		return nullptr;
 	}
 
-	GodotBody3D *body = body_owner.get_or_null(p_body);
+	KosmicBody3D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, nullptr);
 
 	if (!body->get_space()) {
@@ -1222,7 +1222,7 @@ void KosmicPhysicsServer3D::joint_clear(RID p_joint) {
 }
 
 void KosmicPhysicsServer3D::joint_make_pin(RID p_joint, RID p_body_A, const Vector3 &p_local_A, RID p_body_B, const Vector3 &p_local_B) {
-	GodotBody3D *body_A = body_owner.get_or_null(p_body_A);
+	KosmicBody3D *body_A = body_owner.get_or_null(p_body_A);
 	ERR_FAIL_NULL(body_A);
 
 	if (!p_body_B.is_valid()) {
@@ -1230,7 +1230,7 @@ void KosmicPhysicsServer3D::joint_make_pin(RID p_joint, RID p_body_A, const Vect
 		p_body_B = body_A->get_space()->get_static_global_body();
 	}
 
-	GodotBody3D *body_B = body_owner.get_or_null(p_body_B);
+	KosmicBody3D *body_B = body_owner.get_or_null(p_body_B);
 	ERR_FAIL_NULL(body_B);
 
 	ERR_FAIL_COND(body_A == body_B);
@@ -1294,7 +1294,7 @@ Vector3 KosmicPhysicsServer3D::pin_joint_get_local_b(RID p_joint) const {
 }
 
 void KosmicPhysicsServer3D::joint_make_hinge(RID p_joint, RID p_body_A, const Transform3D &p_frame_A, RID p_body_B, const Transform3D &p_frame_B) {
-	GodotBody3D *body_A = body_owner.get_or_null(p_body_A);
+	KosmicBody3D *body_A = body_owner.get_or_null(p_body_A);
 	ERR_FAIL_NULL(body_A);
 
 	if (!p_body_B.is_valid()) {
@@ -1302,7 +1302,7 @@ void KosmicPhysicsServer3D::joint_make_hinge(RID p_joint, RID p_body_A, const Tr
 		p_body_B = body_A->get_space()->get_static_global_body();
 	}
 
-	GodotBody3D *body_B = body_owner.get_or_null(p_body_B);
+	KosmicBody3D *body_B = body_owner.get_or_null(p_body_B);
 	ERR_FAIL_NULL(body_B);
 
 	ERR_FAIL_COND(body_A == body_B);
@@ -1318,7 +1318,7 @@ void KosmicPhysicsServer3D::joint_make_hinge(RID p_joint, RID p_body_A, const Tr
 }
 
 void KosmicPhysicsServer3D::joint_make_hinge_simple(RID p_joint, RID p_body_A, const Vector3 &p_pivot_A, const Vector3 &p_axis_A, RID p_body_B, const Vector3 &p_pivot_B, const Vector3 &p_axis_B) {
-	GodotBody3D *body_A = body_owner.get_or_null(p_body_A);
+	KosmicBody3D *body_A = body_owner.get_or_null(p_body_A);
 	ERR_FAIL_NULL(body_A);
 
 	if (!p_body_B.is_valid()) {
@@ -1326,7 +1326,7 @@ void KosmicPhysicsServer3D::joint_make_hinge_simple(RID p_joint, RID p_body_A, c
 		p_body_B = body_A->get_space()->get_static_global_body();
 	}
 
-	GodotBody3D *body_B = body_owner.get_or_null(p_body_B);
+	KosmicBody3D *body_B = body_owner.get_or_null(p_body_B);
 	ERR_FAIL_NULL(body_B);
 
 	ERR_FAIL_COND(body_A == body_B);
@@ -1392,8 +1392,8 @@ void KosmicPhysicsServer3D::joint_disable_collisions_between_bodies(RID p_joint,
 	joint->disable_collisions_between_bodies(p_disable);
 
 	if (2 == joint->get_body_count()) {
-		GodotBody3D *body_a = *joint->get_body_ptr();
-		GodotBody3D *body_b = *(joint->get_body_ptr() + 1);
+		KosmicBody3D *body_a = *joint->get_body_ptr();
+		KosmicBody3D *body_b = *(joint->get_body_ptr() + 1);
 
 		if (p_disable) {
 			body_add_collision_exception(body_a->get_self(), body_b->get_self());
@@ -1419,7 +1419,7 @@ KosmicPhysicsServer3D::JointType KosmicPhysicsServer3D::joint_get_type(RID p_joi
 }
 
 void KosmicPhysicsServer3D::joint_make_slider(RID p_joint, RID p_body_A, const Transform3D &p_local_frame_A, RID p_body_B, const Transform3D &p_local_frame_B) {
-	GodotBody3D *body_A = body_owner.get_or_null(p_body_A);
+	KosmicBody3D *body_A = body_owner.get_or_null(p_body_A);
 	ERR_FAIL_NULL(body_A);
 
 	if (!p_body_B.is_valid()) {
@@ -1427,7 +1427,7 @@ void KosmicPhysicsServer3D::joint_make_slider(RID p_joint, RID p_body_A, const T
 		p_body_B = body_A->get_space()->get_static_global_body();
 	}
 
-	GodotBody3D *body_B = body_owner.get_or_null(p_body_B);
+	KosmicBody3D *body_B = body_owner.get_or_null(p_body_B);
 	ERR_FAIL_NULL(body_B);
 
 	ERR_FAIL_COND(body_A == body_B);
@@ -1459,7 +1459,7 @@ real_t KosmicPhysicsServer3D::slider_joint_get_param(RID p_joint, SliderJointPar
 }
 
 void KosmicPhysicsServer3D::joint_make_cone_twist(RID p_joint, RID p_body_A, const Transform3D &p_local_frame_A, RID p_body_B, const Transform3D &p_local_frame_B) {
-	GodotBody3D *body_A = body_owner.get_or_null(p_body_A);
+	KosmicBody3D *body_A = body_owner.get_or_null(p_body_A);
 	ERR_FAIL_NULL(body_A);
 
 	if (!p_body_B.is_valid()) {
@@ -1467,7 +1467,7 @@ void KosmicPhysicsServer3D::joint_make_cone_twist(RID p_joint, RID p_body_A, con
 		p_body_B = body_A->get_space()->get_static_global_body();
 	}
 
-	GodotBody3D *body_B = body_owner.get_or_null(p_body_B);
+	KosmicBody3D *body_B = body_owner.get_or_null(p_body_B);
 	ERR_FAIL_NULL(body_B);
 
 	ERR_FAIL_COND(body_A == body_B);
@@ -1499,7 +1499,7 @@ real_t KosmicPhysicsServer3D::cone_twist_joint_get_param(RID p_joint, ConeTwistJ
 }
 
 void KosmicPhysicsServer3D::joint_make_generic_6dof(RID p_joint, RID p_body_A, const Transform3D &p_local_frame_A, RID p_body_B, const Transform3D &p_local_frame_B) {
-	GodotBody3D *body_A = body_owner.get_or_null(p_body_A);
+	KosmicBody3D *body_A = body_owner.get_or_null(p_body_A);
 	ERR_FAIL_NULL(body_A);
 
 	if (!p_body_B.is_valid()) {
@@ -1507,7 +1507,7 @@ void KosmicPhysicsServer3D::joint_make_generic_6dof(RID p_joint, RID p_body_A, c
 		p_body_B = body_A->get_space()->get_static_global_body();
 	}
 
-	GodotBody3D *body_B = body_owner.get_or_null(p_body_B);
+	KosmicBody3D *body_B = body_owner.get_or_null(p_body_B);
 	ERR_FAIL_NULL(body_B);
 
 	ERR_FAIL_COND(body_A == body_B);
@@ -1515,7 +1515,7 @@ void KosmicPhysicsServer3D::joint_make_generic_6dof(RID p_joint, RID p_body_A, c
 	KosmicJoint3D *prev_joint = joint_owner.get_or_null(p_joint);
 	ERR_FAIL_NULL(prev_joint);
 
-	KosmicJoint3D *joint = memnew(GodotGeneric6DOFJoint3D(body_A, body_B, p_local_frame_A, p_local_frame_B, true));
+	KosmicJoint3D *joint = memnew(KosmicGeneric6DOFJoint3D(body_A, body_B, p_local_frame_A, p_local_frame_B, true));
 
 	joint->copy_settings_from(prev_joint);
 	joint_owner.replace(p_joint, joint);
@@ -1526,7 +1526,7 @@ void KosmicPhysicsServer3D::generic_6dof_joint_set_param(RID p_joint, Vector3::A
 	KosmicJoint3D *joint = joint_owner.get_or_null(p_joint);
 	ERR_FAIL_NULL(joint);
 	ERR_FAIL_COND(joint->get_type() != JOINT_TYPE_6DOF);
-	GodotGeneric6DOFJoint3D *generic_6dof_joint = static_cast<GodotGeneric6DOFJoint3D *>(joint);
+	KosmicGeneric6DOFJoint3D *generic_6dof_joint = static_cast<KosmicGeneric6DOFJoint3D *>(joint);
 	generic_6dof_joint->set_param(p_axis, p_param, p_value);
 }
 
@@ -1534,7 +1534,7 @@ real_t KosmicPhysicsServer3D::generic_6dof_joint_get_param(RID p_joint, Vector3:
 	KosmicJoint3D *joint = joint_owner.get_or_null(p_joint);
 	ERR_FAIL_NULL_V(joint, 0);
 	ERR_FAIL_COND_V(joint->get_type() != JOINT_TYPE_6DOF, 0);
-	GodotGeneric6DOFJoint3D *generic_6dof_joint = static_cast<GodotGeneric6DOFJoint3D *>(joint);
+	KosmicGeneric6DOFJoint3D *generic_6dof_joint = static_cast<KosmicGeneric6DOFJoint3D *>(joint);
 	return generic_6dof_joint->get_param(p_axis, p_param);
 }
 
@@ -1542,7 +1542,7 @@ void KosmicPhysicsServer3D::generic_6dof_joint_set_flag(RID p_joint, Vector3::Ax
 	KosmicJoint3D *joint = joint_owner.get_or_null(p_joint);
 	ERR_FAIL_NULL(joint);
 	ERR_FAIL_COND(joint->get_type() != JOINT_TYPE_6DOF);
-	GodotGeneric6DOFJoint3D *generic_6dof_joint = static_cast<GodotGeneric6DOFJoint3D *>(joint);
+	KosmicGeneric6DOFJoint3D *generic_6dof_joint = static_cast<KosmicGeneric6DOFJoint3D *>(joint);
 	generic_6dof_joint->set_flag(p_axis, p_flag, p_enable);
 }
 
@@ -1550,7 +1550,7 @@ bool KosmicPhysicsServer3D::generic_6dof_joint_get_flag(RID p_joint, Vector3::Ax
 	KosmicJoint3D *joint = joint_owner.get_or_null(p_joint);
 	ERR_FAIL_NULL_V(joint, false);
 	ERR_FAIL_COND_V(joint->get_type() != JOINT_TYPE_6DOF, false);
-	GodotGeneric6DOFJoint3D *generic_6dof_joint = static_cast<GodotGeneric6DOFJoint3D *>(joint);
+	KosmicGeneric6DOFJoint3D *generic_6dof_joint = static_cast<KosmicGeneric6DOFJoint3D *>(joint);
 	return generic_6dof_joint->get_flag(p_axis, p_flag);
 }
 
@@ -1568,7 +1568,7 @@ void KosmicPhysicsServer3D::free(RID p_rid) {
 		shape_owner.free(p_rid);
 		memdelete(shape);
 	} else if (body_owner.owns(p_rid)) {
-		GodotBody3D *body = body_owner.get_or_null(p_rid);
+		KosmicBody3D *body = body_owner.get_or_null(p_rid);
 
 		body->set_space(nullptr);
 
@@ -1586,7 +1586,7 @@ void KosmicPhysicsServer3D::free(RID p_rid) {
 		soft_body_owner.free(p_rid);
 		memdelete(soft_body);
 	} else if (area_owner.owns(p_rid)) {
-		GodotArea3D *area = area_owner.get_or_null(p_rid);
+		KosmicArea3D *area = area_owner.get_or_null(p_rid);
 
 		area->set_space(nullptr);
 
@@ -1768,7 +1768,7 @@ void KosmicPhysicsServer3D::_shape_col_cbk(const Vector3 &p_point_A, int p_index
 KosmicPhysicsServer3D *KosmicPhysicsServer3D::kosmic_singleton = nullptr;
 KosmicPhysicsServer3D::KosmicPhysicsServer3D(bool p_using_threads) {
 	kosmic_singleton = this;
-	GodotBroadPhase3D::create_func = GodotBroadPhase3DBVH::_create;
+	KosmicBroadPhase3D::create_func = KosmicBroadPhase3DBVH::_create;
 
 	using_threads = p_using_threads;
 }

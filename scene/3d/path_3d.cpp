@@ -93,7 +93,7 @@ void Path3D::_update_debug_mesh() {
 		debug_mesh.instantiate();
 	}
 
-	if (!(curve.is_valid())) {
+	if (curve.is_null()) {
 		RS::get_singleton()->instance_set_visible(debug_instance, false);
 		return;
 	}
@@ -132,16 +132,19 @@ void Path3D::_update_debug_mesh() {
 		// Path3D as a ribbon.
 		ribbon_ptr[i] = p1;
 
-		// Fish Bone.
-		const Vector3 p_left = p1 + (side + forward - up * 0.3) * 0.06;
-		const Vector3 p_right = p1 + (-side + forward - up * 0.3) * 0.06;
+		if (i % 4 == 0) {
+			// Draw fish bone every 4 points to reduce visual noise and performance impact
+			// (compared to drawing it for every point).
+			const Vector3 p_left = p1 + (side + forward - up * 0.3) * 0.06;
+			const Vector3 p_right = p1 + (-side + forward - up * 0.3) * 0.06;
 
-		const int bone_idx = i * 4;
+			const int bone_idx = i * 4;
 
-		bones_ptr[bone_idx] = p1;
-		bones_ptr[bone_idx + 1] = p_left;
-		bones_ptr[bone_idx + 2] = p1;
-		bones_ptr[bone_idx + 3] = p_right;
+			bones_ptr[bone_idx] = p1;
+			bones_ptr[bone_idx + 1] = p_left;
+			bones_ptr[bone_idx + 2] = p1;
+			bones_ptr[bone_idx + 3] = p_right;
+		}
 	}
 
 	Array ribbon_array;
@@ -223,7 +226,7 @@ void PathFollow3D::update_transform() {
 	}
 
 	Ref<Curve3D> c = path->get_curve();
-	if (!c.is_valid()) {
+	if (c.is_null()) {
 		return;
 	}
 

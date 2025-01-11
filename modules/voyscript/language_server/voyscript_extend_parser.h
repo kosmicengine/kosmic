@@ -44,12 +44,12 @@
 #define COLUMN_NUMBER_TO_INDEX(p_column) ((p_column) - 1)
 #endif
 
-#ifndef SYMBOL_SEPERATOR
-#define SYMBOL_SEPERATOR "::"
+#ifndef SYMBOL_SEPARATOR
+#define SYMBOL_SEPARATOR "::"
 #endif
 
 #ifndef JOIN_SYMBOLS
-#define JOIN_SYMBOLS(p_path, name) ((p_path) + SYMBOL_SEPERATOR + (name))
+#define JOIN_SYMBOLS(p_path, name) ((p_path) + SYMBOL_SEPARATOR + (name))
 #endif
 
 typedef HashMap<String, const lsp::DocumentSymbol *> ClassMembers;
@@ -68,7 +68,7 @@ typedef HashMap<String, const lsp::DocumentSymbol *> ClassMembers;
  * →→var my_value = 42
  * ```
  * `_` is at:
- * * Godot: `column=12`
+ * * Kosmic: `column=12`
  * 	* using `indent/size=4`
  * 	* Note: counting starts at `1`
  * * LSP: `character=8`

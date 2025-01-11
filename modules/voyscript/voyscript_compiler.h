@@ -150,7 +150,7 @@ class VoyScriptCompiler {
 
 	void _set_error(const String &p_error, const VoyScriptParser::Node *p_node);
 
-	VoyScriptDataType _gdtype_from_datatype(const VoyScriptParser::DataType &p_datatype, VoyScript *p_owner, bool p_handle_metatype = true);
+	VoyScriptDataType _kstype_from_datatype(const VoyScriptParser::DataType &p_datatype, VoyScript *p_owner, bool p_handle_metatype = true);
 
 	VoyScriptCodeGenerator::Address _parse_expression(CodeGen &codegen, Error &r_error, const VoyScriptParser::ExpressionNode *p_expression, bool p_root = false, bool p_initializer = false);
 	VoyScriptCodeGenerator::Address _parse_match_pattern(CodeGen &codegen, Error &r_error, const VoyScriptParser::PatternNode *p_pattern, const VoyScriptCodeGenerator::Address &p_value_addr, const VoyScriptCodeGenerator::Address &p_type_addr, const VoyScriptCodeGenerator::Address &p_previous_test, bool p_is_first, bool p_is_nested);

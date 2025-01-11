@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 using System;
 
 public partial class ExportedProperties : KosmicObject
@@ -176,11 +176,11 @@ public partial class ExportedProperties : KosmicObject
     private Kosmic.Collections.Dictionary PropertyKosmicDictionary { get; set; } = new() { { "foo", 10 }, { Vector2.Up, Colors.Chocolate } };
 
     [Export]
-    private Kosmic.Collections.Array PropertyGodotArray { get; set; } = new() { "foo", 10, Vector2.Up, Colors.Chocolate };
+    private Kosmic.Collections.Array PropertyKosmicArray { get; set; } = new() { "foo", 10, Vector2.Up, Colors.Chocolate };
 
     [Export]
-    private Kosmic.Collections.Dictionary<string, bool> PropertyGodotGenericDictionary { get; set; } = new() { { "foo", true }, { "bar", false } };
+    private Kosmic.Collections.Dictionary<string, bool> PropertyKosmicGenericDictionary { get; set; } = new() { { "foo", true }, { "bar", false } };
 
     [Export]
-    private Kosmic.Collections.Array<int> PropertyGodotGenericArray { get; set; } = new() { 0, 1, 2, 3, 4, 5, 6 };
+    private Kosmic.Collections.Array<int> PropertyKosmicGenericArray { get; set; } = new() { 0, 1, 2, 3, 4, 5, 6 };
 }

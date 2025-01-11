@@ -1,16 +1,16 @@
 # Irish translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Rónán Quill <ronan085@gmail.com>, 2019, 2020.
 # Aindriú Mac Giolla Eoin <aindriu80@gmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "PO-Revision-Date: 2024-08-14 12:59+0000\n"
 "Last-Translator: Aindriú Mac Giolla Eoin <aindriu80@gmail.com>\n"
-"Language-Team: Irish <https://hosted.weblate.org/projects/godot-engine/godot/"
+"Language-Team: Irish <https://hosted.weblate.org/projects/kosmic-engine/godot/"
 "ga/>\n"
 "Language: ga\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2518,7 +2518,7 @@ msgstr "[folamh]"
 msgid "[unsaved]"
 msgstr "[gan sásamh]"
 
-msgid "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
 msgstr "%s - Inneall Godot"
 
 msgid "Move this dock right one tab."
@@ -13859,22 +13859,22 @@ msgstr ""
 "Limistéar dronuilleogach le teaghrán cur síos d'eagraíocht graf níos fearr."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
-"Saincheaptha Kosmic Shader Teanga léiriú, le méid saincheaptha ionchur agus "
+"Saincheaptha Godot Shader Teanga léiriú, le méid saincheaptha ionchur agus "
 "calafoirt aschur. Is instealladh díreach cód é seo isteach sa fheidhm "
 "vertex / fragment / light, ná húsáid é chun na dearbhuithe feidhme a scríobh "
 "taobh istigh."
 
 msgid ""
-"Custom Kosmic Shader Language expression, which is placed on top of the "
+"Custom Godot Shader Language expression, which is placed on top of the "
 "resulted shader. You can place various function definitions inside and call "
 "it later in the Expressions. You can also declare varyings, parameters and "
 "constants."
 msgstr ""
-"Custom Kosmic Shader Language expression, a chuirtear ar bharr an shader mar "
+"Custom Godot Shader Language expression, a chuirtear ar bharr an shader mar "
 "thoradh air. Is féidir leat sainmhínithe feidhme éagsúla a chur taobh istigh "
 "agus é a ghlaoch níos déanaí sna Nathanna. Is féidir leat a dhearbhú freisin "
 "éagsúla, paraiméadair agus tairisigh."

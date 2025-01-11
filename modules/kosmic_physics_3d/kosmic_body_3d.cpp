@@ -36,13 +36,13 @@
 #include "kosmic_constraint_3d.h"
 #include "kosmic_space_3d.h"
 
-void GodotBody3D::_mass_properties_changed() {
+void KosmicBody3D::_mass_properties_changed() {
 	if (get_space() && !mass_properties_update_list.in_list()) {
 		get_space()->body_add_to_mass_properties_update_list(&mass_properties_update_list);
 	}
 }
 
-void GodotBody3D::_update_transform_dependent() {
+void KosmicBody3D::_update_transform_dependent() {
 	center_of_mass = get_transform().basis.xform(center_of_mass_local);
 	principal_inertia_axes = get_transform().basis * principal_inertia_axes_local;
 
@@ -54,7 +54,7 @@ void GodotBody3D::_update_transform_dependent() {
 	_inv_inertia_tensor = tb * diag * tbt;
 }
 
-void GodotBody3D::update_mass_properties() {
+void KosmicBody3D::update_mass_properties() {
 	// Update shapes and motions.
 
 	switch (mode) {
@@ -166,13 +166,13 @@ void GodotBody3D::update_mass_properties() {
 	_update_transform_dependent();
 }
 
-void GodotBody3D::reset_mass_properties() {
+void KosmicBody3D::reset_mass_properties() {
 	calculate_inertia = true;
 	calculate_center_of_mass = true;
 	_mass_properties_changed();
 }
 
-void GodotBody3D::set_active(bool p_active) {
+void KosmicBody3D::set_active(bool p_active) {
 	if (active == p_active) {
 		return;
 	}
@@ -191,7 +191,7 @@ void GodotBody3D::set_active(bool p_active) {
 	}
 }
 
-void GodotBody3D::set_param(PhysicsServer3D::BodyParameter p_param, const Variant &p_value) {
+void KosmicBody3D::set_param(PhysicsServer3D::BodyParameter p_param, const Variant &p_value) {
 	switch (p_param) {
 		case PhysicsServer3D::BODY_PARAM_BOUNCE: {
 			bounce = p_value;
@@ -253,7 +253,7 @@ void GodotBody3D::set_param(PhysicsServer3D::BodyParameter p_param, const Varian
 	}
 }
 
-Variant GodotBody3D::get_param(PhysicsServer3D::BodyParameter p_param) const {
+Variant KosmicBody3D::get_param(PhysicsServer3D::BodyParameter p_param) const {
 	switch (p_param) {
 		case PhysicsServer3D::BODY_PARAM_BOUNCE: {
 			return bounce;
@@ -297,7 +297,7 @@ Variant GodotBody3D::get_param(PhysicsServer3D::BodyParameter p_param) const {
 	return 0;
 }
 
-void GodotBody3D::set_mode(PhysicsServer3D::BodyMode p_mode) {
+void KosmicBody3D::set_mode(PhysicsServer3D::BodyMode p_mode) {
 	PhysicsServer3D::BodyMode prev = mode;
 	mode = p_mode;
 
@@ -340,17 +340,17 @@ void GodotBody3D::set_mode(PhysicsServer3D::BodyMode p_mode) {
 	}
 }
 
-PhysicsServer3D::BodyMode GodotBody3D::get_mode() const {
+PhysicsServer3D::BodyMode KosmicBody3D::get_mode() const {
 	return mode;
 }
 
-void GodotBody3D::_shapes_changed() {
+void KosmicBody3D::_shapes_changed() {
 	_mass_properties_changed();
 	wakeup();
 	wakeup_neighbours();
 }
 
-void GodotBody3D::set_state(PhysicsServer3D::BodyState p_state, const Variant &p_variant) {
+void KosmicBody3D::set_state(PhysicsServer3D::BodyState p_state, const Variant &p_variant) {
 	switch (p_state) {
 		case PhysicsServer3D::BODY_STATE_TRANSFORM: {
 			if (mode == PhysicsServer3D::BODY_MODE_KINEMATIC) {
@@ -417,7 +417,7 @@ void GodotBody3D::set_state(PhysicsServer3D::BodyState p_state, const Variant &p
 	}
 }
 
-Variant GodotBody3D::get_state(PhysicsServer3D::BodyState p_state) const {
+Variant KosmicBody3D::get_state(PhysicsServer3D::BodyState p_state) const {
 	switch (p_state) {
 		case PhysicsServer3D::BODY_STATE_TRANSFORM: {
 			return get_transform();
@@ -439,7 +439,7 @@ Variant GodotBody3D::get_state(PhysicsServer3D::BodyState p_state) const {
 	return Variant();
 }
 
-void GodotBody3D::set_space(KosmicSpace3D *p_space) {
+void KosmicBody3D::set_space(KosmicSpace3D *p_space) {
 	if (get_space()) {
 		if (mass_properties_update_list.in_list()) {
 			get_space()->body_remove_from_mass_properties_update_list(&mass_properties_update_list);
@@ -463,7 +463,7 @@ void GodotBody3D::set_space(KosmicSpace3D *p_space) {
 	}
 }
 
-void GodotBody3D::set_axis_lock(PhysicsServer3D::BodyAxis p_axis, bool lock) {
+void KosmicBody3D::set_axis_lock(PhysicsServer3D::BodyAxis p_axis, bool lock) {
 	if (lock) {
 		locked_axis |= p_axis;
 	} else {
@@ -471,11 +471,11 @@ void GodotBody3D::set_axis_lock(PhysicsServer3D::BodyAxis p_axis, bool lock) {
 	}
 }
 
-bool GodotBody3D::is_axis_locked(PhysicsServer3D::BodyAxis p_axis) const {
+bool KosmicBody3D::is_axis_locked(PhysicsServer3D::BodyAxis p_axis) const {
 	return locked_axis & p_axis;
 }
 
-void GodotBody3D::integrate_forces(real_t p_step) {
+void KosmicBody3D::integrate_forces(real_t p_step) {
 	if (mode == PhysicsServer3D::BODY_MODE_STATIC) {
 		return;
 	}
@@ -567,7 +567,7 @@ void GodotBody3D::integrate_forces(real_t p_step) {
 
 	// Add default gravity and damping from space area.
 	if (!stopped) {
-		GodotArea3D *default_area = get_space()->get_default_area();
+		KosmicArea3D *default_area = get_space()->get_default_area();
 		ERR_FAIL_NULL(default_area);
 
 		if (!gravity_done) {
@@ -672,7 +672,7 @@ void GodotBody3D::integrate_forces(real_t p_step) {
 	contact_count = 0;
 }
 
-void GodotBody3D::integrate_velocities(real_t p_step) {
+void KosmicBody3D::integrate_velocities(real_t p_step) {
 	if (mode == PhysicsServer3D::BODY_MODE_STATIC) {
 		return;
 	}
@@ -738,17 +738,17 @@ void GodotBody3D::integrate_velocities(real_t p_step) {
 	_update_transform_dependent();
 }
 
-void GodotBody3D::wakeup_neighbours() {
+void KosmicBody3D::wakeup_neighbours() {
 	for (const KeyValue<KosmicConstraint3D *, int> &E : constraint_map) {
 		const KosmicConstraint3D *c = E.key;
-		GodotBody3D **n = c->get_body_ptr();
+		KosmicBody3D **n = c->get_body_ptr();
 		int bc = c->get_body_count();
 
 		for (int i = 0; i < bc; i++) {
 			if (i == E.value) {
 				continue;
 			}
-			GodotBody3D *b = n[i];
+			KosmicBody3D *b = n[i];
 			if (b->mode < PhysicsServer3D::BODY_MODE_RIGID) {
 				continue;
 			}
@@ -760,7 +760,7 @@ void GodotBody3D::wakeup_neighbours() {
 	}
 }
 
-void GodotBody3D::call_queries() {
+void KosmicBody3D::call_queries() {
 	Variant direct_state_variant = get_direct_state();
 
 	if (fi_callback_data) {
@@ -781,7 +781,7 @@ void GodotBody3D::call_queries() {
 	}
 }
 
-bool GodotBody3D::sleep_test(real_t p_step) {
+bool KosmicBody3D::sleep_test(real_t p_step) {
 	if (mode == PhysicsServer3D::BODY_MODE_STATIC || mode == PhysicsServer3D::BODY_MODE_KINEMATIC) {
 		return true;
 	} else if (!can_sleep) {
@@ -800,11 +800,11 @@ bool GodotBody3D::sleep_test(real_t p_step) {
 	}
 }
 
-void GodotBody3D::set_state_sync_callback(const Callable &p_callable) {
+void KosmicBody3D::set_state_sync_callback(const Callable &p_callable) {
 	body_state_callback = p_callable;
 }
 
-void GodotBody3D::set_force_integration_callback(const Callable &p_callable, const Variant &p_udata) {
+void KosmicBody3D::set_force_integration_callback(const Callable &p_callable, const Variant &p_udata) {
 	if (p_callable.is_valid()) {
 		if (!fi_callback_data) {
 			fi_callback_data = memnew(ForceIntegrationCallbackData);
@@ -817,7 +817,7 @@ void GodotBody3D::set_force_integration_callback(const Callable &p_callable, con
 	}
 }
 
-KosmicPhysicsDirectBodyState3D *GodotBody3D::get_direct_state() {
+KosmicPhysicsDirectBodyState3D *KosmicBody3D::get_direct_state() {
 	if (!direct_state) {
 		direct_state = memnew(KosmicPhysicsDirectBodyState3D);
 		direct_state->body = this;
@@ -825,7 +825,7 @@ KosmicPhysicsDirectBodyState3D *GodotBody3D::get_direct_state() {
 	return direct_state;
 }
 
-GodotBody3D::GodotBody3D() :
+KosmicBody3D::KosmicBody3D() :
 		KosmicCollisionObject3D(TYPE_BODY),
 		active_list(this),
 		mass_properties_update_list(this),
@@ -833,7 +833,7 @@ GodotBody3D::GodotBody3D() :
 	_set_static(false);
 }
 
-GodotBody3D::~GodotBody3D() {
+KosmicBody3D::~KosmicBody3D() {
 	if (fi_callback_data) {
 		memdelete(fi_callback_data);
 	}

@@ -30,7 +30,7 @@
   <url type="faq">https://docs.kosmicengine.org/en/latest/about/faq.html</url>
   <url type="help">https://docs.kosmicengine.org</url>
   <url type="donation">https://godotengine.org/donate</url>
-  <url type="translate">https://hosted.weblate.org/projects/godot-engine/godot</url>
+  <url type="translate">https://hosted.weblate.org/projects/kosmic-engine/godot</url>
   <developer_name>The Godot Engine Community</developer_name>
   <update_contact>akien_at_kosmicengine_dot_org</update_contact>
 </component>

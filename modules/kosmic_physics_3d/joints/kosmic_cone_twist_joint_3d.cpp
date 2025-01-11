@@ -30,7 +30,7 @@
 /**************************************************************************/
 
 /*
-Adapted to Godot from the Bullet library.
+Adapted to Kosmic from the Bullet library.
 */
 
 /*
@@ -52,7 +52,7 @@ Written by: Marcus Hennix
 
 #include "kosmic_cone_twist_joint_3d.h"
 
-KosmicConeTwistJoint3D::KosmicConeTwistJoint3D(GodotBody3D *rbA, GodotBody3D *rbB, const Transform3D &rbAFrame, const Transform3D &rbBFrame) :
+KosmicConeTwistJoint3D::KosmicConeTwistJoint3D(KosmicBody3D *rbA, KosmicBody3D *rbB, const Transform3D &rbAFrame, const Transform3D &rbBFrame) :
 		KosmicJoint3D(_arr, 2) {
 	A = rbA;
 	B = rbB;

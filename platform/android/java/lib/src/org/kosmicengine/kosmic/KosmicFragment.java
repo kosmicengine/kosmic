@@ -92,7 +92,7 @@ public class KosmicFragment extends Fragment implements IDownloaderClient, Kosmi
 	private Button mPauseButton;
 	private Button mWiFiSettingsButton;
 
-	private FrameLayout godotContainerLayout;
+	private FrameLayout kosmicContainerLayout;
 	private boolean mStatePaused;
 	private int mState;
 
@@ -129,8 +129,8 @@ public class KosmicFragment extends Fragment implements IDownloaderClient, Kosmi
 	public ResultCallback resultCallback;
 
 	@Override
-	public Godot getGodot() {
-		return godot;
+	public Kosmic getKosmic() {
+		return kosmic;
 	}
 
 	@Override
@@ -153,7 +153,7 @@ public class KosmicFragment extends Fragment implements IDownloaderClient, Kosmi
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		godot.onConfigurationChanged(newConfig);
+		kosmic.onConfigurationChanged(newConfig);
 	}
 
 	@CallSuper
@@ -165,14 +165,14 @@ public class KosmicFragment extends Fragment implements IDownloaderClient, Kosmi
 			resultCallback = null;
 		}
 
-		godot.onActivityResult(requestCode, resultCode, data);
+		kosmic.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@CallSuper
 	@Override
 	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		godot.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		kosmic.onRequestPermissionsResult(requestCode, permissions, grantResults);
 	}
 
 	@Override
@@ -190,10 +190,10 @@ public class KosmicFragment extends Fragment implements IDownloaderClient, Kosmi
 		mCurrentIntent = activity.getIntent();
 
 		if (parentHost != null) {
-			godot = parentHost.getGodot();
+			kosmic = parentHost.getKosmic();
 		}
-		if (godot == null) {
-			godot = new Godot(requireContext());
+		if (kosmic == null) {
+			kosmic = new Kosmic(requireContext());
 		}
 		performEngineInitialization();
 		BenchmarkUtils.endBenchmarkMeasure("Startup", "KosmicFragment::onCreate");
@@ -201,14 +201,14 @@ public class KosmicFragment extends Fragment implements IDownloaderClient, Kosmi
 
 	private void performEngineInitialization() {
 		try {
-			godot.onCreate(this);
+			kosmic.onCreate(this);
 
-			if (!godot.onInitNativeLayer(this)) {
+			if (!kosmic.onInitNativeLayer(this)) {
 				throw new IllegalStateException("Unable to initialize engine native layer");
 			}
 
-			godotContainerLayout = godot.onInitRenderView(this);
-			if (godotContainerLayout == null) {
+			kosmicContainerLayout = kosmic.onInitRenderView(this);
+			if (kosmicContainerLayout == null) {
 				throw new IllegalStateException("Unable to initialize engine render view");
 			}
 		} catch (IllegalStateException e) {
@@ -216,7 +216,7 @@ public class KosmicFragment extends Fragment implements IDownloaderClient, Kosmi
 			final String errorMessage = TextUtils.isEmpty(e.getMessage())
 					? getString(R.string.error_engine_setup_message)
 					: e.getMessage();
-			godot.alert(errorMessage, getString(R.string.text_error_title), godot::destroyAndKillProcess);
+			kosmic.alert(errorMessage, getString(R.string.text_error_title), kosmic::destroyAndKillProcess);
 		} catch (IllegalArgumentException ignored) {
 			final Activity activity = getActivity();
 			Intent notifierIntent = new Intent(activity, activity.getClass());
@@ -269,12 +269,12 @@ public class KosmicFragment extends Fragment implements IDownloaderClient, Kosmi
 			return downloadingExpansionView;
 		}
 
-		return godotContainerLayout;
+		return kosmicContainerLayout;
 	}
 
 	@Override
 	public void onDestroy() {
-		godot.onDestroy(this);
+		kosmic.onDestroy(this);
 		super.onDestroy();
 	}
 
@@ -282,57 +282,57 @@ public class KosmicFragment extends Fragment implements IDownloaderClient, Kosmi
 	public void onPause() {
 		super.onPause();
 
-		if (!godot.isInitialized()) {
+		if (!kosmic.isInitialized()) {
 			if (null != mDownloaderClientStub) {
 				mDownloaderClientStub.disconnect(getActivity());
 			}
 			return;
 		}
 
-		godot.onPause(this);
+		kosmic.onPause(this);
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
-		if (!godot.isInitialized()) {
+		if (!kosmic.isInitialized()) {
 			if (null != mDownloaderClientStub) {
 				mDownloaderClientStub.disconnect(getActivity());
 			}
 			return;
 		}
 
-		godot.onStop(this);
+		kosmic.onStop(this);
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		if (!godot.isInitialized()) {
+		if (!kosmic.isInitialized()) {
 			if (null != mDownloaderClientStub) {
 				mDownloaderClientStub.connect(getActivity());
 			}
 			return;
 		}
 
-		godot.onStart(this);
+		kosmic.onStart(this);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!godot.isInitialized()) {
+		if (!kosmic.isInitialized()) {
 			if (null != mDownloaderClientStub) {
 				mDownloaderClientStub.connect(getActivity());
 			}
 			return;
 		}
 
-		godot.onResume(this);
+		kosmic.onResume(this);
 	}
 
 	public void onBackPressed() {
-		godot.onBackPressed();
+		kosmic.onBackPressed();
 	}
 
 	/**
@@ -445,26 +445,26 @@ public class KosmicFragment extends Fragment implements IDownloaderClient, Kosmi
 
 	@CallSuper
 	@Override
-	public void onGodotMainLoopStarted() {
+	public void onKosmicMainLoopStarted() {
 		if (parentHost != null) {
-			parentHost.onGodotMainLoopStarted();
+			parentHost.onKosmicMainLoopStarted();
 		}
 	}
 
 	@Override
-	public void onKosmicForceQuit(Godot instance) {
+	public void onKosmicForceQuit(Kosmic instance) {
 		if (parentHost != null) {
 			parentHost.onKosmicForceQuit(instance);
 		}
 	}
 
 	@Override
-	public boolean onKosmicForceQuit(int godotInstanceId) {
-		return parentHost != null && parentHost.onKosmicForceQuit(godotInstanceId);
+	public boolean onKosmicForceQuit(int kosmicInstanceId) {
+		return parentHost != null && parentHost.onKosmicForceQuit(kosmicInstanceId);
 	}
 
 	@Override
-	public void onKosmicRestartRequested(Godot instance) {
+	public void onKosmicRestartRequested(Kosmic instance) {
 		if (parentHost != null) {
 			parentHost.onKosmicRestartRequested(instance);
 		}
@@ -480,7 +480,7 @@ public class KosmicFragment extends Fragment implements IDownloaderClient, Kosmi
 
 	@Override
 	@CallSuper
-	public Set<KosmicPlugin> getHostPlugins(Godot engine) {
+	public Set<KosmicPlugin> getHostPlugins(Kosmic engine) {
 		if (parentHost != null) {
 			return parentHost.getHostPlugins(engine);
 		}

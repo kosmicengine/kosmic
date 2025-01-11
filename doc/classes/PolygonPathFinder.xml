@@ -62,8 +62,8 @@
 				];
 				int[] connections = [0, 1, 1, 2, 2, 0];
 				polygonPathFinder.Setup(points, connections);
-				KS.Print(polygonPathFinder.IsPointInside(new Vector2(0.2f, 0.2f))); // Prints True
-				KS.Print(polygonPathFinder.IsPointInside(new Vector2(1.0f, 1.0f))); // Prints False
+				GD.Print(polygonPathFinder.IsPointInside(new Vector2(0.2f, 0.2f))); // Prints True
+				GD.Print(polygonPathFinder.IsPointInside(new Vector2(1.0f, 1.0f))); // Prints False
 				[/csharp]
 				[/codeblocks]
 			</description>

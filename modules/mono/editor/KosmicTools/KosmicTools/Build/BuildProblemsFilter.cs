@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 using System.Globalization;
 
 namespace KosmicTools.Build

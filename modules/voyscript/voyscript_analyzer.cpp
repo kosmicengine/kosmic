@@ -46,7 +46,7 @@
 #include "scene/main/node.h"
 
 #if defined(TOOLS_ENABLED) && !defined(DISABLE_DEPRECATED)
-#define SUGGEST_KOSMIC4_RENAMES
+#define SUGGEST_GODOT4_RENAMES
 #include "editor/renames_map_3_to_4.h"
 #endif
 
@@ -793,7 +793,7 @@ VoyScriptParser::DataType VoyScriptAnalyzer::resolve_datatype(VoyScriptParser::T
 				String ext = path.get_extension();
 				if (ext == VoyScriptLanguage::get_singleton()->get_extension()) {
 					Ref<VoyScriptParserRef> ref = parser->get_depended_parser_for(path);
-					if (!ref.is_valid() || ref->raise_status(VoyScriptParserRef::INHERITANCE_SOLVED) != OK) {
+					if (ref.is_null() || ref->raise_status(VoyScriptParserRef::INHERITANCE_SOLVED) != OK) {
 						push_error(vformat(R"(Could not parse global class "%s" from "%s".)", first, ScriptServer::get_global_class_path(first)), p_type);
 						return bad_type;
 					}
@@ -3116,7 +3116,7 @@ void VoyScriptAnalyzer::reduce_binary_op(VoyScriptParser::BinaryOpNode *p_binary
 	p_binary_op->set_datatype(result);
 }
 
-#ifdef SUGGEST_KOSMIC4_RENAMES
+#ifdef SUGGEST_GODOT4_RENAMES
 const char *get_rename_from_map(const char *map[][2], String key) {
 	for (int index = 0; map[index][0]; index++) {
 		if (map[index][0] == key) {
@@ -3168,7 +3168,7 @@ const char *check_for_renamed_identifier(String identifier, VoyScriptParser::Nod
 			return nullptr;
 	}
 }
-#endif // SUGGEST_KOSMIC4_RENAMES
+#endif // SUGGEST_GODOT4_RENAMES
 
 void VoyScriptAnalyzer::reduce_call(VoyScriptParser::CallNode *p_call, bool p_is_await, bool p_is_root) {
 	bool all_is_constant = true;
@@ -3689,9 +3689,9 @@ void VoyScriptAnalyzer::reduce_call(VoyScriptParser::CallNode *p_call, bool p_is
 		}
 		if (!found && (is_self || (base_type.is_hard_type() && base_type.kind == VoyScriptParser::DataType::BUILTIN))) {
 			String base_name = is_self && !p_call->is_super ? "self" : base_type.to_string();
-#ifdef SUGGEST_KOSMIC4_RENAMES
+#ifdef SUGGEST_GODOT4_RENAMES
 			String rename_hint;
-			if (GLOBAL_GET(VoyScriptWarning::get_settings_path_from_code(VoyScriptWarning::RENAMED_IN_KOSMIC_4_HINT)).booleanize()) {
+			if (GLOBAL_GET("debug/voyscript/warnings/renamed_in_kosmic_4_hint")) {
 				const char *renamed_function_name = check_for_renamed_identifier(p_call->function_name, p_call->type);
 				if (renamed_function_name) {
 					rename_hint = " " + vformat(R"(Did you mean to use "%s"?)", String(renamed_function_name) + "()");
@@ -3700,7 +3700,7 @@ void VoyScriptAnalyzer::reduce_call(VoyScriptParser::CallNode *p_call, bool p_is
 			push_error(vformat(R"*(Function "%s()" not found in base %s.%s)*", p_call->function_name, base_name, rename_hint), p_call->is_super ? p_call : p_call->callee);
 #else
 			push_error(vformat(R"*(Function "%s()" not found in base %s.)*", p_call->function_name, base_name), p_call->is_super ? p_call : p_call->callee);
-#endif // SUGGEST_KOSMIC4_RENAMES
+#endif // SUGGEST_GODOT4_RENAMES
 		} else if (!found && (!p_call->is_super && base_type.is_hard_type() && base_type.is_meta_type)) {
 			push_error(vformat(R"*(Static function "%s()" not found in base "%s".)*", p_call->function_name, base_type.to_string()), p_call);
 		}
@@ -4035,9 +4035,9 @@ void VoyScriptAnalyzer::reduce_identifier_from_base(VoyScriptParser::IdentifierN
 			}
 
 			if (!valid && base.is_hard_type()) {
-#ifdef SUGGEST_KOSMIC4_RENAMES
+#ifdef SUGGEST_GODOT4_RENAMES
 				String rename_hint;
-				if (GLOBAL_GET(VoyScriptWarning::get_settings_path_from_code(VoyScriptWarning::RENAMED_IN_KOSMIC_4_HINT)).booleanize()) {
+				if (GLOBAL_GET("debug/voyscript/warnings/renamed_in_kosmic_4_hint")) {
 					const char *renamed_identifier_name = check_for_renamed_identifier(name, p_identifier->type);
 					if (renamed_identifier_name) {
 						rename_hint = " " + vformat(R"(Did you mean to use "%s"?)", renamed_identifier_name);
@@ -4046,7 +4046,7 @@ void VoyScriptAnalyzer::reduce_identifier_from_base(VoyScriptParser::IdentifierN
 				push_error(vformat(R"(Cannot find member "%s" in base "%s".%s)", name, base.to_string(), rename_hint), p_identifier);
 #else
 				push_error(vformat(R"(Cannot find member "%s" in base "%s".)", name, base.to_string()), p_identifier);
-#endif // SUGGEST_KOSMIC4_RENAMES
+#endif // SUGGEST_GODOT4_RENAMES
 			}
 		} else {
 			switch (base.builtin_type) {
@@ -4079,9 +4079,9 @@ void VoyScriptAnalyzer::reduce_identifier_from_base(VoyScriptParser::IdentifierN
 						return;
 					}
 					if (base.is_hard_type()) {
-#ifdef SUGGEST_KOSMIC4_RENAMES
+#ifdef SUGGEST_GODOT4_RENAMES
 						String rename_hint;
-						if (GLOBAL_GET(VoyScriptWarning::get_settings_path_from_code(VoyScriptWarning::RENAMED_IN_KOSMIC_4_HINT)).booleanize()) {
+						if (GLOBAL_GET("debug/voyscript/warnings/renamed_in_kosmic_4_hint")) {
 							const char *renamed_identifier_name = check_for_renamed_identifier(name, p_identifier->type);
 							if (renamed_identifier_name) {
 								rename_hint = " " + vformat(R"(Did you mean to use "%s"?)", renamed_identifier_name);
@@ -4090,7 +4090,7 @@ void VoyScriptAnalyzer::reduce_identifier_from_base(VoyScriptParser::IdentifierN
 						push_error(vformat(R"(Cannot find member "%s" in base "%s".%s)", name, base.to_string(), rename_hint), p_identifier);
 #else
 						push_error(vformat(R"(Cannot find member "%s" in base "%s".)", name, base.to_string()), p_identifier);
-#endif // SUGGEST_KOSMIC4_RENAMES
+#endif // SUGGEST_GODOT4_RENAMES
 					}
 				}
 			}
@@ -4509,11 +4509,11 @@ void VoyScriptAnalyzer::reduce_identifier(VoyScriptParser::IdentifierNode *p_ide
 			result.builtin_type = Variant::OBJECT;
 			result.native_type = SNAME("Node");
 			if (ResourceLoader::get_resource_type(autoload.path) == "VoyScript") {
-				Ref<VoyScriptParserRef> singl_parser = parser->get_depended_parser_for(autoload.path);
-				if (singl_parser.is_valid()) {
-					Error err = singl_parser->raise_status(VoyScriptParserRef::INHERITANCE_SOLVED);
+				Ref<VoyScriptParserRef> single_parser = parser->get_depended_parser_for(autoload.path);
+				if (single_parser.is_valid()) {
+					Error err = single_parser->raise_status(VoyScriptParserRef::INHERITANCE_SOLVED);
 					if (err == OK) {
-						result = type_from_metatype(singl_parser->get_parser()->head->get_datatype());
+						result = type_from_metatype(single_parser->get_parser()->head->get_datatype());
 					}
 				}
 			} else if (ResourceLoader::get_resource_type(autoload.path) == "PackedScene") {
@@ -4523,11 +4523,11 @@ void VoyScriptAnalyzer::reduce_identifier(VoyScriptParser::IdentifierNode *p_ide
 					if (node != nullptr) {
 						Ref<VoyScript> scr = node->get_script();
 						if (scr.is_valid()) {
-							Ref<VoyScriptParserRef> singl_parser = parser->get_depended_parser_for(scr->get_script_path());
-							if (singl_parser.is_valid()) {
-								Error err = singl_parser->raise_status(VoyScriptParserRef::INHERITANCE_SOLVED);
+							Ref<VoyScriptParserRef> single_parser = parser->get_depended_parser_for(scr->get_script_path());
+							if (single_parser.is_valid()) {
+								Error err = single_parser->raise_status(VoyScriptParserRef::INHERITANCE_SOLVED);
 								if (err == OK) {
-									result = type_from_metatype(singl_parser->get_parser()->head->get_datatype());
+									result = type_from_metatype(single_parser->get_parser()->head->get_datatype());
 								}
 							}
 						}
@@ -4595,9 +4595,9 @@ void VoyScriptAnalyzer::reduce_identifier(VoyScriptParser::IdentifierNode *p_ide
 	}
 
 	// Not found.
-#ifdef SUGGEST_KOSMIC4_RENAMES
+#ifdef SUGGEST_GODOT4_RENAMES
 	String rename_hint;
-	if (GLOBAL_GET(VoyScriptWarning::get_settings_path_from_code(VoyScriptWarning::RENAMED_IN_KOSMIC_4_HINT)).booleanize()) {
+	if (GLOBAL_GET("debug/voyscript/warnings/renamed_in_kosmic_4_hint")) {
 		const char *renamed_identifier_name = check_for_renamed_identifier(name, p_identifier->type);
 		if (renamed_identifier_name) {
 			rename_hint = " " + vformat(R"(Did you mean to use "%s"?)", renamed_identifier_name);
@@ -4606,7 +4606,7 @@ void VoyScriptAnalyzer::reduce_identifier(VoyScriptParser::IdentifierNode *p_ide
 	push_error(vformat(R"(Identifier "%s" not declared in the current scope.%s)", name, rename_hint), p_identifier);
 #else
 	push_error(vformat(R"(Identifier "%s" not declared in the current scope.)", name), p_identifier);
-#endif // SUGGEST_KOSMIC4_RENAMES
+#endif // SUGGEST_GODOT4_RENAMES
 	VoyScriptParser::DataType dummy;
 	dummy.kind = VoyScriptParser::DataType::VARIANT;
 	p_identifier->set_datatype(dummy); // Just so type is set to something.

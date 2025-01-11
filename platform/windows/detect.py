@@ -47,7 +47,7 @@ def try_cmd(test, prefix, arch, check_clang=False):
 def can_build():
     if os.name == "nt":
         # Building natively on Windows
-        # If VCINSTALLDIR is set in the OS environ, use traditional Godot logic to set up MSVC
+        # If VCINSTALLDIR is set in the OS environ, use traditional Kosmic logic to set up MSVC
         if os.getenv("VCINSTALLDIR"):  # MSVC, manual setup
             return True
 
@@ -163,7 +163,7 @@ def get_opts():
     # Direct3D 12 SDK dependencies folder.
     d3d12_deps_folder = os.getenv("LOCALAPPDATA")
     if d3d12_deps_folder:
-        d3d12_deps_folder = os.path.join(d3d12_deps_folder, "Godot", "build_deps")
+        d3d12_deps_folder = os.path.join(d3d12_deps_folder, "Kosmic", "build_deps")
     else:
         # Cross-compiling, the deps install script puts things in `bin`.
         # Getting an absolute path to it is a bit hacky in Python.
@@ -271,7 +271,7 @@ def setup_msvc_auto(env: "SConsEnvironment"):
     # Our x86_64 and arm64 are the same, and we need to map the 32-bit
     # architectures to other names since MSVC isn't as explicit.
     # The rest we don't need to worry about because they are
-    # aliases or aren't supported by Godot (itanium & ia64).
+    # aliases or aren't supported by Kosmic (itanium & ia64).
     msvc_arch_aliases = {"x86_32": "x86", "arm32": "arm"}
     if env["arch"] in msvc_arch_aliases.keys():
         env["TARGET_ARCH"] = msvc_arch_aliases[env["arch"]]
@@ -601,7 +601,7 @@ def configure_msvc(env: "SConsEnvironment", vcvars_msvc_config):
     env["BUILDERS"]["ProgramOriginal"] = env["BUILDERS"]["Program"]
     env["BUILDERS"]["Program"] = methods.precious_program
 
-    env.Append(LINKFLAGS=["/NATVIS:platform\\windows\\godot.natvis"])
+    env.Append(LINKFLAGS=["/NATVIS:platform\\windows\\kosmic.natvis"])
 
     if env["use_asan"]:
         env.AppendUnique(LINKFLAGS=["/STACK:" + str(STACK_SIZE_SANITIZERS)])
@@ -762,8 +762,8 @@ def configure_mingw(env: "SConsEnvironment"):
 
     ## LTO
 
-    if env["lto"] == "auto":  # Full LTO for production with MinGW.
-        env["lto"] = "full"
+    if env["lto"] == "auto":  # Enable LTO for production with MinGW.
+        env["lto"] = "thin" if env["use_llvm"] else "full"
 
     if env["lto"] != "none":
         if env["lto"] == "thin":
@@ -811,9 +811,6 @@ def configure_mingw(env: "SConsEnvironment"):
         env.Append(CFLAGS=san_flags)
         env.Append(CCFLAGS=san_flags)
         env.Append(LINKFLAGS=san_flags)
-
-    if env["use_llvm"] and os.name == "nt" and methods._can_color:
-        env.Append(CCFLAGS=["$(-fansi-escape-codes$)", "$(-fcolor-diagnostics$)"])
 
     if get_is_ar_thin_supported(env):
         env.Append(ARFLAGS=["--thin"])

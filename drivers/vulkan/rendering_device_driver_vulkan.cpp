@@ -613,7 +613,7 @@ Error RenderingDeviceDriverVulkan::_check_device_features() {
 
 	// Check for required features.
 	if (!physical_device_features.imageCubeArray || !physical_device_features.independentBlend) {
-		String error_string = vformat("Your GPU (%s) does not support the following features which are required to use Vulkan-based renderers in Godot:\n\n", context_device.name);
+		String error_string = vformat("Your GPU (%s) does not support the following features which are required to use Vulkan-based renderers in Kosmic:\n\n", context_device.name);
 		if (!physical_device_features.imageCubeArray) {
 			error_string += "- No support for image cube arrays.\n";
 		}
@@ -2636,7 +2636,7 @@ Error RenderingDeviceDriverVulkan::command_queue_execute_and_present(CommandQueu
 
 		// Handling VK_SUBOPTIMAL_KHR the same as VK_SUCCESS is completely intentional.
 		//
-		// Godot does not currently support native rotation in Android when creating the swap chain. It intentionally uses
+		// Kosmic does not currently support native rotation in Android when creating the swap chain. It intentionally uses
 		// VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR instead of the current transform bits available in the surface capabilities.
 		// Choosing the transform that leads to optimal presentation leads to distortion that makes the application unusable,
 		// as the rotation of all the content is not handled at the moment.
@@ -3462,7 +3462,7 @@ Vector<uint8_t> RenderingDeviceDriverVulkan::shader_compile_binary_from_spirv(Ve
 	{
 		uint32_t offset = 0;
 		uint8_t *binptr = ret.ptrw();
-		binptr[0] = 'G';
+		binptr[0] = 'K';
 		binptr[1] = 'S';
 		binptr[2] = 'B';
 		binptr[3] = 'D'; // Kosmic Shader Binary Data.

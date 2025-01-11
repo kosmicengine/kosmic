@@ -9,12 +9,12 @@ public class ClassPartialModifierTest
     public async Task ClassPartialModifierCodeFixTest()
     {
         await CSharpCodeFixVerifier<ClassPartialModifierCodeFixProvider, ClassPartialModifierAnalyzer>
-            .Verify("ClassPartialModifier.GD0001.cs", "ClassPartialModifier.GD0001.fixed.cs");
+            .Verify("ClassPartialModifier.KS0001.cs", "ClassPartialModifier.KS0001.fixed.cs");
     }
 
     [Fact]
     public async void OuterClassPartialModifierAnalyzerTest()
     {
-        await CSharpAnalyzerVerifier<ClassPartialModifierAnalyzer>.Verify("OuterClassPartialModifierAnalyzer.GD0002.cs");
+        await CSharpAnalyzerVerifier<ClassPartialModifierAnalyzer>.Verify("OuterClassPartialModifierAnalyzer.KS0002.cs");
     }
 }

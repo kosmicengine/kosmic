@@ -7,11 +7,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Godot;
-using GodotTools.BuildLogger;
-using GodotTools.Internals;
-using GodotTools.Utils;
-using Directory = GodotTools.Utils.Directory;
+using Kosmic;
+using KosmicTools.BuildLogger;
+using KosmicTools.Internals;
+using KosmicTools.Utils;
+using Directory = KosmicTools.Utils.Directory;
 
 namespace KosmicTools.Build
 {
@@ -264,10 +264,10 @@ namespace KosmicTools.Build
         private static void AddLoggerArgument(BuildInfo buildInfo, Collection<string> arguments)
         {
             string buildLoggerPath = Path.Combine(Internals.KosmicSharpDirs.DataEditorToolsDir,
-                "GodotTools.BuildLogger.dll");
+                "KosmicTools.BuildLogger.dll");
 
             arguments.Add(
-                $"-l:{typeof(GodotBuildLogger).FullName},{buildLoggerPath};{buildInfo.LogsDirPath}");
+                $"-l:{typeof(KosmicBuildLogger).FullName},{buildLoggerPath};{buildInfo.LogsDirPath}");
         }
 
         private static void AddBinaryLogArgument(BuildInfo buildInfo, Collection<string> arguments,

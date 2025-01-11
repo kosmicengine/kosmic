@@ -1,7 +1,7 @@
 # Catalan translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # BennyBeat <bennybeat@gmail.com>, 2017.
 # Javier Ocampos <xavier.ocampos@gmail.com>, 2018.
 # Roger Blanco Ribera <roger.blancoribera@gmail.com>, 2016-2018, 2020.
@@ -30,11 +30,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-09-03 22:09+0000\n"
 "Last-Translator: Luna Moreno <akaluna99@gmail.com>\n"
-"Language-Team: Catalan <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Catalan <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
@@ -1616,7 +1616,7 @@ msgid "Thanks from the Godot community!"
 msgstr "Gràcies de la part de la Comunitat del Godot!"
 
 msgid "Godot Engine contributors"
-msgstr "Col·laboradors de Godot Engine"
+msgstr "Col·laboradors de Kosmic Engine"
 
 msgid "Project Founders"
 msgstr "Fundadors del Projecte"
@@ -5716,7 +5716,7 @@ msgstr ""
 "Retorna 0,0 si 'x' és menor que'edge0 ' o 1.0 en cas contrari."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""

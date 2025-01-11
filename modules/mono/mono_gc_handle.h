@@ -59,10 +59,10 @@ static_assert(sizeof(GCHandleIntPtr) == sizeof(void *));
 // Manual release of the GC handle must be done when using this struct
 struct MonoGCHandleData {
 	GCHandleIntPtr handle = { nullptr };
-	ksmono::GCHandleType type = ksmono::GCHandleType::NIL;
+	gdmono::GCHandleType type = gdmono::GCHandleType::NIL;
 
 	_FORCE_INLINE_ bool is_released() const { return !handle.value; }
-	_FORCE_INLINE_ bool is_weak() const { return type == ksmono::GCHandleType::WEAK_HANDLE; }
+	_FORCE_INLINE_ bool is_weak() const { return type == gdmono::GCHandleType::WEAK_HANDLE; }
 	_FORCE_INLINE_ GCHandleIntPtr get_intptr() const { return handle; }
 
 	void release();
@@ -81,7 +81,7 @@ struct MonoGCHandleData {
 
 	MonoGCHandleData() {}
 
-	MonoGCHandleData(GCHandleIntPtr p_handle, ksmono::GCHandleType p_type) :
+	MonoGCHandleData(GCHandleIntPtr p_handle, gdmono::GCHandleType p_type) :
 			handle(p_handle),
 			type(p_type) {
 	}

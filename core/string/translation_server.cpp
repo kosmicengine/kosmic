@@ -641,8 +641,8 @@ void TranslationServer::load_translations() {
 TranslationServer::TranslationServer() {
 	singleton = this;
 	main_domain.instantiate();
-	editor_domain = get_or_add_domain("godot.editor");
-	property_domain = get_or_add_domain("godot.properties");
-	doc_domain = get_or_add_domain("godot.documentation");
+	editor_domain = get_or_add_domain("kosmic.editor");
+	property_domain = get_or_add_domain("kosmic.properties");
+	doc_domain = get_or_add_domain("kosmic.documentation");
 	init_locale_info();
 }

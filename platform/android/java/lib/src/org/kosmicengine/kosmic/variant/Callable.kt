@@ -41,29 +41,29 @@ class Callable private constructor(private val nativeCallablePointer: Long) {
 
 	companion object {
 		/**
-		 * Invoke method [methodName] on the Godot object specified by [godotObjectId]
+		 * Invoke method [methodName] on the Godot object specified by [kosmicObjectId]
 		 */
 		@JvmStatic
-		fun call(godotObjectId: Long, methodName: String, vararg methodParameters: Any): Any? {
-			return nativeCallObject(godotObjectId, methodName, methodParameters)
+		fun call(kosmicObjectId: Long, methodName: String, vararg methodParameters: Any): Any? {
+			return nativeCallObject(kosmicObjectId, methodName, methodParameters)
 		}
 
 		/**
-		 * Invoke method [methodName] on the Godot object specified by [godotObjectId] during idle time.
+		 * Invoke method [methodName] on the Godot object specified by [kosmicObjectId] during idle time.
 		 */
 		@JvmStatic
-		fun callDeferred(godotObjectId: Long, methodName: String, vararg methodParameters: Any) {
-			nativeCallObjectDeferred(godotObjectId, methodName, methodParameters)
+		fun callDeferred(kosmicObjectId: Long, methodName: String, vararg methodParameters: Any) {
+			nativeCallObjectDeferred(kosmicObjectId, methodName, methodParameters)
 		}
 
 		@JvmStatic
 		private external fun nativeCall(pointer: Long, params: Array<out Any>): Any?
 
 		@JvmStatic
-		private external fun nativeCallObject(godotObjectId: Long, methodName: String, params: Array<out Any>): Any?
+		private external fun nativeCallObject(kosmicObjectId: Long, methodName: String, params: Array<out Any>): Any?
 
 		@JvmStatic
-		private external fun nativeCallObjectDeferred(godotObjectId: Long, methodName: String, params: Array<out Any>)
+		private external fun nativeCallObjectDeferred(kosmicObjectId: Long, methodName: String, params: Array<out Any>)
 
 		@JvmStatic
 		private external fun releaseNativePointer(nativePointer: Long)

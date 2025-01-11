@@ -82,9 +82,9 @@
 				[csharp]
 				public async Task SomeFunction()
 				{
-				    KS.Print("start");
+				    GD.Print("start");
 				    await ToSignal(GetTree().CreateTimer(1.0f), SceneTreeTimer.SignalName.Timeout);
-				    KS.Print("end");
+				    GD.Print("end");
 				}
 				[/csharp]
 				[/codeblocks]

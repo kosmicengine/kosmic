@@ -33,7 +33,7 @@ package org.kosmicengine.kosmic.input;
 
 import static org.kosmicengine.kosmic.utils.GLUtils.DEBUG;
 
-import org.kosmicengine.kosmic.Godot;
+import org.kosmicengine.kosmic.Kosmic;
 import org.kosmicengine.kosmic.KosmicLib;
 import org.kosmicengine.kosmic.KosmicRenderView;
 
@@ -78,7 +78,7 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 	private final WindowManager windowManager;
 	private final GestureDetector gestureDetector;
 	private final ScaleGestureDetector scaleGestureDetector;
-	private final GodotGestureHandler godotGestureHandler;
+	private final KosmicGestureHandler kosmicGestureHandler;
 
 	/**
 	 * Used to decide whether mouse capture can be enabled.
@@ -88,16 +88,16 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 	private int rotaryInputAxis = ROTARY_INPUT_VERTICAL_AXIS;
 
 	public KosmicInputHandler(Context context, Kosmic kosmic) {
-		this.kosmic = godot;
+		this.kosmic = kosmic;
 		mInputManager = (InputManager)context.getSystemService(Context.INPUT_SERVICE);
 		mInputManager.registerInputDeviceListener(this, null);
 
 		windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
 
-		this.kosmicGestureHandler = new GodotGestureHandler(this);
-		this.gestureDetector = new GestureDetector(context, godotGestureHandler);
+		this.kosmicGestureHandler = new KosmicGestureHandler(this);
+		this.gestureDetector = new GestureDetector(context, kosmicGestureHandler);
 		this.gestureDetector.setIsLongpressEnabled(false);
-		this.scaleGestureDetector = new ScaleGestureDetector(context, godotGestureHandler);
+		this.scaleGestureDetector = new ScaleGestureDetector(context, kosmicGestureHandler);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			this.scaleGestureDetector.setStylusScaleEnabled(true);
 		}
@@ -151,7 +151,7 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 	}
 
 	public void onPointerCaptureChange(boolean hasCapture) {
-		godotGestureHandler.onPointerCaptureChange(hasCapture);
+		kosmicGestureHandler.onPointerCaptureChange(hasCapture);
 	}
 
 	public boolean onKeyUp(final int keyCode, KeyEvent event) {
@@ -164,9 +164,9 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 			// Check if the device exists
 			final int deviceId = event.getDeviceId();
 			if (mJoystickIds.indexOfKey(deviceId) >= 0) {
-				final int button = getGodotButton(keyCode);
-				final int godotJoyId = mJoystickIds.get(deviceId);
-				handleJoystickButtonEvent(godotJoyId, button, false);
+				final int button = getKosmicButton(keyCode);
+				final int kosmicJoyId = mJoystickIds.get(deviceId);
+				handleJoystickButtonEvent(kosmicJoyId, button, false);
 			}
 		} else {
 			// getKeyCode(): The physical key that was pressed.
@@ -193,9 +193,9 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 				return true;
 
 			if (mJoystickIds.indexOfKey(deviceId) >= 0) {
-				final int button = getGodotButton(keyCode);
-				final int godotJoyId = mJoystickIds.get(deviceId);
-				handleJoystickButtonEvent(godotJoyId, button, true);
+				final int button = getKosmicButton(keyCode);
+				final int kosmicJoyId = mJoystickIds.get(deviceId);
+				handleJoystickButtonEvent(kosmicJoyId, button, true);
 			}
 		} else {
 			final int physical_keycode = event.getKeyCode();
@@ -216,12 +216,12 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 			return true;
 		}
 
-		if (godotGestureHandler.onMotionEvent(event)) {
+		if (kosmicGestureHandler.onMotionEvent(event)) {
 			// The gesture handler has handled the event.
 			return true;
 		}
 
-		// Drag events are handled by the [GodotGestureHandler]
+		// Drag events are handled by the [KosmicGestureHandler]
 		if (event.getActionMasked() == MotionEvent.ACTION_MOVE) {
 			return true;
 		}
@@ -240,7 +240,7 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 			// Check if the device exists
 			final int deviceId = event.getDeviceId();
 			if (mJoystickIds.indexOfKey(deviceId) >= 0) {
-				final int godotJoyId = mJoystickIds.get(deviceId);
+				final int kosmicJoyId = mJoystickIds.get(deviceId);
 				Joystick joystick = mJoysticksDevices.get(deviceId);
 				if (joystick == null) {
 					return true;
@@ -256,7 +256,7 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 					if (joystick.axesValues.indexOfKey(axis) < 0 || (float)joystick.axesValues.get(axis) != value) {
 						// save value to prevent repeats
 						joystick.axesValues.put(axis, value);
-						handleJoystickAxisEvent(godotJoyId, i, value);
+						handleJoystickAxisEvent(kosmicJoyId, i, value);
 					}
 				}
 
@@ -266,7 +266,7 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 					if (joystick.hatX != hatX || joystick.hatY != hatY) {
 						joystick.hatX = hatX;
 						joystick.hatY = hatY;
-						handleJoystickHatEvent(godotJoyId, hatX, hatY);
+						handleJoystickHatEvent(kosmicJoyId, hatX, hatY);
 					}
 				}
 				return true;
@@ -279,7 +279,7 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 			return true;
 		}
 
-		if (godotGestureHandler.onMotionEvent(event)) {
+		if (kosmicGestureHandler.onMotionEvent(event)) {
 			// The gesture handler has handled the event.
 			return true;
 		}
@@ -302,12 +302,12 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 	}
 
 	private int assignJoystickIdNumber(int deviceId) {
-		int godotJoyId = 0;
-		while (mJoystickIds.indexOfValue(godotJoyId) >= 0) {
-			godotJoyId++;
+		int kosmicJoyId = 0;
+		while (mJoystickIds.indexOfValue(kosmicJoyId) >= 0) {
+			kosmicJoyId++;
 		}
-		mJoystickIds.put(deviceId, godotJoyId);
-		return godotJoyId;
+		mJoystickIds.put(deviceId, kosmicJoyId);
+		return kosmicJoyId;
 	}
 
 	@Override
@@ -385,10 +385,10 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 		if (mJoystickIds.indexOfKey(deviceId) < 0) {
 			return;
 		}
-		final int godotJoyId = mJoystickIds.get(deviceId);
+		final int kosmicJoyId = mJoystickIds.get(deviceId);
 		mJoystickIds.delete(deviceId);
 		mJoysticksDevices.delete(deviceId);
-		handleJoystickConnectionChangedEvent(godotJoyId, false, "");
+		handleJoystickConnectionChangedEvent(kosmicJoyId, false, "");
 	}
 
 	@Override
@@ -397,7 +397,7 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 		onInputDeviceAdded(deviceId);
 	}
 
-	public static int getGodotButton(int keyCode) {
+	public static int getKosmicButton(int keyCode) {
 		int button;
 		switch (keyCode) {
 			case KeyEvent.KEYCODE_BUTTON_A: // Android A is SNES B
@@ -724,7 +724,7 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 
 	private void dispatchInputEventRunnable(@NonNull InputEventRunnable runnable) {
 		if (shouldDispatchInputToRenderThread()) {
-			godot.runOnRenderThread(runnable);
+			kosmic.runOnRenderThread(runnable);
 		} else {
 			runnable.run();
 		}
@@ -772,7 +772,7 @@ public class KosmicInputHandler implements InputManager.InputDeviceListener, Sen
 		}
 
 		runnable.setSensorEvent(event.sensor.getType(), rotatedValue0, rotatedValue1, rotatedValue2);
-		godot.runOnRenderThread(runnable);
+		kosmic.runOnRenderThread(runnable);
 	}
 
 	@Override

@@ -35,9 +35,9 @@
             android:value="${godotEditorVersion}" />
 
         <activity
-            android:name=".GodotApp"
+            android:name=".KosmicApp"
             android:label="@string/kosmic_project_name_string"
-            android:theme="@style/GodotAppSplashTheme"
+            android:theme="@style/KosmicAppSplashTheme"
             android:launchMode="singleInstancePerTask"
             android:excludeFromRecents="false"
             android:exported="true"

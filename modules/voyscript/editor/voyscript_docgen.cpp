@@ -62,19 +62,19 @@ String VoyScriptDocGen::_get_class_name(const GDP::ClassNode &p_class) {
 	return full_name;
 }
 
-void VoyScriptDocGen::_doctype_from_gdtype(const GDType &p_gdtype, String &r_type, String &r_enum, bool p_is_return) {
-	if (!p_gdtype.is_hard_type()) {
+void VoyScriptDocGen::_doctype_from_kstype(const GDType &p_kstype, String &r_type, String &r_enum, bool p_is_return) {
+	if (!p_kstype.is_hard_type()) {
 		r_type = "Variant";
 		return;
 	}
-	switch (p_gdtype.kind) {
+	switch (p_kstype.kind) {
 		case GDType::BUILTIN:
-			if (p_gdtype.builtin_type == Variant::NIL) {
+			if (p_kstype.builtin_type == Variant::NIL) {
 				r_type = p_is_return ? "void" : "null";
 				return;
 			}
-			if (p_gdtype.builtin_type == Variant::ARRAY && p_gdtype.has_container_element_type(0)) {
-				_doctype_from_gdtype(p_gdtype.get_container_element_type(0), r_type, r_enum);
+			if (p_kstype.builtin_type == Variant::ARRAY && p_kstype.has_container_element_type(0)) {
+				_doctype_from_kstype(p_kstype.get_container_element_type(0), r_type, r_enum);
 				if (!r_enum.is_empty()) {
 					r_type = "int[]";
 					r_enum += "[]";
@@ -85,60 +85,60 @@ void VoyScriptDocGen::_doctype_from_gdtype(const GDType &p_gdtype, String &r_typ
 					return;
 				}
 			}
-			if (p_gdtype.builtin_type == Variant::DICTIONARY && p_gdtype.has_container_element_types()) {
+			if (p_kstype.builtin_type == Variant::DICTIONARY && p_kstype.has_container_element_types()) {
 				String key, value;
-				_doctype_from_gdtype(p_gdtype.get_container_element_type_or_variant(0), key, r_enum);
-				_doctype_from_gdtype(p_gdtype.get_container_element_type_or_variant(1), value, r_enum);
+				_doctype_from_kstype(p_kstype.get_container_element_type_or_variant(0), key, r_enum);
+				_doctype_from_kstype(p_kstype.get_container_element_type_or_variant(1), value, r_enum);
 				if (key != "Variant" || value != "Variant") {
 					r_type = "Dictionary[" + key + ", " + value + "]";
 					return;
 				}
 			}
-			r_type = Variant::get_type_name(p_gdtype.builtin_type);
+			r_type = Variant::get_type_name(p_kstype.builtin_type);
 			return;
 		case GDType::NATIVE:
-			if (p_gdtype.is_meta_type) {
+			if (p_kstype.is_meta_type) {
 				//r_type = VoyScriptNativeClass::get_class_static();
 				r_type = "Object"; // "VoyScriptNativeClass" refers to a blank page.
 				return;
 			}
-			r_type = p_gdtype.native_type;
+			r_type = p_kstype.native_type;
 			return;
 		case GDType::SCRIPT:
-			if (p_gdtype.is_meta_type) {
-				r_type = p_gdtype.script_type.is_valid() ? p_gdtype.script_type->get_class() : Script::get_class_static();
+			if (p_kstype.is_meta_type) {
+				r_type = p_kstype.script_type.is_valid() ? p_kstype.script_type->get_class() : Script::get_class_static();
 				return;
 			}
-			if (p_gdtype.script_type.is_valid()) {
-				if (p_gdtype.script_type->get_global_name() != StringName()) {
-					r_type = p_gdtype.script_type->get_global_name();
+			if (p_kstype.script_type.is_valid()) {
+				if (p_kstype.script_type->get_global_name() != StringName()) {
+					r_type = p_kstype.script_type->get_global_name();
 					return;
 				}
-				if (!p_gdtype.script_type->get_path().is_empty()) {
-					r_type = _get_script_name(p_gdtype.script_type->get_path());
+				if (!p_kstype.script_type->get_path().is_empty()) {
+					r_type = _get_script_name(p_kstype.script_type->get_path());
 					return;
 				}
 			}
-			if (!p_gdtype.script_path.is_empty()) {
-				r_type = _get_script_name(p_gdtype.script_path);
+			if (!p_kstype.script_path.is_empty()) {
+				r_type = _get_script_name(p_kstype.script_path);
 				return;
 			}
 			r_type = "Object";
 			return;
 		case GDType::CLASS:
-			if (p_gdtype.is_meta_type) {
+			if (p_kstype.is_meta_type) {
 				r_type = VoyScript::get_class_static();
 				return;
 			}
-			r_type = _get_class_name(*p_gdtype.class_type);
+			r_type = _get_class_name(*p_kstype.class_type);
 			return;
 		case GDType::ENUM:
-			if (p_gdtype.is_meta_type) {
+			if (p_kstype.is_meta_type) {
 				r_type = "Dictionary";
 				return;
 			}
 			r_type = "int";
-			r_enum = String(p_gdtype.native_type).replace("::", ".");
+			r_enum = String(p_kstype.native_type).replace("::", ".");
 			if (r_enum.begins_with("res://")) {
 				int dot_pos = r_enum.rfind_char('.');
 				if (dot_pos >= 0) {
@@ -386,7 +386,7 @@ void VoyScriptDocGen::_generate_docs(VoyScript *p_script, const GDP::ClassNode *
 				const_doc.name = const_name;
 				const_doc.value = _docvalue_from_variant(m_const->initializer->reduced_value);
 				const_doc.is_value_valid = true;
-				_doctype_from_gdtype(m_const->get_datatype(), const_doc.type, const_doc.enumeration);
+				_doctype_from_kstype(m_const->get_datatype(), const_doc.type, const_doc.enumeration);
 				const_doc.description = m_const->doc_data.description;
 				const_doc.is_deprecated = m_const->doc_data.is_deprecated;
 				const_doc.deprecated_message = m_const->doc_data.deprecated_message;
@@ -414,7 +414,7 @@ void VoyScriptDocGen::_generate_docs(VoyScript *p_script, const GDP::ClassNode *
 					method_doc.return_type = "void";
 				} else if (m_func->return_type) {
 					// `m_func->return_type->get_datatype()` is a metatype.
-					_doctype_from_gdtype(m_func->get_datatype(), method_doc.return_type, method_doc.return_enum, true);
+					_doctype_from_kstype(m_func->get_datatype(), method_doc.return_type, method_doc.return_enum, true);
 				} else if (!m_func->body->has_return) {
 					// If no `return` statement, then return type is `void`, not `Variant`.
 					method_doc.return_type = "void";
@@ -425,7 +425,7 @@ void VoyScriptDocGen::_generate_docs(VoyScript *p_script, const GDP::ClassNode *
 				for (const GDP::ParameterNode *p : m_func->parameters) {
 					DocData::ArgumentDoc arg_doc;
 					arg_doc.name = p->identifier->name;
-					_doctype_from_gdtype(p->get_datatype(), arg_doc.type, arg_doc.enumeration);
+					_doctype_from_kstype(p->get_datatype(), arg_doc.type, arg_doc.enumeration);
 					if (p->initializer != nullptr) {
 						arg_doc.default_value = docvalue_from_expression(p->initializer);
 					}
@@ -452,7 +452,7 @@ void VoyScriptDocGen::_generate_docs(VoyScript *p_script, const GDP::ClassNode *
 				for (const GDP::ParameterNode *p : m_signal->parameters) {
 					DocData::ArgumentDoc arg_doc;
 					arg_doc.name = p->identifier->name;
-					_doctype_from_gdtype(p->get_datatype(), arg_doc.type, arg_doc.enumeration);
+					_doctype_from_kstype(p->get_datatype(), arg_doc.type, arg_doc.enumeration);
 					signal_doc.arguments.push_back(arg_doc);
 				}
 
@@ -472,7 +472,7 @@ void VoyScriptDocGen::_generate_docs(VoyScript *p_script, const GDP::ClassNode *
 				prop_doc.deprecated_message = m_var->doc_data.deprecated_message;
 				prop_doc.is_experimental = m_var->doc_data.is_experimental;
 				prop_doc.experimental_message = m_var->doc_data.experimental_message;
-				_doctype_from_gdtype(m_var->get_datatype(), prop_doc.type, prop_doc.enumeration);
+				_doctype_from_kstype(m_var->get_datatype(), prop_doc.type, prop_doc.enumeration);
 
 				switch (m_var->property) {
 					case GDP::VariableNode::PROP_NONE:
@@ -576,12 +576,12 @@ void VoyScriptDocGen::generate_docs(VoyScript *p_script, const GDP::ClassNode *p
 }
 
 // This method is needed for the editor, since during autocompletion the script is not compiled, only analyzed.
-void VoyScriptDocGen::doctype_from_gdtype(const GDType &p_gdtype, String &r_type, String &r_enum, bool p_is_return) {
+void VoyScriptDocGen::doctype_from_kstype(const GDType &p_kstype, String &r_type, String &r_enum, bool p_is_return) {
 	for (const KeyValue<StringName, ProjectSettings::AutoloadInfo> &E : ProjectSettings::get_singleton()->get_autoload_list()) {
 		if (E.value.is_singleton) {
 			singletons[E.value.path] = E.key;
 		}
 	}
-	_doctype_from_gdtype(p_gdtype, r_type, r_enum, p_is_return);
+	_doctype_from_kstype(p_kstype, r_type, r_enum, p_is_return);
 	singletons.clear();
 }

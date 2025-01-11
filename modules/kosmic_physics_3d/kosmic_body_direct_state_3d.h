@@ -34,13 +34,13 @@
 
 #include "servers/physics_server_3d.h"
 
-class GodotBody3D;
+class KosmicBody3D;
 
 class KosmicPhysicsDirectBodyState3D : public PhysicsDirectBodyState3D {
 	KSCLASS(KosmicPhysicsDirectBodyState3D, PhysicsDirectBodyState3D);
 
 public:
-	GodotBody3D *body = nullptr;
+	KosmicBody3D *body = nullptr;
 
 	virtual Vector3 get_total_gravity() const override;
 	virtual real_t get_total_angular_damp() const override;

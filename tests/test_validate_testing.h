@@ -49,7 +49,7 @@ TEST_SUITE("Validate tests") {
 			CHECK_MESSAGE(true, "Pending test is run with `--no-skip`");
 		}
 	}
-	TEST_CASE("Muting Godot error messages") {
+	TEST_CASE("Muting Kosmic error messages") {
 		ERR_PRINT_OFF;
 		CHECK_MESSAGE(!CoreGlobals::print_error_enabled, "Error printing should be disabled.");
 		ERR_PRINT("Still waiting for Godot!"); // This should never get printed!
@@ -105,7 +105,7 @@ TEST_SUITE("Validate tests") {
 		StringName string_name("has_method");
 		INFO(string_name);
 
-		NodePath node_path("godot/sprite");
+		NodePath node_path("kosmic/sprite");
 		INFO(node_path);
 
 		INFO(RID());

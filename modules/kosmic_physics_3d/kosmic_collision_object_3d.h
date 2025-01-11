@@ -65,7 +65,7 @@ private:
 	struct Shape {
 		Transform3D xform;
 		Transform3D xform_inv;
-		GodotBroadPhase3D::ID bpid;
+		KosmicBroadPhase3D::ID bpid;
 		AABB aabb_cache; //for rayqueries
 		real_t area_cache = 0.0;
 		KosmicShape3D *shape = nullptr;

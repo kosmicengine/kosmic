@@ -184,10 +184,10 @@ void OpenXRActionMap::remove_interaction_profile(Ref<OpenXRInteractionProfile> p
 
 void OpenXRActionMap::create_default_action_sets() {
 	// Note:
-	// - if you make changes here make sure to delete your default_action_map.tres file of it will load an old version.
-	// - our palm pose is only available if the relevant extension is supported,
+	// - If you make changes here make sure to delete your default_action_map.tres file of it will load an old version.
+	// - Our palm pose is only available if the relevant extension is supported,
 	//   we still want it to be part of our action map as we may deploy the same game to platforms that do and don't support it.
-	// - the same applies for interaction profiles that are only supported if the relevant extension is supported.
+	// - The same applies for interaction profiles that are only supported if the relevant extension is supported.
 
 	// Create our Kosmic action set.
 	Ref<OpenXRActionSet> action_set = OpenXRActionSet::new_action_set("kosmic", "Kosmic action set");

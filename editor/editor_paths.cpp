@@ -265,14 +265,14 @@ EditorPaths::EditorPaths() {
 		}
 
 		// Check that the project data directory `.voyignore` file exists.
-		String project_data_gdignore_file_path = project_data_dir.path_join(".voyignore");
-		if (!FileAccess::exists(project_data_gdignore_file_path)) {
+		String project_data_ksignore_file_path = project_data_dir.path_join(".voyignore");
+		if (!FileAccess::exists(project_data_ksignore_file_path)) {
 			// Add an empty .voyignore file to avoid scan.
-			Ref<FileAccess> f = FileAccess::open(project_data_gdignore_file_path, FileAccess::WRITE);
+			Ref<FileAccess> f = FileAccess::open(project_data_ksignore_file_path, FileAccess::WRITE);
 			if (f.is_valid()) {
 				f->store_line("");
 			} else {
-				ERR_PRINT("Failed to create file " + project_data_gdignore_file_path.quote() + ".");
+				ERR_PRINT("Failed to create file " + project_data_ksignore_file_path.quote() + ".");
 			}
 		}
 

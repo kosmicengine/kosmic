@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 using Kosmic.NativeInterop;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -33,7 +33,7 @@ namespace KosmicTools.Internals
         {
             using kosmic_string settingIn = Marshaling.ConvertStringToNative(setting);
             using kosmic_string nameIn = Marshaling.ConvertStringToNative(name);
-            Internal.kosmic_icall_Globals_EditorDefShortcut(settingIn, nameIn, keycode, physical.ToGodotBool(), out kosmic_variant result);
+            Internal.kosmic_icall_Globals_EditorDefShortcut(settingIn, nameIn, keycode, physical.ToKosmicBool(), out kosmic_variant result);
             return (Shortcut)Variant.CreateTakingOwnershipOfDisposableValue(result);
         }
 
@@ -48,7 +48,7 @@ namespace KosmicTools.Internals
         {
             using kosmic_string settingIn = Marshaling.ConvertStringToNative(setting);
             using kosmic_string featureIn = Marshaling.ConvertStringToNative(feature);
-            Internal.kosmic_icall_Globals_EditorShortcutOverride(settingIn, featureIn, keycode, physical.ToGodotBool());
+            Internal.kosmic_icall_Globals_EditorShortcutOverride(settingIn, featureIn, keycode, physical.ToKosmicBool());
         }
 
         [SuppressMessage("ReSharper", "InconsistentNaming")]

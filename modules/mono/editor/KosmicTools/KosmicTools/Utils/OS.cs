@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
-using GodotTools.Internals;
+using KosmicTools.Internals;
 
 namespace KosmicTools.Utils
 {
@@ -32,7 +32,7 @@ namespace KosmicTools.Utils
         }
 
         /// <summary>
-        /// Godot platform identifiers.
+        /// Kosmic platform identifiers.
         /// </summary>
         public static class Platforms
         {
@@ -93,7 +93,7 @@ namespace KosmicTools.Utils
             // TODO:
             // Does .NET 6 support BSD variants? If it does, it may need the name `unix`
             // instead of `linux` in the runtime identifier. This would be a problem as
-            // Godot has a single export profile for both, named LinuxBSD.
+            // Kosmic has a single export profile for both, named LinuxBSD.
             [Platforms.LinuxBSD] = DotNetOS.Linux,
             [Platforms.Android] = DotNetOS.Android,
             [Platforms.iOS] = DotNetOS.iOS,

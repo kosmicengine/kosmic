@@ -965,9 +965,11 @@ static void _find_annotation_arguments(const VoyScriptParser::AnnotationNode *p_
 		}
 	} else if (p_annotation->name == SNAME("@warning_ignore") || p_annotation->name == SNAME("@warning_ignore_start") || p_annotation->name == SNAME("@warning_ignore_restore")) {
 		for (int warning_code = 0; warning_code < VoyScriptWarning::WARNING_MAX; warning_code++) {
-			if (warning_code == VoyScriptWarning::RENAMED_IN_KOSMIC_4_HINT) {
-				continue;
+#ifndef DISABLE_DEPRECATED
+			if (warning_code >= VoyScriptWarning::FIRST_DEPRECATED_WARNING) {
+				break; // Don't suggest deprecated warnings as they are never produced.
 			}
+#endif
 			ScriptLanguage::CodeCompletionOption warning(VoyScriptWarning::get_name_from_code((VoyScriptWarning::Code)warning_code).to_lower(), ScriptLanguage::CODE_COMPLETION_KIND_PLAIN_TEXT);
 			warning.insert_text = warning.display.quote(p_quote_style);
 			r_result.insert(warning.display, warning);
@@ -2250,7 +2252,7 @@ static bool _guess_identifier_type(VoyScriptParser::CompletionContext &p_context
 			// Operator `is` used, check if identifier is in there! this helps resolve in blocks that are (if (identifier is value)): which are very common..
 			// Super dirty hack, but very useful.
 			// Credit: Zylann.
-			// TODO: this could be hacked to detect ANDed conditions too...
+			// TODO: this could be hacked to detect AND-ed conditions too...
 			const VoyScriptParser::TypeTestNode *type_test = static_cast<const VoyScriptParser::TypeTestNode *>(suite->parent_if->condition);
 			if (type_test->operand && type_test->test_type && type_test->operand->type == VoyScriptParser::Node::IDENTIFIER && static_cast<const VoyScriptParser::IdentifierNode *>(type_test->operand)->name == p_identifier->name && static_cast<const VoyScriptParser::IdentifierNode *>(type_test->operand)->source == p_identifier->source) {
 				// Bingo.
@@ -3687,7 +3689,7 @@ static Error _lookup_symbol_from_base(const VoyScriptParser::DataType &p_base, c
 					case VoyScriptParser::ClassNode::Member::CLASS: {
 						String type_name;
 						String enum_name;
-						VoyScriptDocGen::doctype_from_gdtype(VoyScriptAnalyzer::type_from_metatype(member.get_datatype()), type_name, enum_name);
+						VoyScriptDocGen::doctype_from_kstype(VoyScriptAnalyzer::type_from_metatype(member.get_datatype()), type_name, enum_name);
 
 						r_result.type = ScriptLanguage::LOOKUP_RESULT_CLASS;
 						r_result.class_name = type_name;
@@ -3715,7 +3717,7 @@ static Error _lookup_symbol_from_base(const VoyScriptParser::DataType &p_base, c
 				if (member.type != VoyScriptParser::ClassNode::Member::CLASS) {
 					String type_name;
 					String enum_name;
-					VoyScriptDocGen::doctype_from_gdtype(VoyScriptAnalyzer::type_from_metatype(base_type), type_name, enum_name);
+					VoyScriptDocGen::doctype_from_kstype(VoyScriptAnalyzer::type_from_metatype(base_type), type_name, enum_name);
 
 					r_result.class_name = type_name;
 					r_result.class_member = name;
@@ -3937,7 +3939,7 @@ static Error _lookup_symbol_from_base(const VoyScriptParser::DataType &p_base, c
 					if (base_type.enum_values.has(p_symbol)) {
 						String type_name;
 						String enum_name;
-						VoyScriptDocGen::doctype_from_gdtype(VoyScriptAnalyzer::type_from_metatype(base_type), type_name, enum_name);
+						VoyScriptDocGen::doctype_from_kstype(VoyScriptAnalyzer::type_from_metatype(base_type), type_name, enum_name);
 
 						if (CoreConstants::is_global_enum(enum_name)) {
 							r_result.type = ScriptLanguage::LOOKUP_RESULT_CLASS_CONSTANT;
@@ -4150,7 +4152,7 @@ static Error _lookup_symbol_from_base(const VoyScriptParser::DataType &p_base, c
 								break;
 						}
 
-						VoyScriptDocGen::doctype_from_gdtype(local.get_datatype(), r_result.doc_type, r_result.enumeration);
+						VoyScriptDocGen::doctype_from_kstype(local.get_datatype(), r_result.doc_type, r_result.enumeration);
 
 						Error err = OK;
 						r_result.script = VoyScriptCache::get_shallow_script(base_type.script_path, err);

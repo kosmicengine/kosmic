@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 
 public abstract partial class AbstractGenericNode<[MustBeVariant] T> : Node
 {

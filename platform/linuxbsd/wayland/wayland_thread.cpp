@@ -108,7 +108,7 @@ int WaylandThread::_allocate_shm_file(size_t size) {
 
 	do {
 		// Generate a random name.
-		char name[] = "/wl_shm-godot-XXXXXX";
+		char name[] = "/wl_shm-kosmic-XXXXXX";
 		for (long unsigned int i = sizeof(name) - 7; i < sizeof(name) - 1; i++) {
 			name[i] = Math::random('A', 'Z');
 		}
@@ -1950,7 +1950,7 @@ void WaylandThread::_wl_data_device_on_enter(void *data, struct wl_data_device *
 	ss->dnd_enter_serial = serial;
 	ss->wl_data_offer_dnd = id;
 
-	// Godot only supports DnD file copying for now.
+	// Kosmic only supports DnD file copying for now.
 	wl_data_offer_accept(id, serial, "text/uri-list");
 	wl_data_offer_set_actions(id, WL_DATA_DEVICE_MANAGER_DND_ACTION_COPY, WL_DATA_DEVICE_MANAGER_DND_ACTION_COPY);
 }
@@ -2163,7 +2163,7 @@ void WaylandThread::_wp_pointer_gesture_pinch_on_update(void *data, struct zwp_p
 		magnify_msg.instantiate();
 		magnify_msg->event = mg;
 
-		// Since Wayland allows only one gesture at a time and godot instead expects
+		// Since Wayland allows only one gesture at a time and Kosmic instead expects
 		// both of them, we'll have to create two separate input events: one for
 		// magnification and one for panning.
 
@@ -2555,7 +2555,7 @@ void WaylandThread::_wp_tablet_tool_on_frame(void *data, struct zwp_tablet_tool_
 		mm->set_position(td.position);
 		mm->set_global_position(td.position);
 
-		// NOTE: The Godot API expects normalized values and we store them raw,
+		// NOTE: The Kosmic API expects normalized values and we store them raw,
 		// straight from the compositor, so we have to normalize them here.
 
 		// According to the tablet proto spec, tilt is expressed in degrees relative
@@ -2735,7 +2735,7 @@ void WaylandThread::_wp_text_input_on_done(void *data, struct zwp_text_input_v3 
 		msg.instantiate();
 		msg->text = ss->ime_text_commit;
 		ss->wayland_thread->push_message(msg);
-	} else if (!ss->ime_text.is_empty()) {
+	} else {
 		Ref<IMEUpdateEventMessage> msg;
 		msg.instantiate();
 		msg->text = ss->ime_text;
@@ -2925,7 +2925,7 @@ int WaylandThread::window_state_get_preferred_buffer_scale(WindowState *p_ws) {
 	int max_size = 1;
 
 	// ================================ IMPORTANT =================================
-	// NOTE: Due to a Godot limitation, we can't really rescale the whole UI yet.
+	// NOTE: Due to a Kosmic limitation, we can't really rescale the whole UI yet.
 	// Because of this reason, all platforms have resorted to forcing the highest
 	// scale possible of a system on any window, despite of what screen it's onto.
 	// On this backend everything's already in place for dynamic window scale
@@ -3355,6 +3355,80 @@ void WaylandThread::window_start_drag(DisplayServer::WindowID p_window_id) {
 #endif
 }
 
+void WaylandThread::window_start_resize(DisplayServer::WindowResizeEdge p_edge, DisplayServer::WindowID p_window) {
+	// TODO: Use window IDs for multiwindow support.
+	WindowState &ws = main_window;
+	SeatState *ss = wl_seat_get_seat_state(wl_seat_current);
+
+	if (ss && ws.xdg_toplevel) {
+		xdg_toplevel_resize_edge edge = XDG_TOPLEVEL_RESIZE_EDGE_NONE;
+		switch (p_edge) {
+			case DisplayServer::WINDOW_EDGE_TOP_LEFT: {
+				edge = XDG_TOPLEVEL_RESIZE_EDGE_TOP_LEFT;
+			} break;
+			case DisplayServer::WINDOW_EDGE_TOP: {
+				edge = XDG_TOPLEVEL_RESIZE_EDGE_TOP;
+			} break;
+			case DisplayServer::WINDOW_EDGE_TOP_RIGHT: {
+				edge = XDG_TOPLEVEL_RESIZE_EDGE_TOP_RIGHT;
+			} break;
+			case DisplayServer::WINDOW_EDGE_LEFT: {
+				edge = XDG_TOPLEVEL_RESIZE_EDGE_LEFT;
+			} break;
+			case DisplayServer::WINDOW_EDGE_RIGHT: {
+				edge = XDG_TOPLEVEL_RESIZE_EDGE_RIGHT;
+			} break;
+			case DisplayServer::WINDOW_EDGE_BOTTOM_LEFT: {
+				edge = XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM_LEFT;
+			} break;
+			case DisplayServer::WINDOW_EDGE_BOTTOM: {
+				edge = XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM;
+			} break;
+			case DisplayServer::WINDOW_EDGE_BOTTOM_RIGHT: {
+				edge = XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM_RIGHT;
+			} break;
+			default:
+				break;
+		}
+		xdg_toplevel_resize(ws.xdg_toplevel, ss->wl_seat, ss->pointer_data.button_serial, edge);
+	}
+
+#ifdef LIBDECOR_ENABLED
+	if (ws.libdecor_frame) {
+		libdecor_resize_edge edge = LIBDECOR_RESIZE_EDGE_NONE;
+		switch (p_edge) {
+			case DisplayServer::WINDOW_EDGE_TOP_LEFT: {
+				edge = LIBDECOR_RESIZE_EDGE_TOP_LEFT;
+			} break;
+			case DisplayServer::WINDOW_EDGE_TOP: {
+				edge = LIBDECOR_RESIZE_EDGE_TOP;
+			} break;
+			case DisplayServer::WINDOW_EDGE_TOP_RIGHT: {
+				edge = LIBDECOR_RESIZE_EDGE_TOP_RIGHT;
+			} break;
+			case DisplayServer::WINDOW_EDGE_LEFT: {
+				edge = LIBDECOR_RESIZE_EDGE_LEFT;
+			} break;
+			case DisplayServer::WINDOW_EDGE_RIGHT: {
+				edge = LIBDECOR_RESIZE_EDGE_RIGHT;
+			} break;
+			case DisplayServer::WINDOW_EDGE_BOTTOM_LEFT: {
+				edge = LIBDECOR_RESIZE_EDGE_BOTTOM_LEFT;
+			} break;
+			case DisplayServer::WINDOW_EDGE_BOTTOM: {
+				edge = LIBDECOR_RESIZE_EDGE_BOTTOM;
+			} break;
+			case DisplayServer::WINDOW_EDGE_BOTTOM_RIGHT: {
+				edge = LIBDECOR_RESIZE_EDGE_BOTTOM_RIGHT;
+			} break;
+			default:
+				break;
+		}
+		libdecor_frame_resize(ws.libdecor_frame, ss->wl_seat, ss->pointer_data.button_serial, edge);
+	}
+#endif
+}
+
 void WaylandThread::window_set_max_size(DisplayServer::WindowID p_window_id, const Size2i &p_size) {
 	// TODO: Use window IDs for multiwindow support.
 	WindowState &ws = main_window;
@@ -3549,7 +3623,8 @@ void WaylandThread::window_try_set_mode(DisplayServer::WindowID p_window_id, Dis
 #endif // LIBDECOR_ENABLED
 		} break;
 
-		case DisplayServer::WINDOW_MODE_FULLSCREEN: {
+		case DisplayServer::WINDOW_MODE_FULLSCREEN:
+		case DisplayServer::WINDOW_MODE_EXCLUSIVE_FULLSCREEN: {
 			if (ws.xdg_toplevel) {
 				xdg_toplevel_set_fullscreen(ws.xdg_toplevel, nullptr);
 			}
@@ -3724,7 +3799,7 @@ void WaylandThread::pointer_set_hint(const Point2i &p_hint) {
 
 	if (ws) {
 		// NOTE: It looks like it's not really recommended to convert from
-		// "godot-space" to "wayland-space" and in general I received mixed feelings
+		// "kosmic-space" to "wayland-space" and in general I received mixed feelings
 		// discussing about this. I'm not really sure about the maths behind this but,
 		// oh well, we're setting a cursor hint. ¯\_(ツ)_/¯
 		// See: https://oftc.irclog.whitequark.org/wayland/2023-08-23#1692756914-1692816818
@@ -3881,7 +3956,7 @@ void WaylandThread::cursor_set_shape(DisplayServer::CursorShape p_cursor_shape) 
 }
 
 void WaylandThread::cursor_shape_set_custom_image(DisplayServer::CursorShape p_cursor_shape, Ref<Image> p_image, const Point2i &p_hotspot) {
-	ERR_FAIL_COND(!p_image.is_valid());
+	ERR_FAIL_COND(p_image.is_null());
 
 	Size2i image_size = p_image->get_size();
 
@@ -4096,7 +4171,7 @@ Vector<uint8_t> WaylandThread::selection_get_mime(const String &p_mime) const {
 
 	if (ss->wl_data_source_selection) {
 		// We have a source so the stuff we're pasting is ours. We'll have to pass the
-		// data directly or we'd stall waiting for Godot (ourselves) to send us the
+		// data directly or we'd stall waiting for Kosmic (ourselves) to send us the
 		// data :P
 
 		OfferState *os = wl_data_offer_get_offer_state(ss->wl_data_offer_selection);
@@ -4139,7 +4214,7 @@ Vector<uint8_t> WaylandThread::primary_get_mime(const String &p_mime) const {
 
 	if (ss->wp_primary_selection_source) {
 		// We have a source so the stuff we're pasting is ours. We'll have to pass the
-		// data directly or we'd stall waiting for Godot (ourselves) to send us the
+		// data directly or we'd stall waiting for Kosmic (ourselves) to send us the
 		// data :P
 
 		OfferState *os = wp_primary_selection_offer_get_offer_state(ss->wp_primary_selection_offer);

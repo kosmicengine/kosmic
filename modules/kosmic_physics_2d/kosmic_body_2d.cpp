@@ -36,13 +36,13 @@
 #include "kosmic_constraint_2d.h"
 #include "kosmic_space_2d.h"
 
-void GodotBody2D::_mass_properties_changed() {
+void KosmicBody2D::_mass_properties_changed() {
 	if (get_space() && !mass_properties_update_list.in_list()) {
 		get_space()->body_add_to_mass_properties_update_list(&mass_properties_update_list);
 	}
 }
 
-void GodotBody2D::update_mass_properties() {
+void KosmicBody2D::update_mass_properties() {
 	//update shapes and motions
 
 	switch (mode) {
@@ -125,13 +125,13 @@ void GodotBody2D::update_mass_properties() {
 	_update_transform_dependent();
 }
 
-void GodotBody2D::reset_mass_properties() {
+void KosmicBody2D::reset_mass_properties() {
 	calculate_inertia = true;
 	calculate_center_of_mass = true;
 	_mass_properties_changed();
 }
 
-void GodotBody2D::set_active(bool p_active) {
+void KosmicBody2D::set_active(bool p_active) {
 	if (active == p_active) {
 		return;
 	}
@@ -150,7 +150,7 @@ void GodotBody2D::set_active(bool p_active) {
 	}
 }
 
-void GodotBody2D::set_param(PhysicsServer2D::BodyParameter p_param, const Variant &p_value) {
+void KosmicBody2D::set_param(PhysicsServer2D::BodyParameter p_param, const Variant &p_value) {
 	switch (p_param) {
 		case PhysicsServer2D::BODY_PARAM_BOUNCE: {
 			bounce = p_value;
@@ -211,7 +211,7 @@ void GodotBody2D::set_param(PhysicsServer2D::BodyParameter p_param, const Varian
 	}
 }
 
-Variant GodotBody2D::get_param(PhysicsServer2D::BodyParameter p_param) const {
+Variant KosmicBody2D::get_param(PhysicsServer2D::BodyParameter p_param) const {
 	switch (p_param) {
 		case PhysicsServer2D::BODY_PARAM_BOUNCE: {
 			return bounce;
@@ -250,7 +250,7 @@ Variant GodotBody2D::get_param(PhysicsServer2D::BodyParameter p_param) const {
 	return 0;
 }
 
-void GodotBody2D::set_mode(PhysicsServer2D::BodyMode p_mode) {
+void KosmicBody2D::set_mode(PhysicsServer2D::BodyMode p_mode) {
 	PhysicsServer2D::BodyMode prev = mode;
 	mode = p_mode;
 
@@ -289,17 +289,17 @@ void GodotBody2D::set_mode(PhysicsServer2D::BodyMode p_mode) {
 	}
 }
 
-PhysicsServer2D::BodyMode GodotBody2D::get_mode() const {
+PhysicsServer2D::BodyMode KosmicBody2D::get_mode() const {
 	return mode;
 }
 
-void GodotBody2D::_shapes_changed() {
+void KosmicBody2D::_shapes_changed() {
 	_mass_properties_changed();
 	wakeup();
 	wakeup_neighbours();
 }
 
-void GodotBody2D::set_state(PhysicsServer2D::BodyState p_state, const Variant &p_variant) {
+void KosmicBody2D::set_state(PhysicsServer2D::BodyState p_state, const Variant &p_variant) {
 	switch (p_state) {
 		case PhysicsServer2D::BODY_STATE_TRANSFORM: {
 			if (mode == PhysicsServer2D::BODY_MODE_KINEMATIC) {
@@ -368,7 +368,7 @@ void GodotBody2D::set_state(PhysicsServer2D::BodyState p_state, const Variant &p
 	}
 }
 
-Variant GodotBody2D::get_state(PhysicsServer2D::BodyState p_state) const {
+Variant KosmicBody2D::get_state(PhysicsServer2D::BodyState p_state) const {
 	switch (p_state) {
 		case PhysicsServer2D::BODY_STATE_TRANSFORM: {
 			return get_transform();
@@ -390,7 +390,7 @@ Variant GodotBody2D::get_state(PhysicsServer2D::BodyState p_state) const {
 	return Variant();
 }
 
-void GodotBody2D::set_space(KosmicSpace2D *p_space) {
+void KosmicBody2D::set_space(KosmicSpace2D *p_space) {
 	if (get_space()) {
 		wakeup_neighbours();
 
@@ -416,11 +416,11 @@ void GodotBody2D::set_space(KosmicSpace2D *p_space) {
 	}
 }
 
-void GodotBody2D::_update_transform_dependent() {
+void KosmicBody2D::_update_transform_dependent() {
 	center_of_mass = get_transform().basis_xform(center_of_mass_local);
 }
 
-void GodotBody2D::integrate_forces(real_t p_step) {
+void KosmicBody2D::integrate_forces(real_t p_step) {
 	if (mode == PhysicsServer2D::BODY_MODE_STATIC) {
 		return;
 	}
@@ -512,7 +512,7 @@ void GodotBody2D::integrate_forces(real_t p_step) {
 
 	// Add default gravity and damping from space area.
 	if (!stopped) {
-		GodotArea2D *default_area = get_space()->get_default_area();
+		KosmicArea2D *default_area = get_space()->get_default_area();
 		ERR_FAIL_NULL(default_area);
 
 		if (!gravity_done) {
@@ -613,7 +613,7 @@ void GodotBody2D::integrate_forces(real_t p_step) {
 	contact_count = 0;
 }
 
-void GodotBody2D::integrate_velocities(real_t p_step) {
+void KosmicBody2D::integrate_velocities(real_t p_step) {
 	if (mode == PhysicsServer2D::BODY_MODE_STATIC) {
 		return;
 	}
@@ -655,17 +655,17 @@ void GodotBody2D::integrate_velocities(real_t p_step) {
 	_update_transform_dependent();
 }
 
-void GodotBody2D::wakeup_neighbours() {
+void KosmicBody2D::wakeup_neighbours() {
 	for (const Pair<KosmicConstraint2D *, int> &E : constraint_list) {
 		const KosmicConstraint2D *c = E.first;
-		GodotBody2D **n = c->get_body_ptr();
+		KosmicBody2D **n = c->get_body_ptr();
 		int bc = c->get_body_count();
 
 		for (int i = 0; i < bc; i++) {
 			if (i == E.second) {
 				continue;
 			}
-			GodotBody2D *b = n[i];
+			KosmicBody2D *b = n[i];
 			if (b->mode < PhysicsServer2D::BODY_MODE_RIGID) {
 				continue;
 			}
@@ -677,7 +677,7 @@ void GodotBody2D::wakeup_neighbours() {
 	}
 }
 
-void GodotBody2D::call_queries() {
+void KosmicBody2D::call_queries() {
 	Variant direct_state_variant = get_direct_state();
 
 	if (fi_callback_data) {
@@ -702,7 +702,7 @@ void GodotBody2D::call_queries() {
 	}
 }
 
-bool GodotBody2D::sleep_test(real_t p_step) {
+bool KosmicBody2D::sleep_test(real_t p_step) {
 	if (mode == PhysicsServer2D::BODY_MODE_STATIC || mode == PhysicsServer2D::BODY_MODE_KINEMATIC) {
 		return true;
 	} else if (!can_sleep) {
@@ -721,11 +721,11 @@ bool GodotBody2D::sleep_test(real_t p_step) {
 	}
 }
 
-void GodotBody2D::set_state_sync_callback(const Callable &p_callable) {
+void KosmicBody2D::set_state_sync_callback(const Callable &p_callable) {
 	body_state_callback = p_callable;
 }
 
-void GodotBody2D::set_force_integration_callback(const Callable &p_callable, const Variant &p_udata) {
+void KosmicBody2D::set_force_integration_callback(const Callable &p_callable, const Variant &p_udata) {
 	if (p_callable.is_valid()) {
 		if (!fi_callback_data) {
 			fi_callback_data = memnew(ForceIntegrationCallbackData);
@@ -738,7 +738,7 @@ void GodotBody2D::set_force_integration_callback(const Callable &p_callable, con
 	}
 }
 
-KosmicPhysicsDirectBodyState2D *GodotBody2D::get_direct_state() {
+KosmicPhysicsDirectBodyState2D *KosmicBody2D::get_direct_state() {
 	if (!direct_state) {
 		direct_state = memnew(KosmicPhysicsDirectBodyState2D);
 		direct_state->body = this;
@@ -746,7 +746,7 @@ KosmicPhysicsDirectBodyState2D *GodotBody2D::get_direct_state() {
 	return direct_state;
 }
 
-GodotBody2D::GodotBody2D() :
+KosmicBody2D::KosmicBody2D() :
 		KosmicCollisionObject2D(TYPE_BODY),
 		active_list(this),
 		mass_properties_update_list(this),
@@ -754,7 +754,7 @@ GodotBody2D::GodotBody2D() :
 	_set_static(false);
 }
 
-GodotBody2D::~GodotBody2D() {
+KosmicBody2D::~KosmicBody2D() {
 	if (fi_callback_data) {
 		memdelete(fi_callback_data);
 	}

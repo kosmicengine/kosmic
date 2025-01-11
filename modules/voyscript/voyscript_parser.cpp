@@ -197,7 +197,7 @@ void VoyScriptParser::push_warning(const Node *p_source, VoyScriptWarning::Code 
 	if (is_ignoring_warnings) {
 		return;
 	}
-	if (GLOBAL_GET("debug/voyscript/warnings/exclude_addons").booleanize() && script_path.begins_with("res://addons/")) {
+	if (GLOBAL_GET("debug/voyscript/warnings/exclude_addons") && script_path.begins_with("res://addons/")) {
 		return;
 	}
 	VoyScriptWarning::WarnLevel warn_level = (VoyScriptWarning::WarnLevel)(int)GLOBAL_GET(VoyScriptWarning::get_settings_path_from_code(p_code));
@@ -3624,11 +3624,6 @@ VoyScriptParser::ExpressionNode *VoyScriptParser::parse_type_test(ExpressionNode
 	return type_test;
 }
 
-VoyScriptParser::ExpressionNode *VoyScriptParser::parse_yield(ExpressionNode *p_previous_operand, bool p_can_assign) {
-	push_error(R"("yield" was removed in Godot 4. Use "await" instead.)");
-	return nullptr;
-}
-
 VoyScriptParser::ExpressionNode *VoyScriptParser::parse_invalid_token(ExpressionNode *p_previous_operand, bool p_can_assign) {
 	// Just for better error messages.
 	VoyScriptTokenizer::Token::Type invalid = previous.type;
@@ -4095,7 +4090,6 @@ VoyScriptParser::ParseRule *VoyScriptParser::get_rule(VoyScriptTokenizer::Token:
 		{ nullptr,                                          nullptr,                                        PREC_NONE }, // TRAIT,
 		{ nullptr,                                          nullptr,                                        PREC_NONE }, // VAR,
 		{ nullptr,                                          nullptr,                                        PREC_NONE }, // VOID,
-		{ &VoyScriptParser::parse_yield,                     nullptr,                                        PREC_NONE }, // YIELD,
 		// Punctuation
 		{ &VoyScriptParser::parse_array,                  	&VoyScriptParser::parse_subscript,            	PREC_SUBSCRIPT }, // BRACKET_OPEN,
 		{ nullptr,                                          nullptr,                                        PREC_NONE }, // BRACKET_CLOSE,

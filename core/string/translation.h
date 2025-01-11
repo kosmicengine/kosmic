@@ -33,7 +33,7 @@
 #define TRANSLATION_H
 
 #include "core/io/resource.h"
-#include "core/object/ksvirtual.gen.inc"
+#include "core/object/gdvirtual.gen.inc"
 
 class Translation : public Resource {
 	KSCLASS(Translation, Resource);

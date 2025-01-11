@@ -108,7 +108,7 @@ internal class VkRenderer {
 	 * Invoked when the render thread is in the process of shutting down.
 	 */
 	fun onRenderThreadExiting() {
-		Log.d(TAG, "Destroying Godot Engine")
+		Log.d(TAG, "Destroying Kosmic Engine")
 		KosmicLib.ondestroy()
 	}
 }

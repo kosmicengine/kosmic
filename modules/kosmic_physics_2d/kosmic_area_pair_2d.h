@@ -36,9 +36,9 @@
 #include "kosmic_body_2d.h"
 #include "kosmic_constraint_2d.h"
 
-class GodotAreaPair2D : public KosmicConstraint2D {
-	GodotBody2D *body = nullptr;
-	GodotArea2D *area = nullptr;
+class KosmicAreaPair2D : public KosmicConstraint2D {
+	KosmicBody2D *body = nullptr;
+	KosmicArea2D *area = nullptr;
 	int body_shape = 0;
 	int area_shape = 0;
 	bool colliding = false;
@@ -51,13 +51,13 @@ public:
 	virtual bool pre_solve(real_t p_step) override;
 	virtual void solve(real_t p_step) override;
 
-	GodotAreaPair2D(GodotBody2D *p_body, int p_body_shape, GodotArea2D *p_area, int p_area_shape);
-	~GodotAreaPair2D();
+	KosmicAreaPair2D(KosmicBody2D *p_body, int p_body_shape, KosmicArea2D *p_area, int p_area_shape);
+	~KosmicAreaPair2D();
 };
 
-class GodotArea2Pair2D : public KosmicConstraint2D {
-	GodotArea2D *area_a = nullptr;
-	GodotArea2D *area_b = nullptr;
+class KosmicArea2Pair2D : public KosmicConstraint2D {
+	KosmicArea2D *area_a = nullptr;
+	KosmicArea2D *area_b = nullptr;
 	int shape_a = 0;
 	int shape_b = 0;
 	bool colliding_a = false;
@@ -72,8 +72,8 @@ public:
 	virtual bool pre_solve(real_t p_step) override;
 	virtual void solve(real_t p_step) override;
 
-	GodotArea2Pair2D(GodotArea2D *p_area_a, int p_shape_a, GodotArea2D *p_area_b, int p_shape_b);
-	~GodotArea2Pair2D();
+	KosmicArea2Pair2D(KosmicArea2D *p_area_a, int p_shape_a, KosmicArea2D *p_area_b, int p_shape_b);
+	~KosmicArea2Pair2D();
 };
 
 #endif // KOSMIC_AREA_PAIR_2D_H

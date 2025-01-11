@@ -32,7 +32,7 @@
 #include "key_mapping_xkb.h"
 
 void KeyMappingXKB::initialize() {
-	// XKB keycode to Godot Key map.
+	// XKB keycode to Kosmic Key map.
 
 	xkb_keycode_map[XKB_KEY_Escape] = Key::ESCAPE;
 	xkb_keycode_map[XKB_KEY_Tab] = Key::TAB;
@@ -192,7 +192,7 @@ void KeyMappingXKB::initialize() {
 	xkb_keycode_map[XKB_KEY_XF86LaunchC] = Key::LAUNCHE;
 	xkb_keycode_map[XKB_KEY_XF86LaunchD] = Key::LAUNCHF;
 
-	// Scancode to Godot Key map.
+	// Scancode to Kosmic Key map.
 	scancode_map[0x09] = Key::ESCAPE;
 	scancode_map[0x0A] = Key::KEY_1;
 	scancode_map[0x0B] = Key::KEY_2;
@@ -350,7 +350,7 @@ void KeyMappingXKB::initialize() {
 	scancode_map[0xD4] = Key::F34;
 	scancode_map[0xD5] = Key::F35;
 
-	// Godot to scancode map.
+	// Kosmic to scancode map.
 	for (const KeyValue<unsigned int, Key> &E : scancode_map) {
 		scancode_map_inv[E.value] = E.key;
 	}

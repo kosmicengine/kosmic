@@ -197,7 +197,7 @@ bool JoltSoftBody3D::_ref_shared_data() {
 		// of the constraints a bit.
 		pin_vertices(*this, pinned_vertices, mesh_to_physics, physics_vertices);
 
-		// Since Godot's stiffness is input as a coefficient between 0 and 1, and Jolt uses actual stiffness for its
+		// Since Kosmic's stiffness is input as a coefficient between 0 and 1, and Jolt uses actual stiffness for its
 		// edge constraints, we crudely map one to the other with an arbitrary constant.
 		const float stiffness = MAX(Math::pow(stiffness_coefficient, 3.0f) * 100000.0f, 0.000001f);
 		const float inverse_stiffness = 1.0f / stiffness;
@@ -439,7 +439,7 @@ void JoltSoftBody3D::set_is_sleeping(bool p_enabled) {
 	}
 }
 
-bool JoltSoftBody3D::can_sleep() const {
+bool JoltSoftBody3D::is_sleep_allowed() const {
 	if (!in_space()) {
 		return true;
 	}
@@ -450,7 +450,7 @@ bool JoltSoftBody3D::can_sleep() const {
 	return body->GetAllowSleeping();
 }
 
-void JoltSoftBody3D::set_can_sleep(bool p_enabled) {
+void JoltSoftBody3D::set_is_sleep_allowed(bool p_enabled) {
 	if (!in_space()) {
 		return;
 	}
@@ -510,12 +510,12 @@ void JoltSoftBody3D::set_linear_damping(float p_damping) {
 }
 
 float JoltSoftBody3D::get_drag() const {
-	// Drag is not a thing in Jolt, and not supported by Godot Physics either.
+	// Drag is not a thing in Jolt, and not supported by Kosmic Physics either.
 	return 0.0f;
 }
 
 void JoltSoftBody3D::set_drag(float p_drag) {
-	// Drag is not a thing in Jolt, and not supported by Godot Physics either.
+	// Drag is not a thing in Jolt, and not supported by Kosmic Physics either.
 }
 
 Variant JoltSoftBody3D::get_state(PhysicsServer3D::BodyState p_state) const {
@@ -533,7 +533,7 @@ Variant JoltSoftBody3D::get_state(PhysicsServer3D::BodyState p_state) const {
 			return is_sleeping();
 		}
 		case PhysicsServer3D::BODY_STATE_CAN_SLEEP: {
-			return can_sleep();
+			return is_sleep_allowed();
 		}
 		default: {
 			ERR_FAIL_V_MSG(Variant(), vformat("Unhandled body state: '%d'. This should not happen. Please report this.", p_state));
@@ -556,7 +556,7 @@ void JoltSoftBody3D::set_state(PhysicsServer3D::BodyState p_state, const Variant
 			set_is_sleeping(p_value);
 		} break;
 		case PhysicsServer3D::BODY_STATE_CAN_SLEEP: {
-			set_can_sleep(p_value);
+			set_is_sleep_allowed(p_value);
 		} break;
 		default: {
 			ERR_FAIL_MSG(vformat("Unhandled body state: '%d'. This should not happen. Please report this.", p_state));

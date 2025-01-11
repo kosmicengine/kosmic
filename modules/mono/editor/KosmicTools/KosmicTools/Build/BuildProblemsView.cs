@@ -4,9 +4,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Godot;
-using GodotTools.Internals;
-using static GodotTools.Internals.Globals;
+using Kosmic;
+using KosmicTools.Internals;
+using static KosmicTools.Internals.Globals;
 using FileAccess = Kosmic.FileAccess;
 
 namespace KosmicTools.Build

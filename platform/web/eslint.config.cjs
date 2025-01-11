@@ -7,7 +7,7 @@ const pluginReference = require('eslint-plugin-html');
 const stylistic = require('@stylistic/eslint-plugin');
 
 if (process && process.env && process.env.npm_command && !fs.existsSync('./platform/web/eslint.config.cjs')) {
-	throw Error('eslint must be run from the Godot project root folder');
+	throw Error('eslint must be run from the Kosmic project root folder');
 }
 
 const emscriptenGlobals = {
@@ -129,7 +129,7 @@ module.exports = [
 			globals: {
 				...globals.browser,
 				'Features': true,
-				'Godot': true,
+				'Kosmic': true,
 				'InternalConfig': true,
 				'Preloader': true,
 			},
@@ -147,7 +147,7 @@ module.exports = [
 				'KosmicEventListeners': true,
 				'KosmicFS': true,
 				'KosmicOS': true,
-				'GodotAudio': true,
+				'KosmicAudio': true,
 				'KosmicRuntime': true,
 				'IDHandler': true,
 				'XRWebGLLayer': true,

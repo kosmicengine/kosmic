@@ -124,12 +124,12 @@ partial class ExportedFields
         values.Add(PropertyName.@_fieldRid, global::Kosmic.Variant.From<global::Kosmic.Rid>(___fieldRid_default_value));
         global::Kosmic.Collections.Dictionary ___fieldKosmicDictionary_default_value = new()  { { "foo", 10  }, { global::Kosmic.Vector2.Up, global::Kosmic.Colors.Chocolate   }  };
         values.Add(PropertyName.@_fieldKosmicDictionary, global::Kosmic.Variant.From<global::Kosmic.Collections.Dictionary>(___fieldKosmicDictionary_default_value));
-        global::Kosmic.Collections.Array ___fieldGodotArray_default_value = new()  { "foo", 10, global::Kosmic.Vector2.Up, global::Kosmic.Colors.Chocolate   };
-        values.Add(PropertyName.@_fieldGodotArray, global::Kosmic.Variant.From<global::Kosmic.Collections.Array>(___fieldGodotArray_default_value));
-        global::Kosmic.Collections.Dictionary<string, bool> ___fieldGodotGenericDictionary_default_value = new()  { { "foo", true  }, { "bar", false  }  };
-        values.Add(PropertyName.@_fieldGodotGenericDictionary, global::Kosmic.Variant.CreateFrom(___fieldGodotGenericDictionary_default_value));
-        global::Kosmic.Collections.Array<int> ___fieldGodotGenericArray_default_value = new()  { 0, 1, 2, 3, 4, 5, 6  };
-        values.Add(PropertyName.@_fieldGodotGenericArray, global::Kosmic.Variant.CreateFrom(___fieldGodotGenericArray_default_value));
+        global::Kosmic.Collections.Array ___fieldKosmicArray_default_value = new()  { "foo", 10, global::Kosmic.Vector2.Up, global::Kosmic.Colors.Chocolate   };
+        values.Add(PropertyName.@_fieldKosmicArray, global::Kosmic.Variant.From<global::Kosmic.Collections.Array>(___fieldKosmicArray_default_value));
+        global::Kosmic.Collections.Dictionary<string, bool> ___fieldKosmicGenericDictionary_default_value = new()  { { "foo", true  }, { "bar", false  }  };
+        values.Add(PropertyName.@_fieldKosmicGenericDictionary, global::Kosmic.Variant.CreateFrom(___fieldKosmicGenericDictionary_default_value));
+        global::Kosmic.Collections.Array<int> ___fieldKosmicGenericArray_default_value = new()  { 0, 1, 2, 3, 4, 5, 6  };
+        values.Add(PropertyName.@_fieldKosmicGenericArray, global::Kosmic.Variant.CreateFrom(___fieldKosmicGenericArray_default_value));
         long[] ___fieldEmptyInt64Array_default_value = global::System.Array.Empty<long>();
         values.Add(PropertyName.@_fieldEmptyInt64Array, global::Kosmic.Variant.From<long[]>(___fieldEmptyInt64Array_default_value));
         return values;

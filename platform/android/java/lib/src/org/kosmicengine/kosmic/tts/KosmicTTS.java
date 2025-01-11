@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  GodotTTS.java                                                         */
+/*  KosmicTTS.java                                                         */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             KOSMIC ENGINE                              */
@@ -49,7 +49,7 @@ import java.util.Set;
 /**
  * Wrapper for Android Text to Speech API and custom utterance query implementation.
  * <p>
- * A [GodotTTS] provides the following features:
+ * A [KosmicTTS] provides the following features:
  * <p>
  * <ul>
  * <li>Access to the Android Text to Speech API.
@@ -57,7 +57,7 @@ import java.util.Set;
  * </ul>
  */
 @Keep
-public class GodotTTS extends UtteranceProgressListener {
+public class KosmicTTS extends UtteranceProgressListener {
 	// Note: These constants must be in sync with DisplayServer::TTSUtteranceEvent enum from "servers/display_server.h".
 	final private static int EVENT_START = 0;
 	final private static int EVENT_END = 1;
@@ -66,21 +66,21 @@ public class GodotTTS extends UtteranceProgressListener {
 
 	private final Context context;
 	private TextToSpeech synth;
-	private LinkedList<GodotUtterance> queue;
+	private LinkedList<KosmicUtterance> queue;
 	final private Object lock = new Object();
-	private GodotUtterance lastUtterance;
+	private KosmicUtterance lastUtterance;
 
 	private boolean speaking;
 	private boolean paused;
 
-	public GodotTTS(Context context) {
+	public KosmicTTS(Context context) {
 		this.context = context;
 	}
 
 	private void updateTTS() {
 		if (!speaking && queue.size() > 0) {
 			int mode = TextToSpeech.QUEUE_FLUSH;
-			GodotUtterance message = queue.pollFirst();
+			KosmicUtterance message = queue.pollFirst();
 
 			Set<Voice> voices = synth.getVoices();
 			for (Voice v : voices) {
@@ -191,7 +191,7 @@ public class GodotTTS extends UtteranceProgressListener {
 	 */
 	public void init() {
 		synth = new TextToSpeech(context, null);
-		queue = new LinkedList<GodotUtterance>();
+		queue = new LinkedList<KosmicUtterance>();
 
 		synth.setOnUtteranceProgressListener(this);
 	}
@@ -201,7 +201,7 @@ public class GodotTTS extends UtteranceProgressListener {
 	 */
 	public void speak(String text, String voice, int volume, float pitch, float rate, int utterance_id, boolean interrupt) {
 		synchronized (lock) {
-			GodotUtterance message = new GodotUtterance(text, voice, volume, pitch, rate, utterance_id);
+			KosmicUtterance message = new KosmicUtterance(text, voice, volume, pitch, rate, utterance_id);
 			queue.addLast(message);
 
 			if (isPaused()) {
@@ -262,7 +262,7 @@ public class GodotTTS extends UtteranceProgressListener {
 	 */
 	public void stopSpeaking() {
 		synchronized (lock) {
-			for (GodotUtterance u : queue) {
+			for (KosmicUtterance u : queue) {
 				KosmicLib.ttsCallback(EVENT_CANCEL, u.id, 0);
 			}
 			queue.clear();

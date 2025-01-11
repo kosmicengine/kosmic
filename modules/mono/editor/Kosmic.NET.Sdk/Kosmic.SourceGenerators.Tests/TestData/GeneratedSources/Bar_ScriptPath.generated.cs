@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 [ScriptPathAttribute("res://Bar.cs")]
 partial class Bar
 {

@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  godot.audio.position.worklet.js                                                      */
+/*  kosmic.audio.position.worklet.js                                                      */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             KOSMIC ENGINE                              */
@@ -48,4 +48,4 @@ class KosmicPositionReportingProcessor extends AudioWorkletProcessor {
 	}
 }
 
-registerProcessor('godot-position-reporting-processor', KosmicPositionReportingProcessor);
+registerProcessor('kosmic-position-reporting-processor', KosmicPositionReportingProcessor);

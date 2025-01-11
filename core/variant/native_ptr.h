@@ -54,52 +54,76 @@ struct KSExtensionPtr {
 	operator Variant() const { return uint64_t(data); }
 };
 
-#define KSVIRTUAL_NATIVE_PTR(m_type)                                                                                                                                                               \
-	template <>                                                                                                                                                                                    \
-	struct KSExtensionConstPtr<const m_type> {                                                                                                                                                     \
-		const m_type *data = nullptr;                                                                                                                                                              \
-		KSExtensionConstPtr() {}                                                                                                                                                                   \
-		KSExtensionConstPtr(const m_type *p_assign) { data = p_assign; }                                                                                                                           \
-		static const char *get_name() { return "const " #m_type; }                                                                                                                                 \
-		operator const m_type *() const { return data; }                                                                                                                                           \
-		operator Variant() const { return uint64_t(data); }                                                                                                                                        \
-	};                                                                                                                                                                                             \
-	template <>                                                                                                                                                                                    \
-	struct VariantCaster<KSExtensionConstPtr<const m_type>> {                                                                                                                                      \
-		static _FORCE_INLINE_ KSExtensionConstPtr<const m_type> cast(const Variant &p_variant) {                                                                                                   \
-			return KSExtensionConstPtr<const m_type>((const m_type *)p_variant.operator uint64_t());                                                                                               \
-		}                                                                                                                                                                                          \
-	};                                                                                                                                                                                             \
-	template <>                                                                                                                                                                                    \
-	struct VariantInternalAccessor<KSExtensionConstPtr<const m_type>> {                                                                                                                            \
-		static _FORCE_INLINE_ const KSExtensionConstPtr<const m_type> &get(const Variant *v) { return *reinterpret_cast<const KSExtensionConstPtr<const m_type> *>(VariantInternal::get_int(v)); } \
-		static _FORCE_INLINE_ void set(Variant *v, const KSExtensionConstPtr<const m_type> &p_value) { *VariantInternal::get_int(v) = uint64_t(p_value.data); }                                    \
-	};                                                                                                                                                                                             \
-	template <>                                                                                                                                                                                    \
-	struct KSExtensionPtr<m_type> {                                                                                                                                                                \
-		m_type *data = nullptr;                                                                                                                                                                    \
-		KSExtensionPtr() {}                                                                                                                                                                        \
-		KSExtensionPtr(m_type *p_assign) { data = p_assign; }                                                                                                                                      \
-		static const char *get_name() { return #m_type; }                                                                                                                                          \
-		operator m_type *() const { return data; }                                                                                                                                                 \
-		operator Variant() const { return uint64_t(data); }                                                                                                                                        \
-	};                                                                                                                                                                                             \
-	template <>                                                                                                                                                                                    \
-	struct VariantCaster<KSExtensionPtr<m_type>> {                                                                                                                                                 \
-		static _FORCE_INLINE_ KSExtensionPtr<m_type> cast(const Variant &p_variant) {                                                                                                              \
-			return KSExtensionPtr<m_type>((m_type *)p_variant.operator uint64_t());                                                                                                                \
-		}                                                                                                                                                                                          \
-	};                                                                                                                                                                                             \
-	template <>                                                                                                                                                                                    \
-	struct VariantInternalAccessor<KSExtensionPtr<m_type>> {                                                                                                                                       \
-		static _FORCE_INLINE_ const KSExtensionPtr<m_type> &get(const Variant *v) { return *reinterpret_cast<const KSExtensionPtr<m_type> *>(VariantInternal::get_int(v)); }                       \
-		static _FORCE_INLINE_ void set(Variant *v, const KSExtensionPtr<m_type> &p_value) { *VariantInternal::get_int(v) = uint64_t(p_value.data); }                                               \
+#define KSVIRTUAL_NATIVE_PTR(m_type)                                                                          \
+	template <>                                                                                               \
+	struct KSExtensionConstPtr<const m_type> {                                                                \
+		const m_type *data = nullptr;                                                                         \
+		KSExtensionConstPtr() {}                                                                              \
+		KSExtensionConstPtr(const m_type *p_assign) {                                                         \
+			data = p_assign;                                                                                  \
+		}                                                                                                     \
+		static const char *get_name() {                                                                       \
+			return "const " #m_type;                                                                          \
+		}                                                                                                     \
+		operator const m_type *() const {                                                                     \
+			return data;                                                                                      \
+		}                                                                                                     \
+		operator Variant() const {                                                                            \
+			return uint64_t(data);                                                                            \
+		}                                                                                                     \
+	};                                                                                                        \
+	template <>                                                                                               \
+	struct VariantCaster<KSExtensionConstPtr<const m_type>> {                                                 \
+		static _FORCE_INLINE_ KSExtensionConstPtr<const m_type> cast(const Variant &p_variant) {              \
+			return KSExtensionConstPtr<const m_type>((const m_type *)p_variant.operator uint64_t());          \
+		}                                                                                                     \
+	};                                                                                                        \
+	template <>                                                                                               \
+	struct VariantInternalAccessor<KSExtensionConstPtr<const m_type>> {                                       \
+		static _FORCE_INLINE_ const KSExtensionConstPtr<const m_type> &get(const Variant *v) {                \
+			return *reinterpret_cast<const KSExtensionConstPtr<const m_type> *>(VariantInternal::get_int(v)); \
+		}                                                                                                     \
+		static _FORCE_INLINE_ void set(Variant *v, const KSExtensionConstPtr<const m_type> &p_value) {        \
+			*VariantInternal::get_int(v) = uint64_t(p_value.data);                                            \
+		}                                                                                                     \
+	};                                                                                                        \
+	template <>                                                                                               \
+	struct KSExtensionPtr<m_type> {                                                                           \
+		m_type *data = nullptr;                                                                               \
+		KSExtensionPtr() {}                                                                                   \
+		KSExtensionPtr(m_type *p_assign) {                                                                    \
+			data = p_assign;                                                                                  \
+		}                                                                                                     \
+		static const char *get_name() {                                                                       \
+			return #m_type;                                                                                   \
+		}                                                                                                     \
+		operator m_type *() const {                                                                           \
+			return data;                                                                                      \
+		}                                                                                                     \
+		operator Variant() const {                                                                            \
+			return uint64_t(data);                                                                            \
+		}                                                                                                     \
+	};                                                                                                        \
+	template <>                                                                                               \
+	struct VariantCaster<KSExtensionPtr<m_type>> {                                                            \
+		static _FORCE_INLINE_ KSExtensionPtr<m_type> cast(const Variant &p_variant) {                         \
+			return KSExtensionPtr<m_type>((m_type *)p_variant.operator uint64_t());                           \
+		}                                                                                                     \
+	};                                                                                                        \
+	template <>                                                                                               \
+	struct VariantInternalAccessor<KSExtensionPtr<m_type>> {                                                  \
+		static _FORCE_INLINE_ const KSExtensionPtr<m_type> &get(const Variant *v) {                           \
+			return *reinterpret_cast<const KSExtensionPtr<m_type> *>(VariantInternal::get_int(v));            \
+		}                                                                                                     \
+		static _FORCE_INLINE_ void set(Variant *v, const KSExtensionPtr<m_type> &p_value) {                   \
+			*VariantInternal::get_int(v) = uint64_t(p_value.data);                                            \
+		}                                                                                                     \
 	};
 
 template <typename T>
 struct GetTypeInfo<KSExtensionConstPtr<T>> {
 	static const Variant::Type VARIANT_TYPE = Variant::NIL;
-	static const GodotTypeInfo::Metadata METADATA = GodotTypeInfo::METADATA_NONE;
+	static const KosmicTypeInfo::Metadata METADATA = KosmicTypeInfo::METADATA_NONE;
 	static inline PropertyInfo get_class_info() {
 		return PropertyInfo(Variant::INT, String(), PROPERTY_HINT_INT_IS_POINTER, KSExtensionConstPtr<T>::get_name());
 	}
@@ -108,7 +132,7 @@ struct GetTypeInfo<KSExtensionConstPtr<T>> {
 template <typename T>
 struct GetTypeInfo<KSExtensionPtr<T>> {
 	static const Variant::Type VARIANT_TYPE = Variant::NIL;
-	static const GodotTypeInfo::Metadata METADATA = GodotTypeInfo::METADATA_NONE;
+	static const KosmicTypeInfo::Metadata METADATA = KosmicTypeInfo::METADATA_NONE;
 	static inline PropertyInfo get_class_info() {
 		return PropertyInfo(Variant::INT, String(), PROPERTY_HINT_INT_IS_POINTER, KSExtensionPtr<T>::get_name());
 	}

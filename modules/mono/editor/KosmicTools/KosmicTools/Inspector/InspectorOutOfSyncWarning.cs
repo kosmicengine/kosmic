@@ -1,5 +1,5 @@
-using Godot;
-using GodotTools.Internals;
+using Kosmic;
+using KosmicTools.Internals;
 
 namespace KosmicTools.Inspector
 {

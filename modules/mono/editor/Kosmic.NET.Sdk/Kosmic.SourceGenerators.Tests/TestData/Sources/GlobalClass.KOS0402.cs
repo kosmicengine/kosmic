@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 
 // This works because it inherits from KosmicObject and it doesn't have any generic type parameter.
 [GlobalClass]
@@ -7,9 +7,9 @@ public partial class CustomGlobalClass : KosmicObject
 
 }
 
-// This raises a GD0402 diagnostic error: global classes can't have any generic type parameter
+// This raises a KS0402 diagnostic error: global classes can't have any generic type parameter
 [GlobalClass]
-public partial class {|GD0402:CustomGlobalClass|}<T> : KosmicObject
+public partial class {|KS0402:CustomGlobalClass|}<T> : KosmicObject
 {
 
 }

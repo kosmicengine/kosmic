@@ -37,9 +37,9 @@
 
 class KosmicCollisionObject3D;
 
-class GodotBroadPhase3D {
+class KosmicBroadPhase3D {
 public:
-	typedef GodotBroadPhase3D *(*CreateFunction)();
+	typedef KosmicBroadPhase3D *(*CreateFunction)();
 
 	static CreateFunction create_func;
 
@@ -67,7 +67,7 @@ public:
 
 	virtual void update() = 0;
 
-	virtual ~GodotBroadPhase3D();
+	virtual ~KosmicBroadPhase3D();
 };
 
 #endif // KOSMIC_BROAD_PHASE_3D_H

@@ -79,19 +79,19 @@ private:
 	KosmicPhysicsDirectSpaceState2D *direct_access = nullptr;
 	RID self;
 
-	GodotBroadPhase2D *broadphase = nullptr;
-	SelfList<GodotBody2D>::List active_list;
-	SelfList<GodotBody2D>::List mass_properties_update_list;
-	SelfList<GodotBody2D>::List state_query_list;
-	SelfList<GodotArea2D>::List monitor_query_list;
-	SelfList<GodotArea2D>::List area_moved_list;
+	KosmicBroadPhase2D *broadphase = nullptr;
+	SelfList<KosmicBody2D>::List active_list;
+	SelfList<KosmicBody2D>::List mass_properties_update_list;
+	SelfList<KosmicBody2D>::List state_query_list;
+	SelfList<KosmicArea2D>::List monitor_query_list;
+	SelfList<KosmicArea2D>::List area_moved_list;
 
 	static void *_broadphase_pair(KosmicCollisionObject2D *A, int p_subindex_A, KosmicCollisionObject2D *B, int p_subindex_B, void *p_self);
 	static void _broadphase_unpair(KosmicCollisionObject2D *A, int p_subindex_A, KosmicCollisionObject2D *B, int p_subindex_B, void *p_data, void *p_self);
 
 	HashSet<KosmicCollisionObject2D *> objects;
 
-	GodotArea2D *area = nullptr;
+	KosmicArea2D *area = nullptr;
 
 	int solver_iterations = 0;
 
@@ -120,7 +120,7 @@ private:
 	int active_objects = 0;
 	int collision_pairs = 0;
 
-	int _cull_aabb_for_body(GodotBody2D *p_body, const Rect2 &p_aabb);
+	int _cull_aabb_for_body(KosmicBody2D *p_body, const Rect2 &p_aabb);
 
 	Vector<Vector2> contact_debug;
 	int contact_debug_count = 0;
@@ -131,25 +131,25 @@ public:
 	_FORCE_INLINE_ void set_self(const RID &p_self) { self = p_self; }
 	_FORCE_INLINE_ RID get_self() const { return self; }
 
-	void set_default_area(GodotArea2D *p_area) { area = p_area; }
-	GodotArea2D *get_default_area() const { return area; }
+	void set_default_area(KosmicArea2D *p_area) { area = p_area; }
+	KosmicArea2D *get_default_area() const { return area; }
 
-	const SelfList<GodotBody2D>::List &get_active_body_list() const;
-	void body_add_to_active_list(SelfList<GodotBody2D> *p_body);
-	void body_remove_from_active_list(SelfList<GodotBody2D> *p_body);
-	void body_add_to_mass_properties_update_list(SelfList<GodotBody2D> *p_body);
-	void body_remove_from_mass_properties_update_list(SelfList<GodotBody2D> *p_body);
-	void area_add_to_moved_list(SelfList<GodotArea2D> *p_area);
-	void area_remove_from_moved_list(SelfList<GodotArea2D> *p_area);
-	const SelfList<GodotArea2D>::List &get_moved_area_list() const;
+	const SelfList<KosmicBody2D>::List &get_active_body_list() const;
+	void body_add_to_active_list(SelfList<KosmicBody2D> *p_body);
+	void body_remove_from_active_list(SelfList<KosmicBody2D> *p_body);
+	void body_add_to_mass_properties_update_list(SelfList<KosmicBody2D> *p_body);
+	void body_remove_from_mass_properties_update_list(SelfList<KosmicBody2D> *p_body);
+	void area_add_to_moved_list(SelfList<KosmicArea2D> *p_area);
+	void area_remove_from_moved_list(SelfList<KosmicArea2D> *p_area);
+	const SelfList<KosmicArea2D>::List &get_moved_area_list() const;
 
-	void body_add_to_state_query_list(SelfList<GodotBody2D> *p_body);
-	void body_remove_from_state_query_list(SelfList<GodotBody2D> *p_body);
+	void body_add_to_state_query_list(SelfList<KosmicBody2D> *p_body);
+	void body_remove_from_state_query_list(SelfList<KosmicBody2D> *p_body);
 
-	void area_add_to_monitor_query_list(SelfList<GodotArea2D> *p_area);
-	void area_remove_from_monitor_query_list(SelfList<GodotArea2D> *p_area);
+	void area_add_to_monitor_query_list(SelfList<KosmicArea2D> *p_area);
+	void area_remove_from_monitor_query_list(SelfList<KosmicArea2D> *p_area);
 
-	GodotBroadPhase2D *get_broadphase();
+	KosmicBroadPhase2D *get_broadphase();
 
 	void add_object(KosmicCollisionObject2D *p_object);
 	void remove_object(KosmicCollisionObject2D *p_object);
@@ -187,7 +187,7 @@ public:
 
 	int get_collision_pairs() const { return collision_pairs; }
 
-	bool test_body_motion(GodotBody2D *p_body, const PhysicsServer2D::MotionParameters &p_parameters, PhysicsServer2D::MotionResult *r_result);
+	bool test_body_motion(KosmicBody2D *p_body, const PhysicsServer2D::MotionParameters &p_parameters, PhysicsServer2D::MotionResult *r_result);
 
 	void set_debug_contacts(int p_amount) { contact_debug.resize(p_amount); }
 	_FORCE_INLINE_ bool is_debugging_contacts() const { return !contact_debug.is_empty(); }

@@ -2,7 +2,7 @@
   <Import Project="$(MSBuildThisFileDirectory)\SdkPackageVersions.props" />
 
   <PropertyGroup>
-    <UsingGodotNETSdk>true</UsingGodotNETSdk>
+    <UsingKosmicNETSdk>true</UsingKosmicNETSdk>
 
     <!-- Determines if we should import Microsoft.NET.Sdk, if it wasn't already imported. -->
     <KosmicSdkImportsMicrosoftNetSdk Condition=" '$(UsingMicrosoftNETSdk)' != 'true' ">true</KosmicSdkImportsMicrosoftNetSdk>
@@ -16,7 +16,7 @@
     <KosmicProjectDir>$([MSBuild]::EnsureTrailingSlash('$(KosmicProjectDir)'))</KosmicProjectDir>
     <KosmicProjectDirBase64 Condition=" $([MSBuild]::VersionGreaterThanOrEquals($(MSBuildAssemblyVersion), '17.3')) ">$([MSBuild]::ConvertToBase64('$(KosmicProjectDir)'))</KosmicProjectDirBase64>
 
-    <!-- Custom output paths for Godot projects. In brief, 'bin\' and 'obj\' are moved to '$(KosmicProjectDir)\.kosmic\mono\temp\'. -->
+    <!-- Custom output paths for Kosmic projects. In brief, 'bin\' and 'obj\' are moved to '$(KosmicProjectDir)\.kosmic\mono\temp\'. -->
     <BaseOutputPath>$(KosmicProjectDir).kosmic\mono\temp\bin\</BaseOutputPath>
     <OutputPath>$(KosmicProjectDir).kosmic\mono\temp\bin\$(Configuration)\</OutputPath>
     <!--
@@ -56,49 +56,49 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <GodotApiConfiguration Condition=" '$(Configuration)' != 'ExportRelease' ">Debug</GodotApiConfiguration>
-    <GodotApiConfiguration Condition=" '$(Configuration)' == 'ExportRelease' ">Release</GodotApiConfiguration>
+    <KosmicApiConfiguration Condition=" '$(Configuration)' != 'ExportRelease' ">Debug</KosmicApiConfiguration>
+    <KosmicApiConfiguration Condition=" '$(Configuration)' == 'ExportRelease' ">Release</KosmicApiConfiguration>
   </PropertyGroup>
 
-  <!-- Auto-detect the target Godot platform if it was not specified. -->
-  <PropertyGroup Condition=" '$(GodotTargetPlatform)' == '' ">
-    <GodotTargetPlatform Condition=" $(RuntimeIdentifier.StartsWith('ios')) ">ios</GodotTargetPlatform>
-    <GodotTargetPlatform Condition=" '$(GodotTargetPlatform)' == '' and $(RuntimeIdentifier.StartsWith('android')) ">android</GodotTargetPlatform>
-    <GodotTargetPlatform Condition=" '$(GodotTargetPlatform)' == '' and $(RuntimeIdentifier.StartsWith('browser')) ">web</GodotTargetPlatform>
+  <!-- Auto-detect the target Kosmic platform if it was not specified. -->
+  <PropertyGroup Condition=" '$(KosmicTargetPlatform)' == '' ">
+    <KosmicTargetPlatform Condition=" $(RuntimeIdentifier.StartsWith('ios')) ">ios</KosmicTargetPlatform>
+    <KosmicTargetPlatform Condition=" '$(KosmicTargetPlatform)' == '' and $(RuntimeIdentifier.StartsWith('android')) ">android</KosmicTargetPlatform>
+    <KosmicTargetPlatform Condition=" '$(KosmicTargetPlatform)' == '' and $(RuntimeIdentifier.StartsWith('browser')) ">web</KosmicTargetPlatform>
 
-    <GodotTargetPlatform Condition=" '$(GodotTargetPlatform)' == '' and $(RuntimeIdentifier.StartsWith('linux')) ">linuxbsd</GodotTargetPlatform>
-    <GodotTargetPlatform Condition=" '$(GodotTargetPlatform)' == '' and $(RuntimeIdentifier.StartsWith('freebsd')) ">linuxbsd</GodotTargetPlatform>
-    <GodotTargetPlatform Condition=" '$(GodotTargetPlatform)' == '' and $(RuntimeIdentifier.StartsWith('osx')) ">macos</GodotTargetPlatform>
-    <GodotTargetPlatform Condition=" '$(GodotTargetPlatform)' == '' and $(RuntimeIdentifier.StartsWith('win')) ">windows</GodotTargetPlatform>
+    <KosmicTargetPlatform Condition=" '$(KosmicTargetPlatform)' == '' and $(RuntimeIdentifier.StartsWith('linux')) ">linuxbsd</KosmicTargetPlatform>
+    <KosmicTargetPlatform Condition=" '$(KosmicTargetPlatform)' == '' and $(RuntimeIdentifier.StartsWith('freebsd')) ">linuxbsd</KosmicTargetPlatform>
+    <KosmicTargetPlatform Condition=" '$(KosmicTargetPlatform)' == '' and $(RuntimeIdentifier.StartsWith('osx')) ">macos</KosmicTargetPlatform>
+    <KosmicTargetPlatform Condition=" '$(KosmicTargetPlatform)' == '' and $(RuntimeIdentifier.StartsWith('win')) ">windows</KosmicTargetPlatform>
   </PropertyGroup>
 
-  <!-- Auto-detect the target Godot platform if it was not specified and there's no runtime identifier information. -->
-  <PropertyGroup Condition=" '$(GodotTargetPlatform)' == '' ">
-    <GodotTargetPlatform Condition=" '$([MSBuild]::IsOsPlatform(Linux))' ">linuxbsd</GodotTargetPlatform>
-    <GodotTargetPlatform Condition=" '$([MSBuild]::IsOsPlatform(FreeBSD))' ">linuxbsd</GodotTargetPlatform>
-    <GodotTargetPlatform Condition=" '$([MSBuild]::IsOsPlatform(OSX))' ">macos</GodotTargetPlatform>
-    <GodotTargetPlatform Condition=" '$([MSBuild]::IsOsPlatform(Windows))' ">windows</GodotTargetPlatform>
+  <!-- Auto-detect the target Kosmic platform if it was not specified and there's no runtime identifier information. -->
+  <PropertyGroup Condition=" '$(KosmicTargetPlatform)' == '' ">
+    <KosmicTargetPlatform Condition=" '$([MSBuild]::IsOsPlatform(Linux))' ">linuxbsd</KosmicTargetPlatform>
+    <KosmicTargetPlatform Condition=" '$([MSBuild]::IsOsPlatform(FreeBSD))' ">linuxbsd</KosmicTargetPlatform>
+    <KosmicTargetPlatform Condition=" '$([MSBuild]::IsOsPlatform(OSX))' ">macos</KosmicTargetPlatform>
+    <KosmicTargetPlatform Condition=" '$([MSBuild]::IsOsPlatform(Windows))' ">windows</KosmicTargetPlatform>
   </PropertyGroup>
 
   <PropertyGroup>
     <KosmicFloat64 Condition=" '$(KosmicFloat64)' == '' ">false</KosmicFloat64>
   </PropertyGroup>
 
-  <!-- Godot DefineConstants. -->
+  <!-- Kosmic DefineConstants. -->
   <PropertyGroup>
-    <!-- Define constants to identify Godot builds. -->
+    <!-- Define constants to identify Kosmic builds. -->
     <KosmicDefineConstants>KOSMIC</KosmicDefineConstants>
 
     <!--
-    Define constant to determine the target Godot platform. This includes the
+    Define constant to determine the target Kosmic platform. This includes the
     recognized platform names and the platform category (PC, MOBILE or WEB).
     -->
-    <KosmicPlatformConstants Condition=" '$(GodotTargetPlatform)' == 'windows' ">KOSMIC_WINDOWS;KOSMIC_PC</KosmicPlatformConstants>
-    <KosmicPlatformConstants Condition=" '$(GodotTargetPlatform)' == 'linuxbsd' ">KOSMIC_LINUXBSD;KOSMIC_PC</KosmicPlatformConstants>
-    <KosmicPlatformConstants Condition=" '$(GodotTargetPlatform)' == 'macos' ">KOSMIC_OSX;KOSMIC_MACOS;KOSMIC_PC</KosmicPlatformConstants>
-    <KosmicPlatformConstants Condition=" '$(GodotTargetPlatform)' == 'android' ">KOSMIC_ANDROID;KOSMIC_MOBILE</KosmicPlatformConstants>
-    <KosmicPlatformConstants Condition=" '$(GodotTargetPlatform)' == 'ios' ">KOSMIC_IPHONE;KOSMIC_IOS;KOSMIC_MOBILE</KosmicPlatformConstants>
-    <KosmicPlatformConstants Condition=" '$(GodotTargetPlatform)' == 'web' ">KOSMIC_JAVASCRIPT;KOSMIC_HTML5;KOSMIC_WASM;KOSMIC_WEB</KosmicPlatformConstants>
+    <KosmicPlatformConstants Condition=" '$(KosmicTargetPlatform)' == 'windows' ">KOSMIC_WINDOWS;KOSMIC_PC</KosmicPlatformConstants>
+    <KosmicPlatformConstants Condition=" '$(KosmicTargetPlatform)' == 'linuxbsd' ">KOSMIC_LINUXBSD;KOSMIC_PC</KosmicPlatformConstants>
+    <KosmicPlatformConstants Condition=" '$(KosmicTargetPlatform)' == 'macos' ">KOSMIC_OSX;KOSMIC_MACOS;KOSMIC_PC</KosmicPlatformConstants>
+    <KosmicPlatformConstants Condition=" '$(KosmicTargetPlatform)' == 'android' ">KOSMIC_ANDROID;KOSMIC_MOBILE</KosmicPlatformConstants>
+    <KosmicPlatformConstants Condition=" '$(KosmicTargetPlatform)' == 'ios' ">KOSMIC_IPHONE;KOSMIC_IOS;KOSMIC_MOBILE</KosmicPlatformConstants>
+    <KosmicPlatformConstants Condition=" '$(KosmicTargetPlatform)' == 'web' ">KOSMIC_JAVASCRIPT;KOSMIC_HTML5;KOSMIC_WASM;KOSMIC_WEB</KosmicPlatformConstants>
 
     <KosmicDefineConstants>$(KosmicDefineConstants);$(KosmicPlatformConstants);$(KosmicVersionConstants)</KosmicDefineConstants>
   </PropertyGroup>
@@ -112,6 +112,6 @@
     <DefineConstants>$(KosmicDefineConstants);$(DefineConstants)</DefineConstants>
   </PropertyGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)\Android.props" Condition=" '$(GodotTargetPlatform)' == 'android' " />
-  <Import Project="$(MSBuildThisFileDirectory)\iOSNativeAOT.props" Condition=" '$(GodotTargetPlatform)' == 'ios' " />
+  <Import Project="$(MSBuildThisFileDirectory)\Android.props" Condition=" '$(KosmicTargetPlatform)' == 'android' " />
+  <Import Project="$(MSBuildThisFileDirectory)\iOSNativeAOT.props" Condition=" '$(KosmicTargetPlatform)' == 'ios' " />
 </Project>

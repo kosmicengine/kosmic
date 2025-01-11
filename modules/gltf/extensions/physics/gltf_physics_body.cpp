@@ -263,11 +263,11 @@ Ref<GLTFPhysicsBody> GLTFPhysicsBody::from_dictionary(const Dictionary p_diction
 #endif // DISABLE_DEPRECATED
 	}
 	if (motion.has("type")) {
-		// Read the body type. This representation sits between glTF's and Godot's physics nodes.
+		// Read the body type. This representation sits between glTF's and Kosmic's physics nodes.
 		// While we may only read "static", "kinematic", or "dynamic" from a valid glTF file, we
-		// want to allow another extension to override this to another Godot node type mid-import.
+		// want to allow another extension to override this to another Kosmic node type mid-import.
 		// For example, a vehicle extension may want to override the body type to "vehicle"
-		// so Godot generates a VehicleBody3D node. Therefore we distinguish by importing
+		// so Kosmic generates a VehicleBody3D node. Therefore we distinguish by importing
 		// "dynamic" as "rigid", and "kinematic" as "animatable", in the GLTFPhysicsBody code.
 		String body_type_string = motion["type"];
 		if (body_type_string == "static") {
@@ -339,7 +339,7 @@ Ref<GLTFPhysicsBody> GLTFPhysicsBody::from_dictionary(const Dictionary p_diction
 Dictionary GLTFPhysicsBody::to_dictionary() const {
 	Dictionary ret;
 	if (body_type == PhysicsBodyType::TRIGGER) {
-		// The equivalent of a Godot Area3D node in glTF is a node that
+		// The equivalent of a Kosmic Area3D node in glTF is a node that
 		// defines that it is a trigger, but does not have a shape.
 		Dictionary trigger;
 		ret["trigger"] = trigger;
@@ -347,7 +347,7 @@ Dictionary GLTFPhysicsBody::to_dictionary() const {
 	}
 	// All non-trigger body types are defined using the motion property.
 	Dictionary motion;
-	// When stored in memory, the body type can correspond to a Godot
+	// When stored in memory, the body type can correspond to a Kosmic
 	// node type. However, when exporting to glTF, we need to squash
 	// this down to one of "static", "kinematic", or "dynamic".
 	if (body_type == PhysicsBodyType::STATIC) {

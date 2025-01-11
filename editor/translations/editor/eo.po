@@ -1,7 +1,7 @@
 # Esperanto translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Scott Starkey <yekrats@gmail.com>, 2019.
 # AlexHoratio <yukithetupper@gmail.com>, 2019.
 # Teashrock <kajitsu22@gmail.com>, 2019.
@@ -25,10 +25,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "PO-Revision-Date: 2024-02-26 06:02+0000\n"
 "Last-Translator: casuallyblue <sierra@casuallyblue.dev>\n"
-"Language-Team: Esperanto <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Esperanto <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/eo/>\n"
 "Language: eo\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -923,7 +923,7 @@ msgid "Thanks from the Godot community!"
 msgstr "Dankon de la komunumo de Godot!"
 
 msgid "Godot Engine contributors"
-msgstr "Kontribuantoj de Godot Engine"
+msgstr "Kontribuantoj de Kosmic Engine"
 
 msgid "Project Founders"
 msgstr "Fondintoj de la Projekto"

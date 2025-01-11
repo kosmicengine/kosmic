@@ -19,7 +19,7 @@ namespace Kosmic.SourceGenerators
         Double,
         String,
 
-        // Godot structs
+        // Kosmic structs
         Vector2,
         Vector2I,
         Rect2,
@@ -67,8 +67,8 @@ namespace Kosmic.SourceGenerators
         NodePath,
         Rid,
         KosmicDictionary,
-        GodotArray,
-        GodotGenericDictionary,
-        GodotGenericArray,
+        KosmicArray,
+        KosmicGenericDictionary,
+        KosmicGenericArray,
     }
 }

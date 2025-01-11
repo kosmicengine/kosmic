@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GodotTools.IdeMessaging.Requests;
+using KosmicTools.IdeMessaging.Requests;
 using Newtonsoft.Json;
 
 namespace KosmicTools.IdeMessaging

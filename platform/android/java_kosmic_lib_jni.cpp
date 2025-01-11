@@ -92,7 +92,7 @@ static void _terminate(JNIEnv *env, bool p_restart = false) {
 
 	step.set(STEP_TERMINATED); // Ensure no further steps are attempted and no further events are sent
 
-	// Lets cleanup
+	// lets cleanup
 	// Unregister android plugins
 	unregister_plugins_singletons();
 
@@ -145,7 +145,7 @@ JNIEXPORT jboolean JNICALL Java_org_kosmicengine_kosmic_KosmicLib_initialize(JNI
 	JavaVM *jvm;
 	env->GetJavaVM(&jvm);
 
-	// Create our wrapper classes
+	// create our wrapper classes
 	kosmic_java = new KosmicJavaWrapper(env, p_activity, p_kosmic_instance);
 	kosmic_io_java = new KosmicIOJavaWrapper(env, p_kosmic_io);
 

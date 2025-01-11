@@ -97,7 +97,7 @@
 				// Creates a Basis whose z axis points down.
 				var myBasis = Basis.FromEuler(new Vector3(Mathf.Tau / 4.0f, 0.0f, 0.0f));
 
-				KS.Print(myBasis.Z); // Prints (0, -1, 0)
+				GD.Print(myBasis.Z); // Prints (0, -1, 0)
 				[/csharp]
 				[/codeblocks]
 				The order of each consecutive rotation can be changed with [param order] (see [enum EulerOrder] constants). By default, the YXZ convention is used ([constant EULER_ORDER_YXZ]): the basis rotates first around the Y axis (yaw), then X (pitch), and lastly Z (roll). When using the opposite method [method get_euler], this order is reversed.
@@ -119,9 +119,9 @@
 				[csharp]
 				var myBasis = Basis.FromScale(new Vector3(2.0f, 4.0f, 8.0f));
 
-				KS.Print(myBasis.X); // Prints (2, 0, 0)
-				KS.Print(myBasis.Y); // Prints (0, 4, 0)
-				KS.Print(myBasis.Z); // Prints (0, 0, 8)
+				GD.Print(myBasis.X); // Prints (2, 0, 0)
+				GD.Print(myBasis.Y); // Prints (0, 4, 0)
+				GD.Print(myBasis.Z); // Prints (0, 0, 8)
 				[/csharp]
 				[/codeblocks]
 				[b]Note:[/b] In linear algebra, the matrix of this basis is also known as a [url=https://en.wikipedia.org/wiki/Diagonal_matrix]diagonal matrix[/url].
@@ -145,7 +145,7 @@
 			<return type="Quaternion" />
 			<description>
 				Returns this basis's rotation as a [Quaternion].
-				[b]Note:[/b] Quatenions are much more suitable for 3D math but are less intuitive. For user interfaces, consider using the [method get_euler] method, which returns Euler angles.
+				[b]Note:[/b] Quaternions are much more suitable for 3D math but are less intuitive. For user interfaces, consider using the [method get_euler] method, which returns Euler angles.
 			</description>
 		</method>
 		<method name="get_scale" qualifiers="const">
@@ -175,7 +175,7 @@
 				myBasis = myBasis.Rotated(Vector3.Up, Mathf.Tau / 2.0f);
 				myBasis = myBasis.Rotated(Vector3.Right, Mathf.Tau / 4.0f);
 
-				KS.Print(myBasis.Scale); // Prints (2, 4, 8)
+				GD.Print(myBasis.Scale); // Prints (2, 4, 8)
 				[/csharp]
 				[/codeblocks]
 				[b]Note:[/b] If the value returned by [method determinant] is negative, the scale is also negative.
@@ -214,7 +214,8 @@
 			<description>
 				Creates a new [Basis] with a rotation such that the forward axis (-Z) points towards the [param target] position.
 				By default, the -Z axis (camera forward) is treated as forward (implies +X is right). If [param use_model_front] is [code]true[/code], the +Z axis (asset front) is treated as forward (implies +X is left) and points toward the [param target] position.
-				The up axis (+Y) points as close to the [param up] vector as possible while staying perpendicular to the forward axis. The returned basis is orthonormalized (see [method orthonormalized]). The [param target] and [param up] vectors cannot be [constant Vector3.ZERO], and cannot be parallel to each other.
+				The up axis (+Y) points as close to the [param up] vector as possible while staying perpendicular to the forward axis. The returned basis is orthonormalized (see [method orthonormalized]).
+				The [param target] and the [param up] cannot be [constant Vector3.ZERO], and shouldn't be colinear to avoid unintended rotation around local Z axis.
 			</description>
 		</method>
 		<method name="orthonormalized" qualifiers="const">
@@ -297,9 +298,9 @@
 				);
 				myBasis = myBasis.Scaled(new Vector3(0.0f, 2.0f, -2.0f));
 
-				KS.Print(myBasis.X); // Prints (0, 2, -2)
-				KS.Print(myBasis.Y); // Prints (0, 4, -4)
-				KS.Print(myBasis.Z); // Prints (0, 6, -6)
+				GD.Print(myBasis.X); // Prints (0, 2, -2)
+				GD.Print(myBasis.Y); // Prints (0, 4, -4)
+				GD.Print(myBasis.Z); // Prints (0, 6, -6)
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -372,9 +373,9 @@
 				);
 				myBasis = myBasis.Transposed();
 
-				KS.Print(myBasis.X); // Prints (1, 4, 7)
-				KS.Print(myBasis.Y); // Prints (2, 5, 8)
-				KS.Print(myBasis.Z); // Prints (3, 6, 9)
+				GD.Print(myBasis.X); // Prints (1, 4, 7)
+				GD.Print(myBasis.Y); // Prints (2, 5, 8)
+				GD.Print(myBasis.Z); // Prints (3, 6, 9)
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -459,7 +460,7 @@
 				[csharp]
 				// Basis that swaps the X/Z axes and doubles the scale.
 				var myBasis = new Basis(new Vector3(0, 2, 0), new Vector3(2, 0, 0), new Vector3(0, 0, 2));
-				KS.Print(myBasis * new Vector3(1, 2, 3)); // Prints (4, 2, 6)
+				GD.Print(myBasis * new Vector3(1, 2, 3)); // Prints (4, 2, 6)
 				[/csharp]
 				[/codeblocks]
 			</description>

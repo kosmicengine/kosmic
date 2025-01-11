@@ -255,7 +255,7 @@ Variant VoyScript::_new(const Variant **p_args, int p_argcount, Callable::CallEr
 
 bool VoyScript::can_instantiate() const {
 #ifdef TOOLS_ENABLED
-	return valid && (tool || ScriptServer::is_scripting_enabled());
+	return valid && (tool || ScriptServer::is_scripting_enabled()) && !Engine::get_singleton()->is_recovery_mode_hint();
 #else
 	return valid;
 #endif
@@ -1465,9 +1465,9 @@ void VoyScript::_save_orphaned_subclasses(ClearData *p_clear_data) {
 	subclasses.clear();
 	// subclasses are also held by constants, clear those as well
 	for (KeyValue<StringName, Variant> &E : constants) {
-		VoyScript *voyscr = _get_voyscript_from_variant(E.value);
-		if (voyscr != nullptr) {
-			p_clear_data->scripts.insert(voyscr);
+		VoyScript *gdscr = _get_voyscript_from_variant(E.value);
+		if (gdscr != nullptr) {
+			p_clear_data->scripts.insert(gdscr);
 		}
 	}
 	constants.clear();
@@ -1637,9 +1637,9 @@ void VoyScript::clear(ClearData *p_clear_data) {
 			memdelete(E);
 		}
 		for (Ref<Script> &E : clear_data->scripts) {
-			Ref<VoyScript> voyscr = E;
-			if (voyscr.is_valid()) {
-				VoyScriptCache::remove_script(voyscr->get_path());
+			Ref<VoyScript> gdscr = E;
+			if (gdscr.is_valid()) {
+				VoyScriptCache::remove_script(gdscr->get_path());
 			}
 		}
 		clear_data->clear();
@@ -2973,6 +2973,7 @@ VoyScriptLanguage::VoyScriptLanguage() {
 #ifdef DEBUG_ENABLED
 	GLOBAL_DEF("debug/voyscript/warnings/enable", true);
 	GLOBAL_DEF("debug/voyscript/warnings/exclude_addons", true);
+	GLOBAL_DEF("debug/voyscript/warnings/renamed_in_kosmic_4_hint", true);
 	for (int i = 0; i < (int)VoyScriptWarning::WARNING_MAX; i++) {
 		VoyScriptWarning::Code code = (VoyScriptWarning::Code)i;
 		Variant default_enabled = VoyScriptWarning::get_default_value(code);

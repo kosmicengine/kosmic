@@ -65,9 +65,9 @@ namespace Kosmic
         private static ConcurrentDictionary<WeakReference<IDisposable>, byte> OtherInstances { get; } =
             new();
 
-        public static WeakReference<KosmicObject> RegisterKosmicObject(KosmicObject godotObject)
+        public static WeakReference<KosmicObject> RegisterKosmicObject(KosmicObject kosmicObject)
         {
-            var weakReferenceToSelf = new WeakReference<KosmicObject>(godotObject);
+            var weakReferenceToSelf = new WeakReference<KosmicObject>(kosmicObject);
             KosmicObjectInstances.TryAdd(weakReferenceToSelf, 0);
             return weakReferenceToSelf;
         }
@@ -79,7 +79,7 @@ namespace Kosmic
             return weakReferenceToSelf;
         }
 
-        public static void UnregisterKosmicObject(KosmicObject godotObject, WeakReference<KosmicObject> weakReferenceToSelf)
+        public static void UnregisterKosmicObject(KosmicObject kosmicObject, WeakReference<KosmicObject> weakReferenceToSelf)
         {
             if (!KosmicObjectInstances.TryRemove(weakReferenceToSelf, out _))
                 throw new ArgumentException("Godot Object not registered.", nameof(weakReferenceToSelf));

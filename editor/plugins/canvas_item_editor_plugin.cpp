@@ -44,6 +44,7 @@
 #include "editor/gui/editor_toaster.h"
 #include "editor/gui/editor_zoom_widget.h"
 #include "editor/plugins/animation_player_editor_plugin.h"
+#include "editor/plugins/editor_context_menu_plugin.h"
 #include "editor/plugins/script_editor_plugin.h"
 #include "editor/scene_tree_dock.h"
 #include "editor/themes/editor_scale.h"
@@ -992,6 +993,19 @@ void CanvasItemEditor::_add_node_pressed(int p_result) {
 			undo_redo->commit_action();
 			_reset_create_position();
 		} break;
+		default: {
+			if (p_result >= EditorContextMenuPlugin::BASE_ID) {
+				TypedArray<Node> nodes;
+				nodes.resize(selection_results.size());
+
+				int i = 0;
+				for (const _SelectResult &result : selection_results) {
+					nodes[i] = result.item;
+					i++;
+				}
+				EditorContextMenuPluginManager::get_singleton()->activate_custom_option(EditorContextMenuPlugin::CONTEXT_SLOT_2D_EDITOR, p_result, nodes);
+			}
+		}
 	}
 }
 
@@ -2460,6 +2474,21 @@ bool CanvasItemEditor::_gui_input_select(const Ref<InputEvent> &p_event) {
 					add_node_menu->add_icon_item(get_editor_theme_icon(SNAME("ToolMove")), TTR("Move Node(s) Here"), ADD_MOVE);
 					break;
 				}
+			}
+
+			// Context menu plugin receives paths of nodes under cursor. It's a complex operation, so perform it only when necessary.
+			if (EditorContextMenuPluginManager::get_singleton()->has_plugins_for_slot(EditorContextMenuPlugin::CONTEXT_SLOT_2D_EDITOR)) {
+				selection_results.clear();
+				_get_canvas_items_at_pos(transform.affine_inverse().xform(viewport->get_local_mouse_position()), selection_results, true);
+
+				PackedStringArray paths;
+				paths.resize(selection_results.size());
+				String *paths_write = paths.ptrw();
+
+				for (int i = 0; i < paths.size(); i++) {
+					paths_write[i] = selection_results[i].item->get_path();
+				}
+				EditorContextMenuPluginManager::get_singleton()->add_options_from_plugins(add_node_menu, EditorContextMenuPlugin::CONTEXT_SLOT_2D_EDITOR, paths);
 			}
 
 			add_node_menu->reset_size();
@@ -4376,16 +4405,12 @@ void CanvasItemEditor::_insert_animation_keys(bool p_location, bool p_rotation, 
 	const HashMap<Node *, Object *> &selection = editor_selection->get_selection();
 
 	AnimationTrackEditor *te = AnimationPlayerEditor::get_singleton()->get_track_editor();
-	ERR_FAIL_COND_MSG(!te->get_current_animation().is_valid(), "Cannot insert animation key. No animation selected.");
+	ERR_FAIL_COND_MSG(te->get_current_animation().is_null(), "Cannot insert animation key. No animation selected.");
 
 	te->make_insert_queue();
 	for (const KeyValue<Node *, Object *> &E : selection) {
 		CanvasItem *ci = Object::cast_to<CanvasItem>(E.key);
 		if (!ci || !ci->is_visible_in_tree()) {
-			continue;
-		}
-
-		if (ci->get_viewport() != EditorNode::get_singleton()->get_scene_root()) {
 			continue;
 		}
 
@@ -4599,9 +4624,6 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 				if (!ci || !ci->is_inside_tree()) {
 					continue;
 				}
-				if (ci->get_viewport() != EditorNode::get_singleton()->get_scene_root()) {
-					continue;
-				}
 
 				undo_redo->add_do_method(ci, "set_meta", "_edit_lock_", true);
 				undo_redo->add_undo_method(ci, "remove_meta", "_edit_lock_");
@@ -4619,9 +4641,6 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 			for (Node *E : selection) {
 				CanvasItem *ci = Object::cast_to<CanvasItem>(E);
 				if (!ci || !ci->is_inside_tree()) {
-					continue;
-				}
-				if (ci->get_viewport() != EditorNode::get_singleton()->get_scene_root()) {
 					continue;
 				}
 
@@ -4643,9 +4662,6 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 				if (!ci || !ci->is_inside_tree()) {
 					continue;
 				}
-				if (ci->get_viewport() != EditorNode::get_singleton()->get_scene_root()) {
-					continue;
-				}
 
 				undo_redo->add_do_method(ci, "set_meta", "_edit_group_", true);
 				undo_redo->add_undo_method(ci, "remove_meta", "_edit_group_");
@@ -4663,9 +4679,6 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 			for (Node *E : selection) {
 				CanvasItem *ci = Object::cast_to<CanvasItem>(E);
 				if (!ci || !ci->is_inside_tree()) {
-					continue;
-				}
-				if (ci->get_viewport() != EditorNode::get_singleton()->get_scene_root()) {
 					continue;
 				}
 
@@ -4703,10 +4716,6 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 			for (const KeyValue<Node *, Object *> &E : selection) {
 				CanvasItem *ci = Object::cast_to<CanvasItem>(E.key);
 				if (!ci || !ci->is_visible_in_tree()) {
-					continue;
-				}
-
-				if (ci->get_viewport() != EditorNode::get_singleton()->get_scene_root()) {
 					continue;
 				}
 
@@ -4749,10 +4758,6 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 			for (const KeyValue<Node *, Object *> &E : selection) {
 				CanvasItem *ci = Object::cast_to<CanvasItem>(E.key);
 				if (!ci || !ci->is_visible_in_tree()) {
-					continue;
-				}
-
-				if (ci->get_viewport() != EditorNode::get_singleton()->get_scene_root()) {
 					continue;
 				}
 
@@ -4844,11 +4849,12 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 				undo_redo->add_do_method(new_bone, "add_child", n2d);
 				undo_redo->add_do_method(n2d, "set_transform", Transform2D());
 				undo_redo->add_do_method(this, "_set_owner_for_node_and_children", new_bone, editor_root);
+				undo_redo->add_do_reference(new_bone);
 
 				undo_redo->add_undo_method(new_bone, "remove_child", n2d);
 				undo_redo->add_undo_method(n2d_parent, "add_child", n2d);
+				undo_redo->add_undo_method(n2d_parent, "remove_child", new_bone);
 				undo_redo->add_undo_method(n2d, "set_transform", new_bone->get_transform());
-				undo_redo->add_undo_method(new_bone, "queue_free");
 				undo_redo->add_undo_method(this, "_set_owner_for_node_and_children", n2d, editor_root);
 			}
 			undo_redo->commit_action();
@@ -6008,7 +6014,7 @@ void CanvasItemEditorViewport::_create_audio_node(Node *p_parent, const String &
 
 bool CanvasItemEditorViewport::_create_instance(Node *p_parent, const String &p_path, const Point2 &p_point) {
 	Ref<PackedScene> sdata = ResourceLoader::load(p_path);
-	if (!sdata.is_valid()) { // invalid scene
+	if (sdata.is_null()) { // invalid scene
 		return false;
 	}
 

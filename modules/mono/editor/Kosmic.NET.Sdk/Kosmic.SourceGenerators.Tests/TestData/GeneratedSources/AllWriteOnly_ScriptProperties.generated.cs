@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 using Kosmic.NativeInterop;
 
 partial class AllWriteOnly

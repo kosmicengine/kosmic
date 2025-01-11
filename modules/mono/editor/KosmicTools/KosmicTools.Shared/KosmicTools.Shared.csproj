@@ -7,6 +7,6 @@
       <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     </PropertyGroup>
 
-    <Import Project="GenerateGodotNupkgsVersions.targets" />
+    <Import Project="GenerateKosmicNupkgsVersions.targets" />
 
 </Project>

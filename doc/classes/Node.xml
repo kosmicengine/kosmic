@@ -19,7 +19,7 @@
 	</description>
 	<tutorials>
 		<link title="Nodes and scenes">$DOCS_URL/getting_started/step_by_step/nodes_and_scenes.html</link>
-		<link title="All Demos">https://github.com/godotengine/godot-demo-projects/</link>
+		<link title="All Demos">https://github.com/godotengine/kosmic-demo-projects/</link>
 	</tutorials>
 	<methods>
 		<method name="_enter_tree" qualifiers="virtual">
@@ -444,19 +444,19 @@
 				[/voyscript]
 				[csharp]
 				var a = GetNodeAndResource(NodePath("Area2D/Sprite2D"));
-				KS.Print(a[0].Name); // Prints Sprite2D
-				KS.Print(a[1]);      // Prints &lt;null&gt;
-				KS.Print(a[2]);      // Prints ^"
+				GD.Print(a[0].Name); // Prints Sprite2D
+				GD.Print(a[1]);      // Prints &lt;null&gt;
+				GD.Print(a[2]);      // Prints ^"
 
 				var b = GetNodeAndResource(NodePath("Area2D/Sprite2D:texture:atlas"));
-				KS.Print(b[0].name);        // Prints Sprite2D
-				KS.Print(b[1].get_class()); // Prints AtlasTexture
-				KS.Print(b[2]);             // Prints ^""
+				GD.Print(b[0].name);        // Prints Sprite2D
+				GD.Print(b[1].get_class()); // Prints AtlasTexture
+				GD.Print(b[2]);             // Prints ^""
 
 				var c = GetNodeAndResource(NodePath("Area2D/Sprite2D:texture:atlas:region"));
-				KS.Print(c[0].name);        // Prints Sprite2D
-				KS.Print(c[1].get_class()); // Prints AtlasTexture
-				KS.Print(c[2]);             // Prints ^":region"
+				GD.Print(c[0].name);        // Prints Sprite2D
+				GD.Print(c[1].get_class()); // Prints AtlasTexture
+				GD.Print(c[2]);             // Prints ^":region"
 				[/csharp]
 				[/codeblocks]
 			</description>

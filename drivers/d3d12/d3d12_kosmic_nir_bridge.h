@@ -47,12 +47,12 @@ static const uint64_t KOSMIC_NIR_SC_SENTINEL_MAGIC = 0x45678900; // This must be
 static const uint64_t KOSMIC_NIR_SC_SENTINEL_MAGIC_MASK = 0xffffffffffffff00;
 static const uint64_t KOSMIC_NIR_SC_SENTINEL_ID_MASK = 0x00000000000000ff;
 
-typedef struct GodotNirCallbacks {
+typedef struct KosmicNirCallbacks {
 	void *data;
 	void (*report_resource)(uint32_t p_register, uint32_t p_space, uint32_t p_dxil_type, void *p_data);
 	void (*report_sc_bit_offset_fn)(uint32_t p_sc_id, uint64_t p_bit_offset, void *p_data);
 	void (*report_bitcode_bit_offset_fn)(uint64_t p_bit_offset, void *p_data);
-} GodotNirCallbacks;
+} KosmicNirCallbacks;
 
 #ifdef __cplusplus
 }

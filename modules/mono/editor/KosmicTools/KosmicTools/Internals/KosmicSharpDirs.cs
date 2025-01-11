@@ -1,9 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using Godot;
+using Kosmic;
 using Kosmic.NativeInterop;
-using GodotTools.Core;
-using static GodotTools.Internals.Globals;
+using KosmicTools.Core;
+using static KosmicTools.Internals.Globals;
 
 namespace KosmicTools.Internals
 {

@@ -9,11 +9,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using GodotTools.IdeMessaging;
-using GodotTools.IdeMessaging.Requests;
-using GodotTools.IdeMessaging.Utils;
-using GodotTools.Internals;
-using GodotTools.Utils;
+using KosmicTools.IdeMessaging;
+using KosmicTools.IdeMessaging.Requests;
+using KosmicTools.IdeMessaging.Utils;
+using KosmicTools.Internals;
+using KosmicTools.Utils;
 using Newtonsoft.Json;
 using Directory = System.IO.Directory;
 using File = System.IO.File;
@@ -115,7 +115,7 @@ namespace KosmicTools.Ides
             // Make sure the directory exists
             Directory.CreateDirectory(projectMetadataDir);
 
-            // The Godot editor's file system thread can keep the file open for writing, so we are forced to allow write sharing...
+            // The Kosmic editor's file system thread can keep the file open for writing, so we are forced to allow write sharing...
             const FileShare metaFileShare = FileShare.ReadWrite;
 
             _metaFile = File.Open(_metaFilePath, FileMode.Create, FileAccess.Write, metaFileShare);
@@ -211,7 +211,7 @@ namespace KosmicTools.Ides
             {
                 if (!IsAnyConnected(identity))
                 {
-                    _logger.LogError("Cannot write request. No client connected to the Godot Ide Server.");
+                    _logger.LogError("Cannot write request. No client connected to the Kosmic Ide Server.");
                     return;
                 }
 

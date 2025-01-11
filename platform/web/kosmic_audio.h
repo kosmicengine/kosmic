@@ -71,12 +71,12 @@ extern void kosmic_audio_sample_bus_set_solo(int p_bus, bool p_enable);
 extern void kosmic_audio_sample_bus_set_mute(int p_bus, bool p_enable);
 
 // Worklet
-typedef int32_t GodotAudioState[4];
+typedef int32_t KosmicAudioState[4];
 extern int kosmic_audio_worklet_create(int p_channels);
-extern void kosmic_audio_worklet_start(float *p_in_buf, int p_in_size, float *p_out_buf, int p_out_size, GodotAudioState p_state);
+extern void kosmic_audio_worklet_start(float *p_in_buf, int p_in_size, float *p_out_buf, int p_out_size, KosmicAudioState p_state);
 extern void kosmic_audio_worklet_start_no_threads(float *p_out_buf, int p_out_size, void (*p_out_cb)(int p_pos, int p_frames), float *p_in_buf, int p_in_size, void (*p_in_cb)(int p_pos, int p_frames));
-extern int kosmic_audio_worklet_state_add(GodotAudioState p_state, int p_idx, int p_value);
-extern int kosmic_audio_worklet_state_get(GodotAudioState p_state, int p_idx);
+extern int kosmic_audio_worklet_state_add(KosmicAudioState p_state, int p_idx, int p_value);
+extern int kosmic_audio_worklet_state_get(KosmicAudioState p_state, int p_idx);
 extern int kosmic_audio_worklet_state_wait(int32_t *p_state, int p_idx, int32_t p_expected, int p_timeout);
 
 // Script

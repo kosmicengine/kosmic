@@ -39,7 +39,7 @@ class String;
 
 @protocol KosmicViewDelegate
 
-- (BOOL)godotViewFinishedSetup:(KosmicView *)view;
+- (BOOL)kosmicViewFinishedSetup:(KosmicView *)view;
 
 @end
 

@@ -31,7 +31,7 @@
 				        {
 				            if (GetRect().HasPoint(ToLocal(inputEventMouse.Position)))
 				            {
-				                KS.Print("A click!");
+				                GD.Print("A click!");
 				            }
 				        }
 				    }

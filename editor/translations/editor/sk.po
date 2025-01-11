@@ -1,7 +1,7 @@
 # Slovak translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # J08nY <johnenter@gmail.com>, 2016.
 # MineGame 159 <minegame459@gmail.com>, 2018.
 # Zuzana Palenikova <sousana.is@gmail.com>, 2019.
@@ -25,11 +25,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-08-30 21:09+0000\n"
 "Last-Translator: Bobo <ctiborboborkapor@gmail.com>\n"
-"Language-Team: Slovak <https://hosted.weblate.org/projects/godot-engine/godot/"
+"Language-Team: Slovak <https://hosted.weblate.org/projects/kosmic-engine/godot/"
 "sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
@@ -1937,8 +1937,8 @@ msgstr "[prázdne]"
 msgid "[unsaved]"
 msgstr "[neuložené]"
 
-msgid "%s - Godot Engine"
-msgstr "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
+msgstr "%s - Kosmic Engine"
 
 msgid "Dock Position"
 msgstr "Pozícia Dock-u"

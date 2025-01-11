@@ -33,7 +33,7 @@
 
 #include "display_server_macos.h"
 
-@implementation GodotApplication
+@implementation KosmicApplication
 
 - (void)mediaKeyEvent:(int)key state:(BOOL)state repeat:(BOOL)repeat {
 	Key keycode = Key::NONE;

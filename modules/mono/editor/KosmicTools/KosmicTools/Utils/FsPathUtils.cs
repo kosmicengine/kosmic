@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using Godot;
-using GodotTools.Core;
+using Kosmic;
+using KosmicTools.Core;
 
 namespace KosmicTools.Utils
 {

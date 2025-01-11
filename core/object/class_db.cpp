@@ -275,7 +275,7 @@ void ClassDB::get_extension_class_list(const Ref<KSExtension> &p_extension, List
 		if (E.value.api != API_EXTENSION && E.value.api != API_EDITOR_EXTENSION) {
 			continue;
 		}
-		if (!E.value.voyextension || E.value.voyextension->library != p_extension.ptr()) {
+		if (!E.value.ksextension || E.value.ksextension->library != p_extension.ptr()) {
 			continue;
 		}
 		p_classes->push_back(E.key);
@@ -2222,7 +2222,7 @@ void ClassDB::register_extension_class(ObjectKSExtension *p_extension) {
 
 	ClassInfo c;
 	c.api = p_extension->editor_class ? API_EDITOR_EXTENSION : API_EXTENSION;
-	c.voyextension = p_extension;
+	c.ksextension = p_extension;
 	c.name = p_extension->class_name;
 	c.is_virtual = p_extension->is_virtual;
 	if (!p_extension->is_abstract) {

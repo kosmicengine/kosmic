@@ -1,7 +1,7 @@
 # Portuguese translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # António Sarmento <antonio.luis.sarmento@gmail.com>, 2016.
 # Carlos Vieira <carlos.vieira@gmail.com>, 2017.
 # João <joao@nogordio.com>, 2018.
@@ -67,11 +67,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-08-21 00:32+0000\n"
 "Last-Translator: Rick and Morty <7777rickandmorty@gmail.com>\n"
-"Language-Team: Portuguese <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Portuguese <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
@@ -2005,7 +2005,7 @@ msgstr ""
 "Clique para copiar o número da versão."
 
 msgid "Godot Engine contributors"
-msgstr "Contribuidores do Godot Engine"
+msgstr "Contribuidores do Kosmic Engine"
 
 msgid "Project Founders"
 msgstr "Fundadores do Projeto"
@@ -2559,8 +2559,8 @@ msgstr "[vazio]"
 msgid "[unsaved]"
 msgstr "[não guardado]"
 
-msgid "%s - Godot Engine"
-msgstr "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
+msgstr "%s - Kosmic Engine"
 
 msgid "Move this dock right one tab."
 msgstr "Mover este painel à direita por um TAB."
@@ -13645,17 +13645,17 @@ msgstr ""
 "grafo."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
-"Expressão personalizada da Linguagem Kosmic Shader, com quantidade variável de "
+"Expressão personalizada da Linguagem Godot Shader, com quantidade variável de "
 "portas de entrada e saída. Isto é uma injeção direta de código na função "
 "vertex/fragment/light, não a use para escrever as declarações internas da "
 "função."
 
 msgid ""
-"Custom Kosmic Shader Language expression, which is placed on top of the "
+"Custom Godot Shader Language expression, which is placed on top of the "
 "resulted shader. You can place various function definitions inside and call "
 "it later in the Expressions. You can also declare varyings, parameters and "
 "constants."

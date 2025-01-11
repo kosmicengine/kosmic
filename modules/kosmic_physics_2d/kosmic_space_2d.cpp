@@ -491,7 +491,7 @@ bool KosmicPhysicsDirectSpaceState2D::rest_info(const ShapeParameters &p_paramet
 	r_info->point = rcd.best_contact;
 	r_info->rid = rcd.best_object->get_self();
 	if (rcd.best_object->get_type() == KosmicCollisionObject2D::TYPE_BODY) {
-		const GodotBody2D *body = static_cast<const GodotBody2D *>(rcd.best_object);
+		const KosmicBody2D *body = static_cast<const KosmicBody2D *>(rcd.best_object);
 		Vector2 rel_vec = r_info->point - (body->get_transform().get_origin() + body->get_center_of_mass());
 		r_info->linear_velocity = Vector2(-body->get_angular_velocity() * rel_vec.y, body->get_angular_velocity() * rel_vec.x) + body->get_linear_velocity();
 
@@ -504,7 +504,7 @@ bool KosmicPhysicsDirectSpaceState2D::rest_info(const ShapeParameters &p_paramet
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-int KosmicSpace2D::_cull_aabb_for_body(GodotBody2D *p_body, const Rect2 &p_aabb) {
+int KosmicSpace2D::_cull_aabb_for_body(KosmicBody2D *p_body, const Rect2 &p_aabb) {
 	int amount = broadphase->cull_aabb(p_aabb, intersection_query_results, INTERSECTION_QUERY_MAX, intersection_query_subindex_results);
 
 	for (int i = 0; i < amount; i++) {
@@ -514,9 +514,9 @@ int KosmicSpace2D::_cull_aabb_for_body(GodotBody2D *p_body, const Rect2 &p_aabb)
 			keep = false;
 		} else if (intersection_query_results[i]->get_type() == KosmicCollisionObject2D::TYPE_AREA) {
 			keep = false;
-		} else if (!p_body->collides_with(static_cast<GodotBody2D *>(intersection_query_results[i]))) {
+		} else if (!p_body->collides_with(static_cast<KosmicBody2D *>(intersection_query_results[i]))) {
 			keep = false;
-		} else if (static_cast<GodotBody2D *>(intersection_query_results[i])->has_exception(p_body->get_self()) || p_body->has_exception(intersection_query_results[i]->get_self())) {
+		} else if (static_cast<KosmicBody2D *>(intersection_query_results[i])->has_exception(p_body->get_self()) || p_body->has_exception(intersection_query_results[i]->get_self())) {
 			keep = false;
 		}
 
@@ -534,7 +534,7 @@ int KosmicSpace2D::_cull_aabb_for_body(GodotBody2D *p_body, const Rect2 &p_aabb)
 	return amount;
 }
 
-bool KosmicSpace2D::test_body_motion(GodotBody2D *p_body, const PhysicsServer2D::MotionParameters &p_parameters, PhysicsServer2D::MotionResult *r_result) {
+bool KosmicSpace2D::test_body_motion(KosmicBody2D *p_body, const PhysicsServer2D::MotionParameters &p_parameters, PhysicsServer2D::MotionResult *r_result) {
 	//give me back regular physics engine logic
 	//this is madness
 	//and most people using this function will think
@@ -645,7 +645,7 @@ bool KosmicSpace2D::test_body_motion(GodotBody2D *p_body, const PhysicsServer2D:
 						cbk.invalid_by_dir = 0;
 
 						if (col_obj->get_type() == KosmicCollisionObject2D::TYPE_BODY) {
-							const GodotBody2D *b = static_cast<const GodotBody2D *>(col_obj);
+							const KosmicBody2D *b = static_cast<const KosmicBody2D *>(col_obj);
 							if (b->get_mode() == PhysicsServer2D::BODY_MODE_KINEMATIC || b->get_mode() == PhysicsServer2D::BODY_MODE_RIGID) {
 								//fix for moving platforms (kinematic and dynamic), margin is increased by how much it moved in the given direction
 								Vector2 lv = b->get_linear_velocity();
@@ -950,7 +950,7 @@ bool KosmicSpace2D::test_body_motion(GodotBody2D *p_body, const PhysicsServer2D:
 					rcd.valid_depth = MAX(owc_margin, margin); //user specified, but never less than actual margin or it won't work
 
 					if (col_obj->get_type() == KosmicCollisionObject2D::TYPE_BODY) {
-						const GodotBody2D *b = static_cast<const GodotBody2D *>(col_obj);
+						const KosmicBody2D *b = static_cast<const KosmicBody2D *>(col_obj);
 						if (b->get_mode() == PhysicsServer2D::BODY_MODE_KINEMATIC || b->get_mode() == PhysicsServer2D::BODY_MODE_RIGID) {
 							//fix for moving platforms (kinematic and dynamic), margin is increased by how much it moved in the given direction
 							Vector2 lv = b->get_linear_velocity();
@@ -988,7 +988,7 @@ bool KosmicSpace2D::test_body_motion(GodotBody2D *p_body, const PhysicsServer2D:
 				r_result->collision_safe_fraction = safe;
 				r_result->collision_unsafe_fraction = unsafe;
 
-				const GodotBody2D *body = static_cast<const GodotBody2D *>(rcd.best_object);
+				const KosmicBody2D *body = static_cast<const KosmicBody2D *>(rcd.best_object);
 				Vector2 rel_vec = r_result->collision_point - (body->get_transform().get_origin() + body->get_center_of_mass());
 				r_result->collider_velocity = Vector2(-body->get_angular_velocity() * rel_vec.y, body->get_angular_velocity() * rel_vec.x) + body->get_linear_velocity();
 
@@ -1024,19 +1024,19 @@ void *KosmicSpace2D::_broadphase_pair(KosmicCollisionObject2D *A, int p_subindex
 	self->collision_pairs++;
 
 	if (type_A == KosmicCollisionObject2D::TYPE_AREA) {
-		GodotArea2D *area = static_cast<GodotArea2D *>(A);
+		KosmicArea2D *area = static_cast<KosmicArea2D *>(A);
 		if (type_B == KosmicCollisionObject2D::TYPE_AREA) {
-			GodotArea2D *area_b = static_cast<GodotArea2D *>(B);
-			GodotArea2Pair2D *area2_pair = memnew(GodotArea2Pair2D(area_b, p_subindex_B, area, p_subindex_A));
+			KosmicArea2D *area_b = static_cast<KosmicArea2D *>(B);
+			KosmicArea2Pair2D *area2_pair = memnew(KosmicArea2Pair2D(area_b, p_subindex_B, area, p_subindex_A));
 			return area2_pair;
 		} else {
-			GodotBody2D *body = static_cast<GodotBody2D *>(B);
-			GodotAreaPair2D *area_pair = memnew(GodotAreaPair2D(body, p_subindex_B, area, p_subindex_A));
+			KosmicBody2D *body = static_cast<KosmicBody2D *>(B);
+			KosmicAreaPair2D *area_pair = memnew(KosmicAreaPair2D(body, p_subindex_B, area, p_subindex_A));
 			return area_pair;
 		}
 
 	} else {
-		GodotBodyPair2D *b = memnew(GodotBodyPair2D(static_cast<GodotBody2D *>(A), p_subindex_A, static_cast<GodotBody2D *>(B), p_subindex_B));
+		KosmicBodyPair2D *b = memnew(KosmicBodyPair2D(static_cast<KosmicBody2D *>(A), p_subindex_A, static_cast<KosmicBody2D *>(B), p_subindex_B));
 		return b;
 	}
 }
@@ -1052,27 +1052,27 @@ void KosmicSpace2D::_broadphase_unpair(KosmicCollisionObject2D *A, int p_subinde
 	memdelete(c);
 }
 
-const SelfList<GodotBody2D>::List &KosmicSpace2D::get_active_body_list() const {
+const SelfList<KosmicBody2D>::List &KosmicSpace2D::get_active_body_list() const {
 	return active_list;
 }
 
-void KosmicSpace2D::body_add_to_active_list(SelfList<GodotBody2D> *p_body) {
+void KosmicSpace2D::body_add_to_active_list(SelfList<KosmicBody2D> *p_body) {
 	active_list.add(p_body);
 }
 
-void KosmicSpace2D::body_remove_from_active_list(SelfList<GodotBody2D> *p_body) {
+void KosmicSpace2D::body_remove_from_active_list(SelfList<KosmicBody2D> *p_body) {
 	active_list.remove(p_body);
 }
 
-void KosmicSpace2D::body_add_to_mass_properties_update_list(SelfList<GodotBody2D> *p_body) {
+void KosmicSpace2D::body_add_to_mass_properties_update_list(SelfList<KosmicBody2D> *p_body) {
 	mass_properties_update_list.add(p_body);
 }
 
-void KosmicSpace2D::body_remove_from_mass_properties_update_list(SelfList<GodotBody2D> *p_body) {
+void KosmicSpace2D::body_remove_from_mass_properties_update_list(SelfList<KosmicBody2D> *p_body) {
 	mass_properties_update_list.remove(p_body);
 }
 
-GodotBroadPhase2D *KosmicSpace2D::get_broadphase() {
+KosmicBroadPhase2D *KosmicSpace2D::get_broadphase() {
 	return broadphase;
 }
 
@@ -1090,43 +1090,43 @@ const HashSet<KosmicCollisionObject2D *> &KosmicSpace2D::get_objects() const {
 	return objects;
 }
 
-void KosmicSpace2D::body_add_to_state_query_list(SelfList<GodotBody2D> *p_body) {
+void KosmicSpace2D::body_add_to_state_query_list(SelfList<KosmicBody2D> *p_body) {
 	state_query_list.add(p_body);
 }
 
-void KosmicSpace2D::body_remove_from_state_query_list(SelfList<GodotBody2D> *p_body) {
+void KosmicSpace2D::body_remove_from_state_query_list(SelfList<KosmicBody2D> *p_body) {
 	state_query_list.remove(p_body);
 }
 
-void KosmicSpace2D::area_add_to_monitor_query_list(SelfList<GodotArea2D> *p_area) {
+void KosmicSpace2D::area_add_to_monitor_query_list(SelfList<KosmicArea2D> *p_area) {
 	monitor_query_list.add(p_area);
 }
 
-void KosmicSpace2D::area_remove_from_monitor_query_list(SelfList<GodotArea2D> *p_area) {
+void KosmicSpace2D::area_remove_from_monitor_query_list(SelfList<KosmicArea2D> *p_area) {
 	monitor_query_list.remove(p_area);
 }
 
-void KosmicSpace2D::area_add_to_moved_list(SelfList<GodotArea2D> *p_area) {
+void KosmicSpace2D::area_add_to_moved_list(SelfList<KosmicArea2D> *p_area) {
 	area_moved_list.add(p_area);
 }
 
-void KosmicSpace2D::area_remove_from_moved_list(SelfList<GodotArea2D> *p_area) {
+void KosmicSpace2D::area_remove_from_moved_list(SelfList<KosmicArea2D> *p_area) {
 	area_moved_list.remove(p_area);
 }
 
-const SelfList<GodotArea2D>::List &KosmicSpace2D::get_moved_area_list() const {
+const SelfList<KosmicArea2D>::List &KosmicSpace2D::get_moved_area_list() const {
 	return area_moved_list;
 }
 
 void KosmicSpace2D::call_queries() {
 	while (state_query_list.first()) {
-		GodotBody2D *b = state_query_list.first()->self();
+		KosmicBody2D *b = state_query_list.first()->self();
 		state_query_list.remove(state_query_list.first());
 		b->call_queries();
 	}
 
 	while (monitor_query_list.first()) {
-		GodotArea2D *a = monitor_query_list.first()->self();
+		KosmicArea2D *a = monitor_query_list.first()->self();
 		monitor_query_list.remove(monitor_query_list.first());
 		a->call_queries();
 	}
@@ -1228,7 +1228,7 @@ KosmicSpace2D::KosmicSpace2D() {
 	contact_bias = GLOBAL_GET("physics/2d/solver/default_contact_bias");
 	constraint_bias = GLOBAL_GET("physics/2d/solver/default_constraint_bias");
 
-	broadphase = GodotBroadPhase2D::create_func();
+	broadphase = KosmicBroadPhase2D::create_func();
 	broadphase->set_pair_callback(_broadphase_pair, this);
 	broadphase->set_unpair_callback(_broadphase_unpair, this);
 

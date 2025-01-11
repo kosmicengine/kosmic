@@ -32,12 +32,12 @@
 #import <UIKit/UIKit.h>
 
 @class KosmicView;
-@class GodotNativeVideoView;
+@class KosmicNativeVideoView;
 @class GodotKeyboardInputView;
 
 @interface ViewController : UIViewController
 
-@property(nonatomic, readonly, strong) KosmicView *godotView;
+@property(nonatomic, readonly, strong) KosmicView *kosmicView;
 @property(nonatomic, readonly, strong) GodotKeyboardInputView *keyboardView;
 
 @end

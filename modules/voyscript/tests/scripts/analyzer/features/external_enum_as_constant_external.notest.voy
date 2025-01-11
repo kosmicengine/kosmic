@@ -1,4 +1,4 @@
 enum MyEnum {
 	WAITING,
-	KOSMIC
+	GODOT, # I've been waiting for Godot for years
 }

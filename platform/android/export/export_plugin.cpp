@@ -53,10 +53,8 @@
 #include "main/splash.gen.h"
 #include "scene/resources/image_texture.h"
 
-#include "modules/modules_enabled.gen.h" // For mono and svg.
-#ifdef MODULE_SVG_ENABLED
+#include "modules/modules_enabled.gen.h" // For mono.
 #include "modules/svg/image_loader_svg.h"
-#endif
 
 #ifdef ANDROID_ENABLED
 #include "../os_android.h"
@@ -625,7 +623,7 @@ bool EditorExportPlatformAndroid::_should_compress_asset(const String &p_path, c
 		".rtttl", ".imy", ".xmf", ".mp4", ".m4a",
 		".m4v", ".3gp", ".3gpp", ".3g2", ".3gpp2",
 		".amr", ".awb", ".wma", ".wmv",
-		// Godot-specific:
+		// Kosmic-specific:
 		".webp", // Same reasoning as .png
 		".cfb", // Don't let small config files slow-down startup
 		".scn", // Binary scenes are usually already compressed
@@ -679,75 +677,6 @@ Vector<EditorExportPlatformAndroid::ABI> EditorExportPlatformAndroid::get_abis()
 	return abis;
 }
 
-#ifndef DISABLE_DEPRECATED
-/// List the gdap files in the directory specified by the p_path parameter.
-Vector<String> EditorExportPlatformAndroid::list_gdap_files(const String &p_path) {
-	Vector<String> dir_files;
-	Ref<DirAccess> da = DirAccess::open(p_path);
-	if (da.is_valid()) {
-		da->list_dir_begin();
-		while (true) {
-			String file = da->get_next();
-			if (file.is_empty()) {
-				break;
-			}
-
-			if (da->current_is_dir() || da->current_is_hidden()) {
-				continue;
-			}
-
-			if (file.ends_with(PluginConfigAndroid::PLUGIN_CONFIG_EXT)) {
-				dir_files.push_back(file);
-			}
-		}
-		da->list_dir_end();
-	}
-
-	return dir_files;
-}
-
-Vector<PluginConfigAndroid> EditorExportPlatformAndroid::get_plugins() {
-	Vector<PluginConfigAndroid> loaded_plugins;
-
-	String plugins_dir = ProjectSettings::get_singleton()->get_resource_path().path_join("android/plugins");
-
-	// Add the prebuilt plugins
-	loaded_plugins.append_array(PluginConfigAndroid::get_prebuilt_plugins(plugins_dir));
-
-	if (DirAccess::exists(plugins_dir)) {
-		Vector<String> plugins_filenames = list_gdap_files(plugins_dir);
-
-		if (!plugins_filenames.is_empty()) {
-			Ref<ConfigFile> config_file = memnew(ConfigFile);
-			for (int i = 0; i < plugins_filenames.size(); i++) {
-				PluginConfigAndroid config = PluginConfigAndroid::load_plugin_config(config_file, plugins_dir.path_join(plugins_filenames[i]));
-				if (config.valid_config) {
-					loaded_plugins.push_back(config);
-				} else {
-					print_error("Invalid plugin config file " + plugins_filenames[i]);
-				}
-			}
-		}
-	}
-
-	return loaded_plugins;
-}
-
-Vector<PluginConfigAndroid> EditorExportPlatformAndroid::get_enabled_plugins(const Ref<EditorExportPreset> &p_presets) {
-	Vector<PluginConfigAndroid> enabled_plugins;
-	Vector<PluginConfigAndroid> all_plugins = get_plugins();
-	for (int i = 0; i < all_plugins.size(); i++) {
-		PluginConfigAndroid plugin = all_plugins[i];
-		bool enabled = p_presets->get("plugins/" + plugin.name);
-		if (enabled) {
-			enabled_plugins.push_back(plugin);
-		}
-	}
-
-	return enabled_plugins;
-}
-#endif // DISABLE_DEPRECATED
-
 Error EditorExportPlatformAndroid::store_in_apk(APKExportData *ed, const String &p_path, const Vector<uint8_t> &p_data, int compression_method) {
 	zip_fileinfo zipfi = get_zip_fileinfo();
 	zipOpenNewFileInZip(ed->apk,
@@ -777,7 +706,7 @@ Error EditorExportPlatformAndroid::save_apk_so(void *p_userdata, const SharedObj
 	Vector<ABI> abis = get_abis();
 	bool exported = false;
 	for (int i = 0; i < p_so.tags.size(); ++i) {
-		// shared objects can be fat (compatible with multiple ABIs)
+		// Shared objects can be fat (compatible with multiple ABIs)
 		int abi_index = -1;
 		for (int j = 0; j < abis.size(); ++j) {
 			if (abis[j].abi == p_so.tags[i] || abis[j].arch == p_so.tags[i]) {
@@ -922,7 +851,7 @@ void EditorExportPlatformAndroid::_create_editor_debug_keystore_if_needed() {
 		args.push_back("-validity");
 		args.push_back("10000");
 		args.push_back("-dname");
-		args.push_back("cn=Godot, ou=Godot Engine, o=Stichting Godot, c=NL");
+		args.push_back("cn=Kosmic, ou=Kosmic Engine, o=Stichting Kosmic, c=NL");
 		Error error = OS::get_singleton()->execute(keytool_path, args, &output, nullptr, true);
 		print_verbose(output);
 		if (error != OK) {
@@ -1622,8 +1551,8 @@ void EditorExportPlatformAndroid::_fix_resources(const Ref<EditorExportPreset> &
 
 		String str = _parse_string(&r_manifest[offset], string_flags & UTF8_FLAG);
 
-		if (str.begins_with("godot-project-name")) {
-			if (str == "godot-project-name") {
+		if (str.begins_with("kosmic-project-name")) {
+			if (str == "kosmic-project-name") {
 				//project name
 				str = get_project_name(package_name);
 
@@ -1893,7 +1822,7 @@ String EditorExportPlatformAndroid::get_export_option_warning(const EditorExport
 				} else {
 					min_sdk_int = min_sdk_str.to_int();
 					if (min_sdk_int < OPENGL_MIN_SDK_VERSION) {
-						return vformat(TTR("\"Min SDK\" cannot be lower than %d, which is the version needed by the Godot library."), OPENGL_MIN_SDK_VERSION);
+						return vformat(TTR("\"Min SDK\" cannot be lower than %d, which is the version needed by the Kosmic library."), OPENGL_MIN_SDK_VERSION);
 					}
 				}
 			}
@@ -2131,7 +2060,7 @@ Error EditorExportPlatformAndroid::run(const Ref<EditorExportPreset> &p_preset, 
 
 	String adb = get_adb_path();
 
-	// Export_temp APK.
+	// Export temp APK.
 	if (ep.step(TTR("Exporting APK..."), 0)) {
 		return ERR_SKIP;
 	}
@@ -2146,11 +2075,14 @@ Error EditorExportPlatformAndroid::run(const Ref<EditorExportPreset> &p_preset, 
 
 	String tmp_export_path = EditorPaths::get_singleton()->get_temp_dir().path_join("tmpexport." + uitos(OS::get_singleton()->get_unix_time()) + ".apk");
 
-#define CLEANUP_AND_RETURN(m_err)                         \
-	{                                                     \
-		DirAccess::remove_file_or_error(tmp_export_path); \
-		return m_err;                                     \
-	}                                                     \
+#define CLEANUP_AND_RETURN(m_err)                                        \
+	{                                                                    \
+		DirAccess::remove_file_or_error(tmp_export_path);                \
+		if (FileAccess::exists(tmp_export_path + ".idsig")) {            \
+			DirAccess::remove_file_or_error(tmp_export_path + ".idsig"); \
+		}                                                                \
+		return m_err;                                                    \
+	}                                                                    \
 	((void)0)
 
 	// Export to temporary APK before sending to device.
@@ -2178,6 +2110,10 @@ Error EditorExportPlatformAndroid::run(const Ref<EditorExportPreset> &p_preset, 
 		args.push_back("-s");
 		args.push_back(devices[p_device].id);
 		args.push_back("uninstall");
+		if ((bool)EDITOR_GET("export/android/force_system_user") && devices[p_device].api_level >= 17) {
+			args.push_back("--user");
+			args.push_back("0");
+		}
 		args.push_back(get_package_name(package_name));
 
 		output.clear();
@@ -2194,6 +2130,10 @@ Error EditorExportPlatformAndroid::run(const Ref<EditorExportPreset> &p_preset, 
 	args.push_back("-s");
 	args.push_back(devices[p_device].id);
 	args.push_back("install");
+	if ((bool)EDITOR_GET("export/android/force_system_user") && devices[p_device].api_level >= 17) {
+		args.push_back("--user");
+		args.push_back("0");
+	}
 	args.push_back("-r");
 	args.push_back(tmp_export_path);
 
@@ -2269,14 +2209,14 @@ Error EditorExportPlatformAndroid::run(const Ref<EditorExportPreset> &p_preset, 
 	args.push_back("shell");
 	args.push_back("am");
 	args.push_back("start");
-	if ((bool)EDITOR_GET("export/android/force_system_user") && devices[p_device].api_level >= 17) { // Multi-user introduced in Android 17
+	if ((bool)EDITOR_GET("export/android/force_system_user") && devices[p_device].api_level >= 17) {
 		args.push_back("--user");
 		args.push_back("0");
 	}
 	args.push_back("-a");
 	args.push_back("android.intent.action.MAIN");
 	args.push_back("-n");
-	args.push_back(get_package_name(package_name) + "/com.kosmic.game.GodotApp");
+	args.push_back(get_package_name(package_name) + "/com.kosmic.game.KosmicApp");
 
 	output.clear();
 	err = OS::get_singleton()->execute(adb, args, &output, &rv, true);
@@ -3820,7 +3760,6 @@ void EditorExportPlatformAndroid::resolve_platform_feature_priorities(const Ref<
 
 EditorExportPlatformAndroid::EditorExportPlatformAndroid() {
 	if (EditorNode::get_singleton()) {
-#ifdef MODULE_SVG_ENABLED
 		Ref<Image> img = memnew(Image);
 		const bool upsample = !Math::is_equal_approx(Math::round(EDSCALE), EDSCALE);
 
@@ -3829,7 +3768,6 @@ EditorExportPlatformAndroid::EditorExportPlatformAndroid() {
 
 		ImageLoaderSVG::create_image_from_string(img, _android_run_icon_svg, EDSCALE, upsample, false);
 		run_icon = ImageTexture::create_from_image(img);
-#endif
 
 		devices_changed.set();
 #ifndef DISABLE_DEPRECATED

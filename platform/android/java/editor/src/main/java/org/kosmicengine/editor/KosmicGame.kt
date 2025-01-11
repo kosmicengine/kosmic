@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  GodotGame.kt                                                          */
+/*  KosmicGame.kt                                                          */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             KOSMIC ENGINE                              */
@@ -48,10 +48,10 @@ import org.kosmicengine.kosmic.utils.ProcessPhoenix
 /**
  * Drives the 'run project' window of the Godot Editor.
  */
-open class GodotGame : KosmicEditor() {
+open class KosmicGame : KosmicEditor() {
 
 	companion object {
-		private val TAG = GodotGame::class.java.simpleName
+		private val TAG = KosmicGame::class.java.simpleName
 	}
 
 	private val gameViewSourceRectHint = Rect()
@@ -131,7 +131,7 @@ open class GodotGame : KosmicEditor() {
 		}
 	}
 
-	override fun getGodotAppLayout() = R.layout.kosmic_game_layout
+	override fun getKosmicAppLayout() = R.layout.kosmic_game_layout
 
 	override fun getEditorWindowInfo() = RUN_GAME_INFO
 
@@ -156,9 +156,9 @@ open class GodotGame : KosmicEditor() {
 					.putExtra(EditorMessageDispatcher.EXTRA_MSG_DISPATCHER_PAYLOAD, intent.getBundleExtra(EditorMessageDispatcher.EXTRA_MSG_DISPATCHER_PAYLOAD))
 
 				Log.d(TAG, "Relaunching XR project using ${editorWindowInfo.windowClassName} with parameters ${launchingArgs.contentToString()}")
-				val godot = godot
-				if (godot != null) {
-					godot.destroyAndKillProcess {
+				val kosmic = kosmic
+				if (kosmic != null) {
+					kosmic.destroyAndKillProcess {
 						ProcessPhoenix.triggerRebirth(this, relaunchIntent)
 					}
 				} else {

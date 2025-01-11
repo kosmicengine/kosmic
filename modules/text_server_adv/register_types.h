@@ -34,7 +34,7 @@
 
 #ifdef KSEXTENSION
 #include <kosmic_cpp/core/class_db.hpp>
-using namespace godot;
+using namespace Kosmic;
 #elif defined(KOSMIC_MODULE)
 #include "modules/register_module_types.h"
 #endif

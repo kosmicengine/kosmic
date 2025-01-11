@@ -306,7 +306,7 @@
 	DisplayServerMacOS::WindowData &wd = ds->get_window(window_id);
 
 	if (wd.window_button_view) {
-		[(GodotButtonView *)wd.window_button_view displayButtons];
+		[(KosmicButtonView *)wd.window_button_view displayButtons];
 	}
 
 	if (ds->mouse_get_mode() == DisplayServer::MOUSE_MODE_CAPTURED) {
@@ -335,7 +335,7 @@
 	DisplayServerMacOS::WindowData &wd = ds->get_window(window_id);
 
 	if (wd.window_button_view) {
-		[(GodotButtonView *)wd.window_button_view displayButtons];
+		[(KosmicButtonView *)wd.window_button_view displayButtons];
 	}
 
 	wd.focused = false;

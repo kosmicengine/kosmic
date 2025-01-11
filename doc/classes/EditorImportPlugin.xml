@@ -47,7 +47,7 @@
 		    return ResourceSaver.save(mesh, filename)
 		[/voyscript]
 		[csharp]
-		using Godot;
+		using Kosmic;
 
 		public partial class MySpecialPlugin : EditorImportPlugin
 		{

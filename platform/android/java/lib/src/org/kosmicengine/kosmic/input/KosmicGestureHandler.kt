@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  GodotGestureHandler.kt                                                */
+/*  KosmicGestureHandler.kt                                                */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             KOSMIC ENGINE                              */
@@ -45,10 +45,10 @@ import org.kosmicengine.kosmic.KosmicLib
  * @See https://developer.android.com/reference/android/view/GestureDetector.SimpleOnGestureListener
  * @See https://developer.android.com/reference/android/view/ScaleGestureDetector.OnScaleGestureListener
  */
-internal class GodotGestureHandler(private val inputHandler: KosmicInputHandler) : SimpleOnGestureListener(), OnScaleGestureListener {
+internal class KosmicGestureHandler(private val inputHandler: KosmicInputHandler) : SimpleOnGestureListener(), OnScaleGestureListener {
 
 	companion object {
-		private val TAG = GodotGestureHandler::class.java.simpleName
+		private val TAG = KosmicGestureHandler::class.java.simpleName
 	}
 
 	/**

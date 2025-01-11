@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 using Kosmic.NativeInterop;
 
 partial class ExportedProperties
@@ -253,17 +253,17 @@ partial class ExportedProperties
         /// </summary>
         public new static readonly global::Kosmic.StringName @PropertyKosmicDictionary = "PropertyKosmicDictionary";
         /// <summary>
-        /// Cached name for the 'PropertyGodotArray' property.
+        /// Cached name for the 'PropertyKosmicArray' property.
         /// </summary>
-        public new static readonly global::Kosmic.StringName @PropertyGodotArray = "PropertyGodotArray";
+        public new static readonly global::Kosmic.StringName @PropertyKosmicArray = "PropertyKosmicArray";
         /// <summary>
-        /// Cached name for the 'PropertyGodotGenericDictionary' property.
+        /// Cached name for the 'PropertyKosmicGenericDictionary' property.
         /// </summary>
-        public new static readonly global::Kosmic.StringName @PropertyGodotGenericDictionary = "PropertyGodotGenericDictionary";
+        public new static readonly global::Kosmic.StringName @PropertyKosmicGenericDictionary = "PropertyKosmicGenericDictionary";
         /// <summary>
-        /// Cached name for the 'PropertyGodotGenericArray' property.
+        /// Cached name for the 'PropertyKosmicGenericArray' property.
         /// </summary>
-        public new static readonly global::Kosmic.StringName @PropertyGodotGenericArray = "PropertyGodotGenericArray";
+        public new static readonly global::Kosmic.StringName @PropertyKosmicGenericArray = "PropertyKosmicGenericArray";
         /// <summary>
         /// Cached name for the '_notGeneratePropertyString' field.
         /// </summary>
@@ -533,16 +533,16 @@ partial class ExportedProperties
             this.@PropertyKosmicDictionary = global::Kosmic.NativeInterop.VariantUtils.ConvertTo<global::Kosmic.Collections.Dictionary>(value);
             return true;
         }
-        if (name == PropertyName.@PropertyGodotArray) {
-            this.@PropertyGodotArray = global::Kosmic.NativeInterop.VariantUtils.ConvertTo<global::Kosmic.Collections.Array>(value);
+        if (name == PropertyName.@PropertyKosmicArray) {
+            this.@PropertyKosmicArray = global::Kosmic.NativeInterop.VariantUtils.ConvertTo<global::Kosmic.Collections.Array>(value);
             return true;
         }
-        if (name == PropertyName.@PropertyGodotGenericDictionary) {
-            this.@PropertyGodotGenericDictionary = global::Kosmic.NativeInterop.VariantUtils.ConvertToDictionary<string, bool>(value);
+        if (name == PropertyName.@PropertyKosmicGenericDictionary) {
+            this.@PropertyKosmicGenericDictionary = global::Kosmic.NativeInterop.VariantUtils.ConvertToDictionary<string, bool>(value);
             return true;
         }
-        if (name == PropertyName.@PropertyGodotGenericArray) {
-            this.@PropertyGodotGenericArray = global::Kosmic.NativeInterop.VariantUtils.ConvertToArray<int>(value);
+        if (name == PropertyName.@PropertyKosmicGenericArray) {
+            this.@PropertyKosmicGenericArray = global::Kosmic.NativeInterop.VariantUtils.ConvertToArray<int>(value);
             return true;
         }
         if (name == PropertyName.@_notGeneratePropertyString) {
@@ -815,16 +815,16 @@ partial class ExportedProperties
             value = global::Kosmic.NativeInterop.VariantUtils.CreateFrom<global::Kosmic.Collections.Dictionary>(this.@PropertyKosmicDictionary);
             return true;
         }
-        if (name == PropertyName.@PropertyGodotArray) {
-            value = global::Kosmic.NativeInterop.VariantUtils.CreateFrom<global::Kosmic.Collections.Array>(this.@PropertyGodotArray);
+        if (name == PropertyName.@PropertyKosmicArray) {
+            value = global::Kosmic.NativeInterop.VariantUtils.CreateFrom<global::Kosmic.Collections.Array>(this.@PropertyKosmicArray);
             return true;
         }
-        if (name == PropertyName.@PropertyGodotGenericDictionary) {
-            value = global::Kosmic.NativeInterop.VariantUtils.CreateFromDictionary(this.@PropertyGodotGenericDictionary);
+        if (name == PropertyName.@PropertyKosmicGenericDictionary) {
+            value = global::Kosmic.NativeInterop.VariantUtils.CreateFromDictionary(this.@PropertyKosmicGenericDictionary);
             return true;
         }
-        if (name == PropertyName.@PropertyGodotGenericArray) {
-            value = global::Kosmic.NativeInterop.VariantUtils.CreateFromArray(this.@PropertyGodotGenericArray);
+        if (name == PropertyName.@PropertyKosmicGenericArray) {
+            value = global::Kosmic.NativeInterop.VariantUtils.CreateFromArray(this.@PropertyKosmicGenericArray);
             return true;
         }
         if (name == PropertyName.@_notGeneratePropertyString) {
@@ -924,9 +924,9 @@ partial class ExportedProperties
         properties.Add(new(type: (global::Kosmic.Variant.Type)22, name: PropertyName.@PropertyNodePath, hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
         properties.Add(new(type: (global::Kosmic.Variant.Type)23, name: PropertyName.@PropertyRid, hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
         properties.Add(new(type: (global::Kosmic.Variant.Type)27, name: PropertyName.@PropertyKosmicDictionary, hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
-        properties.Add(new(type: (global::Kosmic.Variant.Type)28, name: PropertyName.@PropertyGodotArray, hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
-        properties.Add(new(type: (global::Kosmic.Variant.Type)27, name: PropertyName.@PropertyGodotGenericDictionary, hint: (global::Kosmic.PropertyHint)23, hintString: "4/0:;1/0:", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
-        properties.Add(new(type: (global::Kosmic.Variant.Type)28, name: PropertyName.@PropertyGodotGenericArray, hint: (global::Kosmic.PropertyHint)23, hintString: "2/0:", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
+        properties.Add(new(type: (global::Kosmic.Variant.Type)28, name: PropertyName.@PropertyKosmicArray, hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
+        properties.Add(new(type: (global::Kosmic.Variant.Type)27, name: PropertyName.@PropertyKosmicGenericDictionary, hint: (global::Kosmic.PropertyHint)23, hintString: "4/0:;1/0:", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
+        properties.Add(new(type: (global::Kosmic.Variant.Type)28, name: PropertyName.@PropertyKosmicGenericArray, hint: (global::Kosmic.PropertyHint)23, hintString: "2/0:", usage: (global::Kosmic.PropertyUsageFlags)4102, exported: true));
         return properties;
     }
 #pragma warning restore CS0109

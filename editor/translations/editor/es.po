@@ -1,7 +1,7 @@
 # Spanish translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Addiel Lucena Perez <addiell2017@gmail.com>, 2017.
 # Aleix Sanchis <aleixsanchis@hotmail.com>, 2017, 2018.
 # Alejandro Alvarez <eliluminado00@gmail.com>, 2017.
@@ -145,11 +145,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-08-23 10:34+0000\n"
 "Last-Translator: Javier Ocampos <xavier.ocampos@gmail.com>\n"
-"Language-Team: Spanish <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -2650,8 +2650,8 @@ msgstr "[vacío]"
 msgid "[unsaved]"
 msgstr "[sin guardar]"
 
-msgid "%s - Godot Engine"
-msgstr "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
+msgstr "%s - Kosmic Engine"
 
 msgid "Move this dock right one tab."
 msgstr "Mover este panel a una pestaña hacia la derecha."
@@ -13963,17 +13963,17 @@ msgstr ""
 "organización del diagrama."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
-"Expresión personalizada del Lenguaje Kosmic Shader, con cantidad personalizada "
+"Expresión personalizada del Lenguaje Godot Shader, con cantidad personalizada "
 "de puertos de entrada y salida. Esta es una inyección directa de código en la "
 "función de vértice/fragmento/luz, no la uses para escribir las declaraciones "
 "de función en su interior."
 
 msgid ""
-"Custom Kosmic Shader Language expression, which is placed on top of the "
+"Custom Godot Shader Language expression, which is placed on top of the "
 "resulted shader. You can place various function definitions inside and call "
 "it later in the Expressions. You can also declare varyings, parameters and "
 "constants."

@@ -33,7 +33,7 @@
 #define KOSMIC_SLIDER_JOINT_3D_H
 
 /*
-Adapted to Godot from the Bullet library.
+Adapted to Kosmic from the Bullet library.
 */
 
 #include "../kosmic_joint_3d.h"
@@ -70,11 +70,11 @@ class KosmicSliderJoint3D : public KosmicJoint3D {
 protected:
 	union {
 		struct {
-			GodotBody3D *A;
-			GodotBody3D *B;
+			KosmicBody3D *A;
+			KosmicBody3D *B;
 		};
 
-		GodotBody3D *_arr[2] = { nullptr, nullptr };
+		KosmicBody3D *_arr[2] = { nullptr, nullptr };
 	};
 
 	Transform3D m_frameInA;
@@ -150,13 +150,13 @@ protected:
 
 public:
 	// constructors
-	KosmicSliderJoint3D(GodotBody3D *rbA, GodotBody3D *rbB, const Transform3D &frameInA, const Transform3D &frameInB);
+	KosmicSliderJoint3D(KosmicBody3D *rbA, KosmicBody3D *rbB, const Transform3D &frameInA, const Transform3D &frameInB);
 	//SliderJointSW();
 	// overrides
 
 	// access
-	const GodotBody3D *getRigidBodyA() const { return A; }
-	const GodotBody3D *getRigidBodyB() const { return B; }
+	const KosmicBody3D *getRigidBodyA() const { return A; }
+	const KosmicBody3D *getRigidBodyB() const { return B; }
 	const Transform3D &getCalculatedTransformA() const { return m_calculatedTransformA; }
 	const Transform3D &getCalculatedTransformB() const { return m_calculatedTransformB; }
 	const Transform3D &getFrameOffsetA() const { return m_frameInA; }

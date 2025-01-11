@@ -64,9 +64,9 @@ import org.kosmicengine.kosmic.io.file.FileAccessHandler
 import org.kosmicengine.kosmic.plugin.AndroidRuntimePlugin
 import org.kosmicengine.kosmic.plugin.KosmicPlugin
 import org.kosmicengine.kosmic.plugin.KosmicPluginRegistry
-import org.kosmicengine.kosmic.tts.GodotTTS
+import org.kosmicengine.kosmic.tts.KosmicTTS
 import org.kosmicengine.kosmic.utils.CommandLineFileParser
-import org.kosmicengine.kosmic.utils.GodotNetUtils
+import org.kosmicengine.kosmic.utils.KosmicNetUtils
 import org.kosmicengine.kosmic.utils.PermissionsUtil
 import org.kosmicengine.kosmic.utils.PermissionsUtil.requestPermission
 import org.kosmicengine.kosmic.utils.beginBenchmarkMeasure
@@ -91,10 +91,10 @@ import java.util.concurrent.atomic.AtomicReference
  * Can be hosted by [Activity], [Fragment] or [Service] android components, so long as its
  * lifecycle methods are properly invoked.
  */
-class Godot(private val context: Context) {
+class Kosmic(private val context: Context) {
 
 	internal companion object {
-		private val TAG = Godot::class.java.simpleName
+		private val TAG = Kosmic::class.java.simpleName
 
 		// Supported build flavors
 		const val EDITOR_FLAVOR = "editor"
@@ -134,12 +134,12 @@ class Godot(private val context: Context) {
 		mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
 	}
 
-	val tts = GodotTTS(context)
+	val tts = KosmicTTS(context)
 	val directoryAccessHandler = DirectoryAccessHandler(context)
 	val fileAccessHandler = FileAccessHandler(context)
-	val netUtils = GodotNetUtils(context)
+	val netUtils = KosmicNetUtils(context)
 	private val commandLineFileParser = CommandLineFileParser()
-	private val godotInputHandler = KosmicInputHandler(context, this)
+	private val kosmicInputHandler = KosmicInputHandler(context, this)
 
 	/**
 	 * Task to run when the engine terminates.
@@ -176,7 +176,7 @@ class Godot(private val context: Context) {
 	/**
 	 * Tracks whether [onKosmicSetupCompleted] fired.
 	 */
-	private val godotMainLoopStarted = AtomicBoolean(false)
+	private val kosmicMainLoopStarted = AtomicBoolean(false)
 
 	var io: KosmicIO? = null
 
@@ -226,7 +226,7 @@ class Godot(private val context: Context) {
 
 		darkMode = context.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 
-		beginBenchmarkMeasure("Startup", "Godot::onCreate")
+		beginBenchmarkMeasure("Startup", "Kosmic::onCreate")
 		try {
 			this.primaryHost = primaryHost
 			val activity = requireActivity()
@@ -326,7 +326,7 @@ class Godot(private val context: Context) {
 			initializationStarted = false
 			throw e
 		} finally {
-			endBenchmarkMeasure("Startup", "Godot::onCreate")
+			endBenchmarkMeasure("Startup", "Kosmic::onCreate")
 		}
 	}
 
@@ -403,7 +403,7 @@ class Godot(private val context: Context) {
 
 		Log.v(TAG, "OnInitNativeLayer: $host")
 
-		beginBenchmarkMeasure("Startup", "Godot::onInitNativeLayer")
+		beginBenchmarkMeasure("Startup", "Kosmic::onInitNativeLayer")
 		try {
 			if (expansionPackPath.isNotEmpty()) {
 				commandLine.add("--main-pack")
@@ -433,7 +433,7 @@ class Godot(private val context: Context) {
 				}
 			}
 		} finally {
-			endBenchmarkMeasure("Startup", "Godot::onInitNativeLayer")
+			endBenchmarkMeasure("Startup", "Kosmic::onInitNativeLayer")
 		}
 		return isNativeInitialized()
 	}
@@ -459,7 +459,7 @@ class Godot(private val context: Context) {
 
 		Log.v(TAG, "OnInitRenderView: $host")
 
-		beginBenchmarkMeasure("Startup", "Godot::onInitRenderView")
+		beginBenchmarkMeasure("Startup", "Kosmic::onInitRenderView")
 		try {
 			val activity: Activity = host.activity
 			containerLayout = providedContainerLayout
@@ -482,17 +482,17 @@ class Godot(private val context: Context) {
 			containerLayout?.addView(editText)
 			renderView = if (usesVulkan()) {
 				if (meetsVulkanRequirements(activity.packageManager)) {
-					KosmicVulkanRenderView(host, this, godotInputHandler)
+					KosmicVulkanRenderView(host, this, kosmicInputHandler)
 				} else if (canFallbackToOpenGL()) {
 					// Fallback to OpenGl.
-					GodotGLRenderView(host, this, godotInputHandler, xrMode, useDebugOpengl)
+					KosmicGLRenderView(host, this, kosmicInputHandler, xrMode, useDebugOpengl)
 				} else {
 					throw IllegalStateException(activity.getString(R.string.error_missing_vulkan_requirements_message))
 				}
 
 			} else {
 				// Fallback to OpenGl.
-				GodotGLRenderView(host, this, godotInputHandler, xrMode, useDebugOpengl)
+				KosmicGLRenderView(host, this, kosmicInputHandler, xrMode, useDebugOpengl)
 			}
 
 			if (host == primaryHost) {
@@ -553,7 +553,7 @@ class Godot(private val context: Context) {
 			if (host == primaryHost) {
 				renderView?.queueOnRenderThread {
 					for (plugin in pluginRegistry.allPlugins) {
-						plugin.onRegisterPluginWithGodotNative()
+						plugin.onRegisterPluginWithKosmicNative()
 					}
 					setKeepScreenOn(java.lang.Boolean.parseBoolean(KosmicLib.getGlobal("display/window/energy_saving/keep_screen_on")))
 				}
@@ -577,7 +577,7 @@ class Godot(private val context: Context) {
 				containerLayout = null
 			}
 
-			endBenchmarkMeasure("Startup", "Godot::onInitRenderView")
+			endBenchmarkMeasure("Startup", "Kosmic::onInitRenderView")
 		}
 		return containerLayout
 	}
@@ -607,21 +607,21 @@ class Godot(private val context: Context) {
 	}
 
 	private fun registerSensorsIfNeeded() {
-		if (!resumed || !godotMainLoopStarted.get()) {
+		if (!resumed || !kosmicMainLoopStarted.get()) {
 			return
 		}
 
 		if (accelerometerEnabled.get() && mAccelerometer != null) {
-			mSensorManager.registerListener(godotInputHandler, mAccelerometer, SensorManager.SENSOR_DELAY_GAME)
+			mSensorManager.registerListener(kosmicInputHandler, mAccelerometer, SensorManager.SENSOR_DELAY_GAME)
 		}
 		if (gravityEnabled.get() && mGravity != null) {
-			mSensorManager.registerListener(godotInputHandler, mGravity, SensorManager.SENSOR_DELAY_GAME)
+			mSensorManager.registerListener(kosmicInputHandler, mGravity, SensorManager.SENSOR_DELAY_GAME)
 		}
 		if (magnetometerEnabled.get() && mMagnetometer != null) {
-			mSensorManager.registerListener(godotInputHandler, mMagnetometer, SensorManager.SENSOR_DELAY_GAME)
+			mSensorManager.registerListener(kosmicInputHandler, mMagnetometer, SensorManager.SENSOR_DELAY_GAME)
 		}
 		if (gyroscopeEnabled.get() && mGyroscope != null) {
-			mSensorManager.registerListener(godotInputHandler, mGyroscope, SensorManager.SENSOR_DELAY_GAME)
+			mSensorManager.registerListener(kosmicInputHandler, mGyroscope, SensorManager.SENSOR_DELAY_GAME)
 		}
 	}
 
@@ -633,7 +633,7 @@ class Godot(private val context: Context) {
 		}
 
 		renderView?.onActivityPaused()
-		mSensorManager.unregisterListener(godotInputHandler)
+		mSensorManager.unregisterListener(kosmicInputHandler)
 		for (plugin in pluginRegistry.allPlugins) {
 			plugin.onMainPause()
 		}
@@ -735,9 +735,9 @@ class Godot(private val context: Context) {
 	/**
 	 * Invoked on the render thread when the Godot main loop has started.
 	 */
-	private fun onGodotMainLoopStarted() {
-		Log.v(TAG, "OnGodotMainLoopStarted")
-		godotMainLoopStarted.set(true)
+	private fun onKosmicMainLoopStarted() {
+		Log.v(TAG, "OnKosmicMainLoopStarted")
+		kosmicMainLoopStarted.set(true)
 
 		accelerometerEnabled.set(java.lang.Boolean.parseBoolean(KosmicLib.getGlobal("input_devices/sensors/enable_accelerometer")))
 		gravityEnabled.set(java.lang.Boolean.parseBoolean(KosmicLib.getGlobal("input_devices/sensors/enable_gravity")))
@@ -750,17 +750,17 @@ class Godot(private val context: Context) {
 		}
 
 		for (plugin in pluginRegistry.allPlugins) {
-			plugin.onGodotMainLoopStarted()
+			plugin.onKosmicMainLoopStarted()
 		}
-		primaryHost?.onGodotMainLoopStarted()
+		primaryHost?.onKosmicMainLoopStarted()
 	}
 
 	/**
 	 * Invoked on the render thread when the engine is about to terminate.
 	 */
 	@Keep
-	private fun onGodotTerminating() {
-		Log.v(TAG, "OnGodotTerminating")
+	private fun onKosmicTerminating() {
+		Log.v(TAG, "OnKosmicTerminating")
 		runOnTerminate.get()?.run()
 	}
 
@@ -1040,7 +1040,8 @@ class Godot(private val context: Context) {
 	}
 
 	fun requestPermission(name: String?): Boolean {
-		return requestPermission(name, getActivity())
+		val activity = getActivity() ?: return false
+		return requestPermission(name, activity)
 	}
 
 	fun requestPermissions(): Boolean {
@@ -1083,7 +1084,7 @@ class Godot(private val context: Context) {
 
 	@Keep
 	private fun getCACertificates(): String {
-		return GodotNetUtils.getCACertificates()
+		return KosmicNetUtils.getCACertificates()
 	}
 
 	private fun obbIsCorrupted(f: String, mainPackMd5: String): Boolean {
@@ -1122,7 +1123,7 @@ class Godot(private val context: Context) {
 
 	@Keep
 	private fun initInputDevices() {
-		godotInputHandler.initInputDevices()
+		kosmicInputHandler.initInputDevices()
 	}
 
 	@Keep

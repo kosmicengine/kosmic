@@ -85,13 +85,13 @@ public:
 	}
 
 	virtual PhysicsServer3D::JointType get_type() const { return PhysicsServer3D::JOINT_TYPE_MAX; }
-	_FORCE_INLINE_ KosmicJoint3D(GodotBody3D **p_body_ptr = nullptr, int p_body_count = 0) :
+	_FORCE_INLINE_ KosmicJoint3D(KosmicBody3D **p_body_ptr = nullptr, int p_body_count = 0) :
 			KosmicConstraint3D(p_body_ptr, p_body_count) {
 	}
 
 	virtual ~KosmicJoint3D() {
 		for (int i = 0; i < get_body_count(); i++) {
-			GodotBody3D *body = get_body_ptr()[i];
+			KosmicBody3D *body = get_body_ptr()[i];
 			if (body) {
 				body->remove_constraint(this);
 			}

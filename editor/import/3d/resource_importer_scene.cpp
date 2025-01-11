@@ -668,7 +668,7 @@ Node *ResourceImporterScene::_pre_fix_node(Node *p_node, Node *p_root, HashMap<R
 		if (m.is_valid()) {
 			for (int i = 0; i < m->get_surface_count(); i++) {
 				Ref<BaseMaterial3D> mat = m->get_surface_material(i);
-				if (!mat.is_valid()) {
+				if (mat.is_null()) {
 					continue;
 				}
 
@@ -998,7 +998,7 @@ Node *ResourceImporterScene::_pre_fix_node(Node *p_node, Node *p_root, HashMap<R
 		ImporterMeshInstance3D *mi = Object::cast_to<ImporterMeshInstance3D>(p_node);
 
 		Ref<ImporterMesh> mesh = mi->get_mesh();
-		if (!mesh.is_null()) {
+		if (mesh.is_valid()) {
 			Vector<Ref<Shape3D>> shapes;
 			if (r_collision_map.has(mesh)) {
 				shapes = r_collision_map[mesh];
@@ -1584,7 +1584,7 @@ Node *ResourceImporterScene::_post_fix_node(Node *p_node, Node *p_root, HashMap<
 								col->set_transform(get_collision_shapes_transform(node_settings));
 								col->set_position(p_applied_root_scale * col->get_position());
 								const Ref<PhysicsMaterial> &pmo = node_settings["physics/physics_material_override"];
-								if (!pmo.is_null()) {
+								if (pmo.is_valid()) {
 									col->set_physics_material_override(pmo);
 								}
 								base = col;
@@ -1601,7 +1601,7 @@ Node *ResourceImporterScene::_post_fix_node(Node *p_node, Node *p_root, HashMap<
 								rigid_body->add_child(mi, true);
 								mi->set_owner(rigid_body->get_owner());
 								const Ref<PhysicsMaterial> &pmo = node_settings["physics/physics_material_override"];
-								if (!pmo.is_null()) {
+								if (pmo.is_valid()) {
 									rigid_body->set_physics_material_override(pmo);
 								}
 								base = rigid_body;
@@ -1617,7 +1617,7 @@ Node *ResourceImporterScene::_post_fix_node(Node *p_node, Node *p_root, HashMap<
 								memdelete(p_node);
 								p_node = col;
 								const Ref<PhysicsMaterial> &pmo = node_settings["physics/physics_material_override"];
-								if (!pmo.is_null()) {
+								if (pmo.is_valid()) {
 									col->set_physics_material_override(pmo);
 								}
 								base = col;
@@ -2364,12 +2364,12 @@ void ResourceImporterScene::get_import_options(const String &p_path, List<Import
 	r_options->push_back(ImportOption(PropertyInfo(Variant::STRING, "nodes/root_type", PROPERTY_HINT_TYPE_STRING, "Node"), ""));
 	r_options->push_back(ImportOption(PropertyInfo(Variant::STRING, "nodes/root_name"), ""));
 
-	List<String> script_extentions;
-	ResourceLoader::get_recognized_extensions_for_type("Script", &script_extentions);
+	List<String> script_extensions;
+	ResourceLoader::get_recognized_extensions_for_type("Script", &script_extensions);
 
 	String script_ext_hint;
 
-	for (const String &E : script_extentions) {
+	for (const String &E : script_extensions) {
 		if (!script_ext_hint.is_empty()) {
 			script_ext_hint += ",";
 		}
@@ -2848,7 +2848,7 @@ Node *ResourceImporterScene::pre_import(const String &p_source_file, const HashM
 		}
 	}
 
-	ERR_FAIL_COND_V(!importer.is_valid(), nullptr);
+	ERR_FAIL_COND_V(importer.is_null(), nullptr);
 	ERR_FAIL_COND_V(p_options.is_empty(), nullptr);
 
 	Error err = OK;
@@ -2907,7 +2907,7 @@ Error ResourceImporterScene::import(ResourceUID::ID p_source_id, const String &p
 		}
 	}
 
-	ERR_FAIL_COND_V(!importer.is_valid(), ERR_FILE_UNRECOGNIZED);
+	ERR_FAIL_COND_V(importer.is_null(), ERR_FILE_UNRECOGNIZED);
 	ERR_FAIL_COND_V(p_options.is_empty(), ERR_BUG);
 
 	int import_flags = 0;
@@ -2935,38 +2935,22 @@ Error ResourceImporterScene::import(ResourceUID::ID p_source_id, const String &p
 
 	Dictionary subresources = p_options["_subresources"];
 
-	Dictionary node_data;
-	if (subresources.has("nodes")) {
-		node_data = subresources["nodes"];
-	}
-
-	Dictionary material_data;
-	if (subresources.has("materials")) {
-		material_data = subresources["materials"];
-	}
-
-	Dictionary animation_data;
-	if (subresources.has("animations")) {
-		animation_data = subresources["animations"];
-	}
-
-	Dictionary mesh_data;
-	if (subresources.has("meshes")) {
-		mesh_data = subresources["meshes"];
-	}
-
 	Error err = OK;
 
 	// Check whether any of the meshes or animations have nonexistent save paths
 	// and if they do, fail the import immediately.
-	err = _check_resource_save_paths(mesh_data);
-	if (err != OK) {
-		return err;
+	if (subresources.has("meshes")) {
+		err = _check_resource_save_paths(subresources["meshes"]);
+		if (err != OK) {
+			return err;
+		}
 	}
 
-	err = _check_resource_save_paths(animation_data);
-	if (err != OK) {
-		return err;
+	if (subresources.has("animations")) {
+		err = _check_resource_save_paths(subresources["animations"]);
+		if (err != OK) {
+			return err;
+		}
 	}
 
 	List<String> missing_deps; // for now, not much will be done with this
@@ -3006,6 +2990,27 @@ Error ResourceImporterScene::import(ResourceUID::ID p_source_id, const String &p
 		post_importer_plugins.write[i]->pre_process(scene, p_options);
 	}
 
+	// data in _subresources may be modified by pre_process(), so wait until now to check.
+	Dictionary node_data;
+	if (subresources.has("nodes")) {
+		node_data = subresources["nodes"];
+	}
+
+	Dictionary material_data;
+	if (subresources.has("materials")) {
+		material_data = subresources["materials"];
+	}
+
+	Dictionary animation_data;
+	if (subresources.has("animations")) {
+		animation_data = subresources["animations"];
+	}
+
+	Dictionary mesh_data;
+	if (subresources.has("meshes")) {
+		mesh_data = subresources["meshes"];
+	}
+
 	float fps = 30;
 	if (p_options.has(SNAME("animation/fps"))) {
 		fps = (float)p_options[SNAME("animation/fps")];
@@ -3024,7 +3029,7 @@ Error ResourceImporterScene::import(ResourceUID::ID p_source_id, const String &p
 			root_type = ScriptServer::get_global_class_base(root_type);
 		}
 		if (scene->get_class_name() != root_type) {
-			// If the user specified a Godot node type that does not match
+			// If the user specified a Kosmic node type that does not match
 			// what the scene import gave us, replace the root node.
 			Node *base_node = Object::cast_to<Node>(ClassDB::instantiate(root_type));
 			if (base_node) {
@@ -3041,7 +3046,7 @@ Error ResourceImporterScene::import(ResourceUID::ID p_source_id, const String &p
 
 	String root_name = p_options["nodes/root_name"];
 	if (!root_name.is_empty() && root_name != "Scene Root") {
-		// TODO: Remove `&& root_name != "Scene Root"` for Godot 5.0.
+		// TODO: Remove `&& root_name != "Scene Root"` for Kosmic 5.0.
 		// For backwards compatibility with existing .import files,
 		// treat "Scene Root" as having no root name override.
 		scene->set_name(root_name);
@@ -3099,7 +3104,7 @@ Error ResourceImporterScene::import(ResourceUID::ID p_source_id, const String &p
 			post_import_script_path = p_source_file.get_base_dir().path_join(post_import_script_path);
 		}
 		Ref<Script> scr = ResourceLoader::load(post_import_script_path);
-		if (!scr.is_valid()) {
+		if (scr.is_null()) {
 			EditorNode::add_io_error(TTR("Couldn't load post-import script:") + " " + post_import_script_path);
 		} else {
 			post_import_script.instantiate();
@@ -3161,7 +3166,7 @@ Error ResourceImporterScene::import(ResourceUID::ID p_source_id, const String &p
 			}
 		}
 
-		if (!library.is_valid()) {
+		if (library.is_null()) {
 			library.instantiate(); // Will be empty
 		}
 
@@ -3273,7 +3278,7 @@ void EditorSceneFormatImporterESCN::get_extensions(List<String> *r_extensions) c
 Node *EditorSceneFormatImporterESCN::import_scene(const String &p_path, uint32_t p_flags, const HashMap<StringName, Variant> &p_options, List<String> *r_missing_deps, Error *r_err) {
 	Error error;
 	Ref<PackedScene> ps = ResourceFormatLoaderText::singleton->load(p_path, p_path, &error);
-	ERR_FAIL_COND_V_MSG(!ps.is_valid(), nullptr, "Cannot load scene as text resource from path '" + p_path + "'.");
+	ERR_FAIL_COND_V_MSG(ps.is_null(), nullptr, "Cannot load scene as text resource from path '" + p_path + "'.");
 	Node *scene = ps->instantiate();
 	TypedArray<Node> nodes = scene->find_children("*", "MeshInstance3D");
 	for (int32_t node_i = 0; node_i < nodes.size(); node_i++) {

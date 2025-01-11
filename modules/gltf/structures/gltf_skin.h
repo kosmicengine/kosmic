@@ -72,7 +72,7 @@ private:
 	GLTFSkeletonIndex skeleton = -1;
 
 	// A mapping from the joint indices (in the order of joints_original) to the
-	// Godot Skeleton's bone_indices
+	// Kosmic Skeleton's bone_indices
 	HashMap<int, int> joint_i_to_bone_i;
 	HashMap<int, StringName> joint_i_to_name;
 

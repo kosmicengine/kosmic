@@ -32,11 +32,11 @@
 #ifndef KOSMIC_CONSTRAINT_3D_H
 #define KOSMIC_CONSTRAINT_3D_H
 
-class GodotBody3D;
+class KosmicBody3D;
 class KosmicSoftBody3D;
 
 class KosmicConstraint3D {
-	GodotBody3D **_body_ptr;
+	KosmicBody3D **_body_ptr;
 	int _body_count;
 	uint64_t island_step;
 	int priority;
@@ -45,7 +45,7 @@ class KosmicConstraint3D {
 	RID self;
 
 protected:
-	KosmicConstraint3D(GodotBody3D **p_body_ptr = nullptr, int p_body_count = 0) {
+	KosmicConstraint3D(KosmicBody3D **p_body_ptr = nullptr, int p_body_count = 0) {
 		_body_ptr = p_body_ptr;
 		_body_count = p_body_count;
 		island_step = 0;
@@ -60,7 +60,7 @@ public:
 	_FORCE_INLINE_ uint64_t get_island_step() const { return island_step; }
 	_FORCE_INLINE_ void set_island_step(uint64_t p_step) { island_step = p_step; }
 
-	_FORCE_INLINE_ GodotBody3D **get_body_ptr() const { return _body_ptr; }
+	_FORCE_INLINE_ KosmicBody3D **get_body_ptr() const { return _body_ptr; }
 	_FORCE_INLINE_ int get_body_count() const { return _body_count; }
 
 	virtual KosmicSoftBody3D *get_soft_body_ptr(int p_index) const { return nullptr; }

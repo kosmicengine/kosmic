@@ -132,7 +132,7 @@ class EditorExportPlatformAndroid : public EditorExportPlatform {
 
 #ifndef DISABLE_DEPRECATED
 	/// List the gdap files in the directory specified by the p_path parameter.
-	static Vector<String> list_gdap_files(const String &p_path);
+	static Vector<String> list_ksap_files(const String &p_path);
 
 	static Vector<PluginConfigAndroid> get_plugins();
 

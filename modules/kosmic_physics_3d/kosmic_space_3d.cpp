@@ -277,7 +277,7 @@ bool KosmicPhysicsDirectSpaceState3D::cast_motion(const ShapeParameters &p_param
 	real_t best_unsafe = 1;
 
 	Transform3D xform_inv = p_parameters.transform.affine_inverse();
-	GodotMotionShape3D mshape;
+	KosmicMotionShape3D mshape;
 	mshape.shape = shape;
 	mshape.motion = xform_inv.basis.xform(p_parameters.motion);
 
@@ -369,7 +369,7 @@ bool KosmicPhysicsDirectSpaceState3D::cast_motion(const ShapeParameters &p_param
 			r_info->normal = (closest_A - closest_B).normalized();
 			best_first = false;
 			if (col_obj->get_type() == KosmicCollisionObject3D::TYPE_BODY) {
-				const GodotBody3D *body = static_cast<const GodotBody3D *>(col_obj);
+				const KosmicBody3D *body = static_cast<const KosmicBody3D *>(col_obj);
 				Vector3 rel_vec = closest_B - (body->get_transform().origin + body->get_center_of_mass());
 				r_info->linear_velocity = body->get_linear_velocity() + (body->get_angular_velocity()).cross(rel_vec);
 			}
@@ -561,7 +561,7 @@ bool KosmicPhysicsDirectSpaceState3D::rest_info(const ShapeParameters &p_paramet
 	r_info->point = rcd.best_result.contact;
 	r_info->rid = rcd.best_result.object->get_self();
 	if (rcd.best_result.object->get_type() == KosmicCollisionObject3D::TYPE_BODY) {
-		const GodotBody3D *body = static_cast<const GodotBody3D *>(rcd.best_result.object);
+		const KosmicBody3D *body = static_cast<const KosmicBody3D *>(rcd.best_result.object);
 		Vector3 rel_vec = rcd.best_result.contact - (body->get_transform().origin + body->get_center_of_mass());
 		r_info->linear_velocity = body->get_linear_velocity() + (body->get_angular_velocity()).cross(rel_vec);
 
@@ -618,7 +618,7 @@ KosmicPhysicsDirectSpaceState3D::KosmicPhysicsDirectSpaceState3D() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-int KosmicSpace3D::_cull_aabb_for_body(GodotBody3D *p_body, const AABB &p_aabb) {
+int KosmicSpace3D::_cull_aabb_for_body(KosmicBody3D *p_body, const AABB &p_aabb) {
 	int amount = broadphase->cull_aabb(p_aabb, intersection_query_results, INTERSECTION_QUERY_MAX, intersection_query_subindex_results);
 
 	for (int i = 0; i < amount; i++) {
@@ -630,9 +630,9 @@ int KosmicSpace3D::_cull_aabb_for_body(GodotBody3D *p_body, const AABB &p_aabb) 
 			keep = false;
 		} else if (intersection_query_results[i]->get_type() == KosmicCollisionObject3D::TYPE_SOFT_BODY) {
 			keep = false;
-		} else if (!p_body->collides_with(static_cast<GodotBody3D *>(intersection_query_results[i]))) {
+		} else if (!p_body->collides_with(static_cast<KosmicBody3D *>(intersection_query_results[i]))) {
 			keep = false;
-		} else if (static_cast<GodotBody3D *>(intersection_query_results[i])->has_exception(p_body->get_self()) || p_body->has_exception(intersection_query_results[i]->get_self())) {
+		} else if (static_cast<KosmicBody3D *>(intersection_query_results[i])->has_exception(p_body->get_self()) || p_body->has_exception(intersection_query_results[i]->get_self())) {
 			keep = false;
 		}
 
@@ -650,7 +650,7 @@ int KosmicSpace3D::_cull_aabb_for_body(GodotBody3D *p_body, const AABB &p_aabb) 
 	return amount;
 }
 
-bool KosmicSpace3D::test_body_motion(GodotBody3D *p_body, const PhysicsServer3D::MotionParameters &p_parameters, PhysicsServer3D::MotionResult *r_result) {
+bool KosmicSpace3D::test_body_motion(KosmicBody3D *p_body, const PhysicsServer3D::MotionParameters &p_parameters, PhysicsServer3D::MotionResult *r_result) {
 	//give me back regular physics engine logic
 	//this is madness
 	//and most people using this function will think
@@ -828,7 +828,7 @@ bool KosmicSpace3D::test_body_motion(GodotBody3D *p_body, const PhysicsServer3D:
 			Transform3D body_shape_xform = body_transform * p_body->get_shape_transform(j);
 
 			Transform3D body_shape_xform_inv = body_shape_xform.affine_inverse();
-			GodotMotionShape3D mshape;
+			KosmicMotionShape3D mshape;
 			mshape.shape = body_shape;
 			mshape.motion = body_shape_xform_inv.basis.xform(p_parameters.motion);
 
@@ -996,7 +996,7 @@ bool KosmicSpace3D::test_body_motion(GodotBody3D *p_body, const PhysicsServer3D:
 					collision.position = result.contact;
 					collision.depth = result.len;
 
-					const GodotBody3D *body = static_cast<const GodotBody3D *>(result.object);
+					const KosmicBody3D *body = static_cast<const KosmicBody3D *>(result.object);
 
 					Vector3 rel_vec = result.contact - (body->get_transform().origin + body->get_center_of_mass());
 					collision.collider_velocity = body->get_linear_velocity() + (body->get_angular_velocity()).cross(rel_vec);
@@ -1046,26 +1046,26 @@ void *KosmicSpace3D::_broadphase_pair(KosmicCollisionObject3D *A, int p_subindex
 	self->collision_pairs++;
 
 	if (type_A == KosmicCollisionObject3D::TYPE_AREA) {
-		GodotArea3D *area = static_cast<GodotArea3D *>(A);
+		KosmicArea3D *area = static_cast<KosmicArea3D *>(A);
 		if (type_B == KosmicCollisionObject3D::TYPE_AREA) {
-			GodotArea3D *area_b = static_cast<GodotArea3D *>(B);
-			GodotArea2Pair3D *area2_pair = memnew(GodotArea2Pair3D(area_b, p_subindex_B, area, p_subindex_A));
+			KosmicArea3D *area_b = static_cast<KosmicArea3D *>(B);
+			KosmicArea2Pair3D *area2_pair = memnew(KosmicArea2Pair3D(area_b, p_subindex_B, area, p_subindex_A));
 			return area2_pair;
 		} else if (type_B == KosmicCollisionObject3D::TYPE_SOFT_BODY) {
 			KosmicSoftBody3D *softbody = static_cast<KosmicSoftBody3D *>(B);
-			GodotAreaSoftBodyPair3D *soft_area_pair = memnew(GodotAreaSoftBodyPair3D(softbody, p_subindex_B, area, p_subindex_A));
+			KosmicAreaSoftBodyPair3D *soft_area_pair = memnew(KosmicAreaSoftBodyPair3D(softbody, p_subindex_B, area, p_subindex_A));
 			return soft_area_pair;
 		} else {
-			GodotBody3D *body = static_cast<GodotBody3D *>(B);
-			GodotAreaPair3D *area_pair = memnew(GodotAreaPair3D(body, p_subindex_B, area, p_subindex_A));
+			KosmicBody3D *body = static_cast<KosmicBody3D *>(B);
+			KosmicAreaPair3D *area_pair = memnew(KosmicAreaPair3D(body, p_subindex_B, area, p_subindex_A));
 			return area_pair;
 		}
 	} else if (type_A == KosmicCollisionObject3D::TYPE_BODY) {
 		if (type_B == KosmicCollisionObject3D::TYPE_SOFT_BODY) {
-			GodotBodySoftBodyPair3D *soft_pair = memnew(GodotBodySoftBodyPair3D(static_cast<GodotBody3D *>(A), p_subindex_A, static_cast<KosmicSoftBody3D *>(B)));
+			KosmicBodySoftBodyPair3D *soft_pair = memnew(KosmicBodySoftBodyPair3D(static_cast<KosmicBody3D *>(A), p_subindex_A, static_cast<KosmicSoftBody3D *>(B)));
 			return soft_pair;
 		} else {
-			GodotBodyPair3D *b = memnew(GodotBodyPair3D(static_cast<GodotBody3D *>(A), p_subindex_A, static_cast<GodotBody3D *>(B), p_subindex_B));
+			KosmicBodyPair3D *b = memnew(KosmicBodyPair3D(static_cast<KosmicBody3D *>(A), p_subindex_A, static_cast<KosmicBody3D *>(B), p_subindex_B));
 			return b;
 		}
 	} else {
@@ -1086,27 +1086,27 @@ void KosmicSpace3D::_broadphase_unpair(KosmicCollisionObject3D *A, int p_subinde
 	memdelete(c);
 }
 
-const SelfList<GodotBody3D>::List &KosmicSpace3D::get_active_body_list() const {
+const SelfList<KosmicBody3D>::List &KosmicSpace3D::get_active_body_list() const {
 	return active_list;
 }
 
-void KosmicSpace3D::body_add_to_active_list(SelfList<GodotBody3D> *p_body) {
+void KosmicSpace3D::body_add_to_active_list(SelfList<KosmicBody3D> *p_body) {
 	active_list.add(p_body);
 }
 
-void KosmicSpace3D::body_remove_from_active_list(SelfList<GodotBody3D> *p_body) {
+void KosmicSpace3D::body_remove_from_active_list(SelfList<KosmicBody3D> *p_body) {
 	active_list.remove(p_body);
 }
 
-void KosmicSpace3D::body_add_to_mass_properties_update_list(SelfList<GodotBody3D> *p_body) {
+void KosmicSpace3D::body_add_to_mass_properties_update_list(SelfList<KosmicBody3D> *p_body) {
 	mass_properties_update_list.add(p_body);
 }
 
-void KosmicSpace3D::body_remove_from_mass_properties_update_list(SelfList<GodotBody3D> *p_body) {
+void KosmicSpace3D::body_remove_from_mass_properties_update_list(SelfList<KosmicBody3D> *p_body) {
 	mass_properties_update_list.remove(p_body);
 }
 
-GodotBroadPhase3D *KosmicSpace3D::get_broadphase() {
+KosmicBroadPhase3D *KosmicSpace3D::get_broadphase() {
 	return broadphase;
 }
 
@@ -1124,31 +1124,31 @@ const HashSet<KosmicCollisionObject3D *> &KosmicSpace3D::get_objects() const {
 	return objects;
 }
 
-void KosmicSpace3D::body_add_to_state_query_list(SelfList<GodotBody3D> *p_body) {
+void KosmicSpace3D::body_add_to_state_query_list(SelfList<KosmicBody3D> *p_body) {
 	state_query_list.add(p_body);
 }
 
-void KosmicSpace3D::body_remove_from_state_query_list(SelfList<GodotBody3D> *p_body) {
+void KosmicSpace3D::body_remove_from_state_query_list(SelfList<KosmicBody3D> *p_body) {
 	state_query_list.remove(p_body);
 }
 
-void KosmicSpace3D::area_add_to_monitor_query_list(SelfList<GodotArea3D> *p_area) {
+void KosmicSpace3D::area_add_to_monitor_query_list(SelfList<KosmicArea3D> *p_area) {
 	monitor_query_list.add(p_area);
 }
 
-void KosmicSpace3D::area_remove_from_monitor_query_list(SelfList<GodotArea3D> *p_area) {
+void KosmicSpace3D::area_remove_from_monitor_query_list(SelfList<KosmicArea3D> *p_area) {
 	monitor_query_list.remove(p_area);
 }
 
-void KosmicSpace3D::area_add_to_moved_list(SelfList<GodotArea3D> *p_area) {
+void KosmicSpace3D::area_add_to_moved_list(SelfList<KosmicArea3D> *p_area) {
 	area_moved_list.add(p_area);
 }
 
-void KosmicSpace3D::area_remove_from_moved_list(SelfList<GodotArea3D> *p_area) {
+void KosmicSpace3D::area_remove_from_moved_list(SelfList<KosmicArea3D> *p_area) {
 	area_moved_list.remove(p_area);
 }
 
-const SelfList<GodotArea3D>::List &KosmicSpace3D::get_moved_area_list() const {
+const SelfList<KosmicArea3D>::List &KosmicSpace3D::get_moved_area_list() const {
 	return area_moved_list;
 }
 
@@ -1166,13 +1166,13 @@ void KosmicSpace3D::soft_body_remove_from_active_list(SelfList<KosmicSoftBody3D>
 
 void KosmicSpace3D::call_queries() {
 	while (state_query_list.first()) {
-		GodotBody3D *b = state_query_list.first()->self();
+		KosmicBody3D *b = state_query_list.first()->self();
 		state_query_list.remove(state_query_list.first());
 		b->call_queries();
 	}
 
 	while (monitor_query_list.first()) {
-		GodotArea3D *a = monitor_query_list.first()->self();
+		KosmicArea3D *a = monitor_query_list.first()->self();
 		monitor_query_list.remove(monitor_query_list.first());
 		a->call_queries();
 	}
@@ -1267,7 +1267,7 @@ KosmicSpace3D::KosmicSpace3D() {
 	contact_max_allowed_penetration = GLOBAL_GET("physics/3d/solver/contact_max_allowed_penetration");
 	contact_bias = GLOBAL_GET("physics/3d/solver/default_contact_bias");
 
-	broadphase = GodotBroadPhase3D::create_func();
+	broadphase = KosmicBroadPhase3D::create_func();
 	broadphase->set_pair_callback(_broadphase_pair, this);
 	broadphase->set_unpair_callback(_broadphase_unpair, this);
 

@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  GodotApp.java                                                         */
+/*  KosmicApp.java                                                         */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             KOSMIC ENGINE                              */
@@ -31,7 +31,7 @@
 
 package com.kosmic.game;
 
-import org.kosmicengine.kosmic.GodotActivity;
+import org.kosmicengine.kosmic.KosmicActivity;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -44,7 +44,7 @@ import com.kosmic.game.BuildConfig;
  * Template activity for Godot Android builds.
  * Feel free to extend and modify this class for your custom logic.
  */
-public class GodotApp extends GodotActivity {
+public class KosmicApp extends KosmicActivity {
 	static {
 		// .NET libraries.
 		if (BuildConfig.FLAVOR.equals("mono")) {

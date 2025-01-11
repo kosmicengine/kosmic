@@ -18,8 +18,8 @@ private class KosmicService : Service() {
 	}
 
 	private var boundIntent: Intent? = null
-	private val godot by lazy {
-		Godot(applicationContext)
+	private val kosmic by lazy {
+		Kosmic(applicationContext)
 	}
 
 	override fun onCreate() {
@@ -52,5 +52,5 @@ private class KosmicService : Service() {
 		super.onTaskRemoved(rootIntent)
 	}
 
-	class KosmicHandle(val godot: Godot) : Binder()
+	class KosmicHandle(val kosmic: Kosmic) : Binder()
 }

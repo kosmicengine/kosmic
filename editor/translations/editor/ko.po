@@ -1,7 +1,7 @@
 # Korean translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Ch <ccwpc@hanmail.net>, 2017.
 # paijai 송 (fivejobi) <xotjq237@gmail.com>, 2018.
 # pgyage3263 <pgyage3263@naver.com>, 2018.
@@ -71,11 +71,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-09-16 08:50+0000\n"
 "Last-Translator: rethinking21 <rethinking21@gmail.com>\n"
-"Language-Team: Korean <https://hosted.weblate.org/projects/godot-engine/godot/"
+"Language-Team: Korean <https://hosted.weblate.org/projects/kosmic-engine/godot/"
 "ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
@@ -2507,7 +2507,7 @@ msgstr "[비었음]"
 msgid "[unsaved]"
 msgstr "[저장되지 않음]"
 
-msgid "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
 msgstr "%s - Godot 엔진"
 
 msgid "Dock Position"
@@ -12579,16 +12579,16 @@ msgid "4D vector parameter."
 msgstr "4D 벡터 매개변수."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
-"커스텀 입력 및 출력 포트로 이루어진 커스텀 Kosmic Shader Language 표현식입니"
+"커스텀 입력 및 출력 포트로 이루어진 커스텀 Godot Shader Language 표현식입니"
 "다. 꼭짓점/프래그먼트/라이트 함수에 직접 코드를 넣는 것이므로 코드 안에 함수 "
 "선언을 작성하는 용도로 쓸 수 없습니다."
 
 msgid ""
-"Custom Kosmic Shader Language expression, which is placed on top of the "
+"Custom Godot Shader Language expression, which is placed on top of the "
 "resulted shader. You can place various function definitions inside and call "
 "it later in the Expressions. You can also declare varyings, parameters and "
 "constants."

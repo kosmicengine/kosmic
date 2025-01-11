@@ -51,17 +51,17 @@ jobs:
         run: |
           emcc -v
 
-      - name: Restore Godot build cache
-        uses: ./.github/actions/godot-cache-restore
+      - name: Restore Kosmic build cache
+        uses: ./.github/actions/kosmic-cache-restore
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
 
       - name: Setup Python and SCons
-        uses: ./.github/actions/godot-deps
+        uses: ./.github/actions/kosmic-deps
 
       - name: Compilation
-        uses: ./.github/actions/godot-build
+        uses: ./.github/actions/kosmic-build
         with:
           sconsflags: ${{ env.SCONSFLAGS }} ${{ matrix.sconsflags }}
           platform: web
@@ -69,8 +69,8 @@ jobs:
           tests: ${{ matrix.tests }}
           scons-cache-limit: 0.5
 
-      - name: Save Godot build cache
-        uses: ./.github/actions/godot-cache-save
+      - name: Save Kosmic build cache
+        uses: ./.github/actions/kosmic-cache-save
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true

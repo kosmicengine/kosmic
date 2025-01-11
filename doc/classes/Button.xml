@@ -28,7 +28,7 @@
 
 		private void ButtonPressed()
 		{
-		    KS.Print("Hello world!");
+		    GD.Print("Hello world!");
 		}
 		[/csharp]
 		[/codeblocks]

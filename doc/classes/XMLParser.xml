@@ -32,7 +32,7 @@
 		        {
 		            attributesDict[parser.GetAttributeName(idx)] = parser.GetAttributeValue(idx);
 		        }
-		        KS.Print($"The {nodeName} element has the following attributes: {attributesDict}");
+		        GD.Print($"The {nodeName} element has the following attributes: {attributesDict}");
 		    }
 		}
 		[/csharp]

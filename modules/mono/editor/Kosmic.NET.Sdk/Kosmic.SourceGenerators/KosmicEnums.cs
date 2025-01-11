@@ -2,7 +2,7 @@ using System;
 
 namespace Kosmic.SourceGenerators
 {
-    // TODO: May need to think about compatibility here. Could Godot change these values between minor versions?
+    // TODO: May need to think about compatibility here. Could Kosmic change these values between minor versions?
 
     internal enum VariantType
     {

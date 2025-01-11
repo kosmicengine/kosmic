@@ -33,7 +33,7 @@
 
 #include "kosmic_collision_solver_3d.h"
 
-bool GodotAreaPair3D::setup(real_t p_step) {
+bool KosmicAreaPair3D::setup(real_t p_step) {
 	bool result = false;
 	if (area->collides_with(body) && KosmicCollisionSolver3D::solve_static(body->get_shape(body_shape), body->get_transform() * body->get_shape_transform(body_shape), area->get_shape(area_shape), area->get_transform() * area->get_shape_transform(area_shape), nullptr, this)) {
 		result = true;
@@ -61,7 +61,7 @@ bool GodotAreaPair3D::setup(real_t p_step) {
 	return process_collision;
 }
 
-bool GodotAreaPair3D::pre_solve(real_t p_step) {
+bool KosmicAreaPair3D::pre_solve(real_t p_step) {
 	if (!process_collision) {
 		return false;
 	}
@@ -89,11 +89,11 @@ bool GodotAreaPair3D::pre_solve(real_t p_step) {
 	return false; // Never do any post solving.
 }
 
-void GodotAreaPair3D::solve(real_t p_step) {
+void KosmicAreaPair3D::solve(real_t p_step) {
 	// Nothing to do.
 }
 
-GodotAreaPair3D::GodotAreaPair3D(GodotBody3D *p_body, int p_body_shape, GodotArea3D *p_area, int p_area_shape) {
+KosmicAreaPair3D::KosmicAreaPair3D(KosmicBody3D *p_body, int p_body_shape, KosmicArea3D *p_area, int p_area_shape) {
 	body = p_body;
 	area = p_area;
 	body_shape = p_body_shape;
@@ -105,7 +105,7 @@ GodotAreaPair3D::GodotAreaPair3D(GodotBody3D *p_body, int p_body_shape, GodotAre
 	}
 }
 
-GodotAreaPair3D::~GodotAreaPair3D() {
+KosmicAreaPair3D::~KosmicAreaPair3D() {
 	if (colliding) {
 		if (body_has_attached_area) {
 			body_has_attached_area = false;
@@ -121,7 +121,7 @@ GodotAreaPair3D::~GodotAreaPair3D() {
 
 ////////////////////////////////////////////////////
 
-bool GodotArea2Pair3D::setup(real_t p_step) {
+bool KosmicArea2Pair3D::setup(real_t p_step) {
 	bool result_a = area_a->collides_with(area_b);
 	bool result_b = area_b->collides_with(area_a);
 	if ((result_a || result_b) && !KosmicCollisionSolver3D::solve_static(area_a->get_shape(shape_a), area_a->get_transform() * area_a->get_shape_transform(shape_a), area_b->get_shape(shape_b), area_b->get_transform() * area_b->get_shape_transform(shape_b), nullptr, this)) {
@@ -152,7 +152,7 @@ bool GodotArea2Pair3D::setup(real_t p_step) {
 	return process_collision;
 }
 
-bool GodotArea2Pair3D::pre_solve(real_t p_step) {
+bool KosmicArea2Pair3D::pre_solve(real_t p_step) {
 	if (process_collision_a) {
 		if (colliding_a) {
 			area_a->add_area_to_query(area_b, shape_b, shape_a);
@@ -172,11 +172,11 @@ bool GodotArea2Pair3D::pre_solve(real_t p_step) {
 	return false; // Never do any post solving.
 }
 
-void GodotArea2Pair3D::solve(real_t p_step) {
+void KosmicArea2Pair3D::solve(real_t p_step) {
 	// Nothing to do.
 }
 
-GodotArea2Pair3D::GodotArea2Pair3D(GodotArea3D *p_area_a, int p_shape_a, GodotArea3D *p_area_b, int p_shape_b) {
+KosmicArea2Pair3D::KosmicArea2Pair3D(KosmicArea3D *p_area_a, int p_shape_a, KosmicArea3D *p_area_b, int p_shape_b) {
 	area_a = p_area_a;
 	area_b = p_area_b;
 	shape_a = p_shape_a;
@@ -187,7 +187,7 @@ GodotArea2Pair3D::GodotArea2Pair3D(GodotArea3D *p_area_a, int p_shape_a, GodotAr
 	area_b->add_constraint(this);
 }
 
-GodotArea2Pair3D::~GodotArea2Pair3D() {
+KosmicArea2Pair3D::~KosmicArea2Pair3D() {
 	if (colliding_a) {
 		if (area_a->has_area_monitor_callback() && area_b_monitorable) {
 			area_a->remove_area_from_query(area_b, shape_b, shape_a);
@@ -206,7 +206,7 @@ GodotArea2Pair3D::~GodotArea2Pair3D() {
 
 ////////////////////////////////////////////////////
 
-bool GodotAreaSoftBodyPair3D::setup(real_t p_step) {
+bool KosmicAreaSoftBodyPair3D::setup(real_t p_step) {
 	bool result = false;
 	if (
 			area->collides_with(soft_body) &&
@@ -239,7 +239,7 @@ bool GodotAreaSoftBodyPair3D::setup(real_t p_step) {
 	return process_collision;
 }
 
-bool GodotAreaSoftBodyPair3D::pre_solve(real_t p_step) {
+bool KosmicAreaSoftBodyPair3D::pre_solve(real_t p_step) {
 	if (!process_collision) {
 		return false;
 	}
@@ -267,11 +267,11 @@ bool GodotAreaSoftBodyPair3D::pre_solve(real_t p_step) {
 	return false; // Never do any post solving.
 }
 
-void GodotAreaSoftBodyPair3D::solve(real_t p_step) {
+void KosmicAreaSoftBodyPair3D::solve(real_t p_step) {
 	// Nothing to do.
 }
 
-GodotAreaSoftBodyPair3D::GodotAreaSoftBodyPair3D(KosmicSoftBody3D *p_soft_body, int p_soft_body_shape, GodotArea3D *p_area, int p_area_shape) {
+KosmicAreaSoftBodyPair3D::KosmicAreaSoftBodyPair3D(KosmicSoftBody3D *p_soft_body, int p_soft_body_shape, KosmicArea3D *p_area, int p_area_shape) {
 	soft_body = p_soft_body;
 	area = p_area;
 	soft_body_shape = p_soft_body_shape;
@@ -280,7 +280,7 @@ GodotAreaSoftBodyPair3D::GodotAreaSoftBodyPair3D(KosmicSoftBody3D *p_soft_body, 
 	area->add_constraint(this);
 }
 
-GodotAreaSoftBodyPair3D::~GodotAreaSoftBodyPair3D() {
+KosmicAreaSoftBodyPair3D::~KosmicAreaSoftBodyPair3D() {
 	if (colliding) {
 		if (body_has_attached_area) {
 			body_has_attached_area = false;

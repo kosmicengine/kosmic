@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 using System;
 using System.Collections.Generic;
 
@@ -92,11 +92,11 @@ public partial class ExportedFields : KosmicObject
     private Kosmic.Collections.Dictionary _fieldKosmicDictionary = new() { { "foo", 10 }, { Vector2.Up, Colors.Chocolate } };
 
     [Export]
-    private Kosmic.Collections.Array _fieldGodotArray = new() { "foo", 10, Vector2.Up, Colors.Chocolate };
+    private Kosmic.Collections.Array _fieldKosmicArray = new() { "foo", 10, Vector2.Up, Colors.Chocolate };
 
     [Export]
-    private Kosmic.Collections.Dictionary<string, bool> _fieldGodotGenericDictionary = new() { { "foo", true }, { "bar", false } };
+    private Kosmic.Collections.Dictionary<string, bool> _fieldKosmicGenericDictionary = new() { { "foo", true }, { "bar", false } };
 
     [Export]
-    private Kosmic.Collections.Array<int> _fieldGodotGenericArray = new() { 0, 1, 2, 3, 4, 5, 6 };
+    private Kosmic.Collections.Array<int> _fieldKosmicGenericArray = new() { 0, 1, 2, 3, 4, 5, 6 };
 }

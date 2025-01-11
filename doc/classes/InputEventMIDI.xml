@@ -32,7 +32,7 @@
 		public override void _Ready()
 		{
 		    OS.OpenMidiInputs();
-		    KS.Print(OS.GetConnectedMidiInputs());
+		    GD.Print(OS.GetConnectedMidiInputs());
 		}
 
 		public override void _Input(InputEvent inputEvent)
@@ -45,15 +45,15 @@
 
 		private void PrintMIDIInfo(InputEventMidi midiEvent)
 		{
-		    KS.Print(midiEvent);
-		    KS.Print($"Channel {midiEvent.Channel}");
-		    KS.Print($"Message {midiEvent.Message}");
-		    KS.Print($"Pitch {midiEvent.Pitch}");
-		    KS.Print($"Velocity {midiEvent.Velocity}");
-		    KS.Print($"Instrument {midiEvent.Instrument}");
-		    KS.Print($"Pressure {midiEvent.Pressure}");
-		    KS.Print($"Controller number: {midiEvent.ControllerNumber}");
-		    KS.Print($"Controller value: {midiEvent.ControllerValue}");
+		    GD.Print(midiEvent);
+		    GD.Print($"Channel {midiEvent.Channel}");
+		    GD.Print($"Message {midiEvent.Message}");
+		    GD.Print($"Pitch {midiEvent.Pitch}");
+		    GD.Print($"Velocity {midiEvent.Velocity}");
+		    GD.Print($"Instrument {midiEvent.Instrument}");
+		    GD.Print($"Pressure {midiEvent.Pressure}");
+		    GD.Print($"Controller number: {midiEvent.ControllerNumber}");
+		    GD.Print($"Controller value: {midiEvent.ControllerValue}");
 		}
 		[/csharp]
 		[/codeblocks]

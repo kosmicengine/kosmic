@@ -156,13 +156,13 @@ namespace Kosmic.NativeInterop
                         if (typeof(KosmicObject).IsAssignableFrom(type))
                             return Variant.Type.Object;
 
-                        // We use `IsAssignableFrom` with our helper interfaces to detect generic Godot collections
+                        // We use `IsAssignableFrom` with our helper interfaces to detect generic Kosmic collections
                         // because `GetGenericTypeDefinition` is not supported in NativeAOT reflection-free mode.
 
                         if (typeof(IGenericKosmicDictionary).IsAssignableFrom(type))
                             return Variant.Type.Dictionary;
 
-                        if (typeof(IGenericGodotArray).IsAssignableFrom(type))
+                        if (typeof(IGenericKosmicArray).IsAssignableFrom(type))
                             return Variant.Type.Array;
                     }
                     else if (type == typeof(Variant))
@@ -310,7 +310,7 @@ namespace Kosmic.NativeInterop
         {
             if (NativeFuncs.kosmicsharp_callable_get_data_for_marshalling(p_callable,
                     out IntPtr delegateGCHandle, out IntPtr trampoline,
-                    out IntPtr godotObject, out kosmic_string_name name).ToBool())
+                    out IntPtr kosmicObject, out kosmic_string_name name).ToBool())
             {
                 if (delegateGCHandle != IntPtr.Zero)
                 {
@@ -323,7 +323,7 @@ namespace Kosmic.NativeInterop
                 }
 
                 return new Callable(
-                    InteropUtils.UnmanagedGetManaged(godotObject),
+                    InteropUtils.UnmanagedGetManaged(kosmicObject),
                     StringName.CreateTakingOwnershipOfDisposableValue(name));
             }
 
@@ -361,7 +361,7 @@ namespace Kosmic.NativeInterop
 
         // Array
 
-        internal static T[] ConvertNativeGodotArrayToSystemArrayOfKosmicObjectType<T>(in kosmic_array p_array)
+        internal static T[] ConvertNativeKosmicArrayToSystemArrayOfKosmicObjectType<T>(in kosmic_array p_array)
             where T : KosmicObject
         {
             var array = Collections.Array.CreateTakingOwnershipOfDisposableValue(
@@ -376,7 +376,7 @@ namespace Kosmic.NativeInterop
             return ret;
         }
 
-        internal static StringName[] ConvertNativeGodotArrayToSystemArrayOfStringName(in kosmic_array p_array)
+        internal static StringName[] ConvertNativeKosmicArrayToSystemArrayOfStringName(in kosmic_array p_array)
         {
             var array = Collections.Array.CreateTakingOwnershipOfDisposableValue(
                 NativeFuncs.kosmicsharp_array_new_copy(p_array));
@@ -390,7 +390,7 @@ namespace Kosmic.NativeInterop
             return ret;
         }
 
-        internal static NodePath[] ConvertNativeGodotArrayToSystemArrayOfNodePath(in kosmic_array p_array)
+        internal static NodePath[] ConvertNativeKosmicArrayToSystemArrayOfNodePath(in kosmic_array p_array)
         {
             var array = Collections.Array.CreateTakingOwnershipOfDisposableValue(
                 NativeFuncs.kosmicsharp_array_new_copy(p_array));
@@ -404,7 +404,7 @@ namespace Kosmic.NativeInterop
             return ret;
         }
 
-        internal static Rid[] ConvertNativeGodotArrayToSystemArrayOfRid(in kosmic_array p_array)
+        internal static Rid[] ConvertNativeKosmicArrayToSystemArrayOfRid(in kosmic_array p_array)
         {
             var array = Collections.Array.CreateTakingOwnershipOfDisposableValue(
                 NativeFuncs.kosmicsharp_array_new_copy(p_array));
@@ -588,8 +588,8 @@ namespace Kosmic.NativeInterop
 
             for (int i = 0; i < p_array.Length; i++)
             {
-                using kosmic_string godotStrElem = ConvertStringToNative(p_array[i]);
-                NativeFuncs.kosmicsharp_packed_string_array_add(ref dest, godotStrElem);
+                using kosmic_string kosmicStrElem = ConvertStringToNative(p_array[i]);
+                NativeFuncs.kosmicsharp_packed_string_array_add(ref dest, kosmicStrElem);
             }
 
             return dest;

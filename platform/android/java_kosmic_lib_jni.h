@@ -36,7 +36,7 @@
 #include <jni.h>
 
 // These functions can be called from within JAVA and are the means by which our JAVA implementation calls back into our C++ code.
-// See java/src/org/godotengine/godot/KosmicLib.java for the JAVA side of this (yes that's why we have the long names)
+// See java/src/org/kosmicengine/kosmic/KosmicLib.java for the JAVA side of this (yes that's why we have the long names)
 extern "C" {
 JNIEXPORT jboolean JNICALL Java_org_kosmicengine_kosmic_KosmicLib_initialize(JNIEnv *env, jclass clazz, jobject p_activity, jobject p_kosmic_instance, jobject p_asset_manager, jobject p_kosmic_io, jobject p_net_utils, jobject p_directory_access_handler, jobject p_file_access_handler, jboolean p_use_apk_expansion);
 JNIEXPORT void JNICALL Java_org_kosmicengine_kosmic_KosmicLib_ondestroy(JNIEnv *env, jclass clazz);

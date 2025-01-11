@@ -61,12 +61,12 @@ public:
 	void copy_settings_from(KosmicJoint2D *p_joint);
 
 	virtual PhysicsServer2D::JointType get_type() const { return PhysicsServer2D::JOINT_TYPE_MAX; }
-	KosmicJoint2D(GodotBody2D **p_body_ptr = nullptr, int p_body_count = 0) :
+	KosmicJoint2D(KosmicBody2D **p_body_ptr = nullptr, int p_body_count = 0) :
 			KosmicConstraint2D(p_body_ptr, p_body_count) {}
 
 	virtual ~KosmicJoint2D() {
 		for (int i = 0; i < get_body_count(); i++) {
-			GodotBody2D *body = get_body_ptr()[i];
+			KosmicBody2D *body = get_body_ptr()[i];
 			if (body) {
 				body->remove_constraint(this, i);
 			}
@@ -77,11 +77,11 @@ public:
 class KosmicPinJoint2D : public KosmicJoint2D {
 	union {
 		struct {
-			GodotBody2D *A;
-			GodotBody2D *B;
+			KosmicBody2D *A;
+			KosmicBody2D *B;
 		};
 
-		GodotBody2D *_arr[2] = { nullptr, nullptr };
+		KosmicBody2D *_arr[2] = { nullptr, nullptr };
 	};
 
 	Transform2D M;
@@ -116,17 +116,17 @@ public:
 	void set_flag(PhysicsServer2D::PinJointFlag p_flag, bool p_enabled);
 	bool get_flag(PhysicsServer2D::PinJointFlag p_flag) const;
 
-	KosmicPinJoint2D(const Vector2 &p_pos, GodotBody2D *p_body_a, GodotBody2D *p_body_b = nullptr);
+	KosmicPinJoint2D(const Vector2 &p_pos, KosmicBody2D *p_body_a, KosmicBody2D *p_body_b = nullptr);
 };
 
-class GodotGrooveJoint2D : public KosmicJoint2D {
+class KosmicGrooveJoint2D : public KosmicJoint2D {
 	union {
 		struct {
-			GodotBody2D *A;
-			GodotBody2D *B;
+			KosmicBody2D *A;
+			KosmicBody2D *B;
 		};
 
-		GodotBody2D *_arr[2] = { nullptr, nullptr };
+		KosmicBody2D *_arr[2] = { nullptr, nullptr };
 	};
 
 	Vector2 A_groove_1;
@@ -150,17 +150,17 @@ public:
 	virtual bool pre_solve(real_t p_step) override;
 	virtual void solve(real_t p_step) override;
 
-	GodotGrooveJoint2D(const Vector2 &p_a_groove1, const Vector2 &p_a_groove2, const Vector2 &p_b_anchor, GodotBody2D *p_body_a, GodotBody2D *p_body_b);
+	KosmicGrooveJoint2D(const Vector2 &p_a_groove1, const Vector2 &p_a_groove2, const Vector2 &p_b_anchor, KosmicBody2D *p_body_a, KosmicBody2D *p_body_b);
 };
 
 class KosmicDampedSpringJoint2D : public KosmicJoint2D {
 	union {
 		struct {
-			GodotBody2D *A;
-			GodotBody2D *B;
+			KosmicBody2D *A;
+			KosmicBody2D *B;
 		};
 
-		GodotBody2D *_arr[2] = { nullptr, nullptr };
+		KosmicBody2D *_arr[2] = { nullptr, nullptr };
 	};
 
 	Vector2 anchor_A;
@@ -187,7 +187,7 @@ public:
 	void set_param(PhysicsServer2D::DampedSpringParam p_param, real_t p_value);
 	real_t get_param(PhysicsServer2D::DampedSpringParam p_param) const;
 
-	KosmicDampedSpringJoint2D(const Vector2 &p_anchor_a, const Vector2 &p_anchor_b, GodotBody2D *p_body_a, GodotBody2D *p_body_b);
+	KosmicDampedSpringJoint2D(const Vector2 &p_anchor_a, const Vector2 &p_anchor_b, KosmicBody2D *p_body_a, KosmicBody2D *p_body_b);
 };
 
 #endif // KOSMIC_JOINTS_2D_H

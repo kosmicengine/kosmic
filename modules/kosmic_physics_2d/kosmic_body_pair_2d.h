@@ -35,17 +35,17 @@
 #include "kosmic_body_2d.h"
 #include "kosmic_constraint_2d.h"
 
-class GodotBodyPair2D : public KosmicConstraint2D {
+class KosmicBodyPair2D : public KosmicConstraint2D {
 	enum {
 		MAX_CONTACTS = 2
 	};
 	union {
 		struct {
-			GodotBody2D *A;
-			GodotBody2D *B;
+			KosmicBody2D *A;
+			KosmicBody2D *B;
 		};
 
-		GodotBody2D *_arr[2] = { nullptr, nullptr };
+		KosmicBody2D *_arr[2] = { nullptr, nullptr };
 	};
 
 	int shape_A = 0;
@@ -85,7 +85,7 @@ class GodotBodyPair2D : public KosmicConstraint2D {
 	bool oneway_disabled = false;
 	bool report_contacts_only = false;
 
-	bool _test_ccd(real_t p_step, GodotBody2D *p_A, int p_shape_A, const Transform2D &p_xform_A, GodotBody2D *p_B, int p_shape_B, const Transform2D &p_xform_B);
+	bool _test_ccd(real_t p_step, KosmicBody2D *p_A, int p_shape_A, const Transform2D &p_xform_A, KosmicBody2D *p_B, int p_shape_B, const Transform2D &p_xform_B);
 	void _validate_contacts();
 	static void _add_contact(const Vector2 &p_point_A, const Vector2 &p_point_B, void *p_self);
 	_FORCE_INLINE_ void _contact_added_callback(const Vector2 &p_point_A, const Vector2 &p_point_B);
@@ -95,8 +95,8 @@ public:
 	virtual bool pre_solve(real_t p_step) override;
 	virtual void solve(real_t p_step) override;
 
-	GodotBodyPair2D(GodotBody2D *p_A, int p_shape_A, GodotBody2D *p_B, int p_shape_B);
-	~GodotBodyPair2D();
+	KosmicBodyPair2D(KosmicBody2D *p_A, int p_shape_A, KosmicBody2D *p_B, int p_shape_B);
+	~KosmicBodyPair2D();
 };
 
 #endif // KOSMIC_BODY_PAIR_2D_H

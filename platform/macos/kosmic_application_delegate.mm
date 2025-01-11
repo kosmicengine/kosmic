@@ -35,7 +35,7 @@
 #include "native_menu_macos.h"
 #include "os_macos.h"
 
-@implementation GodotApplicationDelegate
+@implementation KosmicApplicationDelegate
 
 - (BOOL)applicationSupportsSecureRestorableState:(NSApplication *)app {
 	return YES;

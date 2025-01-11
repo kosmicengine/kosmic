@@ -32,7 +32,7 @@
 #ifndef EDITOR_VCS_INTERFACE_H
 #define EDITOR_VCS_INTERFACE_H
 
-#include "core/object/ksvirtual.gen.inc"
+#include "core/object/gdvirtual.gen.inc"
 #include "core/string/ustring.h"
 #include "core/variant/typed_array.h"
 

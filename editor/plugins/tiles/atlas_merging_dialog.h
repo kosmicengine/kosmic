@@ -45,7 +45,7 @@ class AtlasMergingDialog : public ConfirmationDialog {
 	KSCLASS(AtlasMergingDialog, ConfirmationDialog);
 
 private:
-	int commited_actions_count = 0;
+	int committed_actions_count = 0;
 	bool delete_original_atlases = true;
 	Ref<TileSetAtlasSource> merged;
 	LocalVector<HashMap<Vector2i, Vector2i>> merged_mapping;

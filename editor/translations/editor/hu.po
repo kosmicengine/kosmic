@@ -1,7 +1,7 @@
 # Hungarian translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Árpád Horváth <horvatha4@googlemail.com>, 2018.
 # Nagy Lajos <neutron9707@gmail.com>, 2017.
 # Sandor Domokos <sandor.domokos@gmail.com>, 2017-2018.
@@ -40,11 +40,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-07-30 16:40+0000\n"
 "Last-Translator: TheFocusDev <thefocusdev@protonmail.com>\n"
-"Language-Team: Hungarian <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Hungarian <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/hu/>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"

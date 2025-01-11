@@ -62,6 +62,8 @@ class NativeMenuWindows : public NativeMenu {
 
 	struct MenuData {
 		HMENU menu = 0;
+
+		Callable close_cb;
 		bool is_rtl = false;
 	};
 

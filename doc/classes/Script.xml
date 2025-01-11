@@ -35,7 +35,7 @@
 				extends Node
 				[/voyscript]
 				[csharp]
-				using Godot;
+				using Kosmic;
 
 				[GlobalClass]
 				public partial class MyNode : Node

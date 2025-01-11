@@ -38,7 +38,7 @@
 
 #include "core/templates/local_vector.h"
 
-class GodotBodyContact3D : public KosmicConstraint3D {
+class KosmicBodyContact3D : public KosmicConstraint3D {
 protected:
 	struct Contact {
 		Vector3 position;
@@ -66,23 +66,23 @@ protected:
 
 	KosmicSpace3D *space = nullptr;
 
-	GodotBodyContact3D(GodotBody3D **p_body_ptr = nullptr, int p_body_count = 0) :
+	KosmicBodyContact3D(KosmicBody3D **p_body_ptr = nullptr, int p_body_count = 0) :
 			KosmicConstraint3D(p_body_ptr, p_body_count) {
 	}
 };
 
-class GodotBodyPair3D : public GodotBodyContact3D {
+class KosmicBodyPair3D : public KosmicBodyContact3D {
 	enum {
 		MAX_CONTACTS = 4
 	};
 
 	union {
 		struct {
-			GodotBody3D *A;
-			GodotBody3D *B;
+			KosmicBody3D *A;
+			KosmicBody3D *B;
 		};
 
-		GodotBody3D *_arr[2] = { nullptr, nullptr };
+		KosmicBody3D *_arr[2] = { nullptr, nullptr };
 	};
 
 	int shape_A = 0;
@@ -103,19 +103,19 @@ class GodotBodyPair3D : public GodotBodyContact3D {
 	void contact_added_callback(const Vector3 &p_point_A, int p_index_A, const Vector3 &p_point_B, int p_index_B, const Vector3 &normal);
 
 	void validate_contacts();
-	bool _test_ccd(real_t p_step, GodotBody3D *p_A, int p_shape_A, const Transform3D &p_xform_A, GodotBody3D *p_B, int p_shape_B, const Transform3D &p_xform_B);
+	bool _test_ccd(real_t p_step, KosmicBody3D *p_A, int p_shape_A, const Transform3D &p_xform_A, KosmicBody3D *p_B, int p_shape_B, const Transform3D &p_xform_B);
 
 public:
 	virtual bool setup(real_t p_step) override;
 	virtual bool pre_solve(real_t p_step) override;
 	virtual void solve(real_t p_step) override;
 
-	GodotBodyPair3D(GodotBody3D *p_A, int p_shape_A, GodotBody3D *p_B, int p_shape_B);
-	~GodotBodyPair3D();
+	KosmicBodyPair3D(KosmicBody3D *p_A, int p_shape_A, KosmicBody3D *p_B, int p_shape_B);
+	~KosmicBodyPair3D();
 };
 
-class GodotBodySoftBodyPair3D : public GodotBodyContact3D {
-	GodotBody3D *body = nullptr;
+class KosmicBodySoftBodyPair3D : public KosmicBodyContact3D {
+	KosmicBody3D *body = nullptr;
 	KosmicSoftBody3D *soft_body = nullptr;
 
 	int body_shape = 0;
@@ -141,8 +141,8 @@ public:
 	virtual KosmicSoftBody3D *get_soft_body_ptr(int p_index) const override { return soft_body; }
 	virtual int get_soft_body_count() const override { return 1; }
 
-	GodotBodySoftBodyPair3D(GodotBody3D *p_A, int p_shape_A, KosmicSoftBody3D *p_B);
-	~GodotBodySoftBodyPair3D();
+	KosmicBodySoftBodyPair3D(KosmicBody3D *p_A, int p_shape_A, KosmicSoftBody3D *p_B);
+	~KosmicBodySoftBodyPair3D();
 };
 
 #endif // KOSMIC_BODY_PAIR_3D_H

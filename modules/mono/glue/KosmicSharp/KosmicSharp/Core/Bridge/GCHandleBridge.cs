@@ -20,7 +20,7 @@ namespace Kosmic.Bridge
         }
 
         // Returns true, if releasing the provided handle is necessary for assembly unloading to succeed.
-        // This check is not perfect and only intended to prevent things in GodotTools from being reloaded.
+        // This check is not perfect and only intended to prevent things in KosmicTools from being reloaded.
         [UnmanagedCallersOnly]
         internal static kosmic_bool GCHandleIsTargetCollectible(IntPtr gcHandlePtr)
         {
@@ -29,9 +29,9 @@ namespace Kosmic.Bridge
                 var target = GCHandle.FromIntPtr(gcHandlePtr).Target;
 
                 if (target is Delegate @delegate)
-                    return DelegateUtils.IsDelegateCollectible(@delegate).ToGodotBool();
+                    return DelegateUtils.IsDelegateCollectible(@delegate).ToKosmicBool();
 
-                return target.GetType().IsCollectible.ToGodotBool();
+                return target.GetType().IsCollectible.ToKosmicBool();
             }
             catch (Exception e)
             {

@@ -31,7 +31,7 @@
 
 package org.kosmicengine.kosmic.plugin
 
-import org.kosmicengine.kosmic.Godot
+import org.kosmicengine.kosmic.Kosmic
 import org.kosmicengine.kosmic.variant.Callable
 
 /**
@@ -69,34 +69,34 @@ import org.kosmicengine.kosmic.variant.Callable
  * 	else:
  * 		printerr("Unable to access android runtime")
  */
-class AndroidRuntimePlugin(godot: Godot) : KosmicPlugin(kosmic) {
+class AndroidRuntimePlugin(kosmic: Godot) : KosmicPlugin(kosmic) {
 	override fun getPluginName() = "AndroidRuntime"
 
 	/**
 	 * Provides access to the application context to VoyScript
 	 */
-	@UsedByGodot
+	@UsedByKosmic
 	fun getApplicationContext() = activity?.applicationContext
 
 	/**
 	 * Provides access to the host activity to VoyScript
 	 */
-	@UsedByGodot
+	@UsedByKosmic
 	override fun getActivity() = super.getActivity()
 
 	/**
 	 * Utility method used to create [Runnable] from Godot [Callable].
 	 */
-	@UsedByGodot
-	fun createRunnableFromKosmicCallable(godotCallable: Callable): Runnable {
-		return Runnable { godotCallable.call() }
+	@UsedByKosmic
+	fun createRunnableFromKosmicCallable(kosmicCallable: Callable): Runnable {
+		return Runnable { kosmicCallable.call() }
 	}
 
 	/**
 	 * Utility method used to create [java.util.concurrent.Callable] from Godot [Callable].
 	 */
-	@UsedByGodot
-	fun createCallableFromKosmicCallable(godotCallable: Callable): java.util.concurrent.Callable<Any> {
-		return java.util.concurrent.Callable { godotCallable.call() }
+	@UsedByKosmic
+	fun createCallableFromKosmicCallable(kosmicCallable: Callable): java.util.concurrent.Callable<Any> {
+		return java.util.concurrent.Callable { kosmicCallable.call() }
 	}
 }

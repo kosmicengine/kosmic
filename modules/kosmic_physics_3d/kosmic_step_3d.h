@@ -42,16 +42,16 @@ class KosmicStep3D {
 	int iterations = 0;
 	real_t delta = 0.0;
 
-	LocalVector<LocalVector<GodotBody3D *>> body_islands;
+	LocalVector<LocalVector<KosmicBody3D *>> body_islands;
 	LocalVector<LocalVector<KosmicConstraint3D *>> constraint_islands;
 	LocalVector<KosmicConstraint3D *> all_constraints;
 
-	void _populate_island(GodotBody3D *p_body, LocalVector<GodotBody3D *> &p_body_island, LocalVector<KosmicConstraint3D *> &p_constraint_island);
-	void _populate_island_soft_body(KosmicSoftBody3D *p_soft_body, LocalVector<GodotBody3D *> &p_body_island, LocalVector<KosmicConstraint3D *> &p_constraint_island);
+	void _populate_island(KosmicBody3D *p_body, LocalVector<KosmicBody3D *> &p_body_island, LocalVector<KosmicConstraint3D *> &p_constraint_island);
+	void _populate_island_soft_body(KosmicSoftBody3D *p_soft_body, LocalVector<KosmicBody3D *> &p_body_island, LocalVector<KosmicConstraint3D *> &p_constraint_island);
 	void _setup_constraint(uint32_t p_constraint_index, void *p_userdata = nullptr);
 	void _pre_solve_island(LocalVector<KosmicConstraint3D *> &p_constraint_island) const;
 	void _solve_island(uint32_t p_island_index, void *p_userdata = nullptr);
-	void _check_suspend(const LocalVector<GodotBody3D *> &p_body_island) const;
+	void _check_suspend(const LocalVector<KosmicBody3D *> &p_body_island) const;
 
 public:
 	void step(KosmicSpace3D *p_space, real_t p_delta);

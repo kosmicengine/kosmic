@@ -29,7 +29,7 @@ Files extracted from upstream source:
 - `shaders` folder from `src/ffx-fsr2-api` with `ffx_*.hlsl` files excluded
 - `LICENSE.txt`
 
-Apply `patches` to add the new options required by Godot and general compilation fixes.
+Apply `patches` to add the new options required by Kosmic and general compilation fixes.
 
 
 ## angle
@@ -152,7 +152,7 @@ Files extracted from upstream source:
 - `include/D3D12MemAlloc.h`
 - `LICENSE.txt`, `NOTICES.txt`
 
-Important: Some files have Godot-made changes for use with MinGW.
+Important: Some files have Kosmic-made changes for use with MinGW.
 They are marked with `/* KOSMIC start */` and `/* KOSMIC end */`
 comments.
 
@@ -169,7 +169,7 @@ Files extracted from upstream source:
 - `include/dxguids/*.h`
 - `LICENSE`
 
-Important: Some files have Godot-made changes for use with MinGW.
+Important: Some files have Kosmic-made changes for use with MinGW.
 They are marked with `/* KOSMIC start */` and `/* KOSMIC end */`
 comments.
 
@@ -221,12 +221,12 @@ Files extracted from upstream source:
 - `LICENSE` file
 
 Important: `enet.h`, `host.c`, `protocol.c` have been slightly modified
-to be usable by Godot's socket implementation and allow IPv6 and DTLS.
+to be usable by Kosmic's socket implementation and allow IPv6 and DTLS.
 Apply the patches in the `patches/` folder when syncing on newer upstream
 commits.
 
 Three files (`kosmic.cpp`, `enet/kosmic.h`, `enet/kosmic_ext.h`) have been added to
-provide ENet socket implementation using Godot classes.
+provide ENet socket implementation using Kosmic classes.
 
 It is still possible to build against a system wide ENet but doing so will limit
 its functionality to IPv4 only.
@@ -235,7 +235,7 @@ its functionality to IPv4 only.
 ## etcpak
 
 - Upstream: https://github.com/wolfpld/etcpak
-- Version: git (5380688660a3801aec4b25483366027fe0442d7b, 2024)
+- Version: 2.0 (a43d6925bee49277945cf3e311e4a022ae0c2073, 2024)
 - License: BSD-3-Clause
 
 Files extracted from upstream source:
@@ -420,7 +420,7 @@ Files extracted from upstream source:
 
 Files generated from upstream source:
 
-- The `icudt76l.dat` built with the provided `kosmic_data.json` config file (see
+- The `icudt_kosmic.dat` built with the provided `kosmic_data.json` config file (see
   https://github.com/unicode-org/icu/blob/master/docs/userguide/icu_data/buildtool.md
   for instructions).
 
@@ -430,7 +430,7 @@ Files generated from upstream source:
 3. Reconfigure ICU with custom data config:
    `ICU_DATA_FILTER_FILE={KOSMIC_SOURCE}/thirdparty/icu4c/kosmic_data.json ./runConfigureICU {PLATFORM} --with-data-packaging=common`
 4. Delete `data/out` folder and rebuild data: `cd data && rm -rf ./out && make`
-5. Copy `source/data/out/icudt76l.dat` to the `{KOSMIC_SOURCE}/thirdparty/icu4c/icudt76l.dat`
+5. Copy `source/data/out/icudt{ICU_VERSION}l.dat` to the `{KOSMIC_SOURCE}/thirdparty/icu4c/icudt_kosmic.dat`
 
 
 ## jolt_physics
@@ -470,7 +470,7 @@ Files extracted from upstream source:
   * `elf.c`, `macho.c`, `mmap.c`, `mmapio.c`, `nounwind.c`, `unknown.c`, `xcoff.c`
 - `LICENSE`
 
-Important: Some files have Godot-made changes to load big debug symbol files.
+Important: Some files have Kosmic-made changes to load big debug symbol files.
 They are marked with `/* KOSMIC start */` and `/* KOSMIC end */`
 comments and a patch is provided in the `patches` folder.
 
@@ -492,7 +492,7 @@ Files extracted from upstream source:
 - `other_include/KHR/`
 - `utils/unused.h`
 
-Some Godot-specific changes are applied via patches included in the `patches` folder.
+Some Kosmic-specific changes are applied via patches included in the `patches` folder.
 
 
 ## libogg
@@ -511,14 +511,14 @@ Files extracted from upstream source:
 ## libpng
 
 - Upstream: http://libpng.org/pub/png/libpng.html
-- Version: 1.6.43 (ed217e3e601d8e462f7fd1e04bed43ac42212429, 2024)
+- Version: 1.6.45 (51f5bd68b9b806d2c92b4318164d28b49357da31, 2024)
 - License: libpng/zlib
 
 Files extracted from upstream source:
 
 - All `.c` and `.h` files of the main directory, apart from `example.c` and
   `pngtest.c`
-- `arm/`, `intel/` and `powerpc/` folders
+- `arm/` (minus `filter_neon.S`), `intel/`, `loongarch/`, and `powerpc/` (minus `.editorconfig`) folders
 - `scripts/pnglibconf.h.prebuilt` as `pnglibconf.h`
 - `LICENSE`
 
@@ -560,19 +560,19 @@ Files extracted from upstream source:
 - `src/` and `sharpyuv/` except from `.am`, `.rc` and `.in` files
 - `AUTHORS`, `COPYING`, `PATENTS`
 
-Patch `godot-node-debug-fix.patch` workarounds shadowing of Godot's Node class
+Patch `kosmic-node-debug-fix.patch` workarounds shadowing of Kosmic's Node class
 in the MSVC debugger.
 
 
 ## manifold
 
 - Upstream: https://github.com/elalish/manifold
-- Version: master (36035428bc32302a9d7c9ee1ecc833fb8394a2a3, 2024)
+- Version: 3.0.1 (98b8142519d35c13e0e25cfa9fd6e3a271403be6, 2024)
 - License: Apache 2.0
 
 File extracted from upstream source:
 
-- `src/`
+- `src/` and `include/`, except from `CMakeLists.txt`, `cross_section.cpp` and `meshIO.{cpp,h}`
 - `AUTHORS`, `LICENSE`
 
 
@@ -630,7 +630,7 @@ Files extracted from upstream repository:
 - `mingw.shared_mutex.h`
 - `mingw.thread.h`
 
-Once copied, apply `godot.patch` (needed because Godot is built without exceptions
+Once copied, apply `kosmic.patch` (needed because Kosmic is built without exceptions
 and to avoid std:: replacements leak in Clang builds).
 
 
@@ -664,7 +664,7 @@ Files extracted from upstream source:
   `listdevices.c,minihttptestserver.c,miniupnpcmodule.c,upnpc.c,upnperrors.*,test*`
 - `LICENSE`
 
-The only modified file is `src/miniupnpcstrings.h`, which was created for Godot
+The only modified file is `src/miniupnpcstrings.h`, which was created for Kosmic
 (it is usually autogenerated by cmake). Bump the version number for miniupnpc in
 that file when upgrading.
 
@@ -681,14 +681,14 @@ Files extracted from the upstream source:
   `{crypt.h,ioapi.{c,h},unzip.{c,h},zip.{c,h}}`
   `MiniZip64_info.txt`
 
-Important: Some files have Godot-made changes for use in core/io.
+Important: Some files have Kosmic-made changes for use in core/io.
 They are marked with `/* KOSMIC start */` and `/* KOSMIC end */`
 comments and a patch is provided in the `patches` folder.
 
 
 ## misc
 
-Collection of single-file libraries used in Godot components.
+Collection of single-file libraries used in Kosmic components.
 
 - `bcdec.h`
   * Upstream: https://github.com/iOrange/bcdec
@@ -696,7 +696,7 @@ Collection of single-file libraries used in Godot components.
   * License: MIT
 - `clipper.{cpp,hpp}`
   * Upstream: https://sourceforge.net/projects/polyclipping
-  * Version: 6.4.2 (2017) + Godot changes (added optional exceptions handling)
+  * Version: 6.4.2 (2017) + Kosmic changes (added optional exceptions handling)
   * License: BSL-1.0
 - `cubemap_coeffs.h`
   * Upstream: https://research.activision.com/publications/archives/fast-filtering-of-reflection-probes
@@ -730,7 +730,7 @@ Collection of single-file libraries used in Godot components.
 - `polypartition.{cpp,h}`
   * Upstream: https://github.com/ivanfratric/polypartition (`src/polypartition.{cpp,h}`)
   * Version: git (7bdffb428b2b19ad1c43aa44c714dcc104177e84, 2021)
-  * Modifications: Change from STL to Godot types (see provided patch).
+  * Modifications: Change from STL to Kosmic types (see provided patch).
   * License: MIT
 - `qoa.h`
   * Upstream: https://github.com/phoboslab/qoa
@@ -874,7 +874,7 @@ Files extracted from upstream source:
 - All `.cpp` and `.h` files in the `src/` folder except for `Export.h` and `RVO.h`
 - `LICENSE`
 
-Important: Nearly all files have Godot-made changes and renames
+Important: Nearly all files have Kosmic-made changes and renames
 to make the 2D and 3D rvo libraries compatible with each other
 and solve conflicts and also enrich the feature set originally
 proposed by these libraries and better integrate them with Kosmic.
@@ -920,7 +920,7 @@ folder, in order.
 ## tinyexr
 
 - Upstream: https://github.com/syoyo/tinyexr
-- Version: 1.0.8 (6c8742cc8145c8f629698cd8248900990946d6b1, 2024)
+- Version: 1.0.9 (5fcb4dcb6e3abf96214b67e5c54db1ceec6a455c, 2024)
 - License: BSD-3-Clause
 
 Files extracted from upstream source:
@@ -1013,7 +1013,7 @@ SDK release: https://github.com/KhronosGroup/Vulkan-Utility-Libraries/blob/main/
 
 `vk_mem_alloc.h` is taken from https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator
 Version: 3.1.0 (009ecd192c1289c7529bff248a16cfe896254816, 2024)
-`vk_mem_alloc.cpp` is a Godot file and should be preserved on updates.
+`vk_mem_alloc.cpp` is a Kosmic file and should be preserved on updates.
 
 Patches in the `patches` directory should be re-applied after updates.
 
@@ -1077,10 +1077,10 @@ Files extracted from upstream source:
 File extracted from upstream release tarball:
 
 - Run `cmake .` to generate `config.h` and `wslayver.h`
-  Contents might need tweaking for Godot, review diff
+  Contents might need tweaking for Kosmic, review diff
 - All `.c` and `.h` files from `lib/`
 - All `.h` in `lib/includes/wslay/` as `wslay/`
-- `wslay/wslay.h` has a small Godot addition to fix MSVC build
+- `wslay/wslay.h` has a small Kosmic addition to fix MSVC build
   See `patches/msvcfix.diff`
 - `COPYING`
 

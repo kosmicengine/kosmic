@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  godot-cpp-tests:
+  kosmic-cpp-tests:
     runs-on: ubuntu-24.04
     name: Build and test Kosmic CPP
     steps:
@@ -25,7 +25,7 @@ jobs:
             .github
             misc/utility/problem-matchers.json
 
-      - name: Checkout godot-cpp
+      - name: Checkout kosmic-cpp
         uses: actions/checkout@v4
         with:
           submodules: recursive
@@ -34,27 +34,27 @@ jobs:
           path: kosmic-cpp
 
       - name: Setup Python and SCons
-        uses: ./.github/actions/godot-deps
+        uses: ./.github/actions/kosmic-deps
 
       - name: Download KSExtension interface and API dump
         uses: ./.github/actions/download-artifact
         with:
-          name: godot-api-dump
-          path: ./godot-cpp/ksextension
+          name: kosmic-api-dump
+          path: ./kosmic-cpp/ksextension
 
-      # TODO: Enable caching when godot-cpp has proper cache limiting.
+      # TODO: Enable caching when kosmic-cpp has proper cache limiting.
 
       # - name: Restore Kosmic build cache
-      #   uses: ./.github/actions/godot-cache-restore
+      #   uses: ./.github/actions/kosmic-cache-restore
       #   with:
-      #     cache-name: godot-cpp
+      #     cache-name: kosmic-cpp
       #   continue-on-error: true
 
-      - name: Build godot-cpp test extension
-        run: scons --directory=./godot-cpp/test target=template_debug dev_build=yes verbose=yes
+      - name: Build kosmic-cpp test extension
+        run: scons --directory=./kosmic-cpp/test target=template_debug dev_build=yes verbose=yes
 
       # - name: Save Kosmic build cache
-      #   uses: ./.github/actions/godot-cache-save
+      #   uses: ./.github/actions/kosmic-cache-save
       #   with:
-      #     cache-name: godot-cpp
+      #     cache-name: kosmic-cpp
       #   continue-on-error: true

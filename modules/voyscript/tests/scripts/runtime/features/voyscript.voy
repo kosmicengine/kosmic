@@ -1,6 +1,6 @@
 func test():
-	var voyscr: = VoyScript.new()
-	voyscr.source_code = '''
+	var gdscr: = VoyScript.new()
+	gdscr.source_code = '''
 extends Resource
 
 func test() -> void:
@@ -12,9 +12,9 @@ class InnerClass:
 		prints("Inner")
 '''
 	@warning_ignore("return_value_discarded")
-	voyscr.reload()
+	gdscr.reload()
 
-	var inst = voyscr.new()
+	var inst = gdscr.new()
 
 	@warning_ignore("unsafe_method_access")
 	inst.test()

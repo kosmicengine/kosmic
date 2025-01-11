@@ -33,7 +33,7 @@
 
 #include "kosmicsharp_dirs.h"
 #include "managed_callable.h"
-#include "mono_gd/gd_mono_cache.h"
+#include "mono_ks/ks_mono_cache.h"
 #include "signal_awaiter_utils.h"
 #include "utils/macros.h"
 #include "utils/naming_utils.h"
@@ -126,11 +126,11 @@ void CSharpLanguage::init() {
 	EditorNode::add_init_callback(&_editor_init_callback);
 #endif
 
-	ksmono = memnew(KSMono);
+	gdmono = memnew(KSMono);
 
 	// Initialize only if the project uses C#.
-	if (ksmono->should_initialize()) {
-		ksmono->initialize();
+	if (gdmono->should_initialize()) {
+		gdmono->initialize();
 	}
 }
 
@@ -143,7 +143,7 @@ void CSharpLanguage::finalize() {
 		return;
 	}
 
-	if (ksmono && ksmono->is_runtime_initialized() && KSMonoCache::kosmic_api_cache_updated) {
+	if (gdmono && gdmono->is_runtime_initialized() && KSMonoCache::kosmic_api_cache_updated) {
 		KSMonoCache::managed_callbacks.DisposablesTracker_OnKosmicShuttingDown();
 	}
 
@@ -163,9 +163,9 @@ void CSharpLanguage::finalize() {
 		script_binding.owner->free_instance_binding(this);
 	}
 
-	if (ksmono) {
-		memdelete(ksmono);
-		ksmono = nullptr;
+	if (gdmono) {
+		memdelete(gdmono);
+		gdmono = nullptr;
 	}
 
 	// Clear here, after finalizing all domains to make sure there is nothing else referencing the elements.
@@ -504,7 +504,7 @@ Vector<ScriptLanguage::StackInfo> CSharpLanguage::debug_get_current_stack_info()
 		_recursion_flag_ = false; // clang-format off
 	}; // clang-format on
 
-	if (!ksmono || !ksmono->is_runtime_initialized()) {
+	if (!gdmono || !gdmono->is_runtime_initialized()) {
 		return Vector<StackInfo>();
 	}
 
@@ -541,7 +541,7 @@ void CSharpLanguage::pre_unsafe_unreference(Object *p_obj) {
 }
 
 void CSharpLanguage::frame() {
-	if (ksmono && ksmono->is_runtime_initialized() && KSMonoCache::kosmic_api_cache_updated) {
+	if (gdmono && gdmono->is_runtime_initialized() && KSMonoCache::kosmic_api_cache_updated) {
 		KSMonoCache::managed_callbacks.ScriptManagerBridge_FrameCallback();
 	}
 }
@@ -600,19 +600,19 @@ void CSharpLanguage::reload_tool_script(const Ref<Script> &p_script, bool p_soft
 
 #ifdef KS_MONO_HOT_RELOAD
 bool CSharpLanguage::is_assembly_reloading_needed() {
-	ERR_FAIL_NULL_V(ksmono, false);
-	if (!ksmono->is_runtime_initialized()) {
+	ERR_FAIL_NULL_V(gdmono, false);
+	if (!gdmono->is_runtime_initialized()) {
 		return false;
 	}
 
-	String assembly_path = ksmono->get_project_assembly_path();
+	String assembly_path = gdmono->get_project_assembly_path();
 
 	if (!assembly_path.is_empty()) {
 		if (!FileAccess::exists(assembly_path)) {
 			return false; // No assembly to load
 		}
 
-		if (FileAccess::get_modified_time(assembly_path) <= ksmono->get_project_assembly_modified_time()) {
+		if (FileAccess::get_modified_time(assembly_path) <= gdmono->get_project_assembly_modified_time()) {
 			return false; // Already up to date
 		}
 	} else {
@@ -631,8 +631,8 @@ bool CSharpLanguage::is_assembly_reloading_needed() {
 }
 
 void CSharpLanguage::reload_assemblies(bool p_soft_reload) {
-	ERR_FAIL_NULL(ksmono);
-	if (!ksmono->is_runtime_initialized()) {
+	ERR_FAIL_NULL(gdmono);
+	if (!gdmono->is_runtime_initialized()) {
 		return;
 	}
 
@@ -801,7 +801,7 @@ void CSharpLanguage::reload_assemblies(bool p_soft_reload) {
 	}
 
 	// Do domain reload
-	if (ksmono->reload_project_assemblies() != OK) {
+	if (gdmono->reload_project_assemblies() != OK) {
 		// Failed to reload the scripts domain
 		// Make sure to add the scripts back to their owners before returning
 		for (Ref<CSharpScript> &scr : to_reload) {
@@ -1054,13 +1054,13 @@ bool CSharpLanguage::debug_break(const String &p_error, bool p_allow_continue) {
 
 #ifdef TOOLS_ENABLED
 void CSharpLanguage::_editor_init_callback() {
-	// Load GodotTools and initialize KosmicSharpEditor
+	// Load KosmicTools and initialize KosmicSharpEditor
 
 	int32_t interop_funcs_size = 0;
 	const void **interop_funcs = kosmicsharp::get_editor_interop_funcs(interop_funcs_size);
 
 	Object *editor_plugin_obj = KSMono::get_singleton()->get_plugin_callbacks().LoadToolsAssemblyCallback(
-			KosmicSharpDirs::get_data_editor_tools_dir().path_join("GodotTools.dll").utf16(),
+			KosmicSharpDirs::get_data_editor_tools_dir().path_join("KosmicTools.dll").utf16(),
 			interop_funcs, interop_funcs_size);
 	CRASH_COND(editor_plugin_obj == nullptr);
 
@@ -1157,7 +1157,7 @@ bool CSharpLanguage::setup_csharp_script_binding(CSharpScriptBinding &r_script_b
 
 	r_script_binding.inited = true;
 	r_script_binding.type_name = type_name;
-	r_script_binding.gchandle = MonoGCHandleData(strong_gchandle, ksmono::GCHandleType::STRONG_HANDLE);
+	r_script_binding.gchandle = MonoGCHandleData(strong_gchandle, gdmono::GCHandleType::STRONG_HANDLE);
 	r_script_binding.owner = p_object;
 
 	// Tie managed to unmanaged
@@ -1276,7 +1276,7 @@ KSExtensionBool CSharpLanguage::_instance_binding_reference_callback(void *p_tok
 				return false; // Called after the managed side was collected, so nothing to do here
 			}
 
-			gchandle = MonoGCHandleData(new_gchandle, ksmono::GCHandleType::STRONG_HANDLE);
+			gchandle = MonoGCHandleData(new_gchandle, gdmono::GCHandleType::STRONG_HANDLE);
 		}
 
 		return false;
@@ -1300,7 +1300,7 @@ KSExtensionBool CSharpLanguage::_instance_binding_reference_callback(void *p_tok
 				return refcount == 0; // Called after the managed side was collected, so nothing to do here
 			}
 
-			gchandle = MonoGCHandleData(new_gchandle, ksmono::GCHandleType::WEAK_HANDLE);
+			gchandle = MonoGCHandleData(new_gchandle, gdmono::GCHandleType::WEAK_HANDLE);
 
 			return false;
 		}
@@ -1358,7 +1358,7 @@ void CSharpLanguage::tie_native_managed_to_unmanaged(GCHandleIntPtr p_gchandle_i
 	CRASH_COND(p_ref_counted != (bool)rc);
 
 	MonoGCHandleData gchandle = MonoGCHandleData(p_gchandle_intptr,
-			p_ref_counted ? ksmono::GCHandleType::WEAK_HANDLE : ksmono::GCHandleType::STRONG_HANDLE);
+			p_ref_counted ? gdmono::GCHandleType::WEAK_HANDLE : gdmono::GCHandleType::STRONG_HANDLE);
 
 	// If it's just a wrapper Godot class and not a custom inheriting class, then attach a
 	// script binding instead. One of the advantages of this is that if a script is attached
@@ -1407,7 +1407,7 @@ void CSharpLanguage::tie_user_managed_to_unmanaged(GCHandleIntPtr p_gchandle_int
 	CRASH_COND(p_ref_counted != (bool)rc);
 
 	MonoGCHandleData gchandle = MonoGCHandleData(p_gchandle_intptr,
-			p_ref_counted ? ksmono::GCHandleType::WEAK_HANDLE : ksmono::GCHandleType::STRONG_HANDLE);
+			p_ref_counted ? gdmono::GCHandleType::WEAK_HANDLE : gdmono::GCHandleType::STRONG_HANDLE);
 
 	CRASH_COND(script.is_null());
 
@@ -1433,7 +1433,7 @@ void CSharpLanguage::tie_managed_to_unmanaged_with_pre_setup(GCHandleIntPtr p_gc
 	CRASH_COND(!instance->gchandle.is_released());
 
 	// Tie managed to unmanaged
-	instance->gchandle = MonoGCHandleData(p_gchandle_intptr, ksmono::GCHandleType::STRONG_HANDLE);
+	instance->gchandle = MonoGCHandleData(p_gchandle_intptr, gdmono::GCHandleType::STRONG_HANDLE);
 
 	if (instance->base_ref_counted) {
 		instance->_reference_owner_unsafe(); // Here, after assigning the gchandle (for the refcount_incremented callback)
@@ -1474,14 +1474,14 @@ Object *CSharpInstance::get_owner() {
 }
 
 bool CSharpInstance::set(const StringName &p_name, const Variant &p_value) {
-	ERR_FAIL_COND_V(!script.is_valid(), false);
+	ERR_FAIL_COND_V(script.is_null(), false);
 
 	return KSMonoCache::managed_callbacks.CSharpInstanceBridge_Set(
 			gchandle.get_intptr(), &p_name, &p_value);
 }
 
 bool CSharpInstance::get(const StringName &p_name, Variant &r_ret) const {
-	ERR_FAIL_COND_V(!script.is_valid(), false);
+	ERR_FAIL_COND_V(script.is_null(), false);
 
 	Variant ret_value;
 
@@ -1498,7 +1498,7 @@ bool CSharpInstance::get(const StringName &p_name, Variant &r_ret) const {
 
 void CSharpInstance::get_property_list(List<PropertyInfo> *p_properties) const {
 	List<PropertyInfo> props;
-	ERR_FAIL_COND(!script.is_valid());
+	ERR_FAIL_COND(script.is_null());
 #ifdef TOOLS_ENABLED
 	for (const PropertyInfo &prop : script->exported_members_cache) {
 		props.push_back(prop);
@@ -1575,7 +1575,7 @@ Variant::Type CSharpInstance::get_property_type(const StringName &p_name, bool *
 }
 
 bool CSharpInstance::property_can_revert(const StringName &p_name) const {
-	ERR_FAIL_COND_V(!script.is_valid(), false);
+	ERR_FAIL_COND_V(script.is_null(), false);
 
 	Variant name_arg = p_name;
 	const Variant *args[1] = { &name_arg };
@@ -1593,7 +1593,7 @@ bool CSharpInstance::property_can_revert(const StringName &p_name) const {
 }
 
 void CSharpInstance::validate_property(PropertyInfo &p_property) const {
-	ERR_FAIL_COND(!script.is_valid());
+	ERR_FAIL_COND(script.is_null());
 
 	Variant property_arg = (Dictionary)p_property;
 	const Variant *args[1] = { &property_arg };
@@ -1611,7 +1611,7 @@ void CSharpInstance::validate_property(PropertyInfo &p_property) const {
 }
 
 bool CSharpInstance::property_get_revert(const StringName &p_name, Variant &r_ret) const {
-	ERR_FAIL_COND_V(!script.is_valid(), false);
+	ERR_FAIL_COND_V(script.is_null(), false);
 
 	Variant name_arg = p_name;
 	const Variant *args[1] = { &name_arg };
@@ -1638,7 +1638,7 @@ void CSharpInstance::get_method_list(List<MethodInfo> *p_list) const {
 }
 
 bool CSharpInstance::has_method(const StringName &p_method) const {
-	if (!script.is_valid()) {
+	if (script.is_null()) {
 		return false;
 	}
 
@@ -1679,7 +1679,7 @@ int CSharpInstance::get_method_argument_count(const StringName &p_method, bool *
 }
 
 Variant CSharpInstance::callp(const StringName &p_method, const Variant **p_args, int p_argcount, Callable::CallError &r_error) {
-	ERR_FAIL_COND_V(!script.is_valid(), Variant());
+	ERR_FAIL_COND_V(script.is_null(), Variant());
 
 	Variant ret;
 	KSMonoCache::managed_callbacks.CSharpInstanceBridge_Call(
@@ -1854,7 +1854,7 @@ void CSharpInstance::refcount_incremented() {
 			return; // Called after the managed side was collected, so nothing to do here
 		}
 
-		gchandle = MonoGCHandleData(new_gchandle, ksmono::GCHandleType::STRONG_HANDLE);
+		gchandle = MonoGCHandleData(new_gchandle, gdmono::GCHandleType::STRONG_HANDLE);
 	}
 }
 
@@ -1886,7 +1886,7 @@ bool CSharpInstance::refcount_decremented() {
 			return refcount == 0; // Called after the managed side was collected, so nothing to do here
 		}
 
-		gchandle = MonoGCHandleData(new_gchandle, ksmono::GCHandleType::WEAK_HANDLE);
+		gchandle = MonoGCHandleData(new_gchandle, gdmono::GCHandleType::WEAK_HANDLE);
 
 		return false;
 	}
@@ -2329,7 +2329,7 @@ void CSharpScript::update_script_class_info(Ref<CSharpScript> p_script) {
 
 bool CSharpScript::can_instantiate() const {
 #ifdef TOOLS_ENABLED
-	bool extra_cond = type_info.is_tool || ScriptServer::is_scripting_enabled();
+	bool extra_cond = (type_info.is_tool || ScriptServer::is_scripting_enabled()) && !Engine::get_singleton()->is_recovery_mode_hint();
 #else
 	bool extra_cond = true;
 #endif

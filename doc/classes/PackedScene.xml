@@ -66,7 +66,7 @@
 		    Error error = ResourceSaver.Save(scene, "res://path/name.tscn"); // Or "user://..."
 		    if (error != Error.Ok)
 		    {
-		        KS.PushError("An error occurred while saving the scene to disk.");
+		        GD.PushError("An error occurred while saving the scene to disk.");
 		    }
 		}
 		[/csharp]

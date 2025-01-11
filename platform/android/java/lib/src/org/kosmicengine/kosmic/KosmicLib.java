@@ -34,8 +34,8 @@ package org.kosmicengine.kosmic;
 import org.kosmicengine.kosmic.gl.KosmicRenderer;
 import org.kosmicengine.kosmic.io.directory.DirectoryAccessHandler;
 import org.kosmicengine.kosmic.io.file.FileAccessHandler;
-import org.kosmicengine.kosmic.tts.GodotTTS;
-import org.kosmicengine.kosmic.utils.GodotNetUtils;
+import org.kosmicengine.kosmic.tts.KosmicTTS;
+import org.kosmicengine.kosmic.utils.KosmicNetUtils;
 import org.kosmicengine.kosmic.variant.Callable;
 
 import android.app.Activity;
@@ -59,8 +59,8 @@ public class KosmicLib {
 	public static native boolean initialize(Activity activity,
 			Godot p_instance,
 			AssetManager p_asset_manager,
-			KosmicIO godotIO,
-			GodotNetUtils netUtils,
+			KosmicIO kosmicIO,
+			KosmicNetUtils netUtils,
 			DirectoryAccessHandler directoryAccessHandler,
 			FileAccessHandler fileAccessHandler,
 			boolean use_apk_expansion);
@@ -75,7 +75,7 @@ public class KosmicLib {
 	 * Invoked on the GL thread to complete setup for the Godot native layer logic.
 	 * @param p_cmdline Command line arguments used to configure Godot native layer components.
 	 */
-	public static native boolean setup(String[] p_cmdline, GodotTTS tts);
+	public static native boolean setup(String[] p_cmdline, KosmicTTS tts);
 
 	/**
 	 * Invoked on the GL thread when the underlying Android surface has changed size.

@@ -282,13 +282,13 @@ void ProceduralSkyMaterial::_update_shader() {
 shader_type sky;
 %s
 
-uniform vec4 sky_top_color : source_color = vec4(0.302, 0.443, 0.706, 1.0);
+uniform vec4 sky_top_color : source_color = vec4(0.385, 0.454, 0.55, 1.0);
 uniform vec4 sky_horizon_color : source_color = vec4(0.646, 0.656, 0.67, 1.0);
 uniform float sky_curve : hint_range(0, 1) = 0.15;
 uniform float sky_energy = 1.0; // In Lux.
 uniform sampler2D sky_cover : filter_linear, source_color, hint_default_black;
 uniform vec4 sky_cover_modulate : source_color = vec4(1.0, 1.0, 1.0, 1.0);
-uniform vec4 ground_bottom_color : source_color = vec4(0.051, 0.067, 0.09, 1.0);
+uniform vec4 ground_bottom_color : source_color = vec4(0.2, 0.169, 0.133, 1.0);
 uniform vec4 ground_horizon_color : source_color = vec4(0.646, 0.656, 0.67, 1.0);
 uniform float ground_curve : hint_range(0, 1) = 0.02;
 uniform float ground_energy = 1.0;

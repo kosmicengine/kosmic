@@ -8,20 +8,20 @@ import urllib.request
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../"))
 
-from methods import Ansi
+from misc.utility.color import Ansi
 
-# Base Godot dependencies path
+# Base Kosmic dependencies path
 # If cross-compiling (no LOCALAPPDATA), we install in `bin`
 deps_folder = os.getenv("LOCALAPPDATA")
 if deps_folder:
-    deps_folder = os.path.join(deps_folder, "Godot", "build_deps")
+    deps_folder = os.path.join(deps_folder, "Kosmic", "build_deps")
 else:
     deps_folder = os.path.join("bin", "build_deps")
 
 # Mesa NIR
-# Check for latest version: https://github.com/godotengine/godot-nir-static/releases/latest
+# Check for latest version: https://github.com/godotengine/kosmic-nir-static/releases/latest
 mesa_version = "23.1.9"
-mesa_filename = "godot-nir-23.1.9.zip"
+mesa_filename = "kosmic-nir-23.1.9.zip"
 mesa_archive = os.path.join(deps_folder, mesa_filename)
 mesa_folder = os.path.join(deps_folder, "mesa")
 # WinPixEventRuntime
@@ -47,7 +47,7 @@ if os.path.isfile(mesa_archive):
     os.remove(mesa_archive)
 print(f"Downloading Mesa NIR {mesa_filename} ...")
 urllib.request.urlretrieve(
-    f"https://github.com/godotengine/godot-nir-static/releases/download/{mesa_version}/{mesa_filename}",
+    f"https://github.com/godotengine/kosmic-nir-static/releases/download/{mesa_version}/{mesa_filename}",
     mesa_archive,
 )
 if os.path.exists(mesa_folder):
@@ -117,4 +117,4 @@ print(f"DirectX 12 Agility SDK {agility_sdk_version} installed successfully.\n")
 
 # Complete message
 print(f'{Ansi.GREEN}All Direct3D 12 SDK components were installed to "{deps_folder}" successfully!{Ansi.RESET}')
-print(f'{Ansi.GREEN}You can now build Godot with Direct3D 12 support enabled by running "scons d3d12=yes".{Ansi.RESET}')
+print(f'{Ansi.GREEN}You can now build Kosmic with Direct3D 12 support enabled by running "scons d3d12=yes".{Ansi.RESET}')

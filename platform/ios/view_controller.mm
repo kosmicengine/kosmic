@@ -48,13 +48,13 @@
 @property(strong, nonatomic) KosmicViewRenderer *renderer;
 @property(strong, nonatomic) GodotKeyboardInputView *keyboardView;
 
-@property(strong, nonatomic) UIView *godotLoadingOverlay;
+@property(strong, nonatomic) UIView *kosmicLoadingOverlay;
 
 @end
 
 @implementation ViewController
 
-- (KosmicView *)godotView {
+- (KosmicView *)kosmicView {
 	return (KosmicView *)self.view;
 }
 
@@ -205,7 +205,7 @@
 	[self.view addSubview:self.kosmicLoadingOverlay];
 }
 
-- (BOOL)godotViewFinishedSetup:(KosmicView *)view {
+- (BOOL)kosmicViewFinishedSetup:(KosmicView *)view {
 	[self.kosmicLoadingOverlay removeFromSuperview];
 	self.kosmicLoadingOverlay = nil;
 

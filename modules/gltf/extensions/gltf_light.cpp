@@ -65,13 +65,13 @@ void GLTFLight::_bind_methods() {
 }
 
 void GLTFLight::set_cone_inner_attenuation_conversion_expressions(Ref<GLTFObjectModelProperty> &r_obj_model_prop) {
-	// Expression to convert glTF innerConeAngle to Godot spot_angle_attenuation.
+	// Expression to convert glTF innerConeAngle to Kosmic spot_angle_attenuation.
 	Ref<Expression> gltf_to_kosmic_expr;
 	gltf_to_kosmic_expr.instantiate();
 	PackedStringArray gltf_to_kosmic_args = { "inner_cone_angle" };
 	gltf_to_kosmic_expr->parse("0.2 / (1.0 - inner_cone_angle / spot_angle) - 0.1", gltf_to_kosmic_args);
 	r_obj_model_prop->set_gltf_to_kosmic_expression(gltf_to_kosmic_expr);
-	// Expression to convert Godot spot_angle_attenuation to glTF innerConeAngle.
+	// Expression to convert Kosmic spot_angle_attenuation to glTF innerConeAngle.
 	Ref<Expression> kosmic_to_gltf_expr;
 	kosmic_to_gltf_expr.instantiate();
 	PackedStringArray kosmic_to_gltf_args = { "kosmic_spot_angle_att" };

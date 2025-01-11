@@ -343,7 +343,7 @@ void DisplayServerWeb::_mouse_move_callback(double p_x, double p_y, double p_rel
 }
 
 // Cursor
-const char *DisplayServerWeb::godot2dom_cursor(DisplayServer::CursorShape p_shape) {
+const char *DisplayServerWeb::kosmic2dom_cursor(DisplayServer::CursorShape p_shape) {
 	switch (p_shape) {
 		case DisplayServer::CURSOR_ARROW:
 			return "default";
@@ -508,7 +508,7 @@ void DisplayServerWeb::cursor_set_shape(CursorShape p_shape) {
 		return;
 	}
 	cursor_shape = p_shape;
-	kosmic_js_display_cursor_set_shape(godot2dom_cursor(cursor_shape));
+	kosmic_js_display_cursor_set_shape(kosmic2dom_cursor(cursor_shape));
 }
 
 DisplayServer::CursorShape DisplayServerWeb::cursor_get_shape() const {
@@ -541,10 +541,10 @@ void DisplayServerWeb::cursor_set_custom_image(const Ref<Resource> &p_cursor, Cu
 		png.resize(len);
 		ERR_FAIL_COND(!png_image_write_to_memory(&png_meta, png.ptrw(), &len, 0, data.ptr(), 0, nullptr));
 
-		kosmic_js_display_cursor_set_custom_shape(godot2dom_cursor(p_shape), png.ptr(), len, p_hotspot.x, p_hotspot.y);
+		kosmic_js_display_cursor_set_custom_shape(kosmic2dom_cursor(p_shape), png.ptr(), len, p_hotspot.x, p_hotspot.y);
 
 	} else {
-		kosmic_js_display_cursor_set_custom_shape(godot2dom_cursor(p_shape), nullptr, 0, 0, 0);
+		kosmic_js_display_cursor_set_custom_shape(kosmic2dom_cursor(p_shape), nullptr, 0, 0, 0);
 	}
 
 	cursor_set_shape(cursor_shape);
@@ -1135,6 +1135,7 @@ bool DisplayServerWeb::has_feature(Feature p_feature) const {
 		//case FEATURE_NATIVE_DIALOG_INPUT:
 		//case FEATURE_NATIVE_DIALOG_FILE:
 		//case FEATURE_NATIVE_DIALOG_FILE_EXTRA:
+		//case FEATURE_NATIVE_DIALOG_FILE_MIME:
 		//case FEATURE_NATIVE_ICON:
 		//case FEATURE_WINDOW_TRANSPARENCY:
 		//case FEATURE_KEEP_SCREEN_ON:

@@ -31,7 +31,7 @@
 
 package org.kosmicengine.kosmic.plugin;
 
-import org.kosmicengine.kosmic.Godot;
+import org.kosmicengine.kosmic.Kosmic;
 
 import android.app.Activity;
 import android.content.pm.ApplicationInfo;
@@ -96,7 +96,7 @@ public final class KosmicPluginRegistry {
 	 * A plugin manifest entry is a '<meta-data>' tag setup as described in the {@link KosmicPlugin}
 	 * documentation.
 	 *
-	 * @param godot Godot instance
+	 * @param Kosmic kosmic instance
 	 * @param runtimePlugins Set of plugins provided at runtime for registration
 	 * @return A singleton instance of {@link KosmicPluginRegistry}. This ensures that only one instance
 	 * of each Godot Android plugins is available at runtime.
@@ -104,7 +104,7 @@ public final class KosmicPluginRegistry {
 	public static KosmicPluginRegistry initializePluginRegistry(Kosmic kosmic, Set<KosmicPlugin> runtimePlugins) {
 		if (instance == null) {
 			instance = new KosmicPluginRegistry();
-			instance.loadPlugins(godot, runtimePlugins);
+			instance.loadPlugins(kosmic, runtimePlugins);
 		}
 
 		return instance;
@@ -114,7 +114,7 @@ public final class KosmicPluginRegistry {
 	 * Return the plugin registry if it's initialized.
 	 * Throws a {@link IllegalStateException} exception if not.
 	 *
-	 * @throws IllegalStateException if {@link KosmicPluginRegistry#initializePluginRegistry(Godot, Set)} has not been called prior to calling this method.
+	 * @throws IllegalStateException if {@link KosmicPluginRegistry#initializePluginRegistry(Kosmic, Set)} has not been called prior to calling this method.
 	 */
 	public static KosmicPluginRegistry getPluginRegistry() throws IllegalStateException {
 		if (instance == null) {
@@ -135,7 +135,7 @@ public final class KosmicPluginRegistry {
 
 		// Register the manifest plugins
 		try {
-			final Activity activity = godot.getActivity();
+			final Activity activity = kosmic.getActivity();
 			ApplicationInfo appInfo = activity
 											  .getPackageManager()
 											  .getApplicationInfo(activity.getPackageName(),

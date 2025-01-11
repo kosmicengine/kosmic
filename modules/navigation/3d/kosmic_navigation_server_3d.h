@@ -58,17 +58,17 @@
 	virtual void F_NAME(T_0 D_0, T_1 D_1) override; \
 	void MERGE(_cmd_, F_NAME)(T_0 D_0, T_1 D_1)
 
-class GodotNavigationServer3D;
+class KosmicNavigationServer3D;
 #ifndef _3D_DISABLED
 class NavMeshGenerator3D;
 #endif // _3D_DISABLED
 
 struct SetCommand {
 	virtual ~SetCommand() {}
-	virtual void exec(GodotNavigationServer3D *server) = 0;
+	virtual void exec(KosmicNavigationServer3D *server) = 0;
 };
 
-class GodotNavigationServer3D : public NavigationServer3D {
+class KosmicNavigationServer3D : public NavigationServer3D {
 	Mutex commands_mutex;
 	/// Mutex used to make any operation threadsafe.
 	Mutex operations_mutex;
@@ -101,8 +101,8 @@ class GodotNavigationServer3D : public NavigationServer3D {
 	int pm_obstacle_count = 0;
 
 public:
-	GodotNavigationServer3D();
-	virtual ~GodotNavigationServer3D();
+	KosmicNavigationServer3D();
+	virtual ~KosmicNavigationServer3D();
 
 	void add_command(SetCommand *command);
 

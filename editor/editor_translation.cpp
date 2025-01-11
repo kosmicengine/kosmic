@@ -55,7 +55,7 @@ Vector<String> get_editor_locales() {
 }
 
 void load_editor_translations(const String &p_locale) {
-	const Ref<TranslationDomain> domain = TranslationServer::get_singleton()->get_or_add_domain("godot.editor");
+	const Ref<TranslationDomain> domain = TranslationServer::get_singleton()->get_or_add_domain("kosmic.editor");
 
 	EditorTranslationList *etl = _editor_translations;
 	while (etl->data) {
@@ -83,7 +83,7 @@ void load_editor_translations(const String &p_locale) {
 }
 
 void load_property_translations(const String &p_locale) {
-	const Ref<TranslationDomain> domain = TranslationServer::get_singleton()->get_or_add_domain("godot.properties");
+	const Ref<TranslationDomain> domain = TranslationServer::get_singleton()->get_or_add_domain("kosmic.properties");
 
 	PropertyTranslationList *etl = _property_translations;
 	while (etl->data) {
@@ -111,7 +111,7 @@ void load_property_translations(const String &p_locale) {
 }
 
 void load_doc_translations(const String &p_locale) {
-	const Ref<TranslationDomain> domain = TranslationServer::get_singleton()->get_or_add_domain("godot.documentation");
+	const Ref<TranslationDomain> domain = TranslationServer::get_singleton()->get_or_add_domain("kosmic.documentation");
 
 	DocTranslationList *dtl = _doc_translations;
 	while (dtl->data) {
@@ -139,7 +139,7 @@ void load_doc_translations(const String &p_locale) {
 }
 
 void load_extractable_translations(const String &p_locale) {
-	const Ref<TranslationDomain> domain = TranslationServer::get_singleton()->get_or_add_domain("godot.editor");
+	const Ref<TranslationDomain> domain = TranslationServer::get_singleton()->get_or_add_domain("kosmic.editor");
 
 	ExtractableTranslationList *etl = _extractable_translations;
 	while (etl->data) {

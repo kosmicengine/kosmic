@@ -78,9 +78,9 @@ namespace Kosmic.SourceGenerators
                 MarshalType.NodePath => VariantType.NodePath,
                 MarshalType.Rid => VariantType.Rid,
                 MarshalType.KosmicDictionary => VariantType.Dictionary,
-                MarshalType.GodotArray => VariantType.Array,
-                MarshalType.GodotGenericDictionary => VariantType.Dictionary,
-                MarshalType.GodotGenericArray => VariantType.Array,
+                MarshalType.KosmicArray => VariantType.Array,
+                MarshalType.KosmicGenericDictionary => VariantType.Dictionary,
+                MarshalType.KosmicGenericArray => VariantType.Array,
                 _ => null
             };
 
@@ -126,7 +126,7 @@ namespace Kosmic.SourceGenerators
                     if (typeKind == TypeKind.Struct)
                     {
                         if (type.ContainingAssembly?.Name == "KosmicSharp" &&
-                            type.ContainingNamespace?.Name == "Godot")
+                            type.ContainingNamespace?.Name == "Kosmic")
                         {
                             return type switch
                             {
@@ -183,7 +183,7 @@ namespace Kosmic.SourceGenerators
                             return MarshalType.KosmicObjectOrDerivedArray;
 
                         if (elementType.ContainingAssembly?.Name == "KosmicSharp" &&
-                            elementType.ContainingNamespace?.Name == "Godot")
+                            elementType.ContainingNamespace?.Name == "Kosmic")
                         {
                             switch (elementType)
                             {
@@ -215,7 +215,7 @@ namespace Kosmic.SourceGenerators
                         {
                             switch (type.ContainingNamespace?.Name)
                             {
-                                case "Godot":
+                                case "Kosmic":
                                     return type switch
                                     {
                                         { Name: "StringName" } => MarshalType.StringName,
@@ -229,11 +229,11 @@ namespace Kosmic.SourceGenerators
                                         { Name: "Dictionary" } =>
                                             type is INamedTypeSymbol { IsGenericType: false } ?
                                                 MarshalType.KosmicDictionary :
-                                                MarshalType.GodotGenericDictionary,
+                                                MarshalType.KosmicGenericDictionary,
                                         { Name: "Array" } =>
                                             type is INamedTypeSymbol { IsGenericType: false } ?
-                                                MarshalType.GodotArray :
-                                                MarshalType.GodotGenericArray,
+                                                MarshalType.KosmicArray :
+                                                MarshalType.KosmicGenericArray,
                                         _ => null
                                     };
                             }
@@ -320,13 +320,13 @@ namespace Kosmic.SourceGenerators
                     source.Append(VariantUtils, ".ConvertToSystemArrayOfKosmicObject<",
                         ((IArrayTypeSymbol)typeSymbol).ElementType.FullQualifiedNameIncludeGlobal(), ">(",
                         inputExpr, ")"),
-                // We need a special case for generic Godot collections and KosmicObjectOrDerived[], because VariantUtils.ConvertTo<T> is slower
-                MarshalType.GodotGenericDictionary =>
+                // We need a special case for generic Kosmic collections and KosmicObjectOrDerived[], because VariantUtils.ConvertTo<T> is slower
+                MarshalType.KosmicGenericDictionary =>
                     source.Append(VariantUtils, ".ConvertToDictionary<",
                         ((INamedTypeSymbol)typeSymbol).TypeArguments[0].FullQualifiedNameIncludeGlobal(), ", ",
                         ((INamedTypeSymbol)typeSymbol).TypeArguments[1].FullQualifiedNameIncludeGlobal(), ">(",
                         inputExpr, ")"),
-                MarshalType.GodotGenericArray =>
+                MarshalType.KosmicGenericArray =>
                     source.Append(VariantUtils, ".ConvertToArray<",
                         ((INamedTypeSymbol)typeSymbol).TypeArguments[0].FullQualifiedNameIncludeGlobal(), ">(",
                         inputExpr, ")"),
@@ -343,10 +343,10 @@ namespace Kosmic.SourceGenerators
                 // We need a special case for KosmicObjectOrDerived[], because it's not supported by VariantUtils.CreateFrom<T>
                 MarshalType.KosmicObjectOrDerivedArray =>
                     source.Append(VariantUtils, ".CreateFromSystemArrayOfKosmicObject(", inputExpr, ")"),
-                // We need a special case for generic Godot collections and KosmicObjectOrDerived[], because VariantUtils.CreateFrom<T> is slower
-                MarshalType.GodotGenericDictionary =>
+                // We need a special case for generic Kosmic collections and KosmicObjectOrDerived[], because VariantUtils.CreateFrom<T> is slower
+                MarshalType.KosmicGenericDictionary =>
                     source.Append(VariantUtils, ".CreateFromDictionary(", inputExpr, ")"),
-                MarshalType.GodotGenericArray =>
+                MarshalType.KosmicGenericArray =>
                     source.Append(VariantUtils, ".CreateFromArray(", inputExpr, ")"),
                 _ => source.Append(VariantUtils, ".CreateFrom<",
                     typeSymbol.FullQualifiedNameIncludeGlobal(), ">(", inputExpr, ")"),
@@ -362,13 +362,13 @@ namespace Kosmic.SourceGenerators
                 MarshalType.KosmicObjectOrDerivedArray =>
                     source.Append(inputExpr, ".AsKosmicObjectArray<",
                         ((IArrayTypeSymbol)typeSymbol).ElementType.FullQualifiedNameIncludeGlobal(), ">()"),
-                // We need a special case for generic Godot collections and KosmicObjectOrDerived[], because Variant.As<T> is slower
-                MarshalType.GodotGenericDictionary =>
+                // We need a special case for generic Kosmic collections and KosmicObjectOrDerived[], because Variant.As<T> is slower
+                MarshalType.KosmicGenericDictionary =>
                     source.Append(inputExpr, ".AsKosmicDictionary<",
                         ((INamedTypeSymbol)typeSymbol).TypeArguments[0].FullQualifiedNameIncludeGlobal(), ", ",
                         ((INamedTypeSymbol)typeSymbol).TypeArguments[1].FullQualifiedNameIncludeGlobal(), ">()"),
-                MarshalType.GodotGenericArray =>
-                    source.Append(inputExpr, ".AsGodotArray<",
+                MarshalType.KosmicGenericArray =>
+                    source.Append(inputExpr, ".AsKosmicArray<",
                         ((INamedTypeSymbol)typeSymbol).TypeArguments[0].FullQualifiedNameIncludeGlobal(), ">()"),
                 _ => source.Append(inputExpr, ".As<",
                     typeSymbol.FullQualifiedNameIncludeGlobal(), ">()")
@@ -383,8 +383,8 @@ namespace Kosmic.SourceGenerators
                 // We need a special case for KosmicObjectOrDerived[], because it's not supported by Variant.From<T>
                 MarshalType.KosmicObjectOrDerivedArray =>
                     source.Append("global::Kosmic.Variant.CreateFrom(", inputExpr, ")"),
-                // We need a special case for generic Godot collections, because Variant.From<T> is slower
-                MarshalType.GodotGenericDictionary or MarshalType.GodotGenericArray =>
+                // We need a special case for generic Kosmic collections, because Variant.From<T> is slower
+                MarshalType.KosmicGenericDictionary or MarshalType.KosmicGenericArray =>
                     source.Append("global::Kosmic.Variant.CreateFrom(", inputExpr, ")"),
                 _ => source.Append("global::Kosmic.Variant.From<",
                     typeSymbol.FullQualifiedNameIncludeGlobal(), ">(", inputExpr, ")")

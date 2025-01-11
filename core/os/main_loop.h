@@ -33,7 +33,7 @@
 #define MAIN_LOOP_H
 
 #include "core/input/input_event.h"
-#include "core/object/ksvirtual.gen.inc"
+#include "core/object/gdvirtual.gen.inc"
 #include "core/object/ref_counted.h"
 
 class MainLoop : public Object {

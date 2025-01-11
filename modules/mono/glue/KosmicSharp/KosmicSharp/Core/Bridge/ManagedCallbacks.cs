@@ -44,7 +44,7 @@ namespace Kosmic.Bridge
         public delegate* unmanaged<IntPtr, kosmic_bool> GCHandleBridge_GCHandleIsTargetCollectible;
         public delegate* unmanaged<void*, void> DebuggingUtils_GetCurrentStackInfo;
         public delegate* unmanaged<void> DisposablesTracker_OnKosmicShuttingDown;
-        public delegate* unmanaged<kosmic_bool, void> KS_OnCoreApiAssemblyLoaded;
+        public delegate* unmanaged<kosmic_bool, void> GD_OnCoreApiAssemblyLoaded;
         // @formatter:on
 
         public static ManagedCallbacks Create()
@@ -88,7 +88,7 @@ namespace Kosmic.Bridge
                 GCHandleBridge_GCHandleIsTargetCollectible = &GCHandleBridge.GCHandleIsTargetCollectible,
                 DebuggingUtils_GetCurrentStackInfo = &DebuggingUtils.GetCurrentStackInfo,
                 DisposablesTracker_OnKosmicShuttingDown = &DisposablesTracker.OnKosmicShuttingDown,
-                KS_OnCoreApiAssemblyLoaded = &KS.OnCoreApiAssemblyLoaded,
+                GD_OnCoreApiAssemblyLoaded = &KS.OnCoreApiAssemblyLoaded,
                 // @formatter:on
             };
         }

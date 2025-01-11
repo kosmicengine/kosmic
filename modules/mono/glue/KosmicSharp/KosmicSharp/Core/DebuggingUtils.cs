@@ -59,7 +59,7 @@ namespace Kosmic
         internal static void InstallTraceListener()
         {
             Trace.Listeners.Clear();
-            Trace.Listeners.Add(new GodotTraceListener());
+            Trace.Listeners.Add(new KosmicTraceListener());
         }
 
 #pragma warning disable IDE1006 // Naming rule violation

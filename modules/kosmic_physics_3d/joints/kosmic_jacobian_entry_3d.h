@@ -33,7 +33,7 @@
 #define KOSMIC_JACOBIAN_ENTRY_3D_H
 
 /*
-Adapted to Godot from the Bullet library.
+Adapted to Kosmic from the Bullet library.
 */
 
 /*

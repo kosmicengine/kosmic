@@ -17,14 +17,14 @@ namespace Kosmic.SourceGenerators
             if (context.IsKosmicSourceGeneratorDisabled("ScriptPathAttribute"))
                 return;
 
-            if (context.IsGodotToolsProject())
+            if (context.IsKosmicToolsProject())
                 return;
 
             // NOTE: NotNullWhen diagnostics don't work on projects targeting .NET Standard 2.0
             // ReSharper disable once ReplaceWithStringIsNullOrEmpty
-            if (!context.TryGetGlobalAnalyzerProperty("KosmicProjectDirBase64", out string? godotProjectDir) || godotProjectDir!.Length == 0)
+            if (!context.TryGetGlobalAnalyzerProperty("KosmicProjectDirBase64", out string? kosmicProjectDir) || kosmicProjectDir!.Length == 0)
             {
-                if (!context.TryGetGlobalAnalyzerProperty("KosmicProjectDir", out godotProjectDir) || godotProjectDir!.Length == 0)
+                if (!context.TryGetGlobalAnalyzerProperty("KosmicProjectDir", out kosmicProjectDir) || kosmicProjectDir!.Length == 0)
                 {
                     throw new InvalidOperationException("Property 'KosmicProjectDir' is null or empty.");
                 }
@@ -32,10 +32,10 @@ namespace Kosmic.SourceGenerators
             else
             {
                 // Workaround for https://github.com/dotnet/roslyn/issues/51692
-                godotProjectDir = Encoding.UTF8.GetString(Convert.FromBase64String(godotProjectDir));
+                kosmicProjectDir = Encoding.UTF8.GetString(Convert.FromBase64String(kosmicProjectDir));
             }
 
-            Dictionary<INamedTypeSymbol, IEnumerable<ClassDeclarationSyntax>> godotClasses = context
+            Dictionary<INamedTypeSymbol, IEnumerable<ClassDeclarationSyntax>> kosmicClasses = context
                 .Compilation.SyntaxTrees
                 .SelectMany(tree =>
                     tree.GetRoot().DescendantNodes()
@@ -58,22 +58,22 @@ namespace Kosmic.SourceGenerators
                 .ToDictionary<IGrouping<INamedTypeSymbol, (ClassDeclarationSyntax cds, INamedTypeSymbol symbol)>, INamedTypeSymbol, IEnumerable<ClassDeclarationSyntax>>(g => g.Key, g => g.Select(x => x.cds), SymbolEqualityComparer.Default);
 
             var usedPaths = new HashSet<string>();
-            foreach (var godotClass in godotClasses)
+            foreach (var kosmicClass in kosmicClasses)
             {
-                VisitKosmicScriptClass(context, godotProjectDir, usedPaths,
-                    symbol: godotClass.Key,
-                    classDeclarations: godotClass.Value);
+                VisitKosmicScriptClass(context, kosmicProjectDir, usedPaths,
+                    symbol: kosmicClass.Key,
+                    classDeclarations: kosmicClass.Value);
             }
 
-            if (godotClasses.Count <= 0)
+            if (kosmicClasses.Count <= 0)
                 return;
 
-            AddScriptTypesAssemblyAttr(context, godotClasses);
+            AddScriptTypesAssemblyAttr(context, kosmicClasses);
         }
 
         private static void VisitKosmicScriptClass(
             GeneratorExecutionContext context,
-            string godotProjectDir,
+            string kosmicProjectDir,
             HashSet<string> usedPaths,
             INamedTypeSymbol symbol,
             IEnumerable<ClassDeclarationSyntax> classDeclarations
@@ -94,7 +94,7 @@ namespace Kosmic.SourceGenerators
                 if (attributes.Length != 0)
                     attributes.Append("\n");
 
-                string scriptPath = RelativeToDir(cds.SyntaxTree.FilePath, godotProjectDir);
+                string scriptPath = RelativeToDir(cds.SyntaxTree.FilePath, kosmicProjectDir);
                 if (!usedPaths.Add(scriptPath))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
@@ -121,13 +121,13 @@ namespace Kosmic.SourceGenerators
 
             var source = new StringBuilder();
 
-            // using Godot;
+            // using Kosmic;
             // namespace {classNs} {
             //     {attributesBuilder}
             //     partial class {className} { }
             // }
 
-            source.Append("using Godot;\n");
+            source.Append("using Kosmic;\n");
 
             if (hasNamespace)
             {
@@ -150,7 +150,7 @@ namespace Kosmic.SourceGenerators
         }
 
         private static void AddScriptTypesAssemblyAttr(GeneratorExecutionContext context,
-            Dictionary<INamedTypeSymbol, IEnumerable<ClassDeclarationSyntax>> godotClasses)
+            Dictionary<INamedTypeSymbol, IEnumerable<ClassDeclarationSyntax>> kosmicClasses)
         {
             var sourceBuilder = new StringBuilder();
 
@@ -160,9 +160,9 @@ namespace Kosmic.SourceGenerators
 
             bool first = true;
 
-            foreach (var godotClass in godotClasses)
+            foreach (var kosmicClass in kosmicClasses)
             {
-                var qualifiedName = godotClass.Key.ToDisplayString(
+                var qualifiedName = kosmicClass.Key.ToDisplayString(
                     NullableFlowState.NotNull, SymbolDisplayFormat.FullyQualifiedFormat
                         .WithGenericsOptions(SymbolDisplayGenericsOptions.None));
                 if (!first)
@@ -170,8 +170,8 @@ namespace Kosmic.SourceGenerators
                 first = false;
                 sourceBuilder.Append("typeof(");
                 sourceBuilder.Append(qualifiedName);
-                if (godotClass.Key.IsGenericType)
-                    sourceBuilder.Append($"<{new string(',', godotClass.Key.TypeParameters.Count() - 1)}>");
+                if (kosmicClass.Key.IsGenericType)
+                    sourceBuilder.Append($"<{new string(',', kosmicClass.Key.TypeParameters.Count() - 1)}>");
                 sourceBuilder.Append(")");
             }
 

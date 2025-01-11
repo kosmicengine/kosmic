@@ -72,20 +72,20 @@ Dictionary detect_wgl() {
 	gl_info["vendor"] = String();
 	gl_info["name"] = String();
 
-	PFNWGLCREATECONTEXT gd_wglCreateContext;
-	PFNWGLMAKECURRENT gd_wglMakeCurrent;
-	PFNWGLDELETECONTEXT gd_wglDeleteContext;
-	PFNWGLGETPROCADDRESS gd_wglGetProcAddress;
+	PFNWGLCREATECONTEXT ks_wglCreateContext;
+	PFNWGLMAKECURRENT ks_wglMakeCurrent;
+	PFNWGLDELETECONTEXT ks_wglDeleteContext;
+	PFNWGLGETPROCADDRESS ks_wglGetProcAddress;
 
 	HMODULE module = LoadLibraryW(L"opengl32.dll");
 	if (!module) {
 		return gl_info;
 	}
-	gd_wglCreateContext = (PFNWGLCREATECONTEXT)GetProcAddress(module, "wglCreateContext");
-	gd_wglMakeCurrent = (PFNWGLMAKECURRENT)GetProcAddress(module, "wglMakeCurrent");
-	gd_wglDeleteContext = (PFNWGLDELETECONTEXT)GetProcAddress(module, "wglDeleteContext");
-	gd_wglGetProcAddress = (PFNWGLGETPROCADDRESS)GetProcAddress(module, "wglGetProcAddress");
-	if (!gd_wglCreateContext || !gd_wglMakeCurrent || !gd_wglDeleteContext || !gd_wglGetProcAddress) {
+	ks_wglCreateContext = (PFNWGLCREATECONTEXT)GetProcAddress(module, "wglCreateContext");
+	ks_wglMakeCurrent = (PFNWGLMAKECURRENT)GetProcAddress(module, "wglMakeCurrent");
+	ks_wglDeleteContext = (PFNWGLDELETECONTEXT)GetProcAddress(module, "wglDeleteContext");
+	ks_wglGetProcAddress = (PFNWGLGETPROCADDRESS)GetProcAddress(module, "wglGetProcAddress");
+	if (!ks_wglCreateContext || !ks_wglMakeCurrent || !ks_wglDeleteContext || !ks_wglGetProcAddress) {
 		return gl_info;
 	}
 
@@ -127,9 +127,9 @@ Dictionary detect_wgl() {
 			int pixel_format = ChoosePixelFormat(hDC, &pfd);
 			SetPixelFormat(hDC, pixel_format, &pfd);
 
-			HGLRC hRC = gd_wglCreateContext(hDC);
+			HGLRC hRC = ks_wglCreateContext(hDC);
 			if (hRC) {
-				if (gd_wglMakeCurrent(hDC, hRC)) {
+				if (ks_wglMakeCurrent(hDC, hRC)) {
 					int attribs[] = {
 						WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
 						WGL_CONTEXT_MINOR_VERSION_ARB, 3,
@@ -138,14 +138,14 @@ Dictionary detect_wgl() {
 						0
 					};
 
-					PFNWGLCREATECONTEXTATTRIBSARBPROC gd_wglCreateContextAttribsARB = nullptr;
-					gd_wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)gd_wglGetProcAddress("wglCreateContextAttribsARB");
-					if (gd_wglCreateContextAttribsARB) {
-						HGLRC new_hRC = gd_wglCreateContextAttribsARB(hDC, nullptr, attribs);
+					PFNWGLCREATECONTEXTATTRIBSARBPROC ks_wglCreateContextAttribsARB = nullptr;
+					ks_wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)ks_wglGetProcAddress("wglCreateContextAttribsARB");
+					if (ks_wglCreateContextAttribsARB) {
+						HGLRC new_hRC = ks_wglCreateContextAttribsARB(hDC, nullptr, attribs);
 						if (new_hRC) {
-							if (gd_wglMakeCurrent(hDC, new_hRC)) {
-								PFNWGLGETSTRINGPROC gd_wglGetString = (PFNWGLGETSTRINGPROC)GetProcAddress(module, "glGetString");
-								if (gd_wglGetString) {
+							if (ks_wglMakeCurrent(hDC, new_hRC)) {
+								PFNWGLGETSTRINGPROC ks_wglGetString = (PFNWGLGETSTRINGPROC)GetProcAddress(module, "glGetString");
+								if (ks_wglGetString) {
 									const char *prefixes[] = {
 										"OpenGL ES-CM ",
 										"OpenGL ES-CL ",
@@ -153,10 +153,10 @@ Dictionary detect_wgl() {
 										"OpenGL SC ",
 										nullptr
 									};
-									const char *version = (const char *)gd_wglGetString(WGL_VERSION);
+									const char *version = (const char *)ks_wglGetString(WGL_VERSION);
 									if (version) {
-										const String device_vendor = String::utf8((const char *)gd_wglGetString(WGL_VENDOR)).strip_edges().trim_suffix(" Corporation");
-										const String device_name = String::utf8((const char *)gd_wglGetString(WGL_RENDERER)).strip_edges().trim_suffix("/PCIe/SSE2");
+										const String device_vendor = String::utf8((const char *)ks_wglGetString(WGL_VENDOR)).strip_edges().trim_suffix(" Corporation");
+										const String device_name = String::utf8((const char *)ks_wglGetString(WGL_RENDERER)).strip_edges().trim_suffix("/PCIe/SSE2");
 										for (int i = 0; prefixes[i]; i++) {
 											size_t length = strlen(prefixes[i]);
 											if (strncmp(version, prefixes[i], length) == 0) {
@@ -178,13 +178,13 @@ Dictionary detect_wgl() {
 									}
 								}
 							}
-							gd_wglMakeCurrent(nullptr, nullptr);
-							gd_wglDeleteContext(new_hRC);
+							ks_wglMakeCurrent(nullptr, nullptr);
+							ks_wglDeleteContext(new_hRC);
 						}
 					}
 				}
-				gd_wglMakeCurrent(nullptr, nullptr);
-				gd_wglDeleteContext(hRC);
+				ks_wglMakeCurrent(nullptr, nullptr);
+				ks_wglDeleteContext(hRC);
 			}
 			ReleaseDC(hWnd, hDC);
 		}

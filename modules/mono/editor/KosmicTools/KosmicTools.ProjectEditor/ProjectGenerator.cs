@@ -4,15 +4,15 @@ using System.IO;
 using System.Text;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
-using GodotTools.Shared;
+using KosmicTools.Shared;
 
 namespace KosmicTools.ProjectEditor
 {
     public static class ProjectGenerator
     {
-        public static string KosmicSdkAttrValue => $"Kosmic.NET.Sdk/{GeneratedGodotNupkgsVersions.GodotNETSdk}";
+        public static string KosmicSdkAttrValue => $"Kosmic.NET.Sdk/{GeneratedKosmicNupkgsVersions.KosmicNETSdk}";
 
-        public static string GodotMinimumRequiredTfm => "net8.0";
+        public static string KosmicMinimumRequiredTfm => "net8.0";
 
         public static ProjectRootElement GenGameProject(string name)
         {
@@ -24,7 +24,7 @@ namespace KosmicTools.ProjectEditor
             root.Sdk = KosmicSdkAttrValue;
 
             var mainGroup = root.AddPropertyGroup();
-            mainGroup.AddProperty("TargetFramework", GodotMinimumRequiredTfm);
+            mainGroup.AddProperty("TargetFramework", KosmicMinimumRequiredTfm);
 
             mainGroup.AddProperty("EnableDynamicLoading", "true");
 

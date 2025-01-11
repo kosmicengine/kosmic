@@ -33,7 +33,7 @@
 #define KOSMIC_HINGE_JOINT_3D_H
 
 /*
-Adapted to Godot from the Bullet library.
+Adapted to Kosmic from the Bullet library.
 */
 
 #include "../kosmic_joint_3d.h"
@@ -57,11 +57,11 @@ subject to the following restrictions:
 class KosmicHingeJoint3D : public KosmicJoint3D {
 	union {
 		struct {
-			GodotBody3D *A;
-			GodotBody3D *B;
+			KosmicBody3D *A;
+			KosmicBody3D *B;
 		};
 
-		GodotBody3D *_arr[2] = {};
+		KosmicBody3D *_arr[2] = {};
 	};
 
 	KosmicJacobianEntry3D m_jac[3]; //3 orthogonal linear constraints
@@ -110,8 +110,8 @@ public:
 	void set_flag(PhysicsServer3D::HingeJointFlag p_flag, bool p_value);
 	bool get_flag(PhysicsServer3D::HingeJointFlag p_flag) const;
 
-	KosmicHingeJoint3D(GodotBody3D *rbA, GodotBody3D *rbB, const Transform3D &frameA, const Transform3D &frameB);
-	KosmicHingeJoint3D(GodotBody3D *rbA, GodotBody3D *rbB, const Vector3 &pivotInA, const Vector3 &pivotInB, const Vector3 &axisInA, const Vector3 &axisInB);
+	KosmicHingeJoint3D(KosmicBody3D *rbA, KosmicBody3D *rbB, const Transform3D &frameA, const Transform3D &frameB);
+	KosmicHingeJoint3D(KosmicBody3D *rbA, KosmicBody3D *rbB, const Vector3 &pivotInA, const Vector3 &pivotInB, const Vector3 &axisInA, const Vector3 &axisInB);
 };
 
 #endif // KOSMIC_HINGE_JOINT_3D_H

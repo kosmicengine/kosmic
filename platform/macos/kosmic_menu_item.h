@@ -46,7 +46,7 @@ enum GlobalMenuCheckType {
 	CHECKABLE_TYPE_RADIO_BUTTON,
 };
 
-@interface GodotMenuItem : NSObject {
+@interface KosmicMenuItem : NSObject {
 @public
 	Callable callback;
 	Callable key_callback;

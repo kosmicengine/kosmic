@@ -7,8 +7,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using GodotTools.IdeMessaging.Requests;
-using GodotTools.IdeMessaging.Utils;
+using KosmicTools.IdeMessaging.Requests;
+using KosmicTools.IdeMessaging.Utils;
 
 namespace KosmicTools.IdeMessaging
 {

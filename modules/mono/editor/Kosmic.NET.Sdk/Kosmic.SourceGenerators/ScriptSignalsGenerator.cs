@@ -19,7 +19,7 @@ namespace Kosmic.SourceGenerators
             if (context.IsKosmicSourceGeneratorDisabled("ScriptSignals"))
                 return;
 
-            INamedTypeSymbol[] godotClasses = context
+            INamedTypeSymbol[] kosmicClasses = context
                 .Compilation.SyntaxTrees
                 .SelectMany(tree =>
                     tree.GetRoot().DescendantNodes()
@@ -45,13 +45,13 @@ namespace Kosmic.SourceGenerators
                 .Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default)
                 .ToArray();
 
-            if (godotClasses.Length > 0)
+            if (kosmicClasses.Length > 0)
             {
                 var typeCache = new MarshalUtils.TypeCache(context.Compilation);
 
-                foreach (var godotClass in godotClasses)
+                foreach (var kosmicClass in kosmicClasses)
                 {
-                    VisitKosmicScriptClass(context, typeCache, godotClass);
+                    VisitKosmicScriptClass(context, typeCache, kosmicClass);
                 }
             }
         }
@@ -77,7 +77,7 @@ namespace Kosmic.SourceGenerators
 
             var source = new StringBuilder();
 
-            source.Append("using Godot;\n");
+            source.Append("using Kosmic;\n");
             source.Append("using Kosmic.NativeInterop;\n");
             source.Append("\n");
 
@@ -121,7 +121,7 @@ namespace Kosmic.SourceGenerators
                 .Where(s => s.GetAttributes()
                     .Any(a => a.AttributeClass?.IsKosmicSignalAttribute() ?? false));
 
-            List<KosmicSignalDelegateData> godotSignalDelegates = new();
+            List<KosmicSignalDelegateData> kosmicSignalDelegates = new();
 
             foreach (var signalDelegateSymbol in signalDelegateSymbols)
             {
@@ -181,7 +181,7 @@ namespace Kosmic.SourceGenerators
                     continue;
                 }
 
-                godotSignalDelegates.Add(new(signalName, signalDelegateSymbol, invokeMethodData.Value));
+                kosmicSignalDelegates.Add(new(signalName, signalDelegateSymbol, invokeMethodData.Value));
             }
 
             source.Append("#pragma warning disable CS0109 // Disable warning about redundant 'new' keyword\n");
@@ -195,7 +195,7 @@ namespace Kosmic.SourceGenerators
 
             // Generate cached StringNames for methods and properties, for fast lookup
 
-            foreach (var signalDelegate in godotSignalDelegates)
+            foreach (var signalDelegate in kosmicSignalDelegates)
             {
                 string signalName = signalDelegate.Name;
 
@@ -216,13 +216,13 @@ namespace Kosmic.SourceGenerators
 
             // Generate GetKosmicSignalList
 
-            if (godotSignalDelegates.Count > 0)
+            if (kosmicSignalDelegates.Count > 0)
             {
                 const string ListType = "global::System.Collections.Generic.List<global::Kosmic.Bridge.MethodInfo>";
 
                 source.Append("    /// <summary>\n")
                     .Append("    /// Get the signal information for all the signals declared in this class.\n")
-                    .Append("    /// This method is used by Godot to register the available signals in the editor.\n")
+                    .Append("    /// This method is used by Kosmic to register the available signals in the editor.\n")
                     .Append("    /// Do not call this method.\n")
                     .Append("    /// </summary>\n");
 
@@ -235,10 +235,10 @@ namespace Kosmic.SourceGenerators
                 source.Append("        var signals = new ")
                     .Append(ListType)
                     .Append("(")
-                    .Append(godotSignalDelegates.Count)
+                    .Append(kosmicSignalDelegates.Count)
                     .Append(");\n");
 
-                foreach (var signalDelegateData in godotSignalDelegates)
+                foreach (var signalDelegateData in kosmicSignalDelegates)
                 {
                     var methodInfo = DetermineMethodInfo(signalDelegateData);
                     AppendMethodInfo(source, methodInfo);
@@ -252,7 +252,7 @@ namespace Kosmic.SourceGenerators
 
             // Generate signal event
 
-            foreach (var signalDelegate in godotSignalDelegates)
+            foreach (var signalDelegate in kosmicSignalDelegates)
             {
                 string signalName = signalDelegate.Name;
 
@@ -322,7 +322,7 @@ namespace Kosmic.SourceGenerators
 
             // Generate RaiseKosmicClassSignalCallbacks
 
-            if (godotSignalDelegates.Count > 0)
+            if (kosmicSignalDelegates.Count > 0)
             {
                 source.Append("    /// <inheritdoc/>\n");
                 source.Append("    [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]\n");
@@ -330,7 +330,7 @@ namespace Kosmic.SourceGenerators
                     "    protected override void RaiseKosmicClassSignalCallbacks(in kosmic_string_name signal, ");
                 source.Append("NativeVariantPtrArgs args)\n    {\n");
 
-                foreach (var signal in godotSignalDelegates)
+                foreach (var signal in kosmicSignalDelegates)
                 {
                     GenerateSignalEventInvoker(signal, source);
                 }
@@ -342,14 +342,14 @@ namespace Kosmic.SourceGenerators
 
             // Generate HasKosmicClassSignal
 
-            if (godotSignalDelegates.Count > 0)
+            if (kosmicSignalDelegates.Count > 0)
             {
                 source.Append("    /// <inheritdoc/>\n");
                 source.Append("    [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]\n");
                 source.Append(
                     "    protected override bool HasKosmicClassSignal(in kosmic_string_name signal)\n    {\n");
 
-                foreach (var signal in godotSignalDelegates)
+                foreach (var signal in kosmicSignalDelegates)
                 {
                     GenerateHasSignalEntry(signal.Name, source);
                 }

@@ -287,7 +287,7 @@ bool OpenXRVulkanExtension::get_swapchain_image_data(XrSwapchain p_swapchain, in
 	switch (p_swapchain_format) {
 		case VK_FORMAT_R8G8B8A8_SRGB:
 			// Even though this is an sRGB framebuffer format we're using UNORM here.
-			// The reason here is because Godot does a linear to sRGB conversion while
+			// The reason here is because Kosmic does a linear to sRGB conversion while
 			// with the sRGB format, this conversion would be doubled by the hardware.
 			// This also means we're reading the values as is for our preview on screen.
 			// The OpenXR runtime however is still treating this as an sRGB format and
@@ -322,7 +322,7 @@ bool OpenXRVulkanExtension::get_swapchain_image_data(XrSwapchain p_swapchain, in
 			usage_flags |= RenderingDevice::TEXTURE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
 			break;
 		default:
-			// continue with our default value
+			// Continue with our default value
 			print_line("OpenXR: Unsupported swapchain format", p_swapchain_format);
 			break;
 	}
@@ -350,14 +350,14 @@ bool OpenXRVulkanExtension::get_swapchain_image_data(XrSwapchain p_swapchain, in
 			samples = RenderingDevice::TEXTURE_SAMPLES_64;
 			break;
 		default:
-			// continue with our default value
+			// Continue with our default value
 			print_line("OpenXR: Unsupported sample count", p_sample_count);
 			break;
 	}
 
 	Vector<RID> texture_rids;
 
-	// create Godot texture objects for each entry in our swapchain
+	// create Kosmic texture objects for each entry in our swapchain
 	for (uint64_t i = 0; i < swapchain_length; i++) {
 		RID image_rid = rendering_device->texture_create_from_extension(
 				p_array_size == 1 ? RenderingDevice::TEXTURE_TYPE_2D : RenderingDevice::TEXTURE_TYPE_2D_ARRAY,

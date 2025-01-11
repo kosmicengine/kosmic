@@ -33,7 +33,7 @@
 #define RESOURCE_LOADER_H
 
 #include "core/io/resource.h"
-#include "core/object/ksvirtual.gen.inc"
+#include "core/object/gdvirtual.gen.inc"
 #include "core/object/worker_thread_pool.h"
 #include "core/os/thread.h"
 

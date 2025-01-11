@@ -18,12 +18,12 @@ Ah, e os nomes de usuário do GitHub estão entre parênteses (ou aparecem sozin
 > Clique no link abaixo para ver os autores da Godot Engine, o projeto o qual a Kosmic é baseada:
 > https://github.com/godotengine/godot/blob/master/AUTHORS.md
 
-## 💎 Fundadores do Projeto 💎
+## Fundadores do Projeto 
 
-- **Vetus** (*VetusChronos*)
+    Sophia (soosora)
 
-## 🎯 Desenvolvedores Líderes 🎯
+## Desenvolvedores Líderes
 
-## 💼 Gestores do Projeto 💼  
+## Gestores de Projeto  
 
-## 🌟 Desenvolvedoras e Desenvolvedores 🌟
+## Desenvolvedoras e Desenvolvedores

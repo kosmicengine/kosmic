@@ -1,7 +1,7 @@
 # Polish translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # 8-bit Pixel <dawdejw@gmail.com>, 2016, 2023.
 # Adam Wolanski <adam.wolanski94@gmail.com>, 2017.
 # Adrian Węcławski <weclawskiadrian@gmail.com>, 2016.
@@ -93,11 +93,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-08-30 21:09+0000\n"
 "Last-Translator: Dawid Kobylewski <d.kobylewski@gmail.com>\n"
-"Language-Team: Polish <https://hosted.weblate.org/projects/godot-engine/godot/"
+"Language-Team: Polish <https://hosted.weblate.org/projects/kosmic-engine/godot/"
 "pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
@@ -2031,7 +2031,7 @@ msgstr ""
 "Kliknij, aby skopiować numer wersji."
 
 msgid "Godot Engine contributors"
-msgstr "Współtwórcy Godot Engine"
+msgstr "Współtwórcy Kosmic Engine"
 
 msgid "Project Founders"
 msgstr "Założyciele projektu"
@@ -2580,7 +2580,7 @@ msgstr "[pusty]"
 msgid "[unsaved]"
 msgstr "[niezapisany]"
 
-msgid "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
 msgstr "%s - Silnik Godot"
 
 msgid "Move this dock right one tab."
@@ -13786,7 +13786,7 @@ msgstr ""
 "grafu."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
@@ -13795,7 +13795,7 @@ msgstr ""
 "fragmentów/światła, nie używaj tego do deklarowania tych funkcji w środku."
 
 msgid ""
-"Custom Kosmic Shader Language expression, which is placed on top of the "
+"Custom Godot Shader Language expression, which is placed on top of the "
 "resulted shader. You can place various function definitions inside and call "
 "it later in the Expressions. You can also declare varyings, parameters and "
 "constants."

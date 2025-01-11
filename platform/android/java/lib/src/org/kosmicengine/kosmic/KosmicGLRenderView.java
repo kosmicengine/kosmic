@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  GodotGLRenderView.java                                                */
+/*  KosmicGLRenderView.java                                                */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             KOSMIC ENGINE                              */
@@ -77,18 +77,18 @@ import java.io.InputStream;
  *   that matches it exactly (with regards to red/green/blue/alpha channels
  *   bit depths). Failure to do so would result in an EGL_BAD_MATCH error.
  */
-class GodotGLRenderView extends GLSurfaceView implements KosmicRenderView {
+class KosmicGLRenderView extends GLSurfaceView implements KosmicRenderView {
 	private final KosmicHost host;
 	private final Kosmic kosmic;
 	private final KosmicInputHandler inputHandler;
-	private final KosmicRenderer godotRenderer;
+	private final KosmicRenderer kosmicRenderer;
 	private final SparseArray<PointerIcon> customPointerIcons = new SparseArray<>();
 
-	public GodotGLRenderView(KosmicHost host, Kosmic kosmic, KosmicInputHandler inputHandler, XRMode xrMode, boolean useDebugOpengl) {
+	public KosmicGLRenderView(KosmicHost host, Kosmic kosmic, KosmicInputHandler inputHandler, XRMode xrMode, boolean useDebugOpengl) {
 		super(host.getActivity());
 
 		this.host = host;
-		this.kosmic = godot;
+		this.kosmic = kosmic;
 		this.inputHandler = inputHandler;
 		this.kosmicRenderer = new KosmicRenderer();
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -112,7 +112,7 @@ class GodotGLRenderView extends GLSurfaceView implements KosmicRenderView {
 		queueEvent(() -> {
 			KosmicLib.focusout();
 			// Pause the renderer
-			godotRenderer.onActivityPaused();
+			kosmicRenderer.onActivityPaused();
 		});
 	}
 
@@ -125,7 +125,7 @@ class GodotGLRenderView extends GLSurfaceView implements KosmicRenderView {
 	public void onActivityResumed() {
 		queueEvent(() -> {
 			// Resume the renderer
-			godotRenderer.onActivityResumed();
+			kosmicRenderer.onActivityResumed();
 			KosmicLib.focusin();
 		});
 	}
@@ -204,10 +204,10 @@ class GodotGLRenderView extends GLSurfaceView implements KosmicRenderView {
 			try {
 				Bitmap bitmap = null;
 				if (!TextUtils.isEmpty(imagePath)) {
-					if (godot.getDirectoryAccessHandler().filesystemFileExists(imagePath)) {
+					if (kosmic.getDirectoryAccessHandler().filesystemFileExists(imagePath)) {
 						// Try to load the bitmap from the file system
 						bitmap = BitmapFactory.decodeFile(imagePath);
-					} else if (godot.getDirectoryAccessHandler().assetsFileExists(imagePath)) {
+					} else if (kosmic.getDirectoryAccessHandler().assetsFileExists(imagePath)) {
 						// Try to load the bitmap from the assets directory
 						AssetManager am = getContext().getAssets();
 						InputStream imageInputStream = am.open(imagePath);
@@ -294,6 +294,6 @@ class GodotGLRenderView extends GLSurfaceView implements KosmicRenderView {
 	@Override
 	public void startRenderer() {
 		/* Set the renderer responsible for frame rendering */
-		setRenderer(godotRenderer);
+		setRenderer(kosmicRenderer);
 	}
 }

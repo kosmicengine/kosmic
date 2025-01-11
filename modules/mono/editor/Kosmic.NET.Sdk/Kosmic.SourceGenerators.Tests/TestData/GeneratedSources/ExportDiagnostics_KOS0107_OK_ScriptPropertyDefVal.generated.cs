@@ -1,4 +1,4 @@
-partial class ExportDiagnostics_GD0107_OK
+partial class ExportDiagnostics_KS0107_OK
 {
 #pragma warning disable CS0109 // Disable warning about redundant 'new' keyword
 #if TOOLS
@@ -16,8 +16,8 @@ partial class ExportDiagnostics_GD0107_OK
         values.Add(PropertyName.@NodeProperty, global::Kosmic.Variant.From<global::Kosmic.Node>(__NodeProperty_default_value));
         global::Kosmic.Node[] __SystemArrayOfNodesProperty_default_value = default;
         values.Add(PropertyName.@SystemArrayOfNodesProperty, global::Kosmic.Variant.CreateFrom(__SystemArrayOfNodesProperty_default_value));
-        global::Kosmic.Collections.Array<global::Kosmic.Node> __GodotArrayOfNodesProperty_default_value = default;
-        values.Add(PropertyName.@GodotArrayOfNodesProperty, global::Kosmic.Variant.CreateFrom(__GodotArrayOfNodesProperty_default_value));
+        global::Kosmic.Collections.Array<global::Kosmic.Node> __KosmicArrayOfNodesProperty_default_value = default;
+        values.Add(PropertyName.@KosmicArrayOfNodesProperty, global::Kosmic.Variant.CreateFrom(__KosmicArrayOfNodesProperty_default_value));
         global::Kosmic.Collections.Dictionary<global::Kosmic.Node, string> __KosmicDictionaryWithNodeAsKeyProperty_default_value = default;
         values.Add(PropertyName.@KosmicDictionaryWithNodeAsKeyProperty, global::Kosmic.Variant.CreateFrom(__KosmicDictionaryWithNodeAsKeyProperty_default_value));
         global::Kosmic.Collections.Dictionary<string, global::Kosmic.Node> __KosmicDictionaryWithNodeAsValueProperty_default_value = default;
@@ -26,8 +26,8 @@ partial class ExportDiagnostics_GD0107_OK
         values.Add(PropertyName.@NodeField, global::Kosmic.Variant.From<global::Kosmic.Node>(__NodeField_default_value));
         global::Kosmic.Node[] __SystemArrayOfNodesField_default_value = default;
         values.Add(PropertyName.@SystemArrayOfNodesField, global::Kosmic.Variant.CreateFrom(__SystemArrayOfNodesField_default_value));
-        global::Kosmic.Collections.Array<global::Kosmic.Node> __GodotArrayOfNodesField_default_value = default;
-        values.Add(PropertyName.@GodotArrayOfNodesField, global::Kosmic.Variant.CreateFrom(__GodotArrayOfNodesField_default_value));
+        global::Kosmic.Collections.Array<global::Kosmic.Node> __KosmicArrayOfNodesField_default_value = default;
+        values.Add(PropertyName.@KosmicArrayOfNodesField, global::Kosmic.Variant.CreateFrom(__KosmicArrayOfNodesField_default_value));
         global::Kosmic.Collections.Dictionary<global::Kosmic.Node, string> __KosmicDictionaryWithNodeAsKeyField_default_value = default;
         values.Add(PropertyName.@KosmicDictionaryWithNodeAsKeyField, global::Kosmic.Variant.CreateFrom(__KosmicDictionaryWithNodeAsKeyField_default_value));
         global::Kosmic.Collections.Dictionary<string, global::Kosmic.Node> __KosmicDictionaryWithNodeAsValueField_default_value = default;

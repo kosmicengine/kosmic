@@ -35,7 +35,7 @@
 #include "kosmic_body_2d.h"
 
 class KosmicConstraint2D {
-	GodotBody2D **_body_ptr;
+	KosmicBody2D **_body_ptr;
 	int _body_count;
 	uint64_t island_step = 0;
 	bool disabled_collisions_between_bodies = true;
@@ -43,7 +43,7 @@ class KosmicConstraint2D {
 	RID self;
 
 protected:
-	KosmicConstraint2D(GodotBody2D **p_body_ptr = nullptr, int p_body_count = 0) {
+	KosmicConstraint2D(KosmicBody2D **p_body_ptr = nullptr, int p_body_count = 0) {
 		_body_ptr = p_body_ptr;
 		_body_count = p_body_count;
 	}
@@ -55,7 +55,7 @@ public:
 	_FORCE_INLINE_ uint64_t get_island_step() const { return island_step; }
 	_FORCE_INLINE_ void set_island_step(uint64_t p_step) { island_step = p_step; }
 
-	_FORCE_INLINE_ GodotBody2D **get_body_ptr() const { return _body_ptr; }
+	_FORCE_INLINE_ KosmicBody2D **get_body_ptr() const { return _body_ptr; }
 	_FORCE_INLINE_ int get_body_count() const { return _body_count; }
 
 	_FORCE_INLINE_ void disable_collisions_between_bodies(const bool p_disabled) { disabled_collisions_between_bodies = p_disabled; }

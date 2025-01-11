@@ -33,7 +33,7 @@
 #define KOSMIC_GENERIC_6DOF_JOINT_3D_H
 
 /*
-Adapted to Godot from the Bullet library.
+Adapted to Kosmic from the Bullet library.
 */
 
 #include "../kosmic_joint_3d.h"
@@ -56,13 +56,13 @@ subject to the following restrictions:
 
 /*
 2007-09-09
-GodotGeneric6DOFJoint3D Refactored by Francisco Le?n
+KosmicGeneric6DOFJoint3D Refactored by Francisco Le?n
 email: projectileman@yahoo.com
 http://gimpact.sf.net
 */
 
 //! Rotation Limit structure for generic joints
-class GodotG6DOFRotationalLimitMotor3D {
+class KosmicG6DOFRotationalLimitMotor3D {
 public:
 	//! limit_parameters
 	//!@{
@@ -87,7 +87,7 @@ public:
 	real_t m_accumulatedImpulse = 0.0;
 	//!@}
 
-	GodotG6DOFRotationalLimitMotor3D() {}
+	KosmicG6DOFRotationalLimitMotor3D() {}
 
 	bool isLimited() {
 		return (m_loLimit < m_hiLimit);
@@ -102,10 +102,10 @@ public:
 	int testLimitValue(real_t test_value);
 
 	// Apply the correction impulses for two bodies.
-	real_t solveAngularLimits(real_t timeStep, Vector3 &axis, real_t jacDiagABInv, GodotBody3D *body0, GodotBody3D *body1, bool p_body0_dynamic, bool p_body1_dynamic);
+	real_t solveAngularLimits(real_t timeStep, Vector3 &axis, real_t jacDiagABInv, KosmicBody3D *body0, KosmicBody3D *body1, bool p_body0_dynamic, bool p_body1_dynamic);
 };
 
-class GodotG6DOFTranslationalLimitMotor3D {
+class KosmicG6DOFTranslationalLimitMotor3D {
 public:
 	Vector3 m_lowerLimit = Vector3(0.0, 0.0, 0.0); //!< the constraint lower limits
 	Vector3 m_upperLimit = Vector3(0.0, 0.0, 0.0); //!< the constraint upper limits
@@ -132,23 +132,23 @@ public:
 	real_t solveLinearAxis(
 			real_t timeStep,
 			real_t jacDiagABInv,
-			GodotBody3D *body1, const Vector3 &pointInA,
-			GodotBody3D *body2, const Vector3 &pointInB,
+			KosmicBody3D *body1, const Vector3 &pointInA,
+			KosmicBody3D *body2, const Vector3 &pointInB,
 			bool p_body1_dynamic, bool p_body2_dynamic,
 			int limit_index,
 			const Vector3 &axis_normal_on_a,
 			const Vector3 &anchorPos);
 };
 
-class GodotGeneric6DOFJoint3D : public KosmicJoint3D {
+class KosmicGeneric6DOFJoint3D : public KosmicJoint3D {
 protected:
 	union {
 		struct {
-			GodotBody3D *A;
-			GodotBody3D *B;
+			KosmicBody3D *A;
+			KosmicBody3D *B;
 		};
 
-		GodotBody3D *_arr[2] = { nullptr, nullptr };
+		KosmicBody3D *_arr[2] = { nullptr, nullptr };
 	};
 
 	//! relative_frames
@@ -165,12 +165,12 @@ protected:
 
 	//! Linear_Limit_parameters
 	//!@{
-	GodotG6DOFTranslationalLimitMotor3D m_linearLimits;
+	KosmicG6DOFTranslationalLimitMotor3D m_linearLimits;
 	//!@}
 
 	//! hinge_parameters
 	//!@{
-	GodotG6DOFRotationalLimitMotor3D m_angularLimits[3];
+	KosmicG6DOFRotationalLimitMotor3D m_angularLimits[3];
 	//!@}
 
 protected:
@@ -188,8 +188,8 @@ protected:
 
 	//!@}
 
-	GodotGeneric6DOFJoint3D(GodotGeneric6DOFJoint3D const &) = delete;
-	void operator=(GodotGeneric6DOFJoint3D const &) = delete;
+	KosmicGeneric6DOFJoint3D(KosmicGeneric6DOFJoint3D const &) = delete;
+	void operator=(KosmicGeneric6DOFJoint3D const &) = delete;
 
 	void buildLinearJacobian(
 			KosmicJacobianEntry3D &jacLinear, const Vector3 &normalWorld,
@@ -201,7 +201,7 @@ protected:
 	void calculateAngleInfo();
 
 public:
-	GodotGeneric6DOFJoint3D(GodotBody3D *rbA, GodotBody3D *rbB, const Transform3D &frameInA, const Transform3D &frameInB, bool useLinearReferenceFrameA);
+	KosmicGeneric6DOFJoint3D(KosmicBody3D *rbA, KosmicBody3D *rbB, const Transform3D &frameInA, const Transform3D &frameInB, bool useLinearReferenceFrameA);
 
 	virtual PhysicsServer3D::JointType get_type() const override { return PhysicsServer3D::JOINT_TYPE_6DOF; }
 
@@ -270,12 +270,12 @@ public:
 	}
 
 	// Retrieves the angular limit information.
-	GodotG6DOFRotationalLimitMotor3D *getRotationalLimitMotor(int index) {
+	KosmicG6DOFRotationalLimitMotor3D *getRotationalLimitMotor(int index) {
 		return &m_angularLimits[index];
 	}
 
 	// Retrieves the limit information.
-	GodotG6DOFTranslationalLimitMotor3D *getTranslationalLimitMotor() {
+	KosmicG6DOFTranslationalLimitMotor3D *getTranslationalLimitMotor() {
 		return &m_linearLimits;
 	}
 
@@ -304,10 +304,10 @@ public:
 		return m_angularLimits[limitIndex - 3].isLimited();
 	}
 
-	const GodotBody3D *getRigidBodyA() const {
+	const KosmicBody3D *getRigidBodyA() const {
 		return A;
 	}
-	const GodotBody3D *getRigidBodyB() const {
+	const KosmicBody3D *getRigidBodyB() const {
 		return B;
 	}
 

@@ -1,5 +1,5 @@
 using System.IO;
-using Godot;
+using Kosmic;
 
 namespace KosmicTools.Utils
 {

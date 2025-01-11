@@ -27,7 +27,7 @@ namespace Kosmic.SourceGenerators.Sample
         [Export] private Double _fieldDouble = 10;
         [Export] private String _fieldString = "foo";
 
-        // Godot structs
+        // Kosmic structs
         [Export] private Vector2 _fieldVector2 = new(10f, 10f);
         [Export] private Vector2I _fieldVector2I = Vector2I.Up;
         [Export] private Rect2 _fieldRect2 = new(new Vector2(10f, 10f), new Vector2(10f, 10f));
@@ -104,15 +104,15 @@ namespace Kosmic.SourceGenerators.Sample
             new() { { "foo", 10 }, { Vector2.Up, Colors.Chocolate } };
 
         [Export]
-        private Kosmic.Collections.Array _fieldGodotArray =
+        private Kosmic.Collections.Array _fieldKosmicArray =
             new() { "foo", 10, Vector2.Up, Colors.Chocolate };
 
         [Export]
-        private Kosmic.Collections.Dictionary<string, bool> _fieldGodotGenericDictionary =
+        private Kosmic.Collections.Dictionary<string, bool> _fieldKosmicGenericDictionary =
             new() { { "foo", true }, { "bar", false } };
 
         [Export]
-        private Kosmic.Collections.Array<int> _fieldGodotGenericArray =
+        private Kosmic.Collections.Array<int> _fieldKosmicGenericArray =
             new() { 0, 1, 2, 3, 4, 5, 6 };
     }
 }

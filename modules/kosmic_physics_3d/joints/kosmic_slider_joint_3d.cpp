@@ -30,7 +30,7 @@
 /**************************************************************************/
 
 /*
-Adapted to Godot from the Bullet library.
+Adapted to Kosmic from the Bullet library.
 */
 
 /*
@@ -58,7 +58,7 @@ April 04, 2008
 
 //-----------------------------------------------------------------------------
 
-KosmicSliderJoint3D::KosmicSliderJoint3D(GodotBody3D *rbA, GodotBody3D *rbB, const Transform3D &frameInA, const Transform3D &frameInB) :
+KosmicSliderJoint3D::KosmicSliderJoint3D(KosmicBody3D *rbA, KosmicBody3D *rbB, const Transform3D &frameInA, const Transform3D &frameInB) :
 		KosmicJoint3D(_arr, 2),
 		m_frameInA(frameInA),
 		m_frameInB(frameInB) {

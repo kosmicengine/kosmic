@@ -81,7 +81,7 @@ namespace Kosmic.Bridge
         {
             try
             {
-                Dispatcher.DefaultGodotTaskScheduler?.Activate();
+                Dispatcher.DefaultKosmicTaskScheduler?.Activate();
             }
             catch (Exception e)
             {
@@ -90,7 +90,7 @@ namespace Kosmic.Bridge
         }
 
         [UnmanagedCallersOnly]
-        internal static unsafe IntPtr CreateManagedForKosmicObjectBinding(kosmic_string_name* nativeTypeName, IntPtr godotObject)
+        internal static unsafe IntPtr CreateManagedForKosmicObjectBinding(kosmic_string_name* nativeTypeName, IntPtr kosmicObject)
         {
             try
             {
@@ -98,7 +98,7 @@ namespace Kosmic.Bridge
                     NativeFuncs.kosmicsharp_string_name_new_copy(CustomUnsafe.AsRef(nativeTypeName)));
                 string nativeTypeNameStr = stringName.ToString();
 
-                var instance = Constructors.Invoke(nativeTypeNameStr, godotObject);
+                var instance = Constructors.Invoke(nativeTypeNameStr, kosmicObject);
 
                 return GCHandle.ToIntPtr(CustomGCHandle.AllocStrong(instance));
             }
@@ -111,7 +111,7 @@ namespace Kosmic.Bridge
 
         [UnmanagedCallersOnly]
         internal static unsafe kosmic_bool CreateManagedForKosmicObjectScriptInstance(IntPtr scriptPtr,
-            IntPtr godotObject,
+            IntPtr kosmicObject,
             kosmic_variant** args, int argCount)
         {
             // TODO: Optimize with source generators and delegate pointers.
@@ -155,7 +155,7 @@ namespace Kosmic.Bridge
                         *args[i], parameters[i].ParameterType);
                 }
 
-                obj.NativePtr = godotObject;
+                obj.NativePtr = kosmicObject;
 
                 _ = ctor.Invoke(obj, invokeParams);
 
@@ -395,7 +395,7 @@ namespace Kosmic.Bridge
                 if (!_scriptTypeBiMap.TryGetScriptType(scriptPtrMaybeBase, out Type? maybeBaseType))
                     return kosmic_bool.False;
 
-                return (scriptType == maybeBaseType || maybeBaseType.IsAssignableFrom(scriptType)).ToGodotBool();
+                return (scriptType == maybeBaseType || maybeBaseType.IsAssignableFrom(scriptType)).ToKosmicBool();
             }
             catch (Exception e)
             {
@@ -410,7 +410,7 @@ namespace Kosmic.Bridge
             try
             {
                 string scriptPathStr = Marshaling.ConvertStringToManaged(*scriptPath);
-                return AddScriptBridgeCore(scriptPtr, scriptPathStr).ToGodotBool();
+                return AddScriptBridgeCore(scriptPtr, scriptPathStr).ToKosmicBool();
             }
             catch (Exception e)
             {
@@ -714,8 +714,8 @@ namespace Kosmic.Bridge
                 isTool = scriptType.DeclaringType?.IsDefined(typeof(ToolAttribute), inherit: false) ?? false;
             }
 
-            // Every script in the GodotTools assembly is a tool script.
-            if (!isTool && scriptType.Assembly.GetName().Name == "GodotTools")
+            // Every script in the KosmicTools assembly is a tool script.
+            if (!isTool && scriptType.Assembly.GetName().Name == "KosmicTools")
             {
                 isTool = true;
             }
@@ -731,11 +731,11 @@ namespace Kosmic.Bridge
             outTypeInfo->ClassName = className;
             outTypeInfo->NativeBaseName = nativeBaseName;
             outTypeInfo->IconPath = iconPath;
-            outTypeInfo->IsTool = isTool.ToGodotBool();
-            outTypeInfo->IsGlobalClass = isGlobalClass.ToGodotBool();
-            outTypeInfo->IsAbstract = scriptType.IsAbstract.ToGodotBool();
-            outTypeInfo->IsGenericTypeDefinition = scriptType.IsGenericTypeDefinition.ToGodotBool();
-            outTypeInfo->IsConstructedGenericType = scriptType.IsConstructedGenericType.ToGodotBool();
+            outTypeInfo->IsTool = isTool.ToKosmicBool();
+            outTypeInfo->IsGlobalClass = isGlobalClass.ToKosmicBool();
+            outTypeInfo->IsAbstract = scriptType.IsAbstract.ToKosmicBool();
+            outTypeInfo->IsGenericTypeDefinition = scriptType.IsGenericTypeDefinition.ToKosmicBool();
+            outTypeInfo->IsConstructedGenericType = scriptType.IsConstructedGenericType.ToKosmicBool();
 
         }
 
@@ -943,15 +943,15 @@ namespace Kosmic.Bridge
 
         private static List<MethodInfo>? GetMethodListForType(Type type)
         {
-            var getGodotMethodListMethod = type.GetMethod(
-                "GetGodotMethodList",
+            var getKosmicMethodListMethod = type.GetMethod(
+                "GetKosmicMethodList",
                 BindingFlags.DeclaredOnly | BindingFlags.Static |
                 BindingFlags.NonPublic | BindingFlags.Public);
 
-            if (getGodotMethodListMethod == null)
+            if (getKosmicMethodListMethod == null)
                 return null;
 
-            return (List<MethodInfo>?)getGodotMethodListMethod.Invoke(null, null);
+            return (List<MethodInfo>?)getKosmicMethodListMethod.Invoke(null, null);
         }
 
 #pragma warning disable IDE1006 // Naming rule violation
@@ -1044,7 +1044,7 @@ namespace Kosmic.Bridge
                             Hint = (int)property.Hint,
                             HintString = Marshaling.ConvertStringToNative(property.HintString),
                             Usage = (int)property.Usage,
-                            Exported = property.Exported.ToGodotBool()
+                            Exported = property.Exported.ToKosmicBool()
                         };
 
                         interopProperties[i] = interopProperty;

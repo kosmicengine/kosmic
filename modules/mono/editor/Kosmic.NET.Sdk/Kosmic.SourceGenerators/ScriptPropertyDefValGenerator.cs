@@ -20,7 +20,7 @@ namespace Kosmic.SourceGenerators
             if (context.IsKosmicSourceGeneratorDisabled("ScriptPropertyDefVal"))
                 return;
 
-            INamedTypeSymbol[] godotClasses = context
+            INamedTypeSymbol[] kosmicClasses = context
                 .Compilation.SyntaxTrees
                 .SelectMany(tree =>
                     tree.GetRoot().DescendantNodes()
@@ -46,13 +46,13 @@ namespace Kosmic.SourceGenerators
                 .Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default)
                 .ToArray();
 
-            if (godotClasses.Length > 0)
+            if (kosmicClasses.Length > 0)
             {
                 var typeCache = new MarshalUtils.TypeCache(context.Compilation);
 
-                foreach (var godotClass in godotClasses)
+                foreach (var kosmicClass in kosmicClasses)
                 {
-                    VisitKosmicScriptClass(context, typeCache, godotClass);
+                    VisitKosmicScriptClass(context, typeCache, kosmicClass);
                 }
             }
         }
@@ -152,7 +152,7 @@ namespace Kosmic.SourceGenerators
                 // TODO: We should still restore read-only properties after reloading assembly.
                 // Two possible ways: reflection or turn RestoreKosmicObjectData into a constructor overload.
                 // Ignore properties without a getter, without a setter or with an init-only setter.
-                // Godot properties must be both readable and writable.
+                // Kosmic properties must be both readable and writable.
                 if (property.IsWriteOnly)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(

@@ -1,8 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
-using Godot;
-using GodotTools.Internals;
+using Kosmic;
+using KosmicTools.Internals;
 using JetBrains.Rider.PathLocator;
 
 namespace KosmicTools.Ides.Rider

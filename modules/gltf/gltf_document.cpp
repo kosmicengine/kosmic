@@ -266,7 +266,7 @@ Error GLTFDocument::_serialize_gltf_extensions(Ref<GLTFState> p_state) const {
 }
 
 Error GLTFDocument::_serialize_scenes(Ref<GLTFState> p_state) {
-	// Godot only supports one scene per glTF file.
+	// Kosmic only supports one scene per glTF file.
 	Array scenes;
 	Dictionary scene_dict;
 	scenes.append(scene_dict);
@@ -3154,7 +3154,7 @@ Error GLTFDocument::_serialize_meshes(Ref<GLTFState> p_state) {
 				v = instance_materials.get(surface_i);
 			}
 			Ref<Material> mat = v;
-			if (!mat.is_valid()) {
+			if (mat.is_null()) {
 				mat = import_mesh->get_surface_material(surface_i);
 			}
 			if (mat.is_valid()) {
@@ -3254,7 +3254,7 @@ Error GLTFDocument::_parse_meshes(Ref<GLTFState> p_state) {
 			if (mesh_prim.has("mode")) {
 				const int mode = mesh_prim["mode"];
 				ERR_FAIL_INDEX_V(mode, 7, ERR_FILE_CORRUPT);
-				// Convert mesh.primitive.mode to Godot Mesh enum. See:
+				// Convert mesh.primitive.mode to Kosmic Mesh enum. See:
 				// https://www.khronos.org/registry/glTF/specs/2.0/glTF-2.0.html#_mesh_primitive_mode
 				static const Mesh::PrimitiveType primitives2[7] = {
 					Mesh::PRIMITIVE_POINTS, // 0 POINTS
@@ -3935,7 +3935,7 @@ Ref<Image> GLTFDocument::_parse_image_bytes_into_image(Ref<GLTFState> p_state, c
 	return r_image;
 }
 
-void GLTFDocument::_parse_image_save_image(Ref<GLTFState> p_state, const Vector<uint8_t> &p_bytes, const String &p_file_extension, int p_index, Ref<Image> p_image) {
+void GLTFDocument::_parse_image_save_image(Ref<GLTFState> p_state, const Vector<uint8_t> &p_bytes, const String &p_resource_uri, const String &p_file_extension, int p_index, Ref<Image> p_image) {
 	GLTFState::GLTFHandleBinary handling = GLTFState::GLTFHandleBinary(p_state->handle_binary_image);
 	if (p_image->is_empty() || handling == GLTFState::GLTFHandleBinary::HANDLE_BINARY_DISCARD_TEXTURES) {
 		p_state->images.push_back(Ref<Texture2D>());
@@ -3953,33 +3953,46 @@ void GLTFDocument::_parse_image_save_image(Ref<GLTFState> p_state, const Vector<
 				WARN_PRINT(vformat("glTF: Image index '%d' did not have a name. It will be automatically given a name based on its index.", p_index));
 				p_image->set_name(itos(p_index));
 			}
-			bool must_import = true;
+			bool must_write = true; // If the resource does not exist on the disk within res:// directory write it.
+			bool must_import = true; // Trigger import.
 			Vector<uint8_t> img_data = p_image->get_data();
 			Dictionary generator_parameters;
-			String file_path = p_state->get_extract_path().path_join(p_state->get_extract_prefix() + "_" + p_image->get_name());
-			file_path += p_file_extension.is_empty() ? ".png" : p_file_extension;
-			if (FileAccess::exists(file_path + ".import")) {
-				Ref<ConfigFile> config;
-				config.instantiate();
-				config->load(file_path + ".import");
-				if (config->has_section_key("remap", "generator_parameters")) {
-					generator_parameters = (Dictionary)config->get_value("remap", "generator_parameters");
-				}
-				if (!generator_parameters.has("md5")) {
-					must_import = false; // Didn't come from a gltf document; don't overwrite.
+			String file_path;
+			// If resource_uri is within res:// folder but outside of .kosmic/imported folder, use it.
+			if (!p_resource_uri.is_empty() && !p_resource_uri.begins_with("res://.kosmic/imported") && !p_resource_uri.begins_with("res://..")) {
+				file_path = p_resource_uri;
+				must_import = true;
+				must_write = !FileAccess::exists(file_path);
+			} else {
+				// Texture data has to be written to the res:// folder and imported.
+				file_path = p_state->get_extract_path().path_join(p_state->get_extract_prefix() + "_" + p_image->get_name());
+				file_path += p_file_extension.is_empty() ? ".png" : p_file_extension;
+				if (FileAccess::exists(file_path + ".import")) {
+					Ref<ConfigFile> config;
+					config.instantiate();
+					config->load(file_path + ".import");
+					if (config->has_section_key("remap", "generator_parameters")) {
+						generator_parameters = (Dictionary)config->get_value("remap", "generator_parameters");
+					}
+					if (!generator_parameters.has("md5")) {
+						must_write = false; // Didn't come from a gltf document; don't overwrite.
+						must_import = false; // And don't import.
+					}
 				}
 			}
-			if (must_import) {
+
+			if (must_write) {
 				String existing_md5 = generator_parameters["md5"];
 				unsigned char md5_hash[16];
 				CryptoCore::md5(img_data.ptr(), img_data.size(), md5_hash);
 				String new_md5 = String::hex_encode_buffer(md5_hash, 16);
 				generator_parameters["md5"] = new_md5;
 				if (new_md5 == existing_md5) {
+					must_write = false;
 					must_import = false;
 				}
 			}
-			if (must_import) {
+			if (must_write) {
 				Error err = OK;
 				if (p_file_extension.is_empty()) {
 					// If a file extension was not specified, save the image data to a PNG file.
@@ -3992,10 +4005,13 @@ void GLTFDocument::_parse_image_save_image(Ref<GLTFState> p_state, const Vector<
 					file->store_buffer(p_bytes);
 					file->close();
 				}
+			}
+			if (must_import) {
 				// ResourceLoader::import will crash if not is_editor_hint(), so this case is protected above and will fall through to uncompressed.
 				HashMap<StringName, Variant> custom_options;
 				custom_options[SNAME("mipmaps/generate")] = true;
 				// Will only use project settings defaults if custom_importer is empty.
+
 				EditorFileSystem::get_singleton()->update_file(file_path);
 				EditorFileSystem::get_singleton()->reimport_append(file_path, custom_options, String(), generator_parameters);
 			}
@@ -4005,7 +4021,7 @@ void GLTFDocument::_parse_image_save_image(Ref<GLTFState> p_state, const Vector<
 				p_state->source_images.push_back(saved_image->get_image());
 				return;
 			} else {
-				WARN_PRINT(vformat("glTF: Image index '%d' with the name '%s' couldn't be imported. It will be loaded directly instead, uncompressed.", p_index, p_image->get_name()));
+				WARN_PRINT(vformat("glTF: Image index '%d' with the name '%s' resolved to %s couldn't be imported. It will be loaded directly instead, uncompressed.", p_index, p_image->get_name(), file_path));
 			}
 		}
 	}
@@ -4048,7 +4064,7 @@ Error GLTFDocument::_parse_images(Ref<GLTFState> p_state, const String &p_base_p
 		//  - a URI with embedded base64-encoded data, or
 		//  - a reference to a bufferView; in that case mimeType must be defined."
 		// Since mimeType is optional for external files and base64 data, we'll have to
-		// fall back on letting Godot parse the data to figure out if it's PNG or JPEG.
+		// fall back on letting Kosmic parse the data to figure out if it's PNG or JPEG.
 
 		// We'll assume that we use either URI or bufferView, so let's warn the user
 		// if their image somehow uses both. And fail if it has neither.
@@ -4073,6 +4089,9 @@ Error GLTFDocument::_parse_images(Ref<GLTFState> p_state, const String &p_base_p
 		while (used_names.has(image_name)) {
 			image_name += "_" + itos(i);
 		}
+
+		String resource_uri;
+
 		used_names.insert(image_name);
 		// Load the image data. If we get a byte array, store here for later.
 		Vector<uint8_t> data;
@@ -4090,14 +4109,14 @@ Error GLTFDocument::_parse_images(Ref<GLTFState> p_state, const String &p_base_p
 				ERR_FAIL_COND_V(p_base_path.is_empty(), ERR_INVALID_PARAMETER);
 				uri = uri.uri_decode();
 				uri = p_base_path.path_join(uri).replace("\\", "/"); // Fix for Windows.
-				// If the image is in the .kosmic/imported directory, we can't use ResourceLoader.
-				if (!p_base_path.begins_with("res://.kosmic/imported")) {
-					// ResourceLoader will rely on the file extension to use the relevant loader.
-					// The spec says that if mimeType is defined, it should take precedence (e.g.
-					// there could be a `.png` image which is actually JPEG), but there's no easy
-					// API for that in Godot, so we'd have to load as a buffer (i.e. embedded in
-					// the material), so we only do that only as fallback.
-					Ref<Texture2D> texture = ResourceLoader::load(uri, "Texture2D");
+				resource_uri = uri.simplify_path();
+				// ResourceLoader will rely on the file extension to use the relevant loader.
+				// The spec says that if mimeType is defined, it should take precedence (e.g.
+				// there could be a `.png` image which is actually JPEG), but there's no easy
+				// API for that in Kosmic, so we'd have to load as a buffer (i.e. embedded in
+				// the material), so we only do that only as fallback.
+				if (ResourceLoader::exists(resource_uri)) {
+					Ref<Texture2D> texture = ResourceLoader::load(resource_uri, "Texture2D");
 					if (texture.is_valid()) {
 						p_state->images.push_back(texture);
 						p_state->source_images.push_back(texture->get_image());
@@ -4108,13 +4127,13 @@ Error GLTFDocument::_parse_images(Ref<GLTFState> p_state, const String &p_base_p
 				// If the mimeType does not match with the file extension, either it should be
 				// specified in the file, or the GLTFDocumentExtension should handle it.
 				if (mime_type.is_empty()) {
-					mime_type = "image/" + uri.get_extension();
+					mime_type = "image/" + resource_uri.get_extension();
 				}
 				// Fallback to loading as byte array. This enables us to support the
 				// spec's requirement that we honor mimetype regardless of file URI.
-				data = FileAccess::get_file_as_bytes(uri);
+				data = FileAccess::get_file_as_bytes(resource_uri);
 				if (data.size() == 0) {
-					WARN_PRINT(vformat("glTF: Image index '%d' couldn't be loaded as a buffer of MIME type '%s' from URI: %s because there was no data to load. Skipping it.", i, mime_type, uri));
+					WARN_PRINT(vformat("glTF: Image index '%d' couldn't be loaded as a buffer of MIME type '%s' from URI: %s because there was no data to load. Skipping it.", i, mime_type, resource_uri));
 					p_state->images.push_back(Ref<Texture2D>()); // Placeholder to keep count.
 					p_state->source_images.push_back(Ref<Image>());
 					continue;
@@ -4144,7 +4163,7 @@ Error GLTFDocument::_parse_images(Ref<GLTFState> p_state, const String &p_base_p
 		String file_extension;
 		Ref<Image> img = _parse_image_bytes_into_image(p_state, data, mime_type, i, file_extension);
 		img->set_name(image_name);
-		_parse_image_save_image(p_state, data, file_extension, i, img);
+		_parse_image_save_image(p_state, data, resource_uri, file_extension, i, img);
 	}
 
 	print_verbose("glTF: Total images: " + itos(p_state->images.size()));
@@ -4823,12 +4842,12 @@ Error GLTFDocument::_parse_materials(Ref<GLTFState> p_state) {
 				material->set_transparency(BaseMaterial3D::TRANSPARENCY_ALPHA_DEPTH_PRE_PASS);
 			} else if (am == "MASK") {
 				material->set_transparency(BaseMaterial3D::TRANSPARENCY_ALPHA_SCISSOR);
-				if (material_dict.has("alphaCutoff")) {
-					material->set_alpha_scissor_threshold(material_dict["alphaCutoff"]);
-				} else {
-					material->set_alpha_scissor_threshold(0.5f);
-				}
 			}
+		}
+		if (material_dict.has("alphaCutoff")) {
+			material->set_alpha_scissor_threshold(material_dict["alphaCutoff"]);
+		} else {
+			material->set_alpha_scissor_threshold(0.5f);
 		}
 
 		if (material_dict.has("extras")) {
@@ -5813,7 +5832,7 @@ void GLTFDocument::_convert_scene_node(Ref<GLTFState> p_state, Node *p_current, 
 	}
 #ifdef TOOLS_ENABLED
 	if (Engine::get_singleton()->is_editor_hint() && p_gltf_root != -1 && p_current->get_owner() == nullptr) {
-		WARN_VERBOSE("glTF export warning: Node '" + p_current->get_name() + "' has no owner. This is likely a temporary node generated by a @tool script. This would not be saved when saving the Godot scene, therefore it will not be exported to glTF.");
+		WARN_VERBOSE("glTF export warning: Node '" + p_current->get_name() + "' has no owner. This is likely a temporary node generated by a @tool script. This would not be saved when saving the Kosmic scene, therefore it will not be exported to glTF.");
 		return;
 	}
 #endif // TOOLS_ENABLED
@@ -5836,7 +5855,7 @@ void GLTFDocument::_convert_scene_node(Ref<GLTFState> p_state, Node *p_current, 
 	} else if (Object::cast_to<Skeleton3D>(p_current)) {
 		Skeleton3D *skel = Object::cast_to<Skeleton3D>(p_current);
 		_convert_skeleton_to_gltf(skel, p_state, p_gltf_parent, p_gltf_root, gltf_node);
-		// We ignore the Godot Engine node that is the skeleton.
+		// We ignore the Kosmic Engine node that is the skeleton.
 		return;
 	} else if (Object::cast_to<MultiMeshInstance3D>(p_current)) {
 		MultiMeshInstance3D *multi = Object::cast_to<MultiMeshInstance3D>(p_current);
@@ -6211,7 +6230,7 @@ void GLTFDocument::_generate_scene_node(Ref<GLTFState> p_state, const GLTFNodeIn
 	if (!current_node) {
 		if (gltf_node->skin >= 0 && gltf_node->mesh >= 0 && !gltf_node->children.is_empty()) {
 			// glTF specifies that skinned meshes should ignore their node transforms,
-			// only being controlled by the skeleton, so Godot will reparent a skinned
+			// only being controlled by the skeleton, so Kosmic will reparent a skinned
 			// mesh to its skeleton. However, we still need to ensure any child nodes
 			// keep their place in the tree, so if there are any child nodes, the skinned
 			// mesh must not be the base node, so generate an empty spatial base.
@@ -6554,7 +6573,7 @@ Ref<GLTFObjectModelProperty> GLTFDocument::import_object_model_property(Ref<GLTF
 				ret->append_path_to_property(node_path, "blend_shapes/morph_" + weight_index_string);
 				ret->set_types(Variant::FLOAT, GLTFObjectModelProperty::GLTF_OBJECT_MODEL_TYPE_FLOAT);
 			}
-			// Else, Godot's MeshInstance3D does not expose the blend shape weights as one property.
+			// Else, Kosmic's MeshInstance3D does not expose the blend shape weights as one property.
 			// But that's fine, we handle this case in _parse_animation_pointer instead.
 		}
 	} else if (split[0] == "cameras") {
@@ -6614,7 +6633,7 @@ Ref<GLTFObjectModelProperty> GLTFDocument::import_object_model_property(Ref<GLTF
 					}
 				} else if (mat_prop == "occlusionTexture") {
 					if (sub_prop == "strength") {
-						// This is the closest thing Godot has to an occlusion strength property.
+						// This is the closest thing Kosmic has to an occlusion strength property.
 						ret->append_path_to_property(mat_path, "ao_light_affect");
 						ret->set_types(Variant::FLOAT, GLTFObjectModelProperty::GLTF_OBJECT_MODEL_TYPE_FLOAT);
 					}
@@ -6634,9 +6653,9 @@ Ref<GLTFObjectModelProperty> GLTFDocument::import_object_model_property(Ref<GLTF
 						const String &tex_ext_name = split[5];
 						const String &tex_ext_prop = split[6];
 						if (tex_ext_dict == "extensions" && tex_ext_name == "KHR_texture_transform") {
-							// Godot only supports UVs for the whole material, not per texture.
+							// Kosmic only supports UVs for the whole material, not per texture.
 							// We treat the albedo texture as the main texture, and import as UV1.
-							// Godot does not support texture rotation, only offset and scale.
+							// Kosmic does not support texture rotation, only offset and scale.
 							if (tex_ext_prop == "offset") {
 								ret->append_path_to_property(mat_path, "uv1_offset");
 								ret->set_types(Variant::VECTOR3, GLTFObjectModelProperty::GLTF_OBJECT_MODEL_TYPE_FLOAT2);
@@ -6802,7 +6821,7 @@ Ref<GLTFObjectModelProperty> GLTFDocument::export_object_model_property(Ref<GLTF
 			}
 		}
 	} else {
-		// Properties directly on Godot nodes.
+		// Properties directly on Kosmic nodes.
 		Ref<GLTFNode> gltf_node = p_state->nodes[p_gltf_node_index];
 		if (Object::cast_to<Camera3D>(target_object) && gltf_node->camera >= 0) {
 			split_json_pointer.append("cameras");
@@ -6871,7 +6890,7 @@ Ref<GLTFObjectModelProperty> GLTFDocument::export_object_model_property(Ref<GLTF
 				split_json_pointer.append("translation");
 				ret->set_types(Variant::VECTOR3, GLTFObjectModelProperty::GLTF_OBJECT_MODEL_TYPE_FLOAT3);
 			} else if (target_prop == "quaternion") {
-				// Note: Only Quaternion rotation can be converted from Godot in this mapping.
+				// Note: Only Quaternion rotation can be converted from Kosmic in this mapping.
 				// Struct methods like from_euler are not accessible from the Expression class. :(
 				split_json_pointer.append("rotation");
 				ret->set_types(Variant::QUATERNION, GLTFObjectModelProperty::GLTF_OBJECT_MODEL_TYPE_FLOAT4);
@@ -7155,7 +7174,7 @@ void GLTFDocument::_import_animation(Ref<GLTFState> p_state, AnimationPlayer *p_
 			animation->track_set_path(track_idx, blend_path);
 			animation->track_set_imported(track_idx, true); //helps merging later
 
-			// Only LINEAR and STEP (NEAREST) can be supported out of the box by Godot's Animation,
+			// Only LINEAR and STEP (NEAREST) can be supported out of the box by Kosmic's Animation,
 			// the other modes have to be baked.
 			GLTFAnimation::Interpolation gltf_interp = track.weight_tracks[i].interpolation;
 			if (gltf_interp == GLTFAnimation::INTERP_LINEAR || gltf_interp == GLTFAnimation::INTERP_STEP) {
@@ -7204,7 +7223,7 @@ void GLTFDocument::_import_animation(Ref<GLTFState> p_state, AnimationPlayer *p_
 				anim_end = MAX(anim_end, channel.times[i]);
 			}
 		}
-		// Begin converting the glTF animation to a Godot animation.
+		// Begin converting the glTF animation to a Kosmic animation.
 		const Ref<Expression> gltf_to_kosmic_expr = prop->get_gltf_to_kosmic_expression();
 		const bool is_gltf_to_kosmic_expr_valid = gltf_to_kosmic_expr.is_valid();
 		for (const NodePath node_path : prop->get_node_paths()) {
@@ -7832,7 +7851,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> p_state, AnimationPlayer *p
 		if (!animation->track_is_enabled(track_index)) {
 			continue;
 		}
-		// Get the Godot node and the glTF node index for the animation track.
+		// Get the Kosmic node and the glTF node index for the animation track.
 		const NodePath track_path = animation->track_get_path(track_index);
 		const Node *anim_player_parent = p_animation_player->get_parent();
 		const Node *animated_node = anim_player_parent->get_node_or_null(track_path);
@@ -7895,7 +7914,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> p_state, AnimationPlayer *p
 		for (int32_t key_i = 0; key_i < anim_key_count; key_i++) {
 			times.write[key_i] = animation->track_get_key_time(track_index, key_i);
 		}
-		// Try converting the track to a TRS glTF node track. This will only succeed if the Godot animation is a TRS track.
+		// Try converting the track to a TRS glTF node track. This will only succeed if the Kosmic animation is a TRS track.
 		const HashMap<int, GLTFAnimation::NodeTrack>::Iterator node_track_iter = node_tracks.find(node_i);
 		GLTFAnimation::NodeTrack track;
 		if (node_track_iter) {
@@ -7927,7 +7946,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> p_state, AnimationPlayer *p
 					base_instance = resource.ptr();
 				}
 			}
-			// Convert the Godot animation values into glTF animation values (still Variant).
+			// Convert the Kosmic animation values into glTF animation values (still Variant).
 			for (int32_t key_i = 0; key_i < anim_key_count; key_i++) {
 				Variant value = animation->track_get_key_value(track_index, key_i);
 				if (is_kosmic_to_gltf_expr_valid) {
@@ -8016,7 +8035,7 @@ Dictionary _serialize_texture_transform_uv(Vector2 p_offset, Vector2 p_scale) {
 		texture_transform["scale"] = scale;
 	}
 	Dictionary extension;
-	// Note: Godot doesn't support texture rotation.
+	// Note: Kosmic doesn't support texture rotation.
 	if (is_offset || is_scaled) {
 		extension["KHR_texture_transform"] = texture_transform;
 	}
@@ -8157,7 +8176,7 @@ void GLTFDocument::_bind_methods() {
 			&GLTFDocument::get_supported_gltf_extensions);
 }
 
-void GLTFDocument::_build_parent_hierachy(Ref<GLTFState> p_state) {
+void GLTFDocument::_build_parent_hierarchy(Ref<GLTFState> p_state) {
 	// build the hierarchy
 	for (GLTFNodeIndex node_i = 0; node_i < p_state->nodes.size(); node_i++) {
 		for (int j = 0; j < p_state->nodes[node_i]->children.size(); j++) {
@@ -8238,11 +8257,10 @@ PackedByteArray GLTFDocument::_serialize_glb_buffer(Ref<GLTFState> p_state, Erro
 	const int32_t header_size = 12;
 	const int32_t chunk_header_size = 8;
 
-	int32_t padding = (chunk_header_size + json.utf8().length()) % 4;
-	json += String(" ").repeat(padding);
-
 	CharString cs = json.utf8();
-	const uint32_t text_chunk_length = cs.length();
+	int32_t padding = (chunk_header_size + cs.length()) % 4;
+
+	const uint32_t text_chunk_length = cs.length() + padding;
 
 	const uint32_t text_chunk_type = 0x4E4F534A; //JSON
 	int32_t binary_data_length = 0;
@@ -8260,6 +8278,9 @@ PackedByteArray GLTFDocument::_serialize_glb_buffer(Ref<GLTFState> p_state, Erro
 	buffer->put_32(text_chunk_length);
 	buffer->put_32(text_chunk_type);
 	buffer->put_data((uint8_t *)&cs[0], cs.length());
+	for (int i = 0; i < padding; i++) {
+		buffer->put_8(' ');
+	}
 	if (binary_chunk_length) {
 		buffer->put_32(binary_chunk_length);
 		buffer->put_32(binary_chunk_type);

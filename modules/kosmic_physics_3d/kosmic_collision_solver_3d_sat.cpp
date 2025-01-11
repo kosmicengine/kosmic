@@ -842,7 +842,7 @@ static void _collision_sphere_sphere(const KosmicShape3D *p_a, const Transform3D
 template <bool withMargin>
 static void _collision_sphere_box(const KosmicShape3D *p_a, const Transform3D &p_transform_a, const KosmicShape3D *p_b, const Transform3D &p_transform_b, _CollectorCallback *p_collector, real_t p_margin_a, real_t p_margin_b) {
 	const KosmicSphereShape3D *sphere_A = static_cast<const KosmicSphereShape3D *>(p_a);
-	const GodotBoxShape3D *box_B = static_cast<const GodotBoxShape3D *>(p_b);
+	const KosmicBoxShape3D *box_B = static_cast<const KosmicBoxShape3D *>(p_b);
 
 	// Find the point on the box nearest to the center of the sphere.
 
@@ -1074,10 +1074,10 @@ static void _collision_sphere_face(const KosmicShape3D *p_a, const Transform3D &
 
 template <bool withMargin>
 static void _collision_box_box(const KosmicShape3D *p_a, const Transform3D &p_transform_a, const KosmicShape3D *p_b, const Transform3D &p_transform_b, _CollectorCallback *p_collector, real_t p_margin_a, real_t p_margin_b) {
-	const GodotBoxShape3D *box_A = static_cast<const GodotBoxShape3D *>(p_a);
-	const GodotBoxShape3D *box_B = static_cast<const GodotBoxShape3D *>(p_b);
+	const KosmicBoxShape3D *box_A = static_cast<const KosmicBoxShape3D *>(p_a);
+	const KosmicBoxShape3D *box_B = static_cast<const KosmicBoxShape3D *>(p_b);
 
-	SeparatorAxisTest<GodotBoxShape3D, GodotBoxShape3D, withMargin> separator(box_A, p_transform_a, box_B, p_transform_b, p_collector, p_margin_a, p_margin_b);
+	SeparatorAxisTest<KosmicBoxShape3D, KosmicBoxShape3D, withMargin> separator(box_A, p_transform_a, box_B, p_transform_b, p_collector, p_margin_a, p_margin_b);
 
 	if (!separator.test_previous_axis()) {
 		return;
@@ -1172,10 +1172,10 @@ static void _collision_box_box(const KosmicShape3D *p_a, const Transform3D &p_tr
 
 template <bool withMargin>
 static void _collision_box_capsule(const KosmicShape3D *p_a, const Transform3D &p_transform_a, const KosmicShape3D *p_b, const Transform3D &p_transform_b, _CollectorCallback *p_collector, real_t p_margin_a, real_t p_margin_b) {
-	const GodotBoxShape3D *box_A = static_cast<const GodotBoxShape3D *>(p_a);
+	const KosmicBoxShape3D *box_A = static_cast<const KosmicBoxShape3D *>(p_a);
 	const KosmicCapsuleShape3D *capsule_B = static_cast<const KosmicCapsuleShape3D *>(p_b);
 
-	SeparatorAxisTest<GodotBoxShape3D, KosmicCapsuleShape3D, withMargin> separator(box_A, p_transform_a, capsule_B, p_transform_b, p_collector, p_margin_a, p_margin_b);
+	SeparatorAxisTest<KosmicBoxShape3D, KosmicCapsuleShape3D, withMargin> separator(box_A, p_transform_a, capsule_B, p_transform_b, p_collector, p_margin_a, p_margin_b);
 
 	if (!separator.test_previous_axis()) {
 		return;
@@ -1270,10 +1270,10 @@ static void _collision_box_capsule(const KosmicShape3D *p_a, const Transform3D &
 
 template <bool withMargin>
 static void _collision_box_cylinder(const KosmicShape3D *p_a, const Transform3D &p_transform_a, const KosmicShape3D *p_b, const Transform3D &p_transform_b, _CollectorCallback *p_collector, real_t p_margin_a, real_t p_margin_b) {
-	const GodotBoxShape3D *box_A = static_cast<const GodotBoxShape3D *>(p_a);
+	const KosmicBoxShape3D *box_A = static_cast<const KosmicBoxShape3D *>(p_a);
 	const KosmicCylinderShape3D *cylinder_B = static_cast<const KosmicCylinderShape3D *>(p_b);
 
-	SeparatorAxisTest<GodotBoxShape3D, KosmicCylinderShape3D, withMargin> separator(box_A, p_transform_a, cylinder_B, p_transform_b, p_collector, p_margin_a, p_margin_b);
+	SeparatorAxisTest<KosmicBoxShape3D, KosmicCylinderShape3D, withMargin> separator(box_A, p_transform_a, cylinder_B, p_transform_b, p_collector, p_margin_a, p_margin_b);
 
 	if (!separator.test_previous_axis()) {
 		return;
@@ -1383,10 +1383,10 @@ static void _collision_box_cylinder(const KosmicShape3D *p_a, const Transform3D 
 
 template <bool withMargin>
 static void _collision_box_convex_polygon(const KosmicShape3D *p_a, const Transform3D &p_transform_a, const KosmicShape3D *p_b, const Transform3D &p_transform_b, _CollectorCallback *p_collector, real_t p_margin_a, real_t p_margin_b) {
-	const GodotBoxShape3D *box_A = static_cast<const GodotBoxShape3D *>(p_a);
+	const KosmicBoxShape3D *box_A = static_cast<const KosmicBoxShape3D *>(p_a);
 	const KosmicConvexPolygonShape3D *convex_polygon_B = static_cast<const KosmicConvexPolygonShape3D *>(p_b);
 
-	SeparatorAxisTest<GodotBoxShape3D, KosmicConvexPolygonShape3D, withMargin> separator(box_A, p_transform_a, convex_polygon_B, p_transform_b, p_collector, p_margin_a, p_margin_b);
+	SeparatorAxisTest<KosmicBoxShape3D, KosmicConvexPolygonShape3D, withMargin> separator(box_A, p_transform_a, convex_polygon_B, p_transform_b, p_collector, p_margin_a, p_margin_b);
 
 	if (!separator.test_previous_axis()) {
 		return;
@@ -1501,10 +1501,10 @@ static void _collision_box_convex_polygon(const KosmicShape3D *p_a, const Transf
 
 template <bool withMargin>
 static void _collision_box_face(const KosmicShape3D *p_a, const Transform3D &p_transform_a, const KosmicShape3D *p_b, const Transform3D &p_transform_b, _CollectorCallback *p_collector, real_t p_margin_a, real_t p_margin_b) {
-	const GodotBoxShape3D *box_A = static_cast<const GodotBoxShape3D *>(p_a);
+	const KosmicBoxShape3D *box_A = static_cast<const KosmicBoxShape3D *>(p_a);
 	const KosmicFaceShape3D *face_B = static_cast<const KosmicFaceShape3D *>(p_b);
 
-	SeparatorAxisTest<GodotBoxShape3D, KosmicFaceShape3D, withMargin> separator(box_A, p_transform_a, face_B, p_transform_b, p_collector, p_margin_a, p_margin_b);
+	SeparatorAxisTest<KosmicBoxShape3D, KosmicFaceShape3D, withMargin> separator(box_A, p_transform_a, face_B, p_transform_b, p_collector, p_margin_a, p_margin_b);
 
 	Vector3 vertex[3] = {
 		p_transform_b.xform(face_B->vertex[0]),

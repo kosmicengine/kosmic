@@ -1,7 +1,7 @@
 # Persian translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # alabd14313 <alabd14313@yahoo.com>, 2016.
 # Dante Marshal <Marshal.Devilhunter@gmail.com>, 2018.
 # hamed nasib <cghamed752@chmail.ir>, 2016.
@@ -49,11 +49,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-08-16 00:22+0000\n"
 "Last-Translator: Armin <Armin-KF@users.noreply.hosted.weblate.org>\n"
-"Language-Team: Persian <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Persian <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/fa/>\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
@@ -2373,7 +2373,7 @@ msgstr "[پوچ]"
 msgid "[unsaved]"
 msgstr "[ذخیره نشده]"
 
-msgid "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
 msgstr "%s - موتور گودو"
 
 msgid "Make Floating"

@@ -91,7 +91,7 @@
 		return;                                                           \
 	}
 
-#define VOYFUNC_FAIL_COND_MSG(m_cond, m_msg)                             \
+#define GDFUNC_FAIL_COND_MSG(m_cond, m_msg)                             \
 	if (unlikely(m_cond)) {                                             \
 		*r_ret = m_msg;                                                 \
 		r_error.error = Callable::CallError::CALL_ERROR_INVALID_METHOD; \
@@ -140,7 +140,7 @@ struct VoyScriptUtilityFunctionsDefinitions {
 				}
 
 				Error err = arr.resize(count);
-				VOYFUNC_FAIL_COND_MSG(err != OK, RTR("Cannot resize array."));
+				GDFUNC_FAIL_COND_MSG(err != OK, RTR("Cannot resize array."));
 
 				for (int i = 0; i < count; i++) {
 					arr[i] = i;
@@ -162,7 +162,7 @@ struct VoyScriptUtilityFunctionsDefinitions {
 				}
 
 				Error err = arr.resize(to - from);
-				VOYFUNC_FAIL_COND_MSG(err != OK, RTR("Cannot resize array."));
+				GDFUNC_FAIL_COND_MSG(err != OK, RTR("Cannot resize array."));
 
 				for (int i = from; i < to; i++) {
 					arr[i - from] = i;
@@ -200,7 +200,7 @@ struct VoyScriptUtilityFunctionsDefinitions {
 				}
 
 				Error err = arr.resize(count);
-				VOYFUNC_FAIL_COND_MSG(err != OK, RTR("Cannot resize array."));
+				GDFUNC_FAIL_COND_MSG(err != OK, RTR("Cannot resize array."));
 
 				if (incr > 0) {
 					int idx = 0;
@@ -224,6 +224,8 @@ struct VoyScriptUtilityFunctionsDefinitions {
 		DEBUG_VALIDATE_ARG_TYPE(0, Variant::STRING);
 		*r_ret = ResourceLoader::load(*p_args[0]);
 	}
+
+#ifndef DISABLE_DEPRECATED
 
 	static inline void inst_to_dict(Variant *r_ret, const Variant **p_args, int p_arg_count, Callable::CallError &r_error) {
 		DEBUG_VALIDATE_ARG_COUNT(1, 1);
@@ -285,10 +287,10 @@ struct VoyScriptUtilityFunctionsDefinitions {
 		VALIDATE_ARG_CUSTOM(0, Variant::DICTIONARY, !d.has("@path"), RTR("Invalid instance dictionary format (missing @path)."));
 
 		Ref<Script> scr = ResourceLoader::load(d["@path"]);
-		VALIDATE_ARG_CUSTOM(0, Variant::DICTIONARY, !scr.is_valid(), RTR("Invalid instance dictionary format (can't load script at @path)."));
+		VALIDATE_ARG_CUSTOM(0, Variant::DICTIONARY, scr.is_null(), RTR("Invalid instance dictionary format (can't load script at @path)."));
 
-		Ref<VoyScript> voyscr = scr;
-		VALIDATE_ARG_CUSTOM(0, Variant::DICTIONARY, !voyscr.is_valid(), RTR("Invalid instance dictionary format (invalid script at @path)."));
+		Ref<VoyScript> gdscr = scr;
+		VALIDATE_ARG_CUSTOM(0, Variant::DICTIONARY, gdscr.is_null(), RTR("Invalid instance dictionary format (invalid script at @path)."));
 
 		NodePath sub;
 		if (d.has("@subpath")) {
@@ -296,20 +298,20 @@ struct VoyScriptUtilityFunctionsDefinitions {
 		}
 
 		for (int i = 0; i < sub.get_name_count(); i++) {
-			voyscr = voyscr->subclasses[sub.get_name(i)];
-			VALIDATE_ARG_CUSTOM(0, Variant::DICTIONARY, !voyscr.is_valid(), RTR("Invalid instance dictionary (invalid subclasses)."));
+			gdscr = gdscr->subclasses[sub.get_name(i)];
+			VALIDATE_ARG_CUSTOM(0, Variant::DICTIONARY, gdscr.is_null(), RTR("Invalid instance dictionary (invalid subclasses)."));
 		}
 
-		*r_ret = voyscr->_new(nullptr, -1 /* skip initializer */, r_error);
+		*r_ret = gdscr->_new(nullptr, -1 /* skip initializer */, r_error);
 		if (r_error.error != Callable::CallError::CALL_OK) {
 			*r_ret = RTR("Cannot instantiate VoyScript class.");
 			return;
 		}
 
 		VoyScriptInstance *inst = static_cast<VoyScriptInstance *>(static_cast<Object *>(*r_ret)->get_script_instance());
-		Ref<VoyScript> gd_ref = inst->get_script();
+		Ref<VoyScript> ks_ref = inst->get_script();
 
-		for (KeyValue<StringName, VoyScript::MemberInfo> &E : gd_ref->member_indices) {
+		for (KeyValue<StringName, VoyScript::MemberInfo> &E : ks_ref->member_indices) {
 			if (d.has(E.key)) {
 				inst->members.write[E.value.index] = d[E.key];
 			}
@@ -322,15 +324,16 @@ struct VoyScriptUtilityFunctionsDefinitions {
 		DEBUG_VALIDATE_ARG_TYPE(1, Variant::INT);
 		DEBUG_VALIDATE_ARG_TYPE(2, Variant::INT);
 
-		Color color((int64_t)*p_args[0] / 255.0f, (int64_t)*p_args[1] / 255.0f, (int64_t)*p_args[2] / 255.0f);
-
+		int64_t alpha = 255;
 		if (p_arg_count == 4) {
 			DEBUG_VALIDATE_ARG_TYPE(3, Variant::INT);
-			color.a = (int64_t)*p_args[3] / 255.0f;
+			alpha = *p_args[3];
 		}
 
-		*r_ret = color;
+		*r_ret = Color::from_rgba8(*p_args[0], *p_args[1], *p_args[2], alpha);
 	}
+
+#endif // DISABLE_DEPRECATED
 
 	static inline void print_debug(Variant *r_ret, const Variant **p_args, int p_arg_count, Callable::CallError &r_error) {
 		String s;
@@ -576,10 +579,12 @@ void VoyScriptUtilityFunctions::register_functions() {
 	REGISTER_FUNC( _char,          true,  RET(STRING),        ARGS( ARG("char", INT)                ), false, varray(     ));
 	REGISTER_FUNC( range,          false, RET(ARRAY),         NOARGS,                                  true,  varray(     ));
 	REGISTER_FUNC( load,           false, RETCLS("Resource"), ARGS( ARG("path", STRING)             ), false, varray(     ));
+#ifndef DISABLE_DEPRECATED
 	REGISTER_FUNC( inst_to_dict,   false, RET(DICTIONARY),    ARGS( ARG("instance", OBJECT)         ), false, varray(     ));
 	REGISTER_FUNC( dict_to_inst,   false, RET(OBJECT),        ARGS( ARG("dictionary", DICTIONARY)   ), false, varray(     ));
 	REGISTER_FUNC( Color8,         true,  RET(COLOR),         ARGS( ARG("r8", INT), ARG("g8", INT),
 																	ARG("b8", INT), ARG("a8", INT)  ), false, varray( 255 ));
+#endif // DISABLE_DEPRECATED
 	REGISTER_FUNC( print_debug,    false, RET(NIL),           NOARGS,                                  true,  varray(     ));
 	REGISTER_FUNC( print_stack,    false, RET(NIL),           NOARGS,                                  false, varray(     ));
 	REGISTER_FUNC( get_stack,      false, RET(ARRAY),         NOARGS,                                  false, varray(     ));

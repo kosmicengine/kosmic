@@ -1,7 +1,7 @@
-using Godot;
+using Kosmic;
 
-public partial class ExportDiagnostics_GD0104 : Node
+public partial class ExportDiagnostics_KS0104 : Node
 {
     [Export]
-    public string {|GD0104:WriteOnlyProperty|} { set { } }
+    public string {|KS0104:WriteOnlyProperty|} { set { } }
 }

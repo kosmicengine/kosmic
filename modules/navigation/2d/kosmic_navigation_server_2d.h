@@ -45,16 +45,16 @@ class NavMeshGenerator2D;
 #endif // CLIPPER2_ENABLED
 
 // This server exposes the `NavigationServer3D` features in the 2D world.
-class GodotNavigationServer2D : public NavigationServer2D {
-	KSCLASS(GodotNavigationServer2D, NavigationServer2D);
+class KosmicNavigationServer2D : public NavigationServer2D {
+	KSCLASS(KosmicNavigationServer2D, NavigationServer2D);
 
 #ifdef CLIPPER2_ENABLED
 	NavMeshGenerator2D *navmesh_generator_2d = nullptr;
 #endif // CLIPPER2_ENABLED
 
 public:
-	GodotNavigationServer2D();
-	virtual ~GodotNavigationServer2D();
+	KosmicNavigationServer2D();
+	virtual ~KosmicNavigationServer2D();
 
 	virtual TypedArray<RID> get_maps() const override;
 

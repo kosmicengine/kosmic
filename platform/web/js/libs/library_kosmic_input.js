@@ -306,7 +306,7 @@ mergeInto(LibraryManager.library, KosmicInputGamepads);
  * Drag and drop helper.
  * This is pretty big, but basically detect dropped files on KosmicConfig.canvas,
  * process them one by one (recursively for directories), and copies them to
- * the temporary FS path '/tmp/drop-[random]/' so it can be emitted as a godot
+ * the temporary FS path '/tmp/drop-[random]/' so it can be emitted as a Kosmic
  * event (that requires a string array of paths).
  *
  * NOTE: The temporary files are removed after the callback. This means that

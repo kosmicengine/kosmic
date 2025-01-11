@@ -498,7 +498,7 @@ private:
 	int _builtin_methods_count = 0;
 	int _constructors_count = 0;
 	int _utilities_count = 0;
-	int _gds_utilities_count = 0;
+	int _kss_utilities_count = 0;
 	int _methods_count = 0;
 	int _lambdas_count = 0;
 
@@ -516,7 +516,7 @@ private:
 	const Variant::ValidatedBuiltInMethod *_builtin_methods_ptr = nullptr;
 	const Variant::ValidatedConstructor *_constructors_ptr = nullptr;
 	const Variant::ValidatedUtilityFunction *_utilities_ptr = nullptr;
-	const VoyScriptUtilityFunctions::FunctionPtr *_gds_utilities_ptr = nullptr;
+	const VoyScriptUtilityFunctions::FunctionPtr *_kss_utilities_ptr = nullptr;
 	MethodBind **_methods_ptr = nullptr;
 	VoyScriptFunction **_lambdas_ptr = nullptr;
 

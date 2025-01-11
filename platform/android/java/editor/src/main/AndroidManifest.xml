@@ -29,7 +29,7 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/icon"
+        android:icon="@mipmap/themed_icon"
         android:label="${editorAppName}${editorBuildSuffix}"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/KosmicEditorSplashScreenTheme"
@@ -43,7 +43,7 @@
             android:name=".KosmicEditor"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
             android:exported="true"
-            android:icon="@mipmap/icon"
+            android:icon="@mipmap/themed_icon"
             android:launchMode="singleTask"
             android:screenOrientation="userLandscape">
             <layout
@@ -58,13 +58,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".GodotGame"
+            android:name=".KosmicGame"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
             android:exported="false"
             android:icon="@mipmap/ic_play_window"
             android:label="@string/kosmic_game_activity_name"
             android:launchMode="singleTask"
-            android:process=":GodotGame"
+            android:process=":KosmicGame"
             android:supportsPictureInPicture="true"
             android:screenOrientation="userLandscape">
             <layout

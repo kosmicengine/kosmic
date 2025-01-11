@@ -58,7 +58,7 @@ namespace Kosmic.NativeInterop
             {
                 var nativeNameSelf = (kosmic_string_name)nativeName.NativeValue;
                 NativeFuncs.kosmicsharp_internal_tie_native_managed_to_unmanaged(
-                    GCHandle.ToIntPtr(gcHandle), unmanaged, nativeNameSelf, refCounted.ToGodotBool());
+                    GCHandle.ToIntPtr(gcHandle), unmanaged, nativeNameSelf, refCounted.ToKosmicBool());
             }
             else
             {
@@ -71,7 +71,7 @@ namespace Kosmic.NativeInterop
 
                     // IMPORTANT: This must be called after GetOrCreateScriptBridgeForType
                     NativeFuncs.kosmicsharp_internal_tie_user_managed_to_unmanaged(
-                        GCHandle.ToIntPtr(gcHandle), unmanaged, &script, refCounted.ToGodotBool());
+                        GCHandle.ToIntPtr(gcHandle), unmanaged, &script, refCounted.ToKosmicBool());
                 }
             }
         }

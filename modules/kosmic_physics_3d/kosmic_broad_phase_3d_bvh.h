@@ -36,7 +36,7 @@
 
 #include "core/math/bvh.h"
 
-class GodotBroadPhase3DBVH : public GodotBroadPhase3D {
+class KosmicBroadPhase3DBVH : public KosmicBroadPhase3D {
 	template <typename T>
 	class UserPairTestFunction {
 	public:
@@ -94,8 +94,8 @@ public:
 
 	virtual void update() override;
 
-	static GodotBroadPhase3D *_create();
-	GodotBroadPhase3DBVH();
+	static KosmicBroadPhase3D *_create();
+	KosmicBroadPhase3DBVH();
 };
 
 #endif // KOSMIC_BROAD_PHASE_3D_BVH_H

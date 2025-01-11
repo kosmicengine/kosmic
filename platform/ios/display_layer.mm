@@ -47,7 +47,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <UIKit/UIKit.h>
 
-@implementation GodotMetalLayer
+@implementation KosmicMetalLayer
 
 - (void)initializeDisplayLayer {
 #if defined(TARGET_OS_SIMULATOR) && TARGET_OS_SIMULATOR

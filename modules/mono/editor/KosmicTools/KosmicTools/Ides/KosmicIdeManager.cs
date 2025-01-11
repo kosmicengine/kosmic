@@ -1,10 +1,10 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Godot;
-using GodotTools.IdeMessaging;
-using GodotTools.IdeMessaging.Requests;
-using GodotTools.Internals;
+using Kosmic;
+using KosmicTools.IdeMessaging;
+using KosmicTools.IdeMessaging.Requests;
+using KosmicTools.Internals;
 
 namespace KosmicTools.Ides
 {

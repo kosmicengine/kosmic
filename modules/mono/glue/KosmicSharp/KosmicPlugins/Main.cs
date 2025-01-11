@@ -87,7 +87,7 @@ namespace KosmicPlugins
         // Right now we do it this way for simplicity as hot-reload is disabled. It will need to be changed later.
         [UnmanagedCallersOnly]
         // ReSharper disable once UnusedMember.Local
-        private static unsafe kosmic_bool InitializeFromEngine(IntPtr godotDllHandle, kosmic_bool editorHint,
+        private static unsafe kosmic_bool InitializeFromEngine(IntPtr kosmicDllHandle, kosmic_bool editorHint,
             PluginsCallbacks* pluginsCallbacks, ManagedCallbacks* managedCallbacks,
             IntPtr unmanagedCallbacks, int unmanagedCallbacksSize)
         {
@@ -95,7 +95,7 @@ namespace KosmicPlugins
             {
                 _editorHint = editorHint.ToBool();
 
-                _dllImportResolver = new KosmicDllImportResolver(godotDllHandle).OnResolveDllImport;
+                _dllImportResolver = new KosmicDllImportResolver(kosmicDllHandle).OnResolveDllImport;
 
                 SharedAssemblies.Add(CoreApiAssembly.GetName());
                 NativeLibrary.SetDllImportResolver(CoreApiAssembly, _dllImportResolver);
@@ -171,19 +171,19 @@ namespace KosmicPlugins
                 string assemblyPath = new(nAssemblyPath);
 
                 if (_editorApiAssembly == null)
-                    throw new InvalidOperationException("The Godot editor API assembly is not loaded.");
+                    throw new InvalidOperationException("The Kosmic editor API assembly is not loaded.");
 
                 var (assembly, _) = LoadPlugin(assemblyPath, isCollectible: false);
 
                 NativeLibrary.SetDllImportResolver(assembly, _dllImportResolver!);
 
-                var method = assembly.GetType("GodotTools.KosmicSharpEditor")?
+                var method = assembly.GetType("KosmicTools.KosmicSharpEditor")?
                     .GetMethod("InternalCreateInstance",
                         BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
 
                 if (method == null)
                 {
-                    throw new MissingMethodException("GodotTools.KosmicSharpEditor",
+                    throw new MissingMethodException("KosmicTools.KosmicSharpEditor",
                         "InternalCreateInstance");
                 }
 
@@ -220,7 +220,7 @@ namespace KosmicPlugins
         {
             try
             {
-                return UnloadPlugin(ref _projectLoadContext).ToGodotBool();
+                return UnloadPlugin(ref _projectLoadContext).ToKosmicBool();
             }
             catch (Exception e)
             {

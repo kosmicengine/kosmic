@@ -1,12 +1,12 @@
-using Godot;
+using Kosmic;
 
-public partial class ExportDiagnostics_GD0102 : Node
+public partial class ExportDiagnostics_KS0102 : Node
 {
     public struct MyStruct { }
 
     [Export]
-    public MyStruct {|GD0102:StructField|};
+    public MyStruct {|KS0102:StructField|};
 
     [Export]
-    public MyStruct {|GD0102:StructProperty|} { get; set; }
+    public MyStruct {|KS0102:StructProperty|} { get; set; }
 }

@@ -97,7 +97,7 @@ private:
 		float range;
 	};
 
-	// Same order as godot.
+	// Same order as kosmic.
 	enum PlaneOrder {
 		PLANE_NEAR,
 		PLANE_FAR,
@@ -108,7 +108,7 @@ private:
 		PLANE_TOTAL,
 	};
 
-	// Same order as godot.
+	// Same order as kosmic.
 	enum PointOrder {
 		PT_FAR_LEFT_TOP,
 		PT_FAR_LEFT_BOTTOM,

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace Kosmic
 {
     /// <summary>
-    /// GodotTaskScheduler contains a linked list of tasks to perform as a queue. Methods
+    /// KosmicTaskScheduler contains a linked list of tasks to perform as a queue. Methods
     /// within the class are used to control the queue and perform the contained tasks.
     /// </summary>
-    public sealed class GodotTaskScheduler : TaskScheduler, IDisposable
+    public sealed class KosmicTaskScheduler : TaskScheduler, IDisposable
     {
         /// <summary>
         /// The current synchronization context.
@@ -23,9 +23,9 @@ namespace Kosmic
         private readonly LinkedList<Task> _tasks = new LinkedList<Task>();
 
         /// <summary>
-        /// Constructs a new GodotTaskScheduler instance.
+        /// Constructs a new KosmicTaskScheduler instance.
         /// </summary>
-        public GodotTaskScheduler()
+        public KosmicTaskScheduler()
         {
             Context = new KosmicSynchronizationContext();
             SynchronizationContext.SetSynchronizationContext(Context);

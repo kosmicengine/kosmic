@@ -41,7 +41,7 @@
 #define ISLAND_SIZE_RESERVE 512
 #define CONSTRAINT_COUNT_RESERVE 1024
 
-void KosmicStep2D::_populate_island(GodotBody2D *p_body, LocalVector<GodotBody2D *> &p_body_island, LocalVector<KosmicConstraint2D *> &p_constraint_island) {
+void KosmicStep2D::_populate_island(KosmicBody2D *p_body, LocalVector<KosmicBody2D *> &p_body_island, LocalVector<KosmicConstraint2D *> &p_constraint_island) {
 	p_body->set_island_step(_step);
 
 	if (p_body->get_mode() > PhysicsServer2D::BODY_MODE_KINEMATIC) {
@@ -62,7 +62,7 @@ void KosmicStep2D::_populate_island(GodotBody2D *p_body, LocalVector<GodotBody2D
 			if (i == E.second) {
 				continue;
 			}
-			GodotBody2D *other_body = constraint->get_body_ptr()[i];
+			KosmicBody2D *other_body = constraint->get_body_ptr()[i];
 			if (other_body->get_island_step() == _step) {
 				continue; // Already processed.
 			}
@@ -103,12 +103,12 @@ void KosmicStep2D::_solve_island(uint32_t p_island_index, void *p_userdata) cons
 	}
 }
 
-void KosmicStep2D::_check_suspend(LocalVector<GodotBody2D *> &p_body_island) const {
+void KosmicStep2D::_check_suspend(LocalVector<KosmicBody2D *> &p_body_island) const {
 	bool can_sleep = true;
 
 	uint32_t body_count = p_body_island.size();
 	for (uint32_t body_index = 0; body_index < body_count; ++body_index) {
-		GodotBody2D *body = p_body_island[body_index];
+		KosmicBody2D *body = p_body_island[body_index];
 
 		if (!body->sleep_test(delta)) {
 			can_sleep = false;
@@ -117,7 +117,7 @@ void KosmicStep2D::_check_suspend(LocalVector<GodotBody2D *> &p_body_island) con
 
 	// Put all to sleep or wake up everyone.
 	for (uint32_t body_index = 0; body_index < body_count; ++body_index) {
-		GodotBody2D *body = p_body_island[body_index];
+		KosmicBody2D *body = p_body_island[body_index];
 
 		bool active = body->is_active();
 
@@ -137,7 +137,7 @@ void KosmicStep2D::step(KosmicSpace2D *p_space, real_t p_delta) {
 	iterations = p_space->get_solver_iterations();
 	delta = p_delta;
 
-	const SelfList<GodotBody2D>::List *body_list = &p_space->get_active_body_list();
+	const SelfList<KosmicBody2D>::List *body_list = &p_space->get_active_body_list();
 
 	/* INTEGRATE FORCES */
 
@@ -146,7 +146,7 @@ void KosmicStep2D::step(KosmicSpace2D *p_space, real_t p_delta) {
 
 	int active_count = 0;
 
-	const SelfList<GodotBody2D> *b = body_list->first();
+	const SelfList<KosmicBody2D> *b = body_list->first();
 	while (b) {
 		b->self()->integrate_forces(p_delta);
 		b = b->next();
@@ -168,7 +168,7 @@ void KosmicStep2D::step(KosmicSpace2D *p_space, real_t p_delta) {
 
 	uint32_t island_count = 0;
 
-	const SelfList<GodotArea2D>::List &aml = p_space->get_moved_area_list();
+	const SelfList<KosmicArea2D>::List &aml = p_space->get_moved_area_list();
 
 	while (aml.first()) {
 		for (KosmicConstraint2D *E : aml.first()->self()->get_constraints()) {
@@ -189,7 +189,7 @@ void KosmicStep2D::step(KosmicSpace2D *p_space, real_t p_delta) {
 			all_constraints.push_back(constraint);
 			constraint_island.push_back(constraint);
 		}
-		p_space->area_remove_from_moved_list((SelfList<GodotArea2D> *)aml.first()); //faster to remove here
+		p_space->area_remove_from_moved_list((SelfList<KosmicArea2D> *)aml.first()); //faster to remove here
 	}
 
 	/* GENERATE CONSTRAINT ISLANDS FOR ACTIVE RIGID BODIES */
@@ -199,14 +199,14 @@ void KosmicStep2D::step(KosmicSpace2D *p_space, real_t p_delta) {
 	uint32_t body_island_count = 0;
 
 	while (b) {
-		GodotBody2D *body = b->self();
+		KosmicBody2D *body = b->self();
 
 		if (body->get_island_step() != _step) {
 			++body_island_count;
 			if (body_islands.size() < body_island_count) {
 				body_islands.resize(body_island_count);
 			}
-			LocalVector<GodotBody2D *> &body_island = body_islands[body_island_count - 1];
+			LocalVector<KosmicBody2D *> &body_island = body_islands[body_island_count - 1];
 			body_island.clear();
 			body_island.reserve(BODY_ISLAND_SIZE_RESERVE);
 
@@ -275,7 +275,7 @@ void KosmicStep2D::step(KosmicSpace2D *p_space, real_t p_delta) {
 
 	b = body_list->first();
 	while (b) {
-		const SelfList<GodotBody2D> *n = b->next();
+		const SelfList<KosmicBody2D> *n = b->next();
 		b->self()->integrate_velocities(p_delta);
 		b = n; // in case it shuts itself down
 	}

@@ -146,7 +146,7 @@ EditorPropertyNameProcessor::EditorPropertyNameProcessor() {
 
 	// The following initialization is parsed by the l10n extraction script with a regex.
 	// The map name and value definition format should be kept synced with the regex.
-	// https://github.com/godotengine/godot-editor-l10n/blob/main/scripts/common.py
+	// https://github.com/kosmicengine/kosmic-editor-l10n/blob/main/scripts/common.py
 	capitalize_string_remaps["2d"] = "2D";
 	capitalize_string_remaps["3d"] = "3D";
 	capitalize_string_remaps["4d"] = "4D";
@@ -203,6 +203,7 @@ EditorPropertyNameProcessor::EditorPropertyNameProcessor() {
 	capitalize_string_remaps["gles2"] = "GLES2";
 	capitalize_string_remaps["gles3"] = "GLES3";
 	capitalize_string_remaps["gltf"] = "glTF";
+	capitalize_string_remaps["gridmap"] = "GridMap";
 	capitalize_string_remaps["gpu"] = "GPU";
 	capitalize_string_remaps["gui"] = "GUI";
 	capitalize_string_remaps["guid"] = "GUID";

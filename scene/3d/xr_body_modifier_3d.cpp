@@ -83,7 +83,7 @@ XRBodyModifier3D::BoneUpdate XRBodyModifier3D::get_bone_update() const {
 }
 
 void XRBodyModifier3D::_get_joint_data() {
-	// Table of Godot Humanoid bone names.
+	// Table of Kosmic Humanoid bone names.
 	static const String bone_names[XRBodyTracker::JOINT_MAX] = {
 		"Root", // XRBodyTracker::JOINT_ROOT
 
@@ -251,7 +251,7 @@ void XRBodyModifier3D::_process_modification() {
 	}
 
 	const Ref<XRBodyTracker> tracker = xr_server->get_tracker(tracker_name);
-	if (!tracker.is_valid()) {
+	if (tracker.is_null()) {
 		return;
 	}
 

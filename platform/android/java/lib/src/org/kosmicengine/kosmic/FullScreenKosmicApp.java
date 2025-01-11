@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  FullScreenGodotApp.java                                               */
+/*  FullScreenKosmicApp.java                                               */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             KOSMIC ENGINE                              */
@@ -34,7 +34,7 @@ package org.kosmicengine.kosmic;
 /**
  * Base abstract activity for Android apps intending to use Godot as the primary screen.
  *
- * @deprecated Use {@link GodotActivity}
+ * @deprecated Use {@link KosmicActivity}
  */
 @Deprecated
-public abstract class FullScreenGodotApp extends GodotActivity {}
+public abstract class FullScreenKosmicApp extends KosmicActivity {}

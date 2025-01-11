@@ -44,7 +44,7 @@ open class KosmicEditor : BaseKosmicEditor() {
 	companion object {
 		private val TAG = KosmicEditor::class.java.simpleName
 
-		internal val XR_RUN_GAME_INFO = EditorWindowInfo(GodotXRGame::class.java, 1667, ":GodotXRGame")
+		internal val XR_RUN_GAME_INFO = EditorWindowInfo(KosmicXRGame::class.java, 1667, ":GodotXRGame")
 
 		internal val USE_SCENE_PERMISSIONS = listOf("com.oculus.permission.USE_SCENE", "horizonos.permission.USE_SCENE")
 	}

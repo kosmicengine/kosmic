@@ -35,34 +35,34 @@
 #include "kosmic_soft_body_3d.h"
 #include "kosmic_space_3d.h"
 
-GodotArea3D::BodyKey::BodyKey(KosmicSoftBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape) {
+KosmicArea3D::BodyKey::BodyKey(KosmicSoftBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape) {
 	rid = p_body->get_self();
 	instance_id = p_body->get_instance_id();
 	body_shape = p_body_shape;
 	area_shape = p_area_shape;
 }
 
-GodotArea3D::BodyKey::BodyKey(GodotBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape) {
+KosmicArea3D::BodyKey::BodyKey(KosmicBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape) {
 	rid = p_body->get_self();
 	instance_id = p_body->get_instance_id();
 	body_shape = p_body_shape;
 	area_shape = p_area_shape;
 }
 
-GodotArea3D::BodyKey::BodyKey(GodotArea3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape) {
+KosmicArea3D::BodyKey::BodyKey(KosmicArea3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape) {
 	rid = p_body->get_self();
 	instance_id = p_body->get_instance_id();
 	body_shape = p_body_shape;
 	area_shape = p_area_shape;
 }
 
-void GodotArea3D::_shapes_changed() {
+void KosmicArea3D::_shapes_changed() {
 	if (!moved_list.in_list() && get_space()) {
 		get_space()->area_add_to_moved_list(&moved_list);
 	}
 }
 
-void GodotArea3D::set_transform(const Transform3D &p_transform) {
+void KosmicArea3D::set_transform(const Transform3D &p_transform) {
 	if (!moved_list.in_list() && get_space()) {
 		get_space()->area_add_to_moved_list(&moved_list);
 	}
@@ -71,7 +71,7 @@ void GodotArea3D::set_transform(const Transform3D &p_transform) {
 	_set_inv_transform(p_transform.affine_inverse());
 }
 
-void GodotArea3D::set_space(KosmicSpace3D *p_space) {
+void KosmicArea3D::set_space(KosmicSpace3D *p_space) {
 	if (get_space()) {
 		if (monitor_query_list.in_list()) {
 			get_space()->area_remove_from_monitor_query_list(&monitor_query_list);
@@ -87,7 +87,7 @@ void GodotArea3D::set_space(KosmicSpace3D *p_space) {
 	_set_space(p_space);
 }
 
-void GodotArea3D::set_monitor_callback(const Callable &p_callback) {
+void KosmicArea3D::set_monitor_callback(const Callable &p_callback) {
 	_unregister_shapes();
 
 	monitor_callback = p_callback;
@@ -102,7 +102,7 @@ void GodotArea3D::set_monitor_callback(const Callable &p_callback) {
 	}
 }
 
-void GodotArea3D::set_area_monitor_callback(const Callable &p_callback) {
+void KosmicArea3D::set_area_monitor_callback(const Callable &p_callback) {
 	_unregister_shapes();
 
 	area_monitor_callback = p_callback;
@@ -117,7 +117,7 @@ void GodotArea3D::set_area_monitor_callback(const Callable &p_callback) {
 	}
 }
 
-void GodotArea3D::_set_space_override_mode(PhysicsServer3D::AreaSpaceOverrideMode &r_mode, PhysicsServer3D::AreaSpaceOverrideMode p_new_mode) {
+void KosmicArea3D::_set_space_override_mode(PhysicsServer3D::AreaSpaceOverrideMode &r_mode, PhysicsServer3D::AreaSpaceOverrideMode p_new_mode) {
 	bool do_override = p_new_mode != PhysicsServer3D::AREA_SPACE_OVERRIDE_DISABLED;
 	if (do_override == (r_mode != PhysicsServer3D::AREA_SPACE_OVERRIDE_DISABLED)) {
 		return;
@@ -127,7 +127,7 @@ void GodotArea3D::_set_space_override_mode(PhysicsServer3D::AreaSpaceOverrideMod
 	_shape_changed();
 }
 
-void GodotArea3D::set_param(PhysicsServer3D::AreaParameter p_param, const Variant &p_value) {
+void KosmicArea3D::set_param(PhysicsServer3D::AreaParameter p_param, const Variant &p_value) {
 	switch (p_param) {
 		case PhysicsServer3D::AREA_PARAM_GRAVITY_OVERRIDE_MODE:
 			_set_space_override_mode(gravity_override_mode, (PhysicsServer3D::AreaSpaceOverrideMode)(int)p_value);
@@ -176,7 +176,7 @@ void GodotArea3D::set_param(PhysicsServer3D::AreaParameter p_param, const Varian
 	}
 }
 
-Variant GodotArea3D::get_param(PhysicsServer3D::AreaParameter p_param) const {
+Variant KosmicArea3D::get_param(PhysicsServer3D::AreaParameter p_param) const {
 	switch (p_param) {
 		case PhysicsServer3D::AREA_PARAM_GRAVITY_OVERRIDE_MODE:
 			return gravity_override_mode;
@@ -211,7 +211,7 @@ Variant GodotArea3D::get_param(PhysicsServer3D::AreaParameter p_param) const {
 	return Variant();
 }
 
-void GodotArea3D::_queue_monitor_update() {
+void KosmicArea3D::_queue_monitor_update() {
 	ERR_FAIL_NULL(get_space());
 
 	if (!monitor_query_list.in_list()) {
@@ -219,7 +219,7 @@ void GodotArea3D::_queue_monitor_update() {
 	}
 }
 
-void GodotArea3D::set_monitorable(bool p_monitorable) {
+void KosmicArea3D::set_monitorable(bool p_monitorable) {
 	if (monitorable == p_monitorable) {
 		return;
 	}
@@ -229,7 +229,7 @@ void GodotArea3D::set_monitorable(bool p_monitorable) {
 	_shapes_changed();
 }
 
-void GodotArea3D::call_queries() {
+void KosmicArea3D::call_queries() {
 	if (!monitor_callback.is_null() && !monitored_bodies.is_empty()) {
 		if (monitor_callback.is_valid()) {
 			Variant res[5];
@@ -315,7 +315,7 @@ void GodotArea3D::call_queries() {
 	}
 }
 
-void GodotArea3D::compute_gravity(const Vector3 &p_position, Vector3 &r_gravity) const {
+void KosmicArea3D::compute_gravity(const Vector3 &p_position, Vector3 &r_gravity) const {
 	if (is_gravity_point()) {
 		const real_t gr_unit_dist = get_gravity_point_unit_distance();
 		Vector3 v = get_transform().xform(get_gravity_vector()) - p_position;
@@ -335,7 +335,7 @@ void GodotArea3D::compute_gravity(const Vector3 &p_position, Vector3 &r_gravity)
 	}
 }
 
-GodotArea3D::GodotArea3D() :
+KosmicArea3D::KosmicArea3D() :
 		KosmicCollisionObject3D(TYPE_AREA),
 		monitor_query_list(this),
 		moved_list(this) {
@@ -343,5 +343,5 @@ GodotArea3D::GodotArea3D() :
 	set_ray_pickable(false);
 }
 
-GodotArea3D::~GodotArea3D() {
+KosmicArea3D::~KosmicArea3D() {
 }

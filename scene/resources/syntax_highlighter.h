@@ -33,7 +33,7 @@
 #define SYNTAX_HIGHLIGHTER_H
 
 #include "core/io/resource.h"
-#include "core/object/ksvirtual.gen.inc"
+#include "core/object/gdvirtual.gen.inc"
 
 class TextEdit;
 

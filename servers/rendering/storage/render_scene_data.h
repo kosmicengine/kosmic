@@ -33,7 +33,7 @@
 #define RENDER_SCENE_DATA_H
 
 #include "core/object/class_db.h"
-#include "core/object/ksvirtual.gen.inc"
+#include "core/object/gdvirtual.gen.inc"
 #include "core/object/object.h"
 #include "core/object/script_language.h"
 

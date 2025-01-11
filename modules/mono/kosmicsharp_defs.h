@@ -29,17 +29,17 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef KOSMICSHARP_DEFS_H
-#define KOSMICSHARP_DEFS_H
+#ifndef kosmicSHARP_DEFS_H
+#define kosmicSHARP_DEFS_H
 
-#define BINDINGS_NAMESPACE "Godot"
+#define BINDINGS_NAMESPACE "Kosmic"
 #define BINDINGS_NAMESPACE_COLLECTIONS BINDINGS_NAMESPACE ".Collections"
 #define API_SOLUTION_NAME "KosmicSharp"
 #define CORE_API_ASSEMBLY_NAME "KosmicSharp"
 #define EDITOR_API_ASSEMBLY_NAME "KosmicSharpEditor"
-#define TOOLS_ASM_NAME "GodotTools"
+#define TOOLS_ASM_NAME "KosmicTools"
 
 #define BINDINGS_CLASS_NATIVECALLS "NativeCalls"
 #define BINDINGS_CLASS_NATIVECALLS_EDITOR "EditorNativeCalls"
 
-#endif // KOSMICSHARP_DEFS_H
+#endif // kosmicSHARP_DEFS_H

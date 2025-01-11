@@ -1062,7 +1062,7 @@ EditorFeatureProfileManager::EditorFeatureProfileManager() {
 	EDITOR_DEF("_default_feature_profile", "");
 
 	update_timer = memnew(Timer);
-	update_timer->set_wait_time(1); //wait a second before updating editor
+	update_timer->set_wait_time(1); // Wait a second before updating editor
 	add_child(update_timer);
 	update_timer->connect("timeout", callable_mp(this, &EditorFeatureProfileManager::_emit_current_profile_changed));
 	update_timer->set_one_shot(true);

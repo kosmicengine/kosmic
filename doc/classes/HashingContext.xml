@@ -52,7 +52,7 @@
 		    // Get the computed hash.
 		    byte[] res = ctx.Finish();
 		    // Print the result as hex string and array.
-		    KS.PrintT(res.HexEncode(), (Variant)res);
+		    GD.PrintT(res.HexEncode(), (Variant)res);
 		}
 		[/csharp]
 		[/codeblocks]

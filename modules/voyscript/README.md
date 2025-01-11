@@ -11,13 +11,13 @@ VoyScript is:
 3. Primarily an interpreted scripting language: it is compiled to VoyScript byte code and interpreted in a VoyScript virtual machine. It is meant to be easy to use and develop gameplay in. It is not meant for CPU-intensive algorithms or data processing, and is not optimized for it. For that, [C#](https://docs.kosmicengine.org/en/stable/tutorials/scripting/c_sharp/c_sharp_basics.html) or [KSExtension](https://docs.kosmicengine.org/en/stable/tutorials/scripting/ksextension/what_is_ksextension.html) may be used.
 
 
-## Integration into Godot
+## Integration into Kosmic
 
-VoyScript is integrated into Godot as a module. Since modules are optional, this means that Godot may be built without VoyScript and work perfectly fine without it!
+VoyScript is integrated into Kosmic as a module. Since modules are optional, this means that Kosmic may be built without VoyScript and work perfectly fine without it!
 
-The VoyScript module interfaces with Godot's codebase by inheriting from the engine's scripting-related classes. New languages inherit from [`ScriptLanguage`](/core/object/script_language.h), and are registered in Godot's [`ScriptServer`](/core/object/script_language.h). Scripts, referring to a file containing code, are represented in the engine by the `Script` class. Instances of that script, which are used at runtime when actually executing the code, inherit from [`ScriptInstance`](/core/object/script_instance.h).
+The VoyScript module interfaces with Kosmic's codebase by inheriting from the engine's scripting-related classes. New languages inherit from [`ScriptLanguage`](/core/object/script_language.h), and are registered in Kosmic's [`ScriptServer`](/core/object/script_language.h). Scripts, referring to a file containing code, are represented in the engine by the `Script` class. Instances of that script, which are used at runtime when actually executing the code, inherit from [`ScriptInstance`](/core/object/script_instance.h).
 
-To access Godot's internal classes, VoyScript uses [`ClassDB`](/core/object/class_db.h). `ClassDB` is where Godot registers classes, methods and properties that it wants exposed to its scripting system. This is how VoyScript understands that `Node2D` is a class it can use, and that it has a `get_parent()` method.
+To access Kosmic's internal classes, VoyScript uses [`ClassDB`](/core/object/class_db.h). `ClassDB` is where Kosmic registers classes, methods and properties that it wants exposed to its scripting system. This is how VoyScript understands that `Node2D` is a class it can use, and that it has a `get_parent()` method.
 
 [Built-in VoyScript methods](https://docs.kosmicengine.org/en/latest/classes/class_@voyscript.html#methods) are defined and exported by [`VoyScriptUtilityFunctions`](voyscript_utility_functions.h), whereas [global scope methods](https://docs.kosmicengine.org/en/latest/classes/class_%2540globalscope.html) are registered in [`Variant::_register_variant_utility_functions()`](/core/variant/variant_utility.cpp).
 
@@ -47,9 +47,9 @@ Tokenizing is the process of converting the source code `String` into a sequence
 
 The parser takes a sequence of tokens and builds [the abstract syntax tree (AST)](https://en.wikipedia.org/wiki/Abstract_syntax_tree) of the VoyScript program. The AST is used in the analyzing and compilation steps, and the source code `String` and sequence of tokens are discarded. The AST-building process finds syntax errors in a VoyScript program and reports them to the user.
 
-The parser class also defines all the possible nodes of the AST as subtypes of `VoyScriptParser::Node`, not to be confused with Godot's scene tree `Node`. For example, `VoyScriptParser::IfNode` has two children nodes, one for the code in the `if` block, and one for the code in the `else` block. A `VoyScriptParser::FunctionNode` contains children nodes for its name, parameters, return type, body, etc. The parser also defines typechecking data structures like `VoyScriptParser::Datatype`.
+The parser class also defines all the possible nodes of the AST as subtypes of `VoyScriptParser::Node`, not to be confused with Kosmic's scene tree `Node`. For example, `VoyScriptParser::IfNode` has two children nodes, one for the code in the `if` block, and one for the code in the `else` block. A `VoyScriptParser::FunctionNode` contains children nodes for its name, parameters, return type, body, etc. The parser also defines typechecking data structures like `VoyScriptParser::Datatype`.
 
-The parser was [intentionally designed](https://godotengine.org/article/voyscript-progress-report-writing-new-parser/#less-lookahead) with a look-ahead of a single token. This means that the parser only has access to the current token and the previous token (or, if you prefer, the current token and the next token). This parsing limitation ensures that VoyScript will remain syntactically simple and accessible, and that the parsing process cannot become overly complex.
+The parser was [intentionally designed](https://kosmicengine.org/article/voyscript-progress-report-writing-new-parser/#less-lookahead) with a look-ahead of a single token. This means that the parser only has access to the current token and the previous token (or, if you prefer, the current token and the next token). This parsing limitation ensures that VoyScript will remain syntactically simple and accessible, and that the parsing process cannot become overly complex.
 
 
 ### Analysis and typechecking (see [`VoyScriptAnalyzer`](voyscript_analyzer.h))
@@ -117,12 +117,12 @@ Shallow, or "just parsed" scripts, provide information such as defined classes, 
 
 The distinction between full and shallow scripts is very important, as shallow scripts cannot create cyclic dependency problems, whereas full scripts can. The analyzer, for example, never asks for full scripts. Choosing when to request a shallow vs a full script is an important but subtle decision.
 
-In practice, full scripts are simply scripts where `VoyScript::reload()` has been called. This critical function is the primary way in which scripts get compiled in Godot, and essentially does all the compilation steps covered so far in order. Whenever a script is loaded, or updated and reloaded in Godot, it will end up going through `VoyScript::reload()`, except in very rare circumstances like the test runner. It is an excellent place to start reading and understanding the VoyScript module!
+In practice, full scripts are simply scripts where `VoyScript::reload()` has been called. This critical function is the primary way in which scripts get compiled in Kosmic, and essentially does all the compilation steps covered so far in order. Whenever a script is loaded, or updated and reloaded in Kosmic, it will end up going through `VoyScript::reload()`, except in very rare circumstances like the test runner. It is an excellent place to start reading and understanding the VoyScript module!
 
 
 ## Special types of scripts
 
-Certain types of VoyScripts behave slightly differently. For example, autoloads are loaded with `ResourceLoader::load()` during `Main::start()`, very soon after Godot is launched. Many systems aren't initialized at that time, so error reporting is often significantly reduced and may not even show up in the editor.
+Certain types of VoyScripts behave slightly differently. For example, autoloads are loaded with `ResourceLoader::load()` during `Main::start()`, very soon after Kosmic is launched. Many systems aren't initialized at that time, so error reporting is often significantly reduced and may not even show up in the editor.
 
 Tool scripts, declared with the `@tool` annotation on a VoyScript file, run in the editor itself as opposed to just when the game is launched. This leads to a significant increase in complexity, as many things that can be changed in the editor may affect a currently executing tool script.
 

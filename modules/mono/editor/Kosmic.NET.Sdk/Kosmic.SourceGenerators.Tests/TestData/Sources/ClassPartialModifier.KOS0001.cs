@@ -1,6 +1,6 @@
-using Godot;
+using Kosmic;
 
-public class {|GD0001:ClassPartialModifier|} : Node
+public class {|KS0001:ClassPartialModifier|} : Node
 {
 
 }

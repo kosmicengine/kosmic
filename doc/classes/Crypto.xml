@@ -38,7 +38,7 @@
 		assert(data.to_utf8_buffer() == decrypted)
 		[/voyscript]
 		[csharp]
-		using Godot;
+		using Kosmic;
 		using System.Diagnostics;
 
 		Crypto crypto = new Crypto();

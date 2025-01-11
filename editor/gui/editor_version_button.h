@@ -39,11 +39,11 @@ class EditorVersionButton : public LinkButton {
 
 public:
 	enum VersionFormat {
-		// 1.3.2.stable
+		// 4.3.2.stable
 		FORMAT_BASIC,
-		// v1.3.2.stable.mono [HASH]
+		// v4.3.2.stable.mono [HASH]
 		FORMAT_WITH_BUILD,
-		// Kosmic Engine v1.3.2.stable.mono.official [HASH]
+		// Kosmic Engine v4.3.2.stable.mono.official [HASH]
 		FORMAT_WITH_NAME_AND_BUILD,
 	};
 

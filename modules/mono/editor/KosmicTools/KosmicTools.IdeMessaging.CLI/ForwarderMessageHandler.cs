@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using GodotTools.IdeMessaging.Utils;
+using KosmicTools.IdeMessaging.Utils;
 
 namespace KosmicTools.IdeMessaging.CLI
 {

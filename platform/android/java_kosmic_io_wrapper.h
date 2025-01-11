@@ -40,7 +40,7 @@
 #include <android/log.h>
 #include <jni.h>
 
-// Class that makes functions in java/src/org/godotengine/godot/KosmicIO.java callable from C++
+// Class that makes functions in java/src/org/kosmicengine/kosmic/KosmicIO.java callable from C++
 class KosmicIOJavaWrapper {
 private:
 	jobject kosmic_io_instance;
@@ -74,7 +74,7 @@ public:
 	Error open_uri(const String &p_uri);
 	String get_cache_dir();
 	String get_temp_dir();
-	String get_user_data_dir();
+	String get_user_data_dir(const String &p_user_dir);
 	String get_locale();
 	String get_model();
 	int get_screen_dpi();

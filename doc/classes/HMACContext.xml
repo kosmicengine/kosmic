@@ -25,7 +25,7 @@
 
 		[/voyscript]
 		[csharp]
-		using Godot;
+		using Kosmic;
 		using System.Diagnostics;
 
 		public partial class MyNode : Node
@@ -44,7 +44,7 @@
 		        err = _ctx.Update(msg2);
 		        Debug.Assert(err == Error.Ok);
 		        byte[] hmac = _ctx.Finish();
-		        KS.Print(hmac.HexEncode());
+		        GD.Print(hmac.HexEncode());
 		    }
 		}
 		[/csharp]

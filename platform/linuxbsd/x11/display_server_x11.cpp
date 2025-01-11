@@ -70,6 +70,14 @@
 #define _NET_WM_STATE_REMOVE 0L // remove/unset property
 #define _NET_WM_STATE_ADD 1L // add/set property
 
+#define _NET_WM_MOVERESIZE_SIZE_TOPLEFT 0L
+#define _NET_WM_MOVERESIZE_SIZE_TOP 1L
+#define _NET_WM_MOVERESIZE_SIZE_TOPRIGHT 2L
+#define _NET_WM_MOVERESIZE_SIZE_RIGHT 3L
+#define _NET_WM_MOVERESIZE_SIZE_BOTTOMRIGHT 4L
+#define _NET_WM_MOVERESIZE_SIZE_BOTTOM 5L
+#define _NET_WM_MOVERESIZE_SIZE_BOTTOMLEFT 6L
+#define _NET_WM_MOVERESIZE_SIZE_LEFT 7L
 #define _NET_WM_MOVERESIZE_MOVE 8L
 
 // 2.2 is the first release with multitouch
@@ -133,6 +141,7 @@ bool DisplayServerX11::has_feature(Feature p_feature) const {
 #ifdef DBUS_ENABLED
 		case FEATURE_NATIVE_DIALOG_FILE:
 		case FEATURE_NATIVE_DIALOG_FILE_EXTRA:
+		case FEATURE_NATIVE_DIALOG_FILE_MIME:
 #endif
 		//case FEATURE_NATIVE_DIALOG:
 		//case FEATURE_NATIVE_DIALOG_INPUT:
@@ -1975,7 +1984,8 @@ void DisplayServerX11::window_set_title(const String &p_title, WindowID p_window
 	Atom _net_wm_name = XInternAtom(x11_display, "_NET_WM_NAME", false);
 	Atom utf8_string = XInternAtom(x11_display, "UTF8_STRING", false);
 	if (_net_wm_name != None && utf8_string != None) {
-		XChangeProperty(x11_display, wd.x11_window, _net_wm_name, utf8_string, 8, PropModeReplace, (unsigned char *)p_title.utf8().get_data(), p_title.utf8().length());
+		CharString utf8_title = p_title.utf8();
+		XChangeProperty(x11_display, wd.x11_window, _net_wm_name, utf8_string, 8, PropModeReplace, (unsigned char *)utf8_title.get_data(), utf8_title.length());
 	}
 }
 
@@ -3680,7 +3690,7 @@ void DisplayServerX11::_handle_key_event(WindowID p_window, XKeyEvent *p_event, 
 #endif
 	}
 
-	/* Phase 2, obtain a Godot keycode from the keysym */
+	/* Phase 2, obtain a Kosmic keycode from the keysym */
 
 	// KeyMappingX11 just translated the X11 keysym to a PIGUI
 	// keysym, so it works in all platforms the same.
@@ -4162,7 +4172,7 @@ void DisplayServerX11::_set_input_focus(Window p_window, int p_revert_to) {
 	XGetInputFocus(x11_display, &focused_window, &focus_ret_state);
 
 	// Only attempt to change focus if the window isn't already focused, in order to
-	// prevent issues with Godot stealing input focus with alternative window managers.
+	// prevent issues with Kosmic stealing input focus with alternative window managers.
 	if (p_window != focused_window) {
 		XSetInputFocus(x11_display, p_window, p_revert_to, CurrentTime);
 	}
@@ -4612,7 +4622,7 @@ void DisplayServerX11::process_events() {
 							xi.state[index] = pos;
 							if (xi.state.size() == 1) {
 								// X11 may send a motion event when a touch gesture begins, that would result
-								// in a spurious mouse motion event being sent to Godot; remember it to be able to filter it out
+								// in a spurious mouse motion event being sent to Kosmic; remember it to be able to filter it out
 								xi.mouse_pos_to_filter = pos;
 							}
 							Input::get_singleton()->parse_input_event(st);
@@ -5297,13 +5307,13 @@ void DisplayServerX11::_update_context(WindowData &wd) {
 		CharString name_str;
 		switch (context) {
 			case CONTEXT_EDITOR:
-				name_str = "Godot_Editor";
+				name_str = "Kosmic_Editor";
 				break;
 			case CONTEXT_PROJECTMAN:
-				name_str = "Godot_ProjectList";
+				name_str = "Kosmic_ProjectList";
 				break;
 			case CONTEXT_ENGINE:
-				name_str = "Godot_Engine";
+				name_str = "Kosmic_Engine";
 				break;
 		}
 
@@ -5311,12 +5321,12 @@ void DisplayServerX11::_update_context(WindowData &wd) {
 		if (context == CONTEXT_ENGINE) {
 			String config_name = GLOBAL_GET("application/config/name");
 			if (config_name.length() == 0) {
-				class_str = "Godot_Engine";
+				class_str = "Kosmic_Engine";
 			} else {
 				class_str = config_name.utf8();
 			}
 		} else {
-			class_str = "Godot";
+			class_str = "Kosmic";
 		}
 
 		classHint->res_class = class_str.ptrw();
@@ -5487,6 +5497,10 @@ void DisplayServerX11::window_start_drag(WindowID p_window) {
 	ERR_FAIL_COND(!windows.has(p_window));
 	WindowData &wd = windows[p_window];
 
+	if (wd.embed_parent) {
+		return; // Embedded window.
+	}
+
 	XClientMessageEvent m;
 	memset(&m, 0, sizeof(m));
 
@@ -5508,6 +5522,74 @@ void DisplayServerX11::window_start_drag(WindowID p_window) {
 		m.data.l[3] = Button1;
 	}
 	m.data.l[2] = _NET_WM_MOVERESIZE_MOVE;
+	m.data.l[4] = 1; // Source - normal application.
+
+	XSendEvent(x11_display, DefaultRootWindow(x11_display), False, SubstructureRedirectMask | SubstructureNotifyMask, (XEvent *)&m);
+
+	XSync(x11_display, 0);
+}
+
+void DisplayServerX11::window_start_resize(WindowResizeEdge p_edge, WindowID p_window) {
+	_THREAD_SAFE_METHOD_
+
+	ERR_FAIL_INDEX(int(p_edge), WINDOW_EDGE_MAX);
+
+	ERR_FAIL_COND(!windows.has(p_window));
+	WindowData &wd = windows[p_window];
+
+	if (wd.embed_parent) {
+		return; // Embedded window.
+	}
+
+	XClientMessageEvent m;
+	memset(&m, 0, sizeof(m));
+
+	XUngrabPointer(x11_display, CurrentTime);
+
+	Window root_return, child_return;
+	int root_x, root_y, win_x, win_y;
+	unsigned int mask_return;
+
+	Bool xquerypointer_result = XQueryPointer(x11_display, wd.x11_window, &root_return, &child_return, &root_x, &root_y, &win_x, &win_y, &mask_return);
+
+	m.type = ClientMessage;
+	m.window = wd.x11_window;
+	m.message_type = XInternAtom(x11_display, "_NET_WM_MOVERESIZE", True);
+	m.format = 32;
+	if (xquerypointer_result) {
+		m.data.l[0] = root_x;
+		m.data.l[1] = root_y;
+		m.data.l[3] = Button1;
+	}
+
+	switch (p_edge) {
+		case DisplayServer::WINDOW_EDGE_TOP_LEFT: {
+			m.data.l[2] = _NET_WM_MOVERESIZE_SIZE_TOPLEFT;
+		} break;
+		case DisplayServer::WINDOW_EDGE_TOP: {
+			m.data.l[2] = _NET_WM_MOVERESIZE_SIZE_TOP;
+		} break;
+		case DisplayServer::WINDOW_EDGE_TOP_RIGHT: {
+			m.data.l[2] = _NET_WM_MOVERESIZE_SIZE_TOPRIGHT;
+		} break;
+		case DisplayServer::WINDOW_EDGE_LEFT: {
+			m.data.l[2] = _NET_WM_MOVERESIZE_SIZE_LEFT;
+		} break;
+		case DisplayServer::WINDOW_EDGE_RIGHT: {
+			m.data.l[2] = _NET_WM_MOVERESIZE_SIZE_RIGHT;
+		} break;
+		case DisplayServer::WINDOW_EDGE_BOTTOM_LEFT: {
+			m.data.l[2] = _NET_WM_MOVERESIZE_SIZE_BOTTOMLEFT;
+		} break;
+		case DisplayServer::WINDOW_EDGE_BOTTOM: {
+			m.data.l[2] = _NET_WM_MOVERESIZE_SIZE_BOTTOM;
+		} break;
+		case DisplayServer::WINDOW_EDGE_BOTTOM_RIGHT: {
+			m.data.l[2] = _NET_WM_MOVERESIZE_SIZE_BOTTOMRIGHT;
+		} break;
+		default:
+			break;
+	}
 	m.data.l[4] = 1; // Source - normal application.
 
 	XSendEvent(x11_display, DefaultRootWindow(x11_display), False, SubstructureRedirectMask | SubstructureNotifyMask, (XEvent *)&m);
@@ -5719,7 +5801,7 @@ Error DisplayServerX11::embed_process(WindowID p_window, OS::ProcessID p_pid, co
 			}
 		}
 
-		if (desired_rect.size.x < 100 || desired_rect.size.y < 100) {
+		if (desired_rect.size.x <= 100 || desired_rect.size.y <= 100) {
 			p_visible = false;
 		}
 
@@ -6004,7 +6086,7 @@ DisplayServerX11::WindowID DisplayServerX11::_create_window(WindowMode p_mode, V
 		}
 
 		/* set the titlebar name */
-		XStoreName(x11_display, wd.x11_window, "Godot");
+		XStoreName(x11_display, wd.x11_window, "Kosmic");
 		XSetWMProtocols(x11_display, wd.x11_window, &wm_delete, 1);
 		if (xdnd_aware != None) {
 			XChangeProperty(x11_display, wd.x11_window, xdnd_aware, XA_ATOM, 32, PropModeReplace, (unsigned char *)&xdnd_version, 1);
@@ -6614,7 +6696,7 @@ DisplayServerX11::DisplayServerX11(const String &p_rendering_driver, WindowMode 
 
 			if (use_prime) {
 				print_line("Found discrete GPU, setting DRI_PRIME=1 to use it.");
-				print_line("Note: Set DRI_PRIME=0 in the environment to disable Godot from using the discrete GPU.");
+				print_line("Note: Set DRI_PRIME=0 in the environment to disable Kosmic from using the discrete GPU.");
 				setenv("DRI_PRIME", "1", 1);
 			}
 		}

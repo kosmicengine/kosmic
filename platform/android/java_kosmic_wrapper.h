@@ -40,7 +40,7 @@
 #include <android/log.h>
 #include <jni.h>
 
-// Class that makes functions in java/src/org/godotengine/godot/Kosmic.kt callable from C++
+// Class that makes functions in java/src/org/kosmicengine/kosmic/Kosmic.kt callable from C++
 class KosmicJavaWrapper {
 private:
 	jobject kosmic_instance;

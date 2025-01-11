@@ -5,22 +5,22 @@
     <LangVersion>12</LangVersion>
     <OutputPath>bin/$(Configuration)</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <RootNamespace>Godot</RootNamespace>
+    <RootNamespace>Kosmic</RootNamespace>
     <DocumentationFile>$(OutputPath)/$(AssemblyName).xml</DocumentationFile>
     <EnableDefaultItems>false</EnableDefaultItems>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <Description>Godot C# Editor API.</Description>
-    <Authors>Godot Engine contributors</Authors>
+    <Description>Kosmic C# Editor API.</Description>
+    <Authors>Kosmic Engine contributors</Authors>
 
     <PackageId>KosmicSharpEditor</PackageId>
-    <Version>4.4.0</Version>
+    <Version>1.0.0</Version>
     <PackageVersion>$(PackageVersion_KosmicSharp)</PackageVersion>
-    <RepositoryUrl>https://github.com/godotengine/godot/tree/master/modules/mono/glue/KosmicSharp/KosmicSharpEditor</RepositoryUrl>
+    <RepositoryUrl>https://github.com/kosmicengine/kosmic/tree/main/modules/mono/glue/KosmicSharp/KosmicSharpEditor</RepositoryUrl>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright (c) Godot Engine contributors</Copyright>
+    <Copyright>Copyright (c) Kosmic Engine contributors</Copyright>
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
@@ -36,7 +36,7 @@
     </ProjectReference>
   </ItemGroup>
   <!-- Compat Sources -->
-  <ItemGroup Condition=" '$(GodotNoDeprecated)' == '' ">
+  <ItemGroup Condition=" '$(KosmicNoDeprecated)' == '' ">
     <Compile Include="Compat.cs" />
   </ItemGroup>
   <!--

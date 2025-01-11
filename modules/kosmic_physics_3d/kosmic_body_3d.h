@@ -40,7 +40,7 @@
 class KosmicConstraint3D;
 class KosmicPhysicsDirectBodyState3D;
 
-class GodotBody3D : public KosmicCollisionObject3D {
+class KosmicBody3D : public KosmicCollisionObject3D {
 	PhysicsServer3D::BodyMode mode = PhysicsServer3D::BODY_MODE_RIGID;
 
 	Vector3 linear_velocity;
@@ -97,9 +97,9 @@ class GodotBody3D : public KosmicCollisionObject3D {
 	Vector3 constant_force;
 	Vector3 constant_torque;
 
-	SelfList<GodotBody3D> active_list;
-	SelfList<GodotBody3D> mass_properties_update_list;
-	SelfList<GodotBody3D> direct_state_query_list;
+	SelfList<KosmicBody3D> active_list;
+	SelfList<KosmicBody3D> mass_properties_update_list;
+	SelfList<KosmicBody3D> direct_state_query_list;
 
 	VSet<RID> exceptions;
 	bool omit_force_integration = false;
@@ -157,7 +157,7 @@ public:
 
 	KosmicPhysicsDirectBodyState3D *get_direct_state();
 
-	_FORCE_INLINE_ void add_area(GodotArea3D *p_area) {
+	_FORCE_INLINE_ void add_area(KosmicArea3D *p_area) {
 		int index = areas.find(AreaCMP(p_area));
 		if (index > -1) {
 			areas.write[index].refCount += 1;
@@ -166,7 +166,7 @@ public:
 		}
 	}
 
-	_FORCE_INLINE_ void remove_area(GodotArea3D *p_area) {
+	_FORCE_INLINE_ void remove_area(KosmicArea3D *p_area) {
 		int index = areas.find(AreaCMP(p_area));
 		if (index > -1) {
 			areas.write[index].refCount -= 1;
@@ -344,13 +344,13 @@ public:
 
 	bool sleep_test(real_t p_step);
 
-	GodotBody3D();
-	~GodotBody3D();
+	KosmicBody3D();
+	~KosmicBody3D();
 };
 
 //add contact inline
 
-void GodotBody3D::add_contact(const Vector3 &p_local_pos, const Vector3 &p_local_normal, real_t p_depth, int p_local_shape, const Vector3 &p_local_velocity_at_pos, const Vector3 &p_collider_pos, int p_collider_shape, ObjectID p_collider_instance_id, const RID &p_collider, const Vector3 &p_collider_velocity_at_pos, const Vector3 &p_impulse) {
+void KosmicBody3D::add_contact(const Vector3 &p_local_pos, const Vector3 &p_local_normal, real_t p_depth, int p_local_shape, const Vector3 &p_local_velocity_at_pos, const Vector3 &p_collider_pos, int p_collider_shape, ObjectID p_collider_instance_id, const RID &p_collider, const Vector3 &p_collider_velocity_at_pos, const Vector3 &p_impulse) {
 	int c_max = contacts.size();
 
 	if (c_max == 0) {

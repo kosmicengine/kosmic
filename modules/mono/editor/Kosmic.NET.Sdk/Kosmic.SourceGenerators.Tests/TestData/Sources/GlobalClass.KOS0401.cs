@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 
 // This works because it inherits from KosmicObject.
 [GlobalClass]
@@ -14,9 +14,9 @@ public partial class CustomGlobalClass2 : Node
 
 }
 
-// This raises a GD0401 diagnostic error: global classes must inherit from KosmicObject
+// This raises a KS0401 diagnostic error: global classes must inherit from KosmicObject
 [GlobalClass]
-public partial class {|GD0401:CustomGlobalClass3|}
+public partial class {|KS0401:CustomGlobalClass3|}
 {
 
 }

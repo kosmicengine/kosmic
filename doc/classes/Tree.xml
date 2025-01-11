@@ -166,7 +166,7 @@
 
 				public void OnTreeItemEdited()
 				{
-				    KS.Print(GetNode&lt;Tree&gt;("Tree").GetEdited()); // This item just got edited (e.g. checked).
+				    GD.Print(GetNode&lt;Tree&gt;("Tree").GetEdited()); // This item just got edited (e.g. checked).
 				}
 				[/csharp]
 				[/codeblocks]

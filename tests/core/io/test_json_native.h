@@ -118,7 +118,7 @@ TEST_CASE("[JSON][Native] Conversion between native and JSON formats") {
 	dict[0] = 1;
 	dict[0.0] = 1.0;
 
-	// Godot dictionaries preserve insertion order, so an array is used for keys/values.
+	// Kosmic dictionaries preserve insertion order, so an array is used for keys/values.
 	test(dict, R"({"type":"Dictionary","args":[false,true,"i:0","i:1","f:0.0","f:1.0"]})");
 
 	TypedDictionary<int64_t, int64_t> int_int_dict;

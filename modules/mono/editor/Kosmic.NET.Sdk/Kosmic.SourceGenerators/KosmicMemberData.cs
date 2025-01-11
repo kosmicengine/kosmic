@@ -3,9 +3,9 @@ using Microsoft.CodeAnalysis;
 
 namespace Kosmic.SourceGenerators
 {
-    public readonly struct GodotMethodData
+    public readonly struct KosmicMethodData
     {
-        public GodotMethodData(IMethodSymbol method, ImmutableArray<MarshalType> paramTypes,
+        public KosmicMethodData(IMethodSymbol method, ImmutableArray<MarshalType> paramTypes,
             ImmutableArray<ITypeSymbol> paramTypeSymbols, (MarshalType MarshalType, ITypeSymbol TypeSymbol)? retType)
         {
             Method = method;
@@ -22,7 +22,7 @@ namespace Kosmic.SourceGenerators
 
     public readonly struct KosmicSignalDelegateData
     {
-        public KosmicSignalDelegateData(string name, INamedTypeSymbol delegateSymbol, GodotMethodData invokeMethodData)
+        public KosmicSignalDelegateData(string name, INamedTypeSymbol delegateSymbol, KosmicMethodData invokeMethodData)
         {
             Name = name;
             DelegateSymbol = delegateSymbol;
@@ -31,7 +31,7 @@ namespace Kosmic.SourceGenerators
 
         public string Name { get; }
         public INamedTypeSymbol DelegateSymbol { get; }
-        public GodotMethodData InvokeMethodData { get; }
+        public KosmicMethodData InvokeMethodData { get; }
     }
 
     public readonly struct KosmicPropertyData

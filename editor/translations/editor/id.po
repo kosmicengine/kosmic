@@ -1,7 +1,7 @@
 # Indonesian translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Abdul Aziz Muslim Alqudsy <abdul.aziz.muslim.alqudsy@gmail.com>, 2016.
 # Andevid Dynmyn <doyan4forum@gmail.com>, 2016.
 # Andinawan Asa <asaandinawan@gmail.com>, 2016.
@@ -67,11 +67,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-08-28 12:59+0000\n"
 "Last-Translator: \"Achmad Izzuddin (Adin)\" <achmadizzuddin999@gmail.com>\n"
-"Language-Team: Indonesian <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Indonesian <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/id/>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
@@ -1962,7 +1962,7 @@ msgstr ""
 "Klik untuk menyalin angka versi."
 
 msgid "Godot Engine contributors"
-msgstr "Kontributor Godot Engine"
+msgstr "Kontributor Kosmic Engine"
 
 msgid "Project Founders"
 msgstr "Penemu Proyek"
@@ -2453,8 +2453,8 @@ msgstr "[kosong]"
 msgid "[unsaved]"
 msgstr "[belum disimpan]"
 
-msgid "%s - Godot Engine"
-msgstr "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
+msgstr "%s - Kosmic Engine"
 
 msgid "Dock Position"
 msgstr "Posisi Pengait"
@@ -10683,11 +10683,11 @@ msgstr ""
 "dan 'y'."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
-"Ekspresi Bahasa Kosmic Shader Kustom, dengan jumlah khusus port masukan dan "
+"Ekspresi Bahasa Godot Shader Kustom, dengan jumlah khusus port masukan dan "
 "keluaran. Ini adalah injeksi langsung kode ke fungsi titik/fragmen/cahaya, "
 "jangan menggunakannya untuk menulis deklarasi fungsi di dalamnya."
 

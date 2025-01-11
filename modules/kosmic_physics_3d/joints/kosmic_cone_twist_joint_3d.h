@@ -33,7 +33,7 @@
 #define KOSMIC_CONE_TWIST_JOINT_3D_H
 
 /*
-Adapted to Godot from the Bullet library.
+Adapted to Kosmic from the Bullet library.
 */
 
 /*
@@ -64,11 +64,11 @@ public:
 
 	union {
 		struct {
-			GodotBody3D *A;
-			GodotBody3D *B;
+			KosmicBody3D *A;
+			KosmicBody3D *B;
 		};
 
-		GodotBody3D *_arr[2] = { nullptr, nullptr };
+		KosmicBody3D *_arr[2] = { nullptr, nullptr };
 	};
 
 	KosmicJacobianEntry3D m_jac[3] = {}; //3 orthogonal linear constraints
@@ -108,7 +108,7 @@ public:
 	virtual bool setup(real_t p_step) override;
 	virtual void solve(real_t p_step) override;
 
-	KosmicConeTwistJoint3D(GodotBody3D *rbA, GodotBody3D *rbB, const Transform3D &rbAFrame, const Transform3D &rbBFrame);
+	KosmicConeTwistJoint3D(KosmicBody3D *rbA, KosmicBody3D *rbB, const Transform3D &rbAFrame, const Transform3D &rbBFrame);
 
 	void setAngularOnly(bool angularOnly) {
 		m_angularOnly = angularOnly;

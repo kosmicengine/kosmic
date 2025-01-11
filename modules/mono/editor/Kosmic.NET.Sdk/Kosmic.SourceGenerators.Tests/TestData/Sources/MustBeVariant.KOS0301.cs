@@ -1,14 +1,14 @@
 using System;
-using Godot;
+using Kosmic;
 using Kosmic.Collections;
 using Array = Kosmic.Collections.Array;
 
-public class MustBeVariantGD0301
+public class MustBeVariantKS0301
 {
     public void MethodCallsError()
     {
-        // This raises a GD0301 diagnostic error: object is not Variant (and Method<T> requires a variant generic type).
-        Method<{|GD0301:object|}>();
+        // This raises a KS0301 diagnostic error: object is not Variant (and Method<T> requires a variant generic type).
+        Method<{|KS0301:object|}>();
     }
 
     public void MethodCallsOk()
@@ -130,7 +130,7 @@ public class MustBeVariantGD0301
         new ClassWithGenericVariant<Rid[]>();
 
         // This class fails because generic type is not Variant-compatible.
-        new ClassWithGenericVariant<{|GD0301:object|}>();
+        new ClassWithGenericVariant<{|KS0301:object|}>();
     }
 }
 
@@ -391,7 +391,7 @@ public class MustBeVariantAnnotatedMethods
     }
 
     // This method definition fails because generic type is not Variant-compatible.
-    [GenericTypeAttribute<{|GD0301:object|}>()]
+    [GenericTypeAttribute<{|KS0301:object|}>()]
     public void MethodWithWrongAttribute()
     {
     }
@@ -653,7 +653,7 @@ public class ClassVariantAnnotatedRidArray
 }
 
 // This class definition fails because generic type is not Variant-compatible.
-[GenericTypeAttribute<{|GD0301:object|}>()]
+[GenericTypeAttribute<{|KS0301:object|}>()]
 public class ClassNonVariantAnnotated
 {
 }

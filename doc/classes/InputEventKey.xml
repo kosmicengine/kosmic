@@ -103,7 +103,7 @@
 			    if (@event is InputEventKey inputEventKey)
 			    {
 			        var keycode = DisplayServer.KeyboardGetKeycodeFromPhysical(inputEventKey.PhysicalKeycode);
-			        KS.Print(OS.GetKeycodeString(keycode));
+			        GD.Print(OS.GetKeycodeString(keycode));
 			    }
 			}
 			[/csharp]

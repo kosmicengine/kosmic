@@ -31,8 +31,8 @@
 
 #include "mono_gc_handle.h"
 
-#include "mono_gd/gd_mono.h"
-#include "mono_gd/gd_mono_cache.h"
+#include "mono_ks/ks_mono.h"
+#include "mono_ks/ks_mono_cache.h"
 
 void MonoGCHandleData::release() {
 #ifdef DEBUG_ENABLED

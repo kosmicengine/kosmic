@@ -33,7 +33,7 @@
 #define RESOURCE_SAVER_H
 
 #include "core/io/resource.h"
-#include "core/object/ksvirtual.gen.inc"
+#include "core/object/gdvirtual.gen.inc"
 
 class ResourceFormatSaver : public RefCounted {
 	KSCLASS(ResourceFormatSaver, RefCounted);

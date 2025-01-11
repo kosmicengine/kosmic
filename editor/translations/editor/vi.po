@@ -1,7 +1,7 @@
 # Vietnamese translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # 01lifeleft <01lifeleft@gmail.com>, 2018.
 # Dlean Jeans <dleanjeans@gmail.com>, 2018.
 # Hai Le <dark.hades.1102@gmail.com>, 2017.
@@ -45,11 +45,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-08-16 00:22+0000\n"
 "Last-Translator: Trần Đức Minh Nhật <mncc8327@gmail.com>\n"
-"Language-Team: Vietnamese <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Vietnamese <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/vi/>\n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
@@ -1153,7 +1153,7 @@ msgid "Thanks from the Godot community!"
 msgstr "Cảm ơn từ cộng đồng Godot!"
 
 msgid "Godot Engine contributors"
-msgstr "Cá nhân đóng góp của Godot Engine"
+msgstr "Cá nhân đóng góp của Kosmic Engine"
 
 msgid "Project Founders"
 msgstr "Các đồng sáng lập dự án"

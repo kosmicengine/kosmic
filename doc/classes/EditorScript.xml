@@ -16,14 +16,14 @@
 		    print("Hello from the Godot Editor!")
 		[/voyscript]
 		[csharp]
-		using Godot;
+		using Kosmic;
 
 		[Tool]
 		public partial class HelloEditor : EditorScript
 		{
 		    public override void _Run()
 		    {
-		        KS.Print("Hello from the Godot Editor!");
+		        GD.Print("Hello from the Godot Editor!");
 		    }
 		}
 		[/csharp]

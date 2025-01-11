@@ -135,7 +135,7 @@ namespace Kosmic
                 if (_memoryOwn)
                 {
                     NativeFuncs.kosmicsharp_internal_refcounted_disposed(NativePtr, gcHandleToFree,
-                        (!disposing).ToGodotBool());
+                        (!disposing).ToKosmicBool());
                 }
                 else
                 {

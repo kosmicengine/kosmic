@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Godot;
+using Kosmic;
 using Kosmic.Collections;
-using GodotTools.Internals;
+using KosmicTools.Internals;
 using Path = System.IO.Path;
 
 namespace KosmicTools.Build

@@ -63,7 +63,7 @@
 
 				public int GetMonitorValue()
 				{
-				    return KS.Randi() % 25;
+				    return GD.Randi() % 25;
 				}
 				[/csharp]
 				[/codeblocks]
@@ -94,7 +94,7 @@
 				print(Performance.get_monitor(Performance.TIME_FPS)) # Prints the FPS to the console.
 				[/voyscript]
 				[csharp]
-				KS.Print(Performance.GetMonitor(Performance.Monitor.TimeFps)); // Prints the FPS to the console.
+				GD.Print(Performance.GetMonitor(Performance.Monitor.TimeFps)); // Prints the FPS to the console.
 				[/csharp]
 				[/codeblocks]
 				See [method get_custom_monitor] to query custom performance monitors' values.

@@ -38,7 +38,7 @@
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 
-class GodotBroadPhase2DBVH : public GodotBroadPhase2D {
+class KosmicBroadPhase2DBVH : public KosmicBroadPhase2D {
 	template <typename T>
 	class UserPairTestFunction {
 	public:
@@ -95,8 +95,8 @@ public:
 
 	virtual void update() override;
 
-	static GodotBroadPhase2D *_create();
-	GodotBroadPhase2DBVH();
+	static KosmicBroadPhase2D *_create();
+	KosmicBroadPhase2DBVH();
 };
 
 #endif // KOSMIC_BROAD_PHASE_2D_BVH_H

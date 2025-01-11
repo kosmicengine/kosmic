@@ -104,7 +104,7 @@ void SkinTool::_capture_nodes_for_multirooted_skin(Vector<Ref<GLTFNode>> &r_node
 	}
 
 	// Go up the tree till all of the multiple roots of the skin are at the same hierarchy level.
-	// This sucks, but 99% of all game engines (not just Godot) would have this same issue.
+	// This sucks, but 99% of all game engines (not just Kosmic) would have this same issue.
 	for (int i = 0; i < roots.size(); ++i) {
 		SkinNodeIndex current_node = roots[i];
 		while (r_nodes[current_node]->height > maxHeight) {

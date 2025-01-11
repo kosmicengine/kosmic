@@ -396,7 +396,7 @@ bool JavaClass::_call_method(JavaObject *p_instance, const StringName &p_method,
 			} break;
 			case ARG_ARRAY_BIT | ARG_TYPE_CALLABLE: {
 				Array arr = *p_args[i];
-				jobjectArray jarr = env->NewObjectArray(arr.size(), env->FindClass("org/godotengine/godot/variant/Callable"), nullptr);
+				jobjectArray jarr = env->NewObjectArray(arr.size(), env->FindClass("org/kosmicengine/kosmic/variant/Callable"), nullptr);
 				for (int j = 0; j < arr.size(); j++) {
 					Variant callable = arr[j];
 					jobject jcallable = callable_to_jcallable(env, callable);
@@ -747,7 +747,7 @@ bool JavaClassWrapper::_get_type_sig(JNIEnv *env, jobject obj, uint32_t &sig, St
 		strsig += "Ljava/lang/CharSequence;";
 	} else if (str_type == "org.kosmicengine.kosmic.variant.Callable") {
 		t |= JavaClass::ARG_TYPE_CALLABLE;
-		strsig += "Lorg/godotengine/godot/variant/Callable;";
+		strsig += "Lorg/kosmicengine/kosmic/variant/Callable;";
 	} else if (str_type == "java.lang.Boolean") {
 		t |= JavaClass::ARG_TYPE_BOOLEAN | JavaClass::ARG_NUMBER_CLASS_BIT;
 		strsig += "Ljava/lang/Boolean;";

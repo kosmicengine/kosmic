@@ -50,15 +50,15 @@
 		switch (foo.VariantType)
 		{
 		    case Variant.Type.Nil:
-		        KS.Print("foo is null");
+		        GD.Print("foo is null");
 		        break;
 		    case Variant.Type.Int:
-		        KS.Print("foo is an integer");
+		        GD.Print("foo is an integer");
 		        break;
 		    case Variant.Type.Object:
 		        // Note that Objects are their own special category.
 		        // You can convert a Variant to a KosmicObject and use reflection to get its name.
-		        KS.Print($"foo is a(n) {foo.AsKosmicObject().GetType().Name}");
+		        GD.Print($"foo is a(n) {foo.AsKosmicObject().GetType().Name}");
 		        break;
 		}
 		[/csharp]

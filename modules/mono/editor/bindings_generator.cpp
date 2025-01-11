@@ -75,7 +75,7 @@ StringBuilder &operator<<(StringBuilder &r_sb, const char *p_cstring) {
 #define CLOSE_BLOCK_L2 INDENT2 CLOSE_BLOCK
 #define CLOSE_BLOCK_L3 INDENT3 CLOSE_BLOCK
 
-#define BINDINGS_GLOBAL_SCOPE_CLASS "GD"
+#define BINDINGS_GLOBAL_SCOPE_CLASS "KS"
 #define BINDINGS_NATIVE_NAME_FIELD "NativeName"
 
 #define BINDINGS_CLASS_CONSTRUCTOR "Constructors"
@@ -1561,7 +1561,7 @@ Error BindingsGenerator::_populate_method_icalls_table(const TypeInterface &p_it
 void BindingsGenerator::_generate_array_extensions(StringBuilder &p_output) {
 	p_output.append("namespace " BINDINGS_NAMESPACE ";\n\n");
 	p_output.append("using System;\n\n");
-	// The class where we put the extensions doesn't matter, so just use "GD".
+	// The class where we put the extensions doesn't matter, so just use "KS".
 	p_output.append("public static partial class " BINDINGS_GLOBAL_SCOPE_CLASS "\n{");
 
 #define ARRAY_IS_EMPTY(m_type)                                                                          \
@@ -1622,11 +1622,11 @@ void BindingsGenerator::_generate_array_extensions(StringBuilder &p_output) {
 #undef ARRAY_JOIN
 #undef ARRAY_STRINGIFY
 
-	p_output.append(CLOSE_BLOCK); // End of GD class.
+	p_output.append(CLOSE_BLOCK); // End of KS class.
 }
 
 void BindingsGenerator::_generate_global_constants(StringBuilder &p_output) {
-	// Constants (in partial GD class)
+	// Constants (in partial KS class)
 
 	p_output.append("namespace " BINDINGS_NAMESPACE ";\n\n");
 
@@ -1661,7 +1661,7 @@ void BindingsGenerator::_generate_global_constants(StringBuilder &p_output) {
 		p_output.append("\n");
 	}
 
-	p_output.append(CLOSE_BLOCK); // end of GD class
+	p_output.append(CLOSE_BLOCK); // end of KS class
 
 	// Enums
 
@@ -2118,7 +2118,7 @@ Error BindingsGenerator::generate_cs_api(const String &p_output_dir) {
 		return proj_err;
 	}
 
-	_log("The Godot API sources were successfully generated\n");
+	_log("The Kosmic API sources were successfully generated\n");
 
 	return OK;
 }
@@ -2455,7 +2455,7 @@ Error BindingsGenerator::_generate_cs_type(const TypeInterface &itype, const Str
 
 		output << MEMBER_BEGIN "/// <summary>\n"
 			   << INDENT1 "/// Invokes the method with the given name, using the given arguments.\n"
-			   << INDENT1 "/// This method is used by Godot to invoke methods from the engine side.\n"
+			   << INDENT1 "/// This method is used by Kosmic to invoke methods from the engine side.\n"
 			   << INDENT1 "/// Do not call or override this method.\n"
 			   << INDENT1 "/// </summary>\n"
 			   << INDENT1 "/// <param name=\"method\">Name of the method to invoke.</param>\n"
@@ -2550,7 +2550,7 @@ Error BindingsGenerator::_generate_cs_type(const TypeInterface &itype, const Str
 
 		output << MEMBER_BEGIN "/// <summary>\n"
 			   << INDENT1 "/// Check if the type contains a method with the given name.\n"
-			   << INDENT1 "/// This method is used by Godot to check if a method exists before invoking it.\n"
+			   << INDENT1 "/// This method is used by Kosmic to check if a method exists before invoking it.\n"
 			   << INDENT1 "/// Do not call or override this method.\n"
 			   << INDENT1 "/// </summary>\n"
 			   << INDENT1 "/// <param name=\"method\">Name of the method to check for.</param>\n";
@@ -2589,7 +2589,7 @@ Error BindingsGenerator::_generate_cs_type(const TypeInterface &itype, const Str
 
 		output << MEMBER_BEGIN "/// <summary>\n"
 			   << INDENT1 "/// Check if the type contains a signal with the given name.\n"
-			   << INDENT1 "/// This method is used by Godot to check if a signal exists before raising it.\n"
+			   << INDENT1 "/// This method is used by Kosmic to check if a signal exists before raising it.\n"
 			   << INDENT1 "/// Do not call or override this method.\n"
 			   << INDENT1 "/// </summary>\n"
 			   << INDENT1 "/// <param name=\"signal\">Name of the signal to check for.</param>\n";
@@ -3110,7 +3110,7 @@ Error BindingsGenerator::_generate_cs_method(const BindingsGenerator::TypeInterf
 		p_output.append(arguments_sig + ")\n" OPEN_BLOCK_L1);
 
 		if (p_imethod.is_virtual) {
-			// Godot virtual method must be overridden, therefore we return a default value by default.
+			// Kosmic virtual method must be overridden, therefore we return a default value by default.
 
 			if (return_type->cname == name_cache.type_void) {
 				p_output.append(CLOSE_BLOCK_L1);
@@ -3122,7 +3122,7 @@ Error BindingsGenerator::_generate_cs_method(const BindingsGenerator::TypeInterf
 		}
 
 		if (p_imethod.requires_object_call) {
-			// Fallback to Godot's object.Call(string, params)
+			// Fallback to Kosmic's object.Call(string, params)
 
 			p_output.append(INDENT2 CS_METHOD_CALL "(\"");
 			p_output.append(p_imethod.name);
@@ -3361,7 +3361,9 @@ Error BindingsGenerator::_generate_cs_signal(const BindingsGenerator::TypeInterf
 						cs_emitsignal_params << ", ";
 					}
 
-					p_output << arg_type->cs_type << " " << iarg.name;
+					String arg_cs_type = arg_type->cs_type + _get_generic_type_parameters(*arg_type, iarg.type.generic_type_parameters);
+
+					p_output << arg_cs_type << " " << iarg.name;
 
 					if (arg_type->is_enum) {
 						cs_emitsignal_params << "(long)";
@@ -3685,7 +3687,7 @@ const String BindingsGenerator::_get_generic_type_parameters(const TypeInterface
 	return params;
 }
 
-StringName BindingsGenerator::_get_type_name_from_meta(Variant::Type p_type, GodotTypeInfo::Metadata p_meta) {
+StringName BindingsGenerator::_get_type_name_from_meta(Variant::Type p_type, KosmicTypeInfo::Metadata p_meta) {
 	if (p_type == Variant::INT) {
 		return _get_int_type_name_from_meta(p_meta);
 	} else if (p_type == Variant::FLOAT) {
@@ -3695,36 +3697,36 @@ StringName BindingsGenerator::_get_type_name_from_meta(Variant::Type p_type, God
 	}
 }
 
-StringName BindingsGenerator::_get_int_type_name_from_meta(GodotTypeInfo::Metadata p_meta) {
+StringName BindingsGenerator::_get_int_type_name_from_meta(KosmicTypeInfo::Metadata p_meta) {
 	switch (p_meta) {
-		case GodotTypeInfo::METADATA_INT_IS_INT8:
+		case KosmicTypeInfo::METADATA_INT_IS_INT8:
 			return "sbyte";
 			break;
-		case GodotTypeInfo::METADATA_INT_IS_INT16:
+		case KosmicTypeInfo::METADATA_INT_IS_INT16:
 			return "short";
 			break;
-		case GodotTypeInfo::METADATA_INT_IS_INT32:
+		case KosmicTypeInfo::METADATA_INT_IS_INT32:
 			return "int";
 			break;
-		case GodotTypeInfo::METADATA_INT_IS_INT64:
+		case KosmicTypeInfo::METADATA_INT_IS_INT64:
 			return "long";
 			break;
-		case GodotTypeInfo::METADATA_INT_IS_UINT8:
+		case KosmicTypeInfo::METADATA_INT_IS_UINT8:
 			return "byte";
 			break;
-		case GodotTypeInfo::METADATA_INT_IS_UINT16:
+		case KosmicTypeInfo::METADATA_INT_IS_UINT16:
 			return "ushort";
 			break;
-		case GodotTypeInfo::METADATA_INT_IS_UINT32:
+		case KosmicTypeInfo::METADATA_INT_IS_UINT32:
 			return "uint";
 			break;
-		case GodotTypeInfo::METADATA_INT_IS_UINT64:
+		case KosmicTypeInfo::METADATA_INT_IS_UINT64:
 			return "ulong";
 			break;
-		case GodotTypeInfo::METADATA_INT_IS_CHAR16:
+		case KosmicTypeInfo::METADATA_INT_IS_CHAR16:
 			return "char";
 			break;
-		case GodotTypeInfo::METADATA_INT_IS_CHAR32:
+		case KosmicTypeInfo::METADATA_INT_IS_CHAR32:
 			// To prevent breaking compatibility, C# bindings need to keep using `long`.
 			return "long";
 		default:
@@ -3733,12 +3735,12 @@ StringName BindingsGenerator::_get_int_type_name_from_meta(GodotTypeInfo::Metada
 	}
 }
 
-StringName BindingsGenerator::_get_float_type_name_from_meta(GodotTypeInfo::Metadata p_meta) {
+StringName BindingsGenerator::_get_float_type_name_from_meta(KosmicTypeInfo::Metadata p_meta) {
 	switch (p_meta) {
-		case GodotTypeInfo::METADATA_REAL_IS_FLOAT:
+		case KosmicTypeInfo::METADATA_REAL_IS_FLOAT:
 			return "float";
 			break;
-		case GodotTypeInfo::METADATA_REAL_IS_DOUBLE:
+		case KosmicTypeInfo::METADATA_REAL_IS_DOUBLE:
 			return "double";
 			break;
 		default:
@@ -4059,7 +4061,7 @@ bool BindingsGenerator::_populate_object_type_interfaces() {
 
 				// A virtual method without the virtual flag. This is a special case.
 
-				// There is no method bind, so let's fallback to Godot's object.Call(string, params)
+				// There is no method bind, so let's fallback to Kosmic's object.Call(string, params)
 				imethod.requires_object_call = true;
 
 				// The method Object.free is registered as a virtual method, but without the virtual flag.
@@ -4100,7 +4102,7 @@ bool BindingsGenerator::_populate_object_type_interfaces() {
 			} else if (return_info.type == Variant::NIL) {
 				imethod.return_type.cname = name_cache.type_void;
 			} else {
-				imethod.return_type.cname = _get_type_name_from_meta(return_info.type, m ? m->get_argument_meta(-1) : (GodotTypeInfo::Metadata)method_info.return_val_metadata);
+				imethod.return_type.cname = _get_type_name_from_meta(return_info.type, m ? m->get_argument_meta(-1) : (KosmicTypeInfo::Metadata)method_info.return_val_metadata);
 			}
 
 			int idx = 0;
@@ -4130,7 +4132,7 @@ bool BindingsGenerator::_populate_object_type_interfaces() {
 				} else if (arginfo.type == Variant::NIL) {
 					iarg.type.cname = name_cache.type_Variant;
 				} else {
-					iarg.type.cname = _get_type_name_from_meta(arginfo.type, m ? m->get_argument_meta(idx) : (GodotTypeInfo::Metadata)method_info.get_argument_meta(idx));
+					iarg.type.cname = _get_type_name_from_meta(arginfo.type, m ? m->get_argument_meta(idx) : (KosmicTypeInfo::Metadata)method_info.get_argument_meta(idx));
 				}
 
 				iarg.name = escape_csharp_keyword(snake_to_camel_case(iarg.name));
@@ -4262,7 +4264,7 @@ bool BindingsGenerator::_populate_object_type_interfaces() {
 				} else if (arginfo.type == Variant::NIL) {
 					iarg.type.cname = name_cache.type_Variant;
 				} else {
-					iarg.type.cname = _get_type_name_from_meta(arginfo.type, (GodotTypeInfo::Metadata)method_info.get_argument_meta(idx));
+					iarg.type.cname = _get_type_name_from_meta(arginfo.type, (KosmicTypeInfo::Metadata)method_info.get_argument_meta(idx));
 				}
 
 				iarg.name = escape_csharp_keyword(snake_to_camel_case(iarg.name));
@@ -4735,7 +4737,7 @@ void BindingsGenerator::_populate_builtin_type_interfaces() {
 
 	// bool
 	itype = TypeInterface::create_value_type(String("bool"));
-	itype.cs_in_expr = "%0.ToGodotBool()";
+	itype.cs_in_expr = "%0.ToKosmicBool()";
 	itype.cs_out = "%5return %0(%1).ToBool();";
 	itype.c_type = "kosmic_bool";
 	itype.c_type_in = itype.c_type;
@@ -4992,7 +4994,7 @@ void BindingsGenerator::_populate_builtin_type_interfaces() {
 	itype.name = "Array_@generic";
 	itype.cname = itype.name;
 	itype.cs_out = "%5return new %2(%0(%1));";
-	// For generic Godot collections, Variant.From<T>/As<T> is slower, so we need this special case
+	// For generic Kosmic collections, Variant.From<T>/As<T> is slower, so we need this special case
 	itype.cs_variant_to_managed = "VariantUtils.ConvertToArray(%0)";
 	itype.cs_managed_to_variant = "VariantUtils.CreateFromArray(%0)";
 	builtin_types.insert(itype.cname, itype);
@@ -5019,7 +5021,7 @@ void BindingsGenerator::_populate_builtin_type_interfaces() {
 	itype.name = "Dictionary_@generic";
 	itype.cname = itype.name;
 	itype.cs_out = "%5return new %2(%0(%1));";
-	// For generic Godot collections, Variant.From<T>/As<T> is slower, so we need this special case
+	// For generic Kosmic collections, Variant.From<T>/As<T> is slower, so we need this special case
 	itype.cs_variant_to_managed = "VariantUtils.ConvertToDictionary(%0)";
 	itype.cs_managed_to_variant = "VariantUtils.CreateFromDictionary(%0)";
 	builtin_types.insert(itype.cname, itype);

@@ -471,7 +471,7 @@ bool KosmicCollisionSolver3D::solve_distance_world_boundary(const KosmicShape3D 
 
 	p_shape_B->get_supports(support_direction, max_supports, supports, support_count, support_type);
 
-	if (support_count == 0) { // This is a poor man's way to detect shapes that don't implement get_supports, such as GodotMotionShape3D.
+	if (support_count == 0) { // This is a poor man's way to detect shapes that don't implement get_supports, such as KosmicMotionShape3D.
 		Vector3 support_B = p_transform_B.xform(p_shape_B->get_support(support_direction));
 		r_point_A = p.project(support_B);
 		r_point_B = support_B;

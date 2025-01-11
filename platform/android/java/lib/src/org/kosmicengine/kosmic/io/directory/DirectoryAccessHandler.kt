@@ -33,7 +33,7 @@ package org.kosmicengine.kosmic.io.directory
 
 import android.content.Context
 import android.util.Log
-import org.kosmicengine.kosmic.Godot
+import org.kosmicengine.kosmic.Kosmic
 import org.kosmicengine.kosmic.io.StorageScope
 import org.kosmicengine.kosmic.io.directory.DirectoryAccessHandler.AccessType.ACCESS_RESOURCES
 

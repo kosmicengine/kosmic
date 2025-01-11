@@ -30,7 +30,7 @@
 /**************************************************************************/
 
 /*
-Adapted to Godot from the nethost library: https://github.com/dotnet/runtime/tree/main/src/native/corehost
+Adapted to Kosmic from the nethost library: https://github.com/dotnet/runtime/tree/main/src/native/corehost
 */
 
 /*

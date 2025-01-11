@@ -676,8 +676,6 @@ void FindReplaceBar::_search_text_submitted(const String &p_text) {
 	} else {
 		search_next();
 	}
-
-	callable_mp(search_text, &LineEdit::edit).call_deferred();
 }
 
 void FindReplaceBar::_replace_text_submitted(const String &p_text) {
@@ -785,6 +783,7 @@ FindReplaceBar::FindReplaceBar() {
 
 	// Search toolbar
 	search_text = memnew(LineEdit);
+	search_text->set_keep_editing_on_text_submit(true);
 	vbc_lineedit->add_child(search_text);
 	search_text->set_placeholder(TTR("Find"));
 	search_text->set_tooltip_text(TTR("Find"));
@@ -867,7 +866,7 @@ void CodeTextEditor::input(const Ref<InputEvent> &event) {
 
 	const Ref<InputEventKey> key_event = event;
 
-	if (!key_event.is_valid()) {
+	if (key_event.is_null()) {
 		return;
 	}
 	if (!key_event->is_pressed()) {
@@ -1054,7 +1053,7 @@ Ref<Texture2D> CodeTextEditor::_get_completion_icon(const ScriptLanguage::CodeCo
 				tex = get_editor_theme_icon(p_option.display);
 			} else {
 				tex = EditorNode::get_singleton()->get_class_icon(p_option.display);
-				if (!tex.is_valid()) {
+				if (tex.is_null()) {
 					tex = get_editor_theme_icon(SNAME("Object"));
 				}
 			}

@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 using Kosmic.NativeInterop;
 
 partial class Methods
@@ -19,7 +19,7 @@ partial class Methods
     /// Do not call this method.
     /// </summary>
     [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-    internal new static global::System.Collections.Generic.List<global::Kosmic.Bridge.MethodInfo> GetGodotMethodList()
+    internal new static global::System.Collections.Generic.List<global::Kosmic.Bridge.MethodInfo> GetKosmicMethodList()
     {
         var methods = new global::System.Collections.Generic.List<global::Kosmic.Bridge.MethodInfo>(3);
         methods.Add(new(name: MethodName.@MethodWithOverload, returnVal: new(type: (global::Kosmic.Variant.Type)0, name: "", hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)6, exported: false), flags: (global::Kosmic.MethodFlags)1, arguments: null, defaultArguments: null));

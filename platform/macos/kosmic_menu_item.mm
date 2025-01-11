@@ -31,7 +31,7 @@
 
 #include "kosmic_menu_item.h"
 
-@implementation GodotMenuItem
+@implementation KosmicMenuItem
 
 - (id)init {
 	self = [super init];

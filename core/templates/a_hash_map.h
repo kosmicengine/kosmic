@@ -281,7 +281,7 @@ private:
 	}
 
 public:
-	/* Standard Godot Container API */
+	/* Standard Kosmic Container API */
 
 	_FORCE_INLINE_ uint32_t get_capacity() const { return capacity + 1; }
 	_FORCE_INLINE_ uint32_t size() const { return num_elements; }

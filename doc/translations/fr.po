@@ -1,7 +1,7 @@
 # French translation of the Godot Engine class reference.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 #
 # Rémi Verschelde <remi@godotengine.org>, 2020, 2021.
 # Freyja <aerandil@gmail.com>, 2020, 2023.
@@ -110,11 +110,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine class reference\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-09-04 20:31+0000\n"
 "Last-Translator: Fontaine Nathan <nathan.fontaine53@gmail.com>\n"
-"Language-Team: French <https://hosted.weblate.org/projects/godot-engine/godot-"
+"Language-Team: French <https://hosted.weblate.org/projects/kosmic-engine/kosmic-"
 "class-reference/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -6979,7 +6979,7 @@ msgid ""
 "assert(data.to_utf8_buffer() == decrypted)\n"
 "[/voyscript]\n"
 "[csharp]\n"
-"using Godot;\n"
+"using Kosmic;\n"
 "using System.Diagnostics;\n"
 "\n"
 "Crypto crypto = new Crypto();\n"
@@ -9294,7 +9294,7 @@ msgid ""
 "Vector2(100, 100), new Vector2(0, 100) };\n"
 "var offset = new Vector2(50, 50);\n"
 "polygon = new Transform2D(0, offset) * polygon;\n"
-"KS.Print((Variant)polygon); // prints [(50, 50), (150, 50), (150, 150), (50, "
+"GD.Print((Variant)polygon); // prints [(50, 50), (150, 50), (150, 150), (50, "
 "150)]\n"
 "[/csharp]\n"
 "[/codeblocks]"
@@ -9327,7 +9327,7 @@ msgstr ""
 "Vector2(100, 100), new Vector2(0, 100) };\n"
 "var offset = new Vector2(50, 50);\n"
 "polygon = new Transform2D(0, offset) * polygon;\n"
-"KS.Print((Variant)polygon); // prints [(50, 50), (150, 50), (150, 150), (50, "
+"GD.Print((Variant)polygon); // prints [(50, 50), (150, 50), (150, 150), (50, "
 "150)]\n"
 "[/csharp]\n"
 "[/codeblocks]"
@@ -17720,10 +17720,10 @@ msgstr ""
 "[UPNPDevice]."
 
 msgid "IGD service type."
-msgstr "Type de service IKS."
+msgstr "Type de service IGD."
 
 msgid "IGD status. See [enum IGDStatus]."
-msgstr "Statut IKS. Voir [enum IGDStatus]."
+msgstr "Statut IGD. Voir [enum IGDStatus]."
 
 msgid "Service type."
 msgstr "Type de service."
@@ -17737,7 +17737,7 @@ msgstr "Réponse HTTP vide."
 msgid "Returned response contained no URLs."
 msgstr "La réponse retournée ne contenait pas d’URL."
 
-msgid "Not a valid IKS."
+msgid "Not a valid IGD."
 msgstr "Ce n'est pas un IGD valide."
 
 msgid "Disconnected."

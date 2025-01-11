@@ -13,7 +13,7 @@ namespace Kosmic.SourceGenerators
 
         public void Execute(GeneratorExecutionContext context)
         {
-            if (context.IsGodotToolsProject() || context.IsKosmicSourceGeneratorDisabled("KosmicPluginsInitializer"))
+            if (context.IsKosmicToolsProject() || context.IsKosmicSourceGeneratorDisabled("KosmicPluginsInitializer"))
                 return;
 
             string source =
@@ -27,12 +27,12 @@ namespace KosmicPlugins.Game
     internal static partial class Main
     {
         [UnmanagedCallersOnly(EntryPoint = ""kosmicsharp_game_main_init"")]
-        private static kosmic_bool InitializeFromGameProject(IntPtr godotDllHandle, IntPtr outManagedCallbacks,
+        private static kosmic_bool InitializeFromGameProject(IntPtr kosmicDllHandle, IntPtr outManagedCallbacks,
             IntPtr unmanagedCallbacks, int unmanagedCallbacksSize)
         {
             try
             {
-                DllImportResolver dllImportResolver = new KosmicDllImportResolver(godotDllHandle).OnResolveDllImport;
+                DllImportResolver dllImportResolver = new KosmicDllImportResolver(kosmicDllHandle).OnResolveDllImport;
 
                 var coreApiAssembly = typeof(global::Kosmic.KosmicObject).Assembly;
 
@@ -49,7 +49,7 @@ namespace KosmicPlugins.Game
             catch (Exception e)
             {
                 global::System.Console.Error.WriteLine(e);
-                return false.ToGodotBool();
+                return false.ToKosmicBool();
             }
         }
     }

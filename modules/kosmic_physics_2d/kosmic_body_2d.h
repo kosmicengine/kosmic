@@ -42,7 +42,7 @@
 class KosmicConstraint2D;
 class KosmicPhysicsDirectBodyState2D;
 
-class GodotBody2D : public KosmicCollisionObject2D {
+class KosmicBody2D : public KosmicCollisionObject2D {
 	PhysicsServer2D::BodyMode mode = PhysicsServer2D::BODY_MODE_RIGID;
 
 	Vector2 biased_linear_velocity;
@@ -93,9 +93,9 @@ class GodotBody2D : public KosmicCollisionObject2D {
 	Vector2 constant_force;
 	real_t constant_torque = 0.0;
 
-	SelfList<GodotBody2D> active_list;
-	SelfList<GodotBody2D> mass_properties_update_list;
-	SelfList<GodotBody2D> direct_state_query_list;
+	SelfList<KosmicBody2D> active_list;
+	SelfList<KosmicBody2D> mass_properties_update_list;
+	SelfList<KosmicBody2D> direct_state_query_list;
 
 	VSet<RID> exceptions;
 	PhysicsServer2D::CCDMode continuous_cd_mode = PhysicsServer2D::CCD_MODE_DISABLED;
@@ -110,12 +110,12 @@ class GodotBody2D : public KosmicCollisionObject2D {
 	List<Pair<KosmicConstraint2D *, int>> constraint_list;
 
 	struct AreaCMP {
-		GodotArea2D *area = nullptr;
+		KosmicArea2D *area = nullptr;
 		int refCount = 0;
 		_FORCE_INLINE_ bool operator==(const AreaCMP &p_cmp) const { return area->get_self() == p_cmp.area->get_self(); }
 		_FORCE_INLINE_ bool operator<(const AreaCMP &p_cmp) const { return area->get_priority() < p_cmp.area->get_priority(); }
 		_FORCE_INLINE_ AreaCMP() {}
-		_FORCE_INLINE_ AreaCMP(GodotArea2D *p_area) {
+		_FORCE_INLINE_ AreaCMP(KosmicArea2D *p_area) {
 			area = p_area;
 			refCount = 1;
 		}
@@ -163,7 +163,7 @@ public:
 
 	KosmicPhysicsDirectBodyState2D *get_direct_state();
 
-	_FORCE_INLINE_ void add_area(GodotArea2D *p_area) {
+	_FORCE_INLINE_ void add_area(KosmicArea2D *p_area) {
 		int index = areas.find(AreaCMP(p_area));
 		if (index > -1) {
 			areas.write[index].refCount += 1;
@@ -172,7 +172,7 @@ public:
 		}
 	}
 
-	_FORCE_INLINE_ void remove_area(GodotArea2D *p_area) {
+	_FORCE_INLINE_ void remove_area(KosmicArea2D *p_area) {
 		int index = areas.find(AreaCMP(p_area));
 		if (index > -1) {
 			areas.write[index].refCount -= 1;
@@ -337,13 +337,13 @@ public:
 
 	bool sleep_test(real_t p_step);
 
-	GodotBody2D();
-	~GodotBody2D();
+	KosmicBody2D();
+	~KosmicBody2D();
 };
 
 //add contact inline
 
-void GodotBody2D::add_contact(const Vector2 &p_local_pos, const Vector2 &p_local_normal, real_t p_depth, int p_local_shape, const Vector2 &p_local_velocity_at_pos, const Vector2 &p_collider_pos, int p_collider_shape, ObjectID p_collider_instance_id, const RID &p_collider, const Vector2 &p_collider_velocity_at_pos, const Vector2 &p_impulse) {
+void KosmicBody2D::add_contact(const Vector2 &p_local_pos, const Vector2 &p_local_normal, real_t p_depth, int p_local_shape, const Vector2 &p_local_velocity_at_pos, const Vector2 &p_collider_pos, int p_collider_shape, ObjectID p_collider_instance_id, const RID &p_collider, const Vector2 &p_collider_velocity_at_pos, const Vector2 &p_impulse) {
 	int c_max = contacts.size();
 
 	if (c_max == 0) {

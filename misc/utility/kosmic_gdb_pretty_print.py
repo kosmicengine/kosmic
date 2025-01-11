@@ -1,7 +1,7 @@
 """
-Load this file to your GDB session to enable pretty-printing of some Godot C++ types.
+Load this file to your GDB session to enable pretty-printing of some Kosmic C++ types.
 
-GDB command: `source misc/utility/kosmic_gdb_pretty_print.py`.
+GDB command: `source misc/utility/kosmic_ksb_pretty_print.py`.
 
 To load these automatically in Visual Studio Code, add the source command to
 the `setupCommands` of your configuration in `launch.json`:
@@ -9,8 +9,8 @@ the `setupCommands` of your configuration in `launch.json`:
 "setupCommands": [
 ...
     {
-        "description": "Load custom pretty-printers for Godot types.",
-        "text": "source ${workspaceFolder}/misc/utility/kosmic_gdb_pretty_print.py"
+        "description": "Load custom pretty-printers for Kosmic types.",
+        "text": "source ${workspaceFolder}/misc/utility/kosmic_ksb_pretty_print.py"
     }
 ]
 ```
@@ -27,7 +27,7 @@ import re
 import gdb  # type: ignore
 
 
-# Printer for Godot StringName variables.
+# Printer for Kosmic StringName variables.
 class KosmicStringNamePrinter:
     def __init__(self, value):
         self.value = value
@@ -40,7 +40,7 @@ class KosmicStringNamePrinter:
         return "string"
 
 
-# Printer for Godot String variables.
+# Printer for Kosmic String variables.
 class KosmicStringPrinter:
     def __init__(self, value):
         self.value = value
@@ -53,7 +53,7 @@ class KosmicStringPrinter:
         return "string"
 
 
-# Printer for Godot Vector variables.
+# Printer for Kosmic Vector variables.
 class KosmicVectorPrinter:
     def __init__(self, value):
         self.value = value

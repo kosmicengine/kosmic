@@ -33,7 +33,7 @@
 #define EDITOR_RESOURCE_CONVERSION_PLUGIN_H
 
 #include "core/io/resource.h"
-#include "core/object/ksvirtual.gen.inc"
+#include "core/object/gdvirtual.gen.inc"
 
 class EditorResourceConversionPlugin : public RefCounted {
 	KSCLASS(EditorResourceConversionPlugin, RefCounted);

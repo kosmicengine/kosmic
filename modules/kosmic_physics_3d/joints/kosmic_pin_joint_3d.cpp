@@ -30,7 +30,7 @@
 /**************************************************************************/
 
 /*
-Adapted to Godot from the Bullet library.
+Adapted to Kosmic from the Bullet library.
 */
 
 /*
@@ -167,7 +167,7 @@ real_t KosmicPinJoint3D::get_param(PhysicsServer3D::PinJointParam p_param) const
 	return 0;
 }
 
-KosmicPinJoint3D::KosmicPinJoint3D(GodotBody3D *p_body_a, const Vector3 &p_pos_a, GodotBody3D *p_body_b, const Vector3 &p_pos_b) :
+KosmicPinJoint3D::KosmicPinJoint3D(KosmicBody3D *p_body_a, const Vector3 &p_pos_a, KosmicBody3D *p_body_b, const Vector3 &p_pos_b) :
 		KosmicJoint3D(_arr, 2) {
 	A = p_body_a;
 	B = p_body_b;

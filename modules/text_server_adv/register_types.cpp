@@ -59,7 +59,7 @@ void uninitialize_text_server_adv_module(ModuleInitializationLevel p_level) {
 #include <kosmic_cpp/core/defs.hpp>
 #include <kosmic_cpp/core/memory.hpp>
 
-using namespace godot;
+using namespace Kosmic;
 
 extern "C" {
 

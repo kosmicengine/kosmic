@@ -163,17 +163,18 @@ TEST_CASE("[Marshalls] Floating point double precision decoding") {
 }
 
 TEST_CASE("[Marshalls] C string encoding") {
-	char cstring[] = "Godot"; // 5 characters
+	char cstring[] = "Kosmic"; // 5 characters
 	uint8_t data[6];
 
 	int actual_size = encode_cstring(cstring, data);
 	CHECK(actual_size == 6);
-	CHECK(data[0] == 'G');
+	CHECK(data[0] == 'K');
 	CHECK(data[1] == 'o');
-	CHECK(data[2] == 'd');
-	CHECK(data[3] == 'o');
-	CHECK(data[4] == 't');
-	CHECK(data[5] == '\0');
+	CHECK(data[2] == 's');
+	CHECK(data[3] == 'm');
+	CHECK(data[4] == 'i');
+	CHECK(data[5] == 'c');
+	CHECK(data[6] == '\0');
 }
 
 TEST_CASE("[Marshalls] NIL Variant encoding") {

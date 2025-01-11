@@ -5,7 +5,7 @@ using Microsoft.Build.Framework;
 
 namespace KosmicTools.BuildLogger
 {
-    public class GodotBuildLogger : ILogger
+    public class KosmicBuildLogger : ILogger
     {
         public string? Parameters { get; set; }
         public LoggerVerbosity Verbosity { get; set; }

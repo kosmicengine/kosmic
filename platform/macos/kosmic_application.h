@@ -38,7 +38,7 @@
 #import <Foundation/Foundation.h>
 #import <IOKit/hidsystem/ev_keymap.h>
 
-@interface GodotApplication : NSApplication
+@interface KosmicApplication : NSApplication
 @end
 
 #endif // KOSMIC_APPLICATION_H

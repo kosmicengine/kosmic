@@ -1,7 +1,7 @@
 # Polish translation of the Godot Engine properties.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # 8-bit Pixel <dawdejw@gmail.com>, 2016, 2023.
 # Adam Wolanski <adam.wolanski94@gmail.com>, 2017.
 # Adrian Węcławski <weclawskiadrian@gmail.com>, 2016.
@@ -96,11 +96,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine properties\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-09-02 17:25+0000\n"
 "Last-Translator: Tomek <kobewi4e@gmail.com>\n"
-"Language-Team: Polish <https://hosted.weblate.org/projects/godot-engine/godot-"
+"Language-Team: Polish <https://hosted.weblate.org/projects/kosmic-engine/kosmic-"
 "properties/pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"

@@ -54,6 +54,7 @@
 #include "tests/core/io/test_packet_peer.h"
 #include "tests/core/io/test_pck_packer.h"
 #include "tests/core/io/test_resource.h"
+#include "tests/core/io/test_resource_uid.h"
 #include "tests/core/io/test_stream_peer.h"
 #include "tests/core/io/test_stream_peer_buffer.h"
 #include "tests/core/io/test_tcp_server.h"
@@ -171,6 +172,7 @@
 
 #include "tests/scene/test_arraymesh.h"
 #include "tests/scene/test_camera_3d.h"
+#include "tests/scene/test_gltf_document.h"
 #include "tests/scene/test_height_map_shape_3d.h"
 #include "tests/scene/test_path_3d.h"
 #include "tests/scene/test_path_follow_3d.h"
@@ -200,7 +202,7 @@
 int test_main(int argc, char *argv[]) {
 	bool run_tests = true;
 
-	// Convert arguments to Godot's command-line.
+	// Convert arguments to Kosmic's command-line.
 	List<String> args;
 
 	for (int i = 0; i < argc; i++) {
@@ -239,10 +241,10 @@ int test_main(int argc, char *argv[]) {
 	}
 
 	if (test_args.size() > 0) {
-		// Convert Godot command line arguments back to standard arguments.
+		// Convert Kosmic command line arguments back to standard arguments.
 		char **doctest_args = new char *[test_args.size()];
 		for (uint32_t x = 0; x < test_args.size(); x++) {
-			// Operation to convert Godot string to non wchar string.
+			// Operation to convert Kosmic string to non wchar string.
 			CharString cs = test_args[x].utf8();
 			const char *str = cs.get_data();
 			// Allocate the string copy.
@@ -264,8 +266,8 @@ int test_main(int argc, char *argv[]) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct GodotTestCaseListener : public doctest::IReporter {
-	GodotTestCaseListener(const doctest::ContextOptions &p_in) {}
+struct KosmicTestCaseListener : public doctest::IReporter {
+	KosmicTestCaseListener(const doctest::ContextOptions &p_in) {}
 
 	SignalWatcher *signal_watcher = nullptr;
 
@@ -485,4 +487,4 @@ private:
 	}
 };
 
-REGISTER_LISTENER("GodotTestCaseListener", 1, GodotTestCaseListener);
+REGISTER_LISTENER("KosmicTestCaseListener", 1, KosmicTestCaseListener);

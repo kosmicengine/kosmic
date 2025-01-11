@@ -144,7 +144,7 @@ Node *EditorSceneFormatImporterBlend::import_scene(const String &p_path, uint32_
 	const String sink = ProjectSettings::get_singleton()->get_imported_files_path().path_join(
 			vformat("%s-%s.gltf", blend_basename, p_path.md5_text()));
 	const String sink_global = ProjectSettings::get_singleton()->globalize_path(sink);
-	// If true, unpack the original images to the Godot file system and use them. Allows changing image import settings like VRAM compression.
+	// If true, unpack the original images to the Kosmic file system and use them. Allows changing image import settings like VRAM compression.
 	// If false, allow Blender to convert the original images, such as re-packing roughness and metallic into one roughness+metallic texture.
 	// In most cases this is desired, but if the .blend file's images are not in the correct format, this must be disabled for correct behavior.
 	const bool unpack_original_images = p_options.has(SNAME("blender/materials/unpack_enabled")) && p_options[SNAME("blender/materials/unpack_enabled")];

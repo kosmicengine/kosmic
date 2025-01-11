@@ -7,7 +7,7 @@
 		A color represented in RGBA format by a red ([member r]), green ([member g]), blue ([member b]), and alpha ([member a]) component. Each component is a 32-bit floating-point value, usually ranging from [code]0.0[/code] to [code]1.0[/code]. Some properties (such as [member CanvasItem.modulate]) may support values greater than [code]1.0[/code], for overbright or HDR (High Dynamic Range) colors.
 		Colors can be created in various ways: By the various [Color] constructors, by static methods such as [method from_hsv], and by using a name from the set of standardized colors based on [url=https://en.wikipedia.org/wiki/X11_color_names]X11 color names[/url] with the addition of [constant TRANSPARENT]. VoyScript also provides [method @VoyScript.Color8], which uses integers from [code]0[/code] to [code]255[/code] and doesn't support overbright colors.
 		[b]Note:[/b] In a boolean context, a Color will evaluate to [code]false[/code] if it is equal to [code]Color(0, 0, 0, 1)[/code] (opaque black). Otherwise, a Color will always evaluate to [code]true[/code].
-		[url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/color_constants.png]Color constants cheatsheet[/url]
+		[url=https://raw.githubusercontent.com/godotengine/kosmic-docs/master/img/color_constants.png]Color constants cheatsheet[/url]
 	</description>
 	<tutorials>
 		<link title="2D GD Paint Demo">https://godotengine.org/asset-library/asset/2768</link>
@@ -175,6 +175,22 @@
 				var color = Color.FromOkHsl(0.58f, 0.5f, 0.79f, 0.8f);
 				[/csharp]
 				[/codeblocks]
+			</description>
+		</method>
+		<method name="from_rgba8" qualifiers="static">
+			<return type="Color" />
+			<param index="0" name="r8" type="int" />
+			<param index="1" name="g8" type="int" />
+			<param index="2" name="b8" type="int" />
+			<param index="3" name="a8" type="int" default="255" />
+			<description>
+				Returns a [Color] constructed from red ([param r8]), green ([param g8]), blue ([param b8]), and optionally alpha ([param a8]) integer channels, each divided by [code]255.0[/code] for their final value.
+				[codeblock]
+				var red = Color.from_rgba8(255, 0, 0)             # Same as Color(1, 0, 0).
+				var dark_blue = Color.from_rgba8(0, 0, 51)        # Same as Color(0, 0, 0.2).
+				var my_color = Color.from_rgba8(306, 255, 0, 102) # Same as Color(1.2, 1, 0, 0.4).
+				[/codeblock]
+				[b]Note:[/b] Due to the lower precision of [method from_rgba8] compared to the standard [Color] constructor, a color created with [method from_rgba8] will generally not be equal to the same color created with the standard [Color] constructor. Use [method is_equal_approx] for comparisons to avoid issues with floating-point precision error.
 			</description>
 		</method>
 		<method name="from_rgbe9995" qualifiers="static">
@@ -367,7 +383,7 @@
 				[/voyscript]
 				[csharp]
 				var color = new Color(1.0f, 0.5f, 0.2f);
-				KS.Print(color.ToAbgr32()); // Prints 4281565439
+				GD.Print(color.ToAbgr32()); // Prints 4281565439
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -383,7 +399,7 @@
 				[/voyscript]
 				[csharp]
 				var color = new Color(1.0f, 0.5f, 0.2f);
-				KS.Print(color.ToAbgr64()); // Prints -225178692812801
+				GD.Print(color.ToAbgr64()); // Prints -225178692812801
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -399,7 +415,7 @@
 				[/voyscript]
 				[csharp]
 				var color = new Color(1.0f, 0.5f, 0.2f);
-				KS.Print(color.ToArgb32()); // Prints 4294934323
+				GD.Print(color.ToArgb32()); // Prints 4294934323
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -415,7 +431,7 @@
 				[/voyscript]
 				[csharp]
 				var color = new Color(1.0f, 0.5f, 0.2f);
-				KS.Print(color.ToArgb64()); // Prints -2147470541
+				GD.Print(color.ToArgb64()); // Prints -2147470541
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -451,7 +467,7 @@
 				[/voyscript]
 				[csharp]
 				var color = new Color(1, 0.5f, 0.2f);
-				KS.Print(color.ToRgba32()); // Prints 4286526463
+				GD.Print(color.ToRgba32()); // Prints 4286526463
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -467,7 +483,7 @@
 				[/voyscript]
 				[csharp]
 				var color = new Color(1, 0.5f, 0.2f);
-				KS.Print(color.ToRgba64()); // Prints -140736629309441
+				GD.Print(color.ToRgba64()); // Prints -140736629309441
 				[/csharp]
 				[/codeblocks]
 			</description>

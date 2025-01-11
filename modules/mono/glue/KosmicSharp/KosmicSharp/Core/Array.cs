@@ -47,7 +47,7 @@ namespace Kosmic.Collections
         /// The <paramref name="collection"/> is <see langword="null"/>.
         /// </exception>
         /// <param name="collection">The collection of elements to construct from.</param>
-        /// <returns>A new Godot Array.</returns>
+        /// <returns>A new Kosmic Array.</returns>
         public Array(IEnumerable<Variant> collection) : this()
         {
             ArgumentNullException.ThrowIfNull(collection);
@@ -63,7 +63,7 @@ namespace Kosmic.Collections
         /// The <paramref name="array"/> is <see langword="null"/>.
         /// </exception>
         /// <param name="array">The objects to put in the new array.</param>
-        /// <returns>A new Godot Array.</returns>
+        /// <returns>A new Kosmic Array.</returns>
         public Array(Variant[] array)
         {
             ArgumentNullException.ThrowIfNull(array);
@@ -85,7 +85,7 @@ namespace Kosmic.Collections
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="array"/> is <see langword="null"/>.
         /// </exception>
-        /// <returns>A new Godot Array.</returns>
+        /// <returns>A new Kosmic Array.</returns>
         public Array(Span<StringName> array)
         {
             if (array == null)
@@ -108,7 +108,7 @@ namespace Kosmic.Collections
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="array"/> is <see langword="null"/>.
         /// </exception>
-        /// <returns>A new Godot Array.</returns>
+        /// <returns>A new Kosmic Array.</returns>
         public Array(Span<NodePath> array)
         {
             if (array == null)
@@ -131,7 +131,7 @@ namespace Kosmic.Collections
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="array"/> is <see langword="null"/>.
         /// </exception>
-        /// <returns>A new Godot Array.</returns>
+        /// <returns>A new Kosmic Array.</returns>
         public Array(Span<Rid> array)
         {
             if (array == null)
@@ -158,7 +158,7 @@ namespace Kosmic.Collections
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="array"/> is <see langword="null"/>.
         /// </exception>
-        /// <returns>A new Godot Array.</returns>
+        /// <returns>A new Kosmic Array.</returns>
         public Array(ReadOnlySpan<KosmicObject> array)
         {
             if (array == null)
@@ -224,12 +224,12 @@ namespace Kosmic.Collections
         /// setting.
         /// </summary>
         /// <param name="deep">If <see langword="true"/>, performs a deep copy.</param>
-        /// <returns>A new Godot Array.</returns>
+        /// <returns>A new Kosmic Array.</returns>
         public Array Duplicate(bool deep = false)
         {
             kosmic_array newArray;
             var self = (kosmic_array)NativeValue;
-            NativeFuncs.kosmicsharp_array_duplicate(ref self, deep.ToGodotBool(), out newArray);
+            NativeFuncs.kosmicsharp_array_duplicate(ref self, deep.ToKosmicBool(), out newArray);
             return CreateTakingOwnershipOfDisposableValue(newArray);
         }
 
@@ -439,7 +439,7 @@ namespace Kosmic.Collections
         {
             kosmic_array newArray;
             var self = (kosmic_array)NativeValue;
-            NativeFuncs.kosmicsharp_array_slice(ref self, start, end, step, deep.ToGodotBool(), out newArray);
+            NativeFuncs.kosmicsharp_array_slice(ref self, start, end, step, deep.ToKosmicBool(), out newArray);
             return CreateTakingOwnershipOfDisposableValue(newArray);
         }
 
@@ -478,7 +478,7 @@ namespace Kosmic.Collections
         /// </summary>
         /// <param name="left">The first array.</param>
         /// <param name="right">The second array.</param>
-        /// <returns>A new Godot Array with the contents of both arrays.</returns>
+        /// <returns>A new Kosmic Array with the contents of both arrays.</returns>
         public static Array operator +(Array left, Array right)
         {
             if (left == null)
@@ -570,7 +570,7 @@ namespace Kosmic.Collections
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection), "Value cannot be null.");
 
-            // If the collection is another Godot Array, we can add the items
+            // If the collection is another Kosmic Array, we can add the items
             // with a single interop call.
             if (collection is Array array)
             {
@@ -1029,7 +1029,7 @@ namespace Kosmic.Collections
         }
     }
 
-    internal interface IGenericGodotArray
+    internal interface IGenericKosmicArray
     {
         public Array UnderlyingArray { get; }
     }
@@ -1052,10 +1052,10 @@ namespace Kosmic.Collections
         IReadOnlyList<T>,
         ICollection<T>,
         IEnumerable<T>,
-        IGenericGodotArray
+        IGenericKosmicArray
     {
-        private static kosmic_variant ToVariantFunc(scoped in Array<T> godotArray) =>
-            VariantUtils.CreateFromArray(godotArray);
+        private static kosmic_variant ToVariantFunc(scoped in Array<T> kosmicArray) =>
+            VariantUtils.CreateFromArray(kosmicArray);
 
         private static Array<T> FromVariantFunc(in kosmic_variant variant) =>
             VariantUtils.ConvertToArray<T>(variant);
@@ -1084,7 +1084,7 @@ namespace Kosmic.Collections
 
         private readonly Array _underlyingArray;
 
-        Array IGenericGodotArray.UnderlyingArray => _underlyingArray;
+        Array IGenericKosmicArray.UnderlyingArray => _underlyingArray;
 
         internal ref kosmic_array.movable NativeValue
         {
@@ -1095,7 +1095,7 @@ namespace Kosmic.Collections
         /// <summary>
         /// Constructs a new empty <see cref="Array{T}"/>.
         /// </summary>
-        /// <returns>A new Godot Array.</returns>
+        /// <returns>A new Kosmic Array.</returns>
         public Array()
         {
             _underlyingArray = new Array();
@@ -1109,7 +1109,7 @@ namespace Kosmic.Collections
         /// The <paramref name="collection"/> is <see langword="null"/>.
         /// </exception>
         /// <param name="collection">The collection of elements to construct from.</param>
-        /// <returns>A new Godot Array.</returns>
+        /// <returns>A new Kosmic Array.</returns>
         public Array(IEnumerable<T> collection)
         {
             ArgumentNullException.ThrowIfNull(collection);
@@ -1128,7 +1128,7 @@ namespace Kosmic.Collections
         /// The <paramref name="array"/> is <see langword="null"/>.
         /// </exception>
         /// <param name="array">The items to put in the new array.</param>
-        /// <returns>A new Godot Array.</returns>
+        /// <returns>A new Kosmic Array.</returns>
         public Array(T[] array)
         {
             ArgumentNullException.ThrowIfNull(array);
@@ -1147,7 +1147,7 @@ namespace Kosmic.Collections
         /// The <paramref name="array"/> is <see langword="null"/>.
         /// </exception>
         /// <param name="array">The untyped array to construct from.</param>
-        /// <returns>A new Godot Array.</returns>
+        /// <returns>A new Kosmic Array.</returns>
         public Array(Array array)
         {
             ArgumentNullException.ThrowIfNull(array);
@@ -1163,7 +1163,7 @@ namespace Kosmic.Collections
         /// Converts this typed <see cref="Array{T}"/> to an untyped <see cref="Array"/>.
         /// </summary>
         /// <param name="from">The typed array to convert.</param>
-        /// <returns>A new Godot Array, or <see langword="null"/> if <see paramref="from"/> was null.</returns>
+        /// <returns>A new Kosmic Array, or <see langword="null"/> if <see paramref="from"/> was null.</returns>
         [return: NotNullIfNotNull("from")]
         public static explicit operator Array?(Array<T>? from)
         {
@@ -1174,7 +1174,7 @@ namespace Kosmic.Collections
         /// Duplicates this <see cref="Array{T}"/>.
         /// </summary>
         /// <param name="deep">If <see langword="true"/>, performs a deep copy.</param>
-        /// <returns>A new Godot Array.</returns>
+        /// <returns>A new Kosmic Array.</returns>
         public Array<T> Duplicate(bool deep = false)
         {
             return new Array<T>(_underlyingArray.Duplicate(deep));
@@ -1397,7 +1397,7 @@ namespace Kosmic.Collections
         /// </summary>
         /// <param name="left">The first array.</param>
         /// <param name="right">The second array.</param>
-        /// <returns>A new Godot Array with the contents of both arrays.</returns>
+        /// <returns>A new Kosmic Array with the contents of both arrays.</returns>
         public static Array<T> operator +(Array<T> left, Array<T> right)
         {
             if (left == null)
@@ -1637,7 +1637,7 @@ namespace Kosmic.Collections
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection), "Value cannot be null.");
 
-            // If the collection is another Godot Array, we can add the items
+            // If the collection is another Kosmic Array, we can add the items
             // with a single interop call.
             if (collection is Array array)
             {
@@ -1863,7 +1863,7 @@ namespace Kosmic.Collections
         public static implicit operator Variant(Array<T> from) => Variant.CreateFrom(from);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static explicit operator Array<T>(Variant from) => from.AsGodotArray<T>();
+        public static explicit operator Array<T>(Variant from) => from.AsKosmicArray<T>();
 
         private void ThrowIfReadOnly()
         {

@@ -1,7 +1,7 @@
 # German translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Alexander Mahr <alex.mahr@gmail.com>, 2016, 2019.
 # Andreas Esau <andreasesau@gmail.com>, 2016.
 # Andreas Haas <liu.gam3@gmail.com>, 2016.
@@ -115,11 +115,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-08-16 17:39+0000\n"
 "Last-Translator: tct123 <tct1234@protonmail.com>\n"
-"Language-Team: German <https://hosted.weblate.org/projects/godot-engine/godot/"
+"Language-Team: German <https://hosted.weblate.org/projects/kosmic-engine/godot/"
 "de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -2063,7 +2063,7 @@ msgstr ""
 "Klicken, um die Versionsnummer zu kopieren."
 
 msgid "Godot Engine contributors"
-msgstr "Mitwirkende der Godot Engine"
+msgstr "Mitwirkende der Kosmic Engine"
 
 msgid "Project Founders"
 msgstr "Projektgründer"
@@ -2623,7 +2623,7 @@ msgstr "[leer]"
 msgid "[unsaved]"
 msgstr "[ungespeichert]"
 
-msgid "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
 msgstr "%s – Godot-Engine"
 
 msgid "Move this dock right one tab."
@@ -13969,7 +13969,7 @@ msgstr ""
 "organization des Graphen."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
@@ -13979,7 +13979,7 @@ msgstr ""
 "werden."
 
 msgid ""
-"Custom Kosmic Shader Language expression, which is placed on top of the "
+"Custom Godot Shader Language expression, which is placed on top of the "
 "resulted shader. You can place various function definitions inside and call "
 "it later in the Expressions. You can also declare varyings, parameters and "
 "constants."

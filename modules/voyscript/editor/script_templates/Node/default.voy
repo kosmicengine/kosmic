@@ -1,6 +1,8 @@
-# meta-description: Base template for Node with default Godot cycle methods
+# meta-description: Base template for Node with default Kosmic cycle methods
 
 extends _BASE_
+
+var _name: String = "Kosmic"
 
 
 # Called when the node enters the scene tree for the first time.
@@ -10,4 +12,4 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	print(_name) # Print "Kosmic" every frame.

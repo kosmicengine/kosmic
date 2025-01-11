@@ -176,5 +176,5 @@ dependencies {
     implementation "org.bouncycastle:bcprov-jdk15to18:1.78"
 
     // Meta dependencies
-    horizonosImplementation "org.kosmicengine:godot-openxr-vendors-meta:3.0.0-stable"
+    horizonosImplementation "org.kosmicengine:kosmic-openxr-vendors-meta:3.0.0-stable"
 }

@@ -7,24 +7,24 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <Nullable>enable</Nullable>
     <!-- The Godot editor uses the Debug Godot API assemblies -->
-    <GodotApiConfiguration>Debug</GodotApiConfiguration>
+    <KosmicApiConfiguration>Debug</KosmicApiConfiguration>
     <KosmicSourceRootPath>$(SolutionDir)/../../../../</KosmicSourceRootPath>
     <KosmicOutputDataDir>$(KosmicSourceRootPath)/bin/KosmicSharp</KosmicOutputDataDir>
-    <GodotApiAssembliesDir>$(KosmicOutputDataDir)/Api/$(GodotApiConfiguration)</GodotApiAssembliesDir>
+    <KosmicApiAssembliesDir>$(KosmicOutputDataDir)/Api/$(KosmicApiConfiguration)</KosmicApiAssembliesDir>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <!-- Needed for our source generators to work despite this not being a Godot game project -->
   <PropertyGroup>
-    <IsGodotToolsProject>true</IsGodotToolsProject>
+    <IsKosmicToolsProject>true</IsKosmicToolsProject>
   </PropertyGroup>
 
   <ItemGroup>
-    <CompilerVisibleProperty Include="IsGodotToolsProject" />
+    <CompilerVisibleProperty Include="IsKosmicToolsProject" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" Exists('$(GodotApiAssembliesDir)/KosmicSharp.dll') ">
+  <PropertyGroup Condition=" Exists('$(KosmicApiAssembliesDir)/KosmicSharp.dll') ">
     <!-- The project is part of the Kosmic source tree -->
     <!-- Use the Kosmic source tree output folder instead of '$(ProjectDir)/bin' -->
     <OutputPath>$(KosmicOutputDataDir)/Tools</OutputPath>
@@ -38,11 +38,11 @@
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <Reference Include="KosmicSharp">
-      <HintPath>$(GodotApiAssembliesDir)/KosmicSharp.dll</HintPath>
+      <HintPath>$(KosmicApiAssembliesDir)/KosmicSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="KosmicSharpEditor">
-      <HintPath>$(GodotApiAssembliesDir)/KosmicSharpEditor.dll</HintPath>
+      <HintPath>$(KosmicApiAssembliesDir)/KosmicSharpEditor.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -53,10 +53,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GodotTools.BuildLogger\GodotTools.BuildLogger.csproj" />
-    <ProjectReference Include="..\GodotTools.IdeMessaging\GodotTools.IdeMessaging.csproj" />
-    <ProjectReference Include="..\GodotTools.ProjectEditor\GodotTools.ProjectEditor.csproj" />
-    <ProjectReference Include="..\GodotTools.Core\GodotTools.Core.csproj" />
+    <ProjectReference Include="..\KosmicTools.BuildLogger\KosmicTools.BuildLogger.csproj" />
+    <ProjectReference Include="..\KosmicTools.IdeMessaging\KosmicTools.IdeMessaging.csproj" />
+    <ProjectReference Include="..\KosmicTools.ProjectEditor\KosmicTools.ProjectEditor.csproj" />
+    <ProjectReference Include="..\KosmicTools.Core\KosmicTools.Core.csproj" />
   </ItemGroup>
 
 </Project>

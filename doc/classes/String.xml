@@ -69,9 +69,9 @@
 				print("-0b10".bin_to_int()) # Prints -2
 				[/voyscript]
 				[csharp]
-				KS.Print("101".BinToInt());   // Prints 5
-				KS.Print("0b101".BinToInt()); // Prints 5
-				KS.Print("-0b10".BinToInt()); // Prints -2
+				GD.Print("101".BinToInt());   // Prints 5
+				GD.Print("0b101".BinToInt()); // Prints 5
+				GD.Print("-0b10".BinToInt()); // Prints -2
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -139,8 +139,8 @@
 				print("I" in "team")         # Prints false
 				[/voyscript]
 				[csharp]
-				KS.Print("Node".Contains("de")); // Prints True
-				KS.Print("team".Contains("I"));  // Prints False
+				GD.Print("Node".Contains("de")); // Prints True
+				GD.Print("team".Contains("I"));  // Prints False
 				[/csharp]
 				[/codeblocks]
 				If you need to know where [param what] is within the string, use [method find]. See also [method containsn].
@@ -224,11 +224,11 @@
 				print("Potato".find("t", 5)) # Prints -1
 				[/voyscript]
 				[csharp]
-				KS.Print("Team".Find("I")); // Prints -1
+				GD.Print("Team".Find("I")); // Prints -1
 
-				KS.Print("Potato".Find("t"));    // Prints 2
-				KS.Print("Potato".Find("t", 3)); // Prints 4
-				KS.Print("Potato".Find("t", 5)); // Prints -1
+				GD.Print("Potato".Find("t"));    // Prints 2
+				GD.Print("Potato".Find("t", 3)); // Prints 4
+				GD.Print("Potato".Find("t", 5)); // Prints -1
 				[/csharp]
 				[/codeblocks]
 				[b]Note:[/b] If you just want to know whether the string contains [param what], use [method contains]. In VoyScript, you may also use the [code]in[/code] operator.
@@ -272,10 +272,10 @@
 				See also the [url=$DOCS_URL/tutorials/scripting/voyscript/voyscript_format_string.html]VoyScript format string[/url] tutorial.
 				[b]Note:[/b] Each replacement is done sequentially for each element of [param values], [b]not[/b] all at once. This means that if any element is inserted and it contains another placeholder, it may be changed by the next replacement. While this can be very useful, it often causes unexpected results. If not necessary, make sure [param values]'s elements do not contain placeholders.
 				[codeblock]
-				print("{0} {1}".format(["{1}", "x"]))           # Prints "x x".
-				print("{0} {1}".format(["x", "{0}"]))           # Prints "x {0}".
-				print("{a} {b}".format({"a": "{b}", "b": "c"})) # Prints "c c".
-				print("{a} {b}".format({"b": "c", "a": "{b}"})) # Prints "{b} c".
+				print("{0} {1}".format(["{1}", "x"]))           # Prints "x x"
+				print("{0} {1}".format(["x", "{0}"]))           # Prints "x {0}"
+				print("{a} {b}".format({"a": "{b}", "b": "c"})) # Prints "c c"
+				print("{a} {b}".format({"b": "c", "a": "{b}"})) # Prints "{b} c"
 				[/codeblock]
 				[b]Note:[/b] In C#, it's recommended to [url=https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated]interpolate strings with "$"[/url], instead.
 			</description>
@@ -372,7 +372,7 @@
 				[csharp]
 				var text = "hello world";
 				var encoded = text.ToUtf8Buffer().HexEncode(); // outputs "68656c6c6f20776f726c64"
-				KS.Print(buf.HexDecode().GetStringFromUtf8());
+				GD.Print(buf.HexDecode().GetStringFromUtf8());
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -387,8 +387,8 @@
 				print("ab".hex_to_int())   # Prints 171
 				[/voyscript]
 				[csharp]
-				KS.Print("0xff".HexToInt()); // Prints 255
-				KS.Print("ab".HexToInt());   // Prints 171
+				GD.Print("0xff".HexToInt()); // Prints 255
+				GD.Print("ab".HexToInt());   // Prints 171
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -574,8 +574,8 @@
 				string[] fruits = ["Apple", "Orange", "Pear", "Kiwi"];
 
 				// In C#, this method is static.
-				KS.Print(string.Join(", ", fruits));  // Prints "Apple, Orange, Pear, Kiwi"
-				KS.Print(string.Join("---", fruits)); // Prints "Apple---Orange---Pear---Kiwi"
+				GD.Print(string.Join(", ", fruits));  // Prints "Apple, Orange, Pear, Kiwi"
+				GD.Print(string.Join("---", fruits)); // Prints "Apple---Orange---Pear---Kiwi"
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -723,8 +723,8 @@
 				// This method is not implemented in C#.
 				// Use `string.ToString()` with "e" to achieve similar results.
 				var n = -5.2e8f;
-				KS.Print(n);                // Prints -520000000
-				KS.Print(n.ToString("e1")); // Prints -5.2e+008
+				GD.Print(n);                // Prints -520000000
+				GD.Print(n.ToString("e1")); // Prints -5.2e+008
 				[/csharp]
 				[/codeblocks]
 				[b]Note:[/b] In C#, this method is not implemented. To achieve similar results, see C#'s [url=https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings]Standard numeric format strings[/url]
@@ -928,9 +928,9 @@
 				// C#'s `Split()` does not support the `maxsplit` parameter.
 				var someArray = "One,Two,Three".Split(",");
 
-				KS.Print(someArray[0]); // Prints "One"
-				KS.Print(someArray[1]); // Prints "Two"
-				KS.Print(someArray[2]); // Prints "Three"
+				GD.Print(someArray[0]); // Prints "One"
+				GD.Print(someArray[1]); // Prints "Two"
+				GD.Print(someArray[2]); // Prints "Three"
 				[/csharp]
 				[/codeblocks]
 				[b]Note:[/b] If you only need one substring from the array, consider using [method get_slice] which is faster. If you need to split strings with more complex rules, use the [RegEx] class instead.
@@ -1103,7 +1103,7 @@
 				[/voyscript]
 				[csharp]
 				var url = "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
-				KS.Print(url.URIDecode()) // Prints "$DOCS_URL/?highlight=Godot Engine:docs"
+				GD.Print(url.URIDecode()) // Prints "$DOCS_URL/?highlight=Godot Engine:docs"
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -1123,7 +1123,7 @@
 				var prefix = "$DOCS_URL/?highlight=";
 				var url = prefix + "Godot Engine:docs".URIEncode();
 
-				KS.Print(url); // Prints "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
+				GD.Print(url); // Prints "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
 				[/csharp]
 				[/codeblocks]
 			</description>

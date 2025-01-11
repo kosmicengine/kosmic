@@ -63,7 +63,7 @@ env_thirdparty.disable_warnings()
 env_thirdparty.Append(
     CPPDEFINES=[
         # Storage formats.
-        # Godot only implements `.basis` support through basis_universal.
+        # Kosmic only implements `.basis` support through basis_universal.
         # Support for `.ktx` files are implemented with a direct libktx implementation.
         # Building the encoder requires `BASISD_SUPPORT_KTX2` to be enabled,
         # so we can only disable Zstandard compression for `.ktx` files

@@ -48,7 +48,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.window.layout.WindowMetricsCalculator
 import org.kosmicengine.editor.utils.signApk
 import org.kosmicengine.editor.utils.verifyApk
-import org.kosmicengine.kosmic.GodotActivity
+import org.kosmicengine.kosmic.KosmicActivity
 import org.kosmicengine.kosmic.KosmicLib
 import org.kosmicengine.kosmic.error.Error
 import org.kosmicengine.kosmic.utils.PermissionsUtil
@@ -65,7 +65,7 @@ import kotlin.math.min
  * Each derived activity runs in its own process, which enable up to have several instances of
  * the Godot engine up and running at the same time.
  */
-abstract class BaseKosmicEditor : GodotActivity() {
+abstract class BaseKosmicEditor : KosmicActivity() {
 
 	companion object {
 		private val TAG = BaseKosmicEditor::class.java.simpleName
@@ -92,7 +92,7 @@ abstract class BaseKosmicEditor : GodotActivity() {
 
 		// Info for the various classes used by the editor
 		internal val EDITOR_MAIN_INFO = EditorWindowInfo(KosmicEditor::class.java, 777, "")
-		internal val RUN_GAME_INFO = EditorWindowInfo(GodotGame::class.java, 667, ":GodotGame", LaunchPolicy.AUTO, true)
+		internal val RUN_GAME_INFO = EditorWindowInfo(KosmicGame::class.java, 667, ":KosmicGame", LaunchPolicy.AUTO, true)
 
 		/**
 		 * Sets of constants to specify the window to use to run the project.
@@ -120,7 +120,7 @@ abstract class BaseKosmicEditor : GodotActivity() {
 	private val commandLineParams = ArrayList<String>()
 	private val editorLoadingIndicator: View? by lazy { findViewById(R.id.editor_loading_indicator) }
 
-	override fun getGodotAppLayout() = R.layout.kosmic_editor_layout
+	override fun getKosmicAppLayout() = R.layout.kosmic_editor_layout
 
 	internal open fun getEditorWindowInfo() = EDITOR_MAIN_INFO
 
@@ -131,11 +131,20 @@ abstract class BaseKosmicEditor : GodotActivity() {
 	 */
 	@CallSuper
 	protected open fun getExcludedPermissions(): MutableSet<String> {
-		return mutableSetOf(
+		val excludedPermissions = mutableSetOf(
 			// The RECORD_AUDIO permission is requested when the "audio/driver/enable_input" project
 			// setting is enabled.
-			Manifest.permission.RECORD_AUDIO
+			Manifest.permission.RECORD_AUDIO,
 		)
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			excludedPermissions.add(
+				// The REQUEST_INSTALL_PACKAGES permission is requested the first time we attempt to
+				// open an apk file.
+				Manifest.permission.REQUEST_INSTALL_PACKAGES,
+			)
+		}
+		return excludedPermissions
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -170,15 +179,15 @@ abstract class BaseKosmicEditor : GodotActivity() {
 
 		runOnUiThread {
 			// Enable long press, panning and scaling gestures
-			godotFragment?.kosmic?.renderView?.inputHandler?.apply {
+			kosmicFragment?.kosmic?.renderView?.inputHandler?.apply {
 				enableLongPress(longPressEnabled)
 				enablePanningAndScalingGestures(panScaleEnabled)
 			}
 		}
 	}
 
-	override fun onGodotMainLoopStarted() {
-		super.onGodotMainLoopStarted()
+	override fun onKosmicMainLoopStarted() {
+		super.onKosmicMainLoopStarted()
 		runOnUiThread {
 			// Hide the loading indicator
 			editorLoadingIndicator?.visibility = View.GONE
@@ -226,7 +235,7 @@ abstract class BaseKosmicEditor : GodotActivity() {
 
 	protected fun getNewKosmicInstanceIntent(editorWindowInfo: EditorWindowInfo, args: Array<String>): Intent {
 		val updatedArgs = if (editorWindowInfo == EDITOR_MAIN_INFO &&
-			godot?.isInImmersiveMode() == true &&
+			kosmic?.isInImmersiveMode() == true &&
 			!args.contains(FULLSCREEN_ARG) &&
 			!args.contains(FULLSCREEN_ARG_SHORT)
 		) {
@@ -279,7 +288,7 @@ abstract class BaseKosmicEditor : GodotActivity() {
 		val editorWindowInfo = retrieveEditorWindowInfo(args)
 
 		// Launch a new activity
-		val sourceView = godotFragment?.view
+		val sourceView = kosmicFragment?.view
 		val activityOptions = if (sourceView == null) {
 			null
 		} else {
@@ -291,9 +300,9 @@ abstract class BaseKosmicEditor : GodotActivity() {
 		val newInstance = getNewKosmicInstanceIntent(editorWindowInfo, args)
 		if (editorWindowInfo.windowClassName == javaClass.name) {
 			Log.d(TAG, "Restarting ${editorWindowInfo.windowClassName} with parameters ${args.contentToString()}")
-			val godot = godot
-			if (godot != null) {
-				godot.destroyAndKillProcess {
+			val kosmic = kosmic
+			if (kosmic != null) {
+				kosmic.destroyAndKillProcess {
 					ProcessPhoenix.triggerRebirth(this, activityOptions?.toBundle(), newInstance)
 				}
 			} else {
@@ -308,8 +317,8 @@ abstract class BaseKosmicEditor : GodotActivity() {
 		return editorWindowInfo.windowId
 	}
 
-	final override fun onKosmicForceQuit(godotInstanceId: Int): Boolean {
-		val editorWindowInfo = getEditorWindowInfoForInstanceId(godotInstanceId) ?: return super.onKosmicForceQuit(godotInstanceId)
+	final override fun onKosmicForceQuit(kosmicInstanceId: Int): Boolean {
+		val editorWindowInfo = getEditorWindowInfoForInstanceId(kosmicInstanceId) ?: return super.onKosmicForceQuit(kosmicInstanceId)
 
 		if (editorWindowInfo.windowClassName == javaClass.name) {
 			Log.d(TAG, "Force quitting ${editorWindowInfo.windowClassName}")
@@ -335,7 +344,7 @@ abstract class BaseKosmicEditor : GodotActivity() {
 			}
 		}
 
-		return super.onKosmicForceQuit(godotInstanceId)
+		return super.onKosmicForceQuit(kosmicInstanceId)
 	}
 
 	// Get the screen's density scale
@@ -514,13 +523,13 @@ abstract class BaseKosmicEditor : GodotActivity() {
 		keystoreUser: String,
 		keystorePassword: String
 	): Error {
-		val godot = godot ?: return Error.ERR_UNCONFIGURED
-		return signApk(godot.fileAccessHandler, inputPath, outputPath, keystorePath, keystoreUser, keystorePassword)
+		val kosmic = kosmic ?: return Error.ERR_UNCONFIGURED
+		return signApk(kosmic.fileAccessHandler, inputPath, outputPath, keystorePath, keystoreUser, keystorePassword)
 	}
 
 	override fun verifyApk(apkPath: String): Error {
-		val godot = godot ?: return Error.ERR_UNCONFIGURED
-		return verifyApk(godot.fileAccessHandler, apkPath)
+		val kosmic = kosmic ?: return Error.ERR_UNCONFIGURED
+		return verifyApk(kosmic.fileAccessHandler, apkPath)
 	}
 
 	override fun supportsFeature(featureTag: String): Boolean {

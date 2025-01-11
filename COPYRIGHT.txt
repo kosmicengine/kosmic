@@ -1,5 +1,5 @@
 # Exhaustive licensing information for files in the Kosmic Engine repository
-# ==========================================================================
+# =========================================================================
 #
 # This file aims at documenting the copyright and license for every source
 # file in the Kosmic Engine repository, and especially outline the files
@@ -27,24 +27,25 @@
 #   License: Zlib
 # The exact copyright for each file in that library *may* differ, and some
 # files or code snippets might be distributed under other compatible licenses
-# (e.g. a public domain dedication), but as far as Godot Engine is concerned
+# (e.g. a public domain dedication), but as far as Kosmic Engine is concerned
 # the library is considered as a whole under the Zlib license.
 #
 # Note: When linking dynamically against thirdparty libraries instead of
-# building them into the Godot binary, you may remove the corresponding
+# building them into the Kosmic binary, you may remove the corresponding
 # license details from this file.
 
 -----------------------------------------------------------------------
 
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: Kosmic Engine
-Upstream-Contact: Vetus Chronos <vetuschronos@hotmail.com>
+Upstream-Contact: Chronophobia <vetuschronos@hotmail.com>
 Source: https://github.com/kosmicengine/kosmic
 
 Files: *
 Comment: Kosmic Engine
-Copyright: 2024-present Kosmic Engine contributors
- 2014-2024, Godot Engine contributors
+Copyright: 2024-present Kosmic Engine contributors 
+ 2024-present Kosmic Engine contributors 
+ 2014-present, Godot Engine contributors
  2007-2014, Juan Linietsky, Ariel Manzur
 License: Expat
 
@@ -53,15 +54,15 @@ Files: ./icon.png
  ./logo.png
  ./logo.svg
 Comment: Kosmic Engine logo
-Copyright: 2024, Kosmic Engine
+Copyright: 2024, Kosmic Engine contributors
 License: CC-BY-4.0
 
 Files: ./core/math/convex_hull.cpp
  ./core/math/convex_hull.h
 Comment: Bullet Continuous Collision Detection and Physics Library
 Copyright: 2011, Ole Kniemeyer, MAXON, www.maxon.net
- 2024-present Kosmic Engine contributors
- 2014-2024, Godot Engine contributors
+ 2024-present Kosmic Engine contributors 
+ 2014-present, Godot Engine contributors
  2007-2014, Juan Linietsky, Ariel Manzur
 License: Expat and Zlib
 
@@ -86,8 +87,8 @@ Files: ./modules/kosmic_physics_3d/gjk_epa.cpp
  ./modules/kosmic_physics_3d/kosmic_shape_3d.h
 Comment: Bullet Continuous Collision Detection and Physics Library
 Copyright: 2003-2008, Erwin Coumans
- 2024-present Kosmic Engine contributors
- 2014-2024, Godot Engine contributors
+ 2024-present Kosmic Engine contributors 
+ 2014-present, Godot Engine contributors
  2007-2014, Juan Linietsky, Ariel Manzur
 License: Expat and Zlib
 
@@ -100,24 +101,24 @@ Files: ./modules/kosmic_physics_3d/joints/kosmic_cone_twist_joint_3d.cpp
  ./modules/kosmic_physics_3d/joints/kosmic_cone_twist_joint_3d.h
 Comment: Bullet Continuous Collision Detection and Physics Library
 Copyright: 2007, Starbreeze Studios
- 2024-present Kosmic Engine contributors
- 2014-2024, Godot Engine contributors
+ 2024-present Kosmic Engine contributors 
+ 2014-present, Godot Engine contributors
  2007-2014, Juan Linietsky, Ariel Manzur
 License: Expat and Zlib
 
 Files: ./modules/jolt_physics/spaces/jolt_temp_allocator.cpp
 Comment: Jolt Physics
 Copyright: 2021, Jorrit Rouwe
- 2024-present Kosmic Engine contributors
- 2014-2024, Godot Engine contributors
+ 2024-present Kosmic Engine contributors 
+ 2014-present, Godot Engine contributors
  2007-2014, Juan Linietsky, Ariel Manzur
 License: Expat
 
 Files: ./modules/lightmapper_rd/lm_compute.glsl
 Comment: Joint Non-Local Means (JNLM) denoiser
 Copyright: 2020, Manuel Prandini
- 2024-present Kosmic Engine contributors
- 2014-2024, Godot Engine contributors
+ 2024-present Kosmic Engine contributors 
+ 2014-present, Godot Engine contributors
  2007-2014, Juan Linietsky, Ariel Manzur
 License: Expat
 
@@ -140,8 +141,8 @@ License: Apache-2.0
 Files: ./scene/animation/easing_equations.h
 Comment: Robert Penner's Easing Functions
 Copyright: 2001, Robert Penner
- 2024-present Kosmic Engine contributors
- 2014-2024, Godot Engine contributors
+ 2024-present Kosmic Engine contributors 
+ 2014-present, Godot Engine contributors
  2007-2014, Juan Linietsky, Ariel Manzur
 License: Expat
 
@@ -249,6 +250,11 @@ Comment: JetBrains Mono font
 Copyright: 2020, JetBrains s.r.o.
 License: OFL-1.1
 
+Files: ./thirdparty/fonts/Inter*.woff2
+Comment: Inter font
+Copyright: 2016, The Inter Project Authors
+License: OFL-1.1
+
 Files: ./thirdparty/fonts/NotoSans*.woff2
 Comment: Noto Sans font
 Copyright: 2012, Google Inc.
@@ -336,8 +342,8 @@ License: BSD-3-clause
 
 Files: ./thirdparty/libpng/
 Comment: libpng
-Copyright: 1995-2024, The PNG Reference Library Authors.
- 2018-2024, Cosmin Truta.
+Copyright: 1995-2025, The PNG Reference Library Authors.
+ 2018-2025, Cosmin Truta.
  2000-2002, 2004, 2006-2018 Glenn Randers-Pehrson.
  1996-1997, Andreas Dilger.
  1995-1996, Guy Eric Schalnat, Group 42, Inc.

@@ -112,7 +112,7 @@ class KosmicSoftBody3D : public KosmicCollisionObject3D {
 
 	uint64_t island_step = 0;
 
-	_FORCE_INLINE_ Vector3 _compute_area_windforce(const GodotArea3D *p_area, const Face *p_face);
+	_FORCE_INLINE_ Vector3 _compute_area_windforce(const KosmicArea3D *p_area, const Face *p_face);
 
 public:
 	KosmicSoftBody3D();
@@ -135,7 +135,7 @@ public:
 	_FORCE_INLINE_ uint64_t get_island_step() const { return island_step; }
 	_FORCE_INLINE_ void set_island_step(uint64_t p_step) { island_step = p_step; }
 
-	_FORCE_INLINE_ void add_area(GodotArea3D *p_area) {
+	_FORCE_INLINE_ void add_area(KosmicArea3D *p_area) {
 		int index = areas.find(AreaCMP(p_area));
 		if (index > -1) {
 			areas.write[index].refCount += 1;
@@ -144,7 +144,7 @@ public:
 		}
 	}
 
-	_FORCE_INLINE_ void remove_area(GodotArea3D *p_area) {
+	_FORCE_INLINE_ void remove_area(KosmicArea3D *p_area) {
 		int index = areas.find(AreaCMP(p_area));
 		if (index > -1) {
 			areas.write[index].refCount -= 1;
@@ -230,7 +230,7 @@ private:
 
 	void add_velocity(const Vector3 &p_velocity);
 
-	void apply_forces(const LocalVector<GodotArea3D *> &p_wind_areas);
+	void apply_forces(const LocalVector<KosmicArea3D *> &p_wind_areas);
 
 	bool create_from_trimesh(const Vector<int> &p_indices, const Vector<Vector3> &p_vertices);
 	void generate_bending_constraints(int p_distance);

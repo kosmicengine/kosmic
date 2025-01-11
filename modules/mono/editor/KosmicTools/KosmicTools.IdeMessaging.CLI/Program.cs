@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using GodotTools.IdeMessaging.Requests;
+using KosmicTools.IdeMessaging.Requests;
 using Newtonsoft.Json;
 
 namespace KosmicTools.IdeMessaging.CLI
@@ -41,17 +41,17 @@ namespace KosmicTools.IdeMessaging.CLI
                     return 1;
                 }
 
-                string godotProjectDir = args[0];
+                string kosmicProjectDir = args[0];
 
-                if (!Directory.Exists(godotProjectDir))
+                if (!Directory.Exists(kosmicProjectDir))
                 {
-                    Logger.LogError($"The specified Godot project directory does not exist: {godotProjectDir}");
+                    Logger.LogError($"The specified Godot project directory does not exist: {kosmicProjectDir}");
                     return 1;
                 }
 
                 var forwarder = new ForwarderMessageHandler(outputWriter);
 
-                using (var fwdClient = new Client("VisualStudioCode", godotProjectDir, forwarder, Logger))
+                using (var fwdClient = new Client("VisualStudioCode", kosmicProjectDir, forwarder, Logger))
                 {
                     fwdClient.Start();
 

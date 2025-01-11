@@ -51,7 +51,7 @@
 		    Error error = httpRequest.Request("https://httpbin.org/get");
 		    if (error != Error.Ok)
 		    {
-		        KS.PushError("An error occurred in the HTTP request.");
+		        GD.PushError("An error occurred in the HTTP request.");
 		    }
 
 		    // Perform a POST request. The URL below returns JSON as of writing.
@@ -64,7 +64,7 @@
 		    error = httpRequest.Request("https://httpbin.org/post", null, HttpClient.Method.Post, body);
 		    if (error != Error.Ok)
 		    {
-		        KS.PushError("An error occurred in the HTTP request.");
+		        GD.PushError("An error occurred in the HTTP request.");
 		    }
 		}
 
@@ -76,7 +76,7 @@
 		    var response = json.GetData().AsKosmicDictionary();
 
 		    // Will print the user agent string used by the HTTPRequest node (as recognized by httpbin.org).
-		    KS.Print((response["headers"].AsKosmicDictionary())["User-Agent"]);
+		    GD.Print((response["headers"].AsKosmicDictionary())["User-Agent"]);
 		}
 		[/csharp]
 		[/codeblocks]
@@ -123,7 +123,7 @@
 		    Error error = httpRequest.Request("https://via.placeholder.com/512");
 		    if (error != Error.Ok)
 		    {
-		        KS.PushError("An error occurred in the HTTP request.");
+		        GD.PushError("An error occurred in the HTTP request.");
 		    }
 		}
 
@@ -132,13 +132,13 @@
 		{
 		    if (result != (long)HttpRequest.Result.Success)
 		    {
-		        KS.PushError("Image couldn't be downloaded. Try a different image.");
+		        GD.PushError("Image couldn't be downloaded. Try a different image.");
 		    }
 		    var image = new Image();
 		    Error error = image.LoadPngFromBuffer(body);
 		    if (error != Error.Ok)
 		    {
-		        KS.PushError("Couldn't load the image.");
+		        GD.PushError("Couldn't load the image.");
 		    }
 
 		    var texture = ImageTexture.CreateFromImage(image);

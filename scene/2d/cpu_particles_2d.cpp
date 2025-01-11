@@ -166,10 +166,10 @@ void CPUParticles2D::_update_mesh_texture() {
 	};
 
 	Vector<Vector2> uvs;
-	AtlasTexture *atlas_texure = Object::cast_to<AtlasTexture>(*texture);
-	if (atlas_texure && atlas_texure->get_atlas().is_valid()) {
-		Rect2 region_rect = atlas_texure->get_region();
-		Size2 atlas_size = atlas_texure->get_atlas()->get_size();
+	AtlasTexture *atlas_texture = Object::cast_to<AtlasTexture>(*texture);
+	if (atlas_texture && atlas_texture->get_atlas().is_valid()) {
+		Rect2 region_rect = atlas_texture->get_region();
+		Size2 atlas_size = atlas_texture->get_atlas()->get_size();
 		uvs.push_back(Vector2(region_rect.position.x / atlas_size.x, region_rect.position.y / atlas_size.y));
 		uvs.push_back(Vector2((region_rect.position.x + region_rect.size.x) / atlas_size.x, region_rect.position.y / atlas_size.y));
 		uvs.push_back(Vector2((region_rect.position.x + region_rect.size.x) / atlas_size.x, (region_rect.position.y + region_rect.size.y) / atlas_size.y));
@@ -330,7 +330,7 @@ real_t CPUParticles2D::get_param_max(Parameter p_param) const {
 
 static void _adjust_curve_range(const Ref<Curve> &p_curve, real_t p_min, real_t p_max) {
 	Ref<Curve> curve = p_curve;
-	if (!curve.is_valid()) {
+	if (curve.is_null()) {
 		return;
 	}
 

@@ -915,7 +915,7 @@ void KosmicSoftBody3D::add_velocity(const Vector3 &p_velocity) {
 	}
 }
 
-void KosmicSoftBody3D::apply_forces(const LocalVector<GodotArea3D *> &p_wind_areas) {
+void KosmicSoftBody3D::apply_forces(const LocalVector<KosmicArea3D *> &p_wind_areas) {
 	if (nodes.is_empty()) {
 		return;
 	}
@@ -934,7 +934,7 @@ void KosmicSoftBody3D::apply_forces(const LocalVector<GodotArea3D *> &p_wind_are
 
 		// Compute nodal forces from area winds.
 		if (!p_wind_areas.is_empty()) {
-			for (const GodotArea3D *area : p_wind_areas) {
+			for (const KosmicArea3D *area : p_wind_areas) {
 				wind_force += _compute_area_windforce(area, &face);
 			}
 
@@ -957,7 +957,7 @@ void KosmicSoftBody3D::apply_forces(const LocalVector<GodotArea3D *> &p_wind_are
 	}
 }
 
-Vector3 KosmicSoftBody3D::_compute_area_windforce(const GodotArea3D *p_area, const Face *p_face) {
+Vector3 KosmicSoftBody3D::_compute_area_windforce(const KosmicArea3D *p_area, const Face *p_face) {
 	real_t wfm = p_area->get_wind_force_magnitude();
 	real_t waf = p_area->get_wind_attenuation_factor();
 	const Vector3 &wd = p_area->get_wind_direction();
@@ -977,7 +977,7 @@ void KosmicSoftBody3D::predict_motion(real_t p_delta) {
 	bool gravity_done = false;
 	Vector3 gravity;
 
-	LocalVector<GodotArea3D *> wind_areas;
+	LocalVector<KosmicArea3D *> wind_areas;
 
 	int ac = areas.size();
 	if (ac) {
@@ -1014,7 +1014,7 @@ void KosmicSoftBody3D::predict_motion(real_t p_delta) {
 
 	// Add default gravity and damping from space area.
 	if (!gravity_done) {
-		GodotArea3D *default_area = get_space()->get_default_area();
+		KosmicArea3D *default_area = get_space()->get_default_area();
 		ERR_FAIL_NULL(default_area);
 
 		Vector3 default_gravity;

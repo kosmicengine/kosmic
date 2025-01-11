@@ -42,6 +42,7 @@
 #include "editor/editor_settings.h"
 #include "editor/editor_string_names.h"
 #include "editor/gui/editor_toaster.h"
+#include "editor/plugins/editor_context_menu_plugin.h"
 #include "editor/themes/editor_scale.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/rich_text_label.h"
@@ -211,7 +212,7 @@ void ScriptTextEditor::_load_theme_settings() {
 	}
 
 	theme_loaded = true;
-	if (!script.is_null()) {
+	if (script.is_valid()) {
 		_set_theme_for_script();
 	}
 }
@@ -316,7 +317,7 @@ void ScriptTextEditor::_error_clicked(const Variant &p_line) {
 			goto_line_centered(line, column);
 		} else {
 			Ref<Resource> scr = ResourceLoader::load(path);
-			if (!scr.is_valid()) {
+			if (scr.is_null()) {
 				EditorNode::get_singleton()->show_warning(TTR("Could not load file at:") + "\n\n" + path, TTR("Error!"));
 			} else {
 				int corrected_column = column;
@@ -579,7 +580,7 @@ void ScriptTextEditor::_update_warnings() {
 
 	bool has_connections_table = false;
 	// Add missing connections.
-	if (GLOBAL_GET("debug/voyscript/warnings/enable").booleanize()) {
+	if (GLOBAL_GET("debug/voyscript/warnings/enable")) {
 		Node *base = get_tree()->get_edited_scene_root();
 		if (base && missing_connections.size() > 0) {
 			has_connections_table = true;
@@ -855,7 +856,7 @@ void ScriptEditor::_update_modified_scripts_for_external_editor(Ref<Script> p_fo
 
 		if (last_date != date) {
 			Ref<Script> rel_scr = ResourceLoader::load(scr->get_path(), scr->get_class(), ResourceFormatLoader::CACHE_MODE_IGNORE);
-			ERR_CONTINUE(!rel_scr.is_valid());
+			ERR_CONTINUE(rel_scr.is_null());
 			scr->set_source_code(rel_scr->get_source_code());
 			scr->set_last_modified_time(rel_scr->get_last_modified_time());
 			scr->update_exports();
@@ -1108,99 +1109,112 @@ void ScriptTextEditor::_show_symbol_tooltip(const String &p_symbol, int p_row, i
 	}
 
 	ScriptLanguage::LookupResult result;
+	String doc_symbol;
 	const String code_text = code_editor->get_text_editor()->get_text_with_cursor_char(p_row, p_column);
 	const Error lc_error = script->get_language()->lookup_code(code_text, p_symbol, script->get_path(), base, result);
-	if (lc_error != OK) {
-		return;
+	if (lc_error == OK) {
+		switch (result.type) {
+			case ScriptLanguage::LOOKUP_RESULT_CLASS: {
+				doc_symbol = "class|" + result.class_name + "|";
+			} break;
+			case ScriptLanguage::LOOKUP_RESULT_CLASS_CONSTANT: {
+				StringName cname = result.class_name;
+				while (ClassDB::class_exists(cname)) {
+					if (ClassDB::has_integer_constant(cname, result.class_member, true)) {
+						result.class_name = cname;
+						break;
+					}
+					cname = ClassDB::get_parent_class(cname);
+				}
+				doc_symbol = "constant|" + result.class_name + "|" + result.class_member;
+			} break;
+			case ScriptLanguage::LOOKUP_RESULT_CLASS_PROPERTY: {
+				StringName cname = result.class_name;
+				while (ClassDB::class_exists(cname)) {
+					if (ClassDB::has_property(cname, result.class_member, true)) {
+						result.class_name = cname;
+						break;
+					}
+					cname = ClassDB::get_parent_class(cname);
+				}
+				doc_symbol = "property|" + result.class_name + "|" + result.class_member;
+			} break;
+			case ScriptLanguage::LOOKUP_RESULT_CLASS_METHOD: {
+				StringName cname = result.class_name;
+				while (ClassDB::class_exists(cname)) {
+					if (ClassDB::has_method(cname, result.class_member, true)) {
+						result.class_name = cname;
+						break;
+					}
+					cname = ClassDB::get_parent_class(cname);
+				}
+				doc_symbol = "method|" + result.class_name + "|" + result.class_member;
+			} break;
+			case ScriptLanguage::LOOKUP_RESULT_CLASS_SIGNAL: {
+				StringName cname = result.class_name;
+				while (ClassDB::class_exists(cname)) {
+					if (ClassDB::has_signal(cname, result.class_member, true)) {
+						result.class_name = cname;
+						break;
+					}
+					cname = ClassDB::get_parent_class(cname);
+				}
+				doc_symbol = "signal|" + result.class_name + "|" + result.class_member;
+			} break;
+			case ScriptLanguage::LOOKUP_RESULT_CLASS_ENUM: {
+				StringName cname = result.class_name;
+				while (ClassDB::class_exists(cname)) {
+					if (ClassDB::has_enum(cname, result.class_member, true)) {
+						result.class_name = cname;
+						break;
+					}
+					cname = ClassDB::get_parent_class(cname);
+				}
+				doc_symbol = "enum|" + result.class_name + "|" + result.class_member;
+			} break;
+			case ScriptLanguage::LOOKUP_RESULT_CLASS_ANNOTATION: {
+				doc_symbol = "annotation|" + result.class_name + "|" + result.class_member;
+			} break;
+			case ScriptLanguage::LOOKUP_RESULT_LOCAL_CONSTANT:
+			case ScriptLanguage::LOOKUP_RESULT_LOCAL_VARIABLE: {
+				const String item_type = (result.type == ScriptLanguage::LOOKUP_RESULT_LOCAL_CONSTANT) ? "local_constant" : "local_variable";
+				Dictionary item_data;
+				item_data["description"] = result.description;
+				item_data["is_deprecated"] = result.is_deprecated;
+				item_data["deprecated_message"] = result.deprecated_message;
+				item_data["is_experimental"] = result.is_experimental;
+				item_data["experimental_message"] = result.experimental_message;
+				item_data["doc_type"] = result.doc_type;
+				item_data["enumeration"] = result.enumeration;
+				item_data["is_bitfield"] = result.is_bitfield;
+				item_data["value"] = result.value;
+				doc_symbol = item_type + "||" + p_symbol + "|" + JSON::stringify(item_data);
+			} break;
+			case ScriptLanguage::LOOKUP_RESULT_SCRIPT_LOCATION:
+			case ScriptLanguage::LOOKUP_RESULT_CLASS_TBD_GLOBALSCOPE: // Deprecated.
+			case ScriptLanguage::LOOKUP_RESULT_MAX: {
+				// Nothing to do.
+			} break;
+		}
 	}
 
-	String doc_symbol;
-	switch (result.type) {
-		case ScriptLanguage::LOOKUP_RESULT_CLASS: {
-			doc_symbol = "class|" + result.class_name + "|";
-		} break;
-		case ScriptLanguage::LOOKUP_RESULT_CLASS_CONSTANT: {
-			StringName cname = result.class_name;
-			while (ClassDB::class_exists(cname)) {
-				if (ClassDB::has_integer_constant(cname, result.class_member, true)) {
-					result.class_name = cname;
-					break;
-				}
-				cname = ClassDB::get_parent_class(cname);
-			}
-			doc_symbol = "constant|" + result.class_name + "|" + result.class_member;
-		} break;
-		case ScriptLanguage::LOOKUP_RESULT_CLASS_PROPERTY: {
-			StringName cname = result.class_name;
-			while (ClassDB::class_exists(cname)) {
-				if (ClassDB::has_property(cname, result.class_member, true)) {
-					result.class_name = cname;
-					break;
-				}
-				cname = ClassDB::get_parent_class(cname);
-			}
-			doc_symbol = "property|" + result.class_name + "|" + result.class_member;
-		} break;
-		case ScriptLanguage::LOOKUP_RESULT_CLASS_METHOD: {
-			StringName cname = result.class_name;
-			while (ClassDB::class_exists(cname)) {
-				if (ClassDB::has_method(cname, result.class_member, true)) {
-					result.class_name = cname;
-					break;
-				}
-				cname = ClassDB::get_parent_class(cname);
-			}
-			doc_symbol = "method|" + result.class_name + "|" + result.class_member;
-		} break;
-		case ScriptLanguage::LOOKUP_RESULT_CLASS_SIGNAL: {
-			StringName cname = result.class_name;
-			while (ClassDB::class_exists(cname)) {
-				if (ClassDB::has_signal(cname, result.class_member, true)) {
-					result.class_name = cname;
-					break;
-				}
-				cname = ClassDB::get_parent_class(cname);
-			}
-			doc_symbol = "signal|" + result.class_name + "|" + result.class_member;
-		} break;
-		case ScriptLanguage::LOOKUP_RESULT_CLASS_ENUM: {
-			StringName cname = result.class_name;
-			while (ClassDB::class_exists(cname)) {
-				if (ClassDB::has_enum(cname, result.class_member, true)) {
-					result.class_name = cname;
-					break;
-				}
-				cname = ClassDB::get_parent_class(cname);
-			}
-			doc_symbol = "enum|" + result.class_name + "|" + result.class_member;
-		} break;
-		case ScriptLanguage::LOOKUP_RESULT_CLASS_ANNOTATION: {
-			doc_symbol = "annotation|" + result.class_name + "|" + result.class_member;
-		} break;
-		case ScriptLanguage::LOOKUP_RESULT_LOCAL_CONSTANT:
-		case ScriptLanguage::LOOKUP_RESULT_LOCAL_VARIABLE: {
-			const String item_type = (result.type == ScriptLanguage::LOOKUP_RESULT_LOCAL_CONSTANT) ? "local_constant" : "local_variable";
-			Dictionary item_data;
-			item_data["description"] = result.description;
-			item_data["is_deprecated"] = result.is_deprecated;
-			item_data["deprecated_message"] = result.deprecated_message;
-			item_data["is_experimental"] = result.is_experimental;
-			item_data["experimental_message"] = result.experimental_message;
-			item_data["doc_type"] = result.doc_type;
-			item_data["enumeration"] = result.enumeration;
-			item_data["is_bitfield"] = result.is_bitfield;
-			item_data["value"] = result.value;
-			doc_symbol = item_type + "||" + p_symbol + "|" + JSON::stringify(item_data);
-		} break;
-		case ScriptLanguage::LOOKUP_RESULT_SCRIPT_LOCATION:
-		case ScriptLanguage::LOOKUP_RESULT_CLASS_TBD_GLOBALSCOPE: // Deprecated.
-		case ScriptLanguage::LOOKUP_RESULT_MAX: {
-			// Nothing to do.
-		} break;
+	String debug_value = EditorDebuggerNode::get_singleton()->get_var_value(p_symbol);
+	if (!debug_value.is_empty()) {
+		constexpr int DISPLAY_LIMIT = 1024;
+		if (debug_value.size() > DISPLAY_LIMIT) {
+			debug_value = debug_value.left(DISPLAY_LIMIT) + "... " + TTR("(truncated)");
+		}
+		debug_value = debug_value.replace("[", "[lb]");
+
+		if (doc_symbol.is_empty()) {
+			debug_value = p_symbol + ": " + debug_value;
+		} else {
+			debug_value = TTR("Current value: ") + debug_value;
+		}
 	}
 
-	if (!doc_symbol.is_empty()) {
-		EditorHelpBitTooltip::show_tooltip(code_editor->get_text_editor(), doc_symbol, String(), true);
+	if (!doc_symbol.is_empty() || !debug_value.is_empty()) {
+		EditorHelpBitTooltip::show_tooltip(code_editor->get_text_editor(), doc_symbol, debug_value, true);
 	}
 }
 
@@ -1281,7 +1295,7 @@ void ScriptTextEditor::_update_connected_methods() {
 				// There is a chance that the method is inherited from another script.
 				bool found_inherited_function = false;
 				Ref<Script> inherited_script = script->get_base_script();
-				while (!inherited_script.is_null()) {
+				while (inherited_script.is_valid()) {
 					if (inherited_script->has_method(method)) {
 						found_inherited_function = true;
 						break;
@@ -1316,7 +1330,7 @@ void ScriptTextEditor::_update_connected_methods() {
 		String found_base_class;
 		StringName base_class = script->get_instance_base_type();
 		Ref<Script> inherited_script = script->get_base_script();
-		while (!inherited_script.is_null()) {
+		while (inherited_script.is_valid()) {
 			if (inherited_script->has_method(name)) {
 				found_base_class = "script:" + inherited_script->get_path();
 				break;
@@ -1412,7 +1426,7 @@ void ScriptTextEditor::_gutter_clicked(int p_line, int p_gutter) {
 		if (base_class_split[0] == "script") {
 			// Go to function declaration.
 			Ref<Script> base_script = ResourceLoader::load(base_class_split[1]);
-			ERR_FAIL_COND(!base_script.is_valid());
+			ERR_FAIL_COND(base_script.is_null());
 			emit_signal(SNAME("go_to_method"), base_script, method);
 		} else if (base_class_split[0] == "builtin") {
 			// Open method documentation.
@@ -1725,6 +1739,11 @@ void ScriptTextEditor::_edit_option(int p_op) {
 				_lookup_symbol(text, tx->get_caret_line(0), tx->get_caret_column(0));
 			}
 		} break;
+		default: {
+			if (p_op >= EditorContextMenuPlugin::BASE_ID) {
+				EditorContextMenuPluginManager::get_singleton()->activate_custom_option(EditorContextMenuPlugin::CONTEXT_SLOT_SCRIPT_EDITOR_CODE, p_op, tx);
+			}
+		}
 	}
 }
 
@@ -2313,6 +2332,9 @@ void ScriptTextEditor::_make_context_menu(bool p_selection, bool p_color, bool p
 			context_menu->add_item(TTR("Pick Color"), EDIT_PICK_COLOR);
 		}
 	}
+
+	const PackedStringArray paths = { code_editor->get_text_editor()->get_path() };
+	EditorContextMenuPluginManager::get_singleton()->add_options_from_plugins(context_menu, EditorContextMenuPlugin::CONTEXT_SLOT_SCRIPT_EDITOR_CODE, paths);
 
 	const CodeEdit *tx = code_editor->get_text_editor();
 	context_menu->set_item_disabled(context_menu->get_item_index(EDIT_UNDO), !tx->has_undo());

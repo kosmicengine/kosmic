@@ -1870,7 +1870,7 @@ struct InitializeResult {
 	}
 };
 
-struct GodotNativeClassInfo {
+struct KosmicNativeClassInfo {
 	String name;
 	const DocData::ClassDoc *class_doc = nullptr;
 	const ClassDB::ClassInfo *class_info = nullptr;
@@ -1888,12 +1888,12 @@ struct KosmicCapabilities {
 	/**
 	 * Native class list
 	 */
-	List<GodotNativeClassInfo> native_classes;
+	List<KosmicNativeClassInfo> native_classes;
 
 	Dictionary to_json() {
 		Dictionary dict;
 		Array classes;
-		for (List<GodotNativeClassInfo>::Element *E = native_classes.front(); E; E = E->next()) {
+		for (List<KosmicNativeClassInfo>::Element *E = native_classes.front(); E; E = E->next()) {
 			classes.push_back(E->get().to_json());
 		}
 		dict["native_classes"] = classes;

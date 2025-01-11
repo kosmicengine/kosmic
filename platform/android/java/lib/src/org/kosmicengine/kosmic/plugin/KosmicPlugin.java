@@ -32,7 +32,7 @@
 package org.kosmicengine.kosmic.plugin;
 
 import org.kosmicengine.kosmic.BuildConfig;
-import org.kosmicengine.kosmic.Godot;
+import org.kosmicengine.kosmic.Kosmic;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -62,7 +62,7 @@ import javax.microedition.khronos.opengles.GL10;
  * <p>
  * A Godot Android plugin is an Android library with the following requirements:
  * <p>
- * - The plugin must have a dependency on the Godot Android library: `implementation "org.kosmicengine:godot:<godotLibVersion>"`
+ * - The plugin must have a dependency on the Godot Android library: `implementation "org.kosmicengine:kosmic:<kosmicLibVersion>"`
  * <p>
  * - The plugin must include a <meta-data> tag in its Android manifest with the following format:
  * <meta-data android:name="org.kosmicengine.plugin.v2.[PluginName]" android:value="[plugin.init.ClassFullName]" />
@@ -76,7 +76,7 @@ import javax.microedition.khronos.opengles.GL10;
  * <p>
  * A Godot Android plugin can also define and provide c/c++ ksextension libraries, which will be
  * automatically bundled by the aar build system.
- * KSExtension ('*.voyextension') config files must be located in the project 'assets' directory and
+ * KSExtension ('*.ksextension') config files must be located in the project 'assets' directory and
  * their paths specified by {@link KosmicPlugin#getPluginKSExtensionLibrariesPaths()}.
  *
  * @see <a href="https://docs.kosmicengine.org/en/stable/tutorials/platform/android/index.html">Android plugins</a>
@@ -88,18 +88,18 @@ public abstract class KosmicPlugin {
 	private final ConcurrentHashMap<String, SignalInfo> registeredSignals = new ConcurrentHashMap<>();
 
 	/**
-	 * Base constructor passing a {@link Godot} instance through which the plugin can access Godot's
+	 * Base constructor passing a {@link Kosmic} instance through which the plugin can access Godot's
 	 * APIs and lifecycle events.
 	 */
 	public KosmicPlugin(Kosmic kosmic) {
-		this.kosmic = godot;
+		this.kosmic = kosmic;
 	}
 
 	/**
 	 * Provides access to the Godot engine.
 	 */
-	protected Godot getGodot() {
-		return godot;
+	protected Kosmic getKosmic() {
+		return kosmic;
 	}
 
 	/**
@@ -107,7 +107,7 @@ public abstract class KosmicPlugin {
 	 */
 	@Nullable
 	protected Activity getActivity() {
-		return godot.getActivity();
+		return kosmic.getActivity();
 	}
 
 	/**
@@ -115,7 +115,7 @@ public abstract class KosmicPlugin {
 	 * <p>
 	 * This method is invoked on the render thread to register the plugin on engine startup.
 	 */
-	public final void onRegisterPluginWithGodotNative() {
+	public final void onRegisterPluginWithKosmicNative() {
 		final String pluginName = getPluginName();
 		if (!nativeRegisterSingleton(pluginName, this)) {
 			return;
@@ -128,7 +128,7 @@ public abstract class KosmicPlugin {
 
 		Method[] methods = clazz.getDeclaredMethods();
 		for (Method method : methods) {
-			// Check if the method is annotated with {@link UsedByGodot}.
+			// Check if the method is annotated with {@link UsedByKosmic}.
 			if (method.getAnnotation(UsedByKosmic.class) != null) {
 				filteredMethods.add(method);
 			} else {
@@ -219,7 +219,7 @@ public abstract class KosmicPlugin {
 	/**
 	 * Invoked on the render thread when set up of the Godot engine is complete.
 	 * <p>
-	 * This is invoked before {@link KosmicPlugin#onGodotMainLoopStarted()}.
+	 * This is invoked before {@link KosmicPlugin#onKosmicMainLoopStarted()}.
 	 */
 	public void onKosmicSetupCompleted() {}
 
@@ -228,7 +228,7 @@ public abstract class KosmicPlugin {
 	 *
 	 * This is invoked after {@link KosmicPlugin#onKosmicSetupCompleted()}.
 	 */
-	public void onGodotMainLoopStarted() {}
+	public void onKosmicMainLoopStarted() {}
 
 	/**
 	 * When using the OpenGL renderer, this is invoked once per frame on the GL thread after the
@@ -277,7 +277,7 @@ public abstract class KosmicPlugin {
 	/**
 	 * Returns the list of methods to be exposed to Kosmic.
 	 *
-	 * @deprecated Use the {@link UsedByGodot} annotation instead.
+	 * @deprecated Use the {@link UsedByKosmic} annotation instead.
 	 */
 	@NonNull
 	@Deprecated
@@ -296,7 +296,7 @@ public abstract class KosmicPlugin {
 	/**
 	 * Returns the paths for the plugin's ksextension libraries (if any).
 	 * <p>
-	 * Each returned path must be relative to the 'assets' directory and point to a '*.voyextension' file.
+	 * Each returned path must be relative to the 'assets' directory and point to a '*.ksextension' file.
 	 */
 	@NonNull
 	public Set<String> getPluginKSExtensionLibrariesPaths() {
@@ -331,7 +331,7 @@ public abstract class KosmicPlugin {
 	 * @param action the action to run on the UI thread
 	 */
 	protected void runOnUiThread(Runnable action) {
-		godot.runOnUiThread(action);
+		kosmic.runOnUiThread(action);
 	}
 
 	/**
@@ -340,7 +340,7 @@ public abstract class KosmicPlugin {
 	 * @param action the action to run on the render thread
 	 */
 	protected void runOnRenderThread(Runnable action) {
-		godot.runOnRenderThread(action);
+		kosmic.runOnRenderThread(action);
 	}
 
 	/**
@@ -356,7 +356,7 @@ public abstract class KosmicPlugin {
 				throw new IllegalArgumentException(
 						"Signal " + signalName + " is not registered for this plugin.");
 			}
-			emitSignal(getGodot(), getPluginName(), signalInfo, signalArgs);
+			emitSignal(getKosmic(), getPluginName(), signalInfo, signalArgs);
 		} catch (IllegalArgumentException exception) {
 			Log.w(TAG, exception);
 			if (BuildConfig.DEBUG) {
@@ -367,7 +367,7 @@ public abstract class KosmicPlugin {
 
 	/**
 	 * Emit a Godot signal.
-	 * @param godot Godot instance
+	 * @param Kosmic kosmic instance
 	 * @param pluginName Name of the Godot plugin the signal will be emitted from. The plugin must already be registered with the Godot engine.
 	 * @param signalInfo Information about the signal to emit.
 	 * @param signalArgs Arguments used to populate the emitted signal. The arguments will be validated against the given {@link SignalInfo} parameter.
@@ -393,7 +393,7 @@ public abstract class KosmicPlugin {
 				}
 			}
 
-			godot.runOnRenderThread(() -> nativeEmitSignal(pluginName, signalInfo.getName(), signalArgs));
+			kosmic.runOnRenderThread(() -> nativeEmitSignal(pluginName, signalInfo.getName(), signalArgs));
 
 		} catch (IllegalArgumentException exception) {
 			Log.w(TAG, exception);

@@ -628,7 +628,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 		VoyScriptLanguage::get_singleton()->enter_function(p_instance, this, stack, &ip, &line);
 	}
 
-#define KS_ERR_BREAK(m_cond)                                                                                           \
+#define VOY_ERR_BREAK(m_cond)                                                                                           \
 	{                                                                                                                  \
 		if (unlikely(m_cond)) {                                                                                        \
 			_err_print_error(FUNCTION_STR, __FILE__, __LINE__, "Condition ' " _STR(m_cond) " ' is true. Breaking..:"); \
@@ -637,7 +637,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 	}
 
 #define CHECK_SPACE(m_space) \
-	KS_ERR_BREAK((ip + m_space) > _code_size)
+	VOY_ERR_BREAK((ip + m_space) > _code_size)
 
 #define GET_VARIANT_PTR(m_v, m_code_ofs)                                                            \
 	Variant *m_v;                                                                                   \
@@ -663,7 +663,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 	}
 
 #else // !DEBUG_ENABLED
-#define KS_ERR_BREAK(m_cond)
+#define VOY_ERR_BREAK(m_cond)
 #define CHECK_SPACE(m_space)
 
 #define GET_VARIANT_PTR(m_v, m_code_ofs)                                                        \
@@ -719,7 +719,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				bool valid;
 				Variant::Operator op = (Variant::Operator)_code_ptr[ip + 4];
-				KS_ERR_BREAK(op >= Variant::OP_MAX);
+				VOY_ERR_BREAK(op >= Variant::OP_MAX);
 
 				GET_VARIANT_PTR(a, 0);
 				GET_VARIANT_PTR(b, 1);
@@ -804,7 +804,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				CHECK_SPACE(5);
 
 				int operator_idx = _code_ptr[ip + 4];
-				KS_ERR_BREAK(operator_idx < 0 || operator_idx >= _operator_funcs_count);
+				VOY_ERR_BREAK(operator_idx < 0 || operator_idx >= _operator_funcs_count);
 				Variant::ValidatedOperatorEvaluator operator_func = _operator_funcs_ptr[operator_idx];
 
 				GET_VARIANT_PTR(a, 0);
@@ -824,7 +824,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(value, 1);
 
 				Variant::Type builtin_type = (Variant::Type)_code_ptr[ip + 3];
-				KS_ERR_BREAK(builtin_type < 0 || builtin_type >= Variant::VARIANT_MAX);
+				VOY_ERR_BREAK(builtin_type < 0 || builtin_type >= Variant::VARIANT_MAX);
 
 				*dst = value->get_type() == builtin_type;
 				ip += 4;
@@ -840,7 +840,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(script_type, 2);
 				Variant::Type builtin_type = (Variant::Type)_code_ptr[ip + 4];
 				int native_type_idx = _code_ptr[ip + 5];
-				KS_ERR_BREAK(native_type_idx < 0 || native_type_idx >= _global_names_count);
+				VOY_ERR_BREAK(native_type_idx < 0 || native_type_idx >= _global_names_count);
 				const StringName native_type = _global_names_ptr[native_type_idx];
 
 				bool result = false;
@@ -863,13 +863,13 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(key_script_type, 2);
 				Variant::Type key_builtin_type = (Variant::Type)_code_ptr[ip + 5];
 				int key_native_type_idx = _code_ptr[ip + 6];
-				KS_ERR_BREAK(key_native_type_idx < 0 || key_native_type_idx >= _global_names_count);
+				VOY_ERR_BREAK(key_native_type_idx < 0 || key_native_type_idx >= _global_names_count);
 				const StringName key_native_type = _global_names_ptr[key_native_type_idx];
 
 				GET_VARIANT_PTR(value_script_type, 3);
 				Variant::Type value_builtin_type = (Variant::Type)_code_ptr[ip + 7];
 				int value_native_type_idx = _code_ptr[ip + 8];
-				KS_ERR_BREAK(value_native_type_idx < 0 || value_native_type_idx >= _global_names_count);
+				VOY_ERR_BREAK(value_native_type_idx < 0 || value_native_type_idx >= _global_names_count);
 				const StringName value_native_type = _global_names_ptr[value_native_type_idx];
 
 				bool result = false;
@@ -891,7 +891,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(value, 1);
 
 				int native_type_idx = _code_ptr[ip + 3];
-				KS_ERR_BREAK(native_type_idx < 0 || native_type_idx >= _global_names_count);
+				VOY_ERR_BREAK(native_type_idx < 0 || native_type_idx >= _global_names_count);
 				const StringName native_type = _global_names_ptr[native_type_idx];
 
 				bool was_freed = false;
@@ -914,7 +914,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				GET_VARIANT_PTR(type, 2);
 				Script *script_type = Object::cast_to<Script>(type->operator Object *());
-				KS_ERR_BREAK(!script_type);
+				VOY_ERR_BREAK(!script_type);
 
 				bool was_freed = false;
 				Object *object = value->get_validated_object_with_check(was_freed);
@@ -994,7 +994,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(value, 2);
 
 				int index_setter = _code_ptr[ip + 4];
-				KS_ERR_BREAK(index_setter < 0 || index_setter >= _keyed_setters_count);
+				VOY_ERR_BREAK(index_setter < 0 || index_setter >= _keyed_setters_count);
 				const Variant::ValidatedKeyedSetter setter = _keyed_setters_ptr[index_setter];
 
 				bool valid;
@@ -1028,7 +1028,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(value, 2);
 
 				int index_setter = _code_ptr[ip + 4];
-				KS_ERR_BREAK(index_setter < 0 || index_setter >= _indexed_setters_count);
+				VOY_ERR_BREAK(index_setter < 0 || index_setter >= _indexed_setters_count);
 				const Variant::ValidatedIndexedSetter setter = _indexed_setters_ptr[index_setter];
 
 				int64_t int_index = *VariantInternal::get_int(index);
@@ -1100,7 +1100,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(dst, 2);
 
 				int index_getter = _code_ptr[ip + 4];
-				KS_ERR_BREAK(index_getter < 0 || index_getter >= _keyed_getters_count);
+				VOY_ERR_BREAK(index_getter < 0 || index_getter >= _keyed_getters_count);
 				const Variant::ValidatedKeyedGetter getter = _keyed_getters_ptr[index_getter];
 
 				bool valid;
@@ -1136,7 +1136,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(dst, 2);
 
 				int index_getter = _code_ptr[ip + 4];
-				KS_ERR_BREAK(index_getter < 0 || index_getter >= _indexed_getters_count);
+				VOY_ERR_BREAK(index_getter < 0 || index_getter >= _indexed_getters_count);
 				const Variant::ValidatedIndexedGetter getter = _indexed_getters_ptr[index_getter];
 
 				int64_t int_index = *VariantInternal::get_int(index);
@@ -1168,7 +1168,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				int indexname = _code_ptr[ip + 3];
 
-				KS_ERR_BREAK(indexname < 0 || indexname >= _global_names_count);
+				VOY_ERR_BREAK(indexname < 0 || indexname >= _global_names_count);
 				const StringName *index = &_global_names_ptr[indexname];
 
 				bool valid;
@@ -1204,7 +1204,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(value, 1);
 
 				int index_setter = _code_ptr[ip + 3];
-				KS_ERR_BREAK(index_setter < 0 || index_setter >= _setters_count);
+				VOY_ERR_BREAK(index_setter < 0 || index_setter >= _setters_count);
 				const Variant::ValidatedSetter setter = _setters_ptr[index_setter];
 
 				setter(dst, value);
@@ -1220,7 +1220,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				int indexname = _code_ptr[ip + 3];
 
-				KS_ERR_BREAK(indexname < 0 || indexname >= _global_names_count);
+				VOY_ERR_BREAK(indexname < 0 || indexname >= _global_names_count);
 				const StringName *index = &_global_names_ptr[indexname];
 
 				bool valid;
@@ -1249,7 +1249,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(dst, 1);
 
 				int index_getter = _code_ptr[ip + 3];
-				KS_ERR_BREAK(index_getter < 0 || index_getter >= _getters_count);
+				VOY_ERR_BREAK(index_getter < 0 || index_getter >= _getters_count);
 				const Variant::ValidatedGetter getter = _getters_ptr[index_getter];
 
 				getter(src, dst);
@@ -1261,7 +1261,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				CHECK_SPACE(3);
 				GET_VARIANT_PTR(src, 0);
 				int indexname = _code_ptr[ip + 2];
-				KS_ERR_BREAK(indexname < 0 || indexname >= _global_names_count);
+				VOY_ERR_BREAK(indexname < 0 || indexname >= _global_names_count);
 				const StringName *index = &_global_names_ptr[indexname];
 
 				bool valid;
@@ -1285,7 +1285,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				CHECK_SPACE(3);
 				GET_VARIANT_PTR(dst, 0);
 				int indexname = _code_ptr[ip + 2];
-				KS_ERR_BREAK(indexname < 0 || indexname >= _global_names_count);
+				VOY_ERR_BREAK(indexname < 0 || indexname >= _global_names_count);
 				const StringName *index = &_global_names_ptr[indexname];
 #ifndef DEBUG_ENABLED
 				ClassDB::get_property(p_instance->owner, *index, *dst);
@@ -1307,10 +1307,10 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				GET_VARIANT_PTR(_class, 1);
 				VoyScript *voyscript = Object::cast_to<VoyScript>(_class->operator Object *());
-				KS_ERR_BREAK(!voyscript);
+				VOY_ERR_BREAK(!voyscript);
 
 				int index = _code_ptr[ip + 3];
-				KS_ERR_BREAK(index < 0 || index >= voyscript->static_variables.size());
+				VOY_ERR_BREAK(index < 0 || index >= voyscript->static_variables.size());
 
 				voyscript->static_variables.write[index] = *value;
 
@@ -1325,10 +1325,10 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				GET_VARIANT_PTR(_class, 1);
 				VoyScript *voyscript = Object::cast_to<VoyScript>(_class->operator Object *());
-				KS_ERR_BREAK(!voyscript);
+				VOY_ERR_BREAK(!voyscript);
 
 				int index = _code_ptr[ip + 3];
-				KS_ERR_BREAK(index < 0 || index >= voyscript->static_variables.size());
+				VOY_ERR_BREAK(index < 0 || index >= voyscript->static_variables.size());
 
 				*target = voyscript->static_variables[index];
 
@@ -1383,7 +1383,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(src, 1);
 
 				Variant::Type var_type = (Variant::Type)_code_ptr[ip + 3];
-				KS_ERR_BREAK(var_type < 0 || var_type >= Variant::VARIANT_MAX);
+				VOY_ERR_BREAK(var_type < 0 || var_type >= Variant::VARIANT_MAX);
 
 				if (src->get_type() != var_type) {
 #ifdef DEBUG_ENABLED
@@ -1414,7 +1414,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(script_type, 2);
 				Variant::Type builtin_type = (Variant::Type)_code_ptr[ip + 4];
 				int native_type_idx = _code_ptr[ip + 5];
-				KS_ERR_BREAK(native_type_idx < 0 || native_type_idx >= _global_names_count);
+				VOY_ERR_BREAK(native_type_idx < 0 || native_type_idx >= _global_names_count);
 				const StringName native_type = _global_names_ptr[native_type_idx];
 
 				if (src->get_type() != Variant::ARRAY) {
@@ -1449,13 +1449,13 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(key_script_type, 2);
 				Variant::Type key_builtin_type = (Variant::Type)_code_ptr[ip + 5];
 				int key_native_type_idx = _code_ptr[ip + 6];
-				KS_ERR_BREAK(key_native_type_idx < 0 || key_native_type_idx >= _global_names_count);
+				VOY_ERR_BREAK(key_native_type_idx < 0 || key_native_type_idx >= _global_names_count);
 				const StringName key_native_type = _global_names_ptr[key_native_type_idx];
 
 				GET_VARIANT_PTR(value_script_type, 3);
 				Variant::Type value_builtin_type = (Variant::Type)_code_ptr[ip + 7];
 				int value_native_type_idx = _code_ptr[ip + 8];
-				KS_ERR_BREAK(value_native_type_idx < 0 || value_native_type_idx >= _global_names_count);
+				VOY_ERR_BREAK(value_native_type_idx < 0 || value_native_type_idx >= _global_names_count);
 				const StringName value_native_type = _global_names_ptr[value_native_type_idx];
 
 				if (src->get_type() != Variant::DICTIONARY) {
@@ -1493,7 +1493,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 #ifdef DEBUG_ENABLED
 				GET_VARIANT_PTR(type, 2);
 				VoyScriptNativeClass *nc = Object::cast_to<VoyScriptNativeClass>(type->operator Object *());
-				KS_ERR_BREAK(!nc);
+				VOY_ERR_BREAK(!nc);
 				if (src->get_type() != Variant::OBJECT && src->get_type() != Variant::NIL) {
 					err_text = "Trying to assign value of type '" + Variant::get_type_name(src->get_type()) +
 							"' to a variable of type '" + nc->get_name() + "'.";
@@ -1530,7 +1530,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(type, 2);
 				Script *base_type = Object::cast_to<Script>(type->operator Object *());
 
-				KS_ERR_BREAK(!base_type);
+				VOY_ERR_BREAK(!base_type);
 
 				if (src->get_type() != Variant::OBJECT && src->get_type() != Variant::NIL) {
 					err_text = "Trying to assign a non-object value to a variable of type '" + base_type->get_path().get_file() + "'.";
@@ -1585,7 +1585,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(dst, 1);
 				Variant::Type to_type = (Variant::Type)_code_ptr[ip + 3];
 
-				KS_ERR_BREAK(to_type < 0 || to_type >= Variant::VARIANT_MAX);
+				VOY_ERR_BREAK(to_type < 0 || to_type >= Variant::VARIANT_MAX);
 
 #ifdef DEBUG_ENABLED
 				if (src->operator Object *() && !src->get_validated_object()) {
@@ -1615,7 +1615,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(to_type, 2);
 
 				VoyScriptNativeClass *nc = Object::cast_to<VoyScriptNativeClass>(to_type->operator Object *());
-				KS_ERR_BREAK(!nc);
+				VOY_ERR_BREAK(!nc);
 
 #ifdef DEBUG_ENABLED
 				if (src->operator Object *() && !src->get_validated_object()) {
@@ -1647,7 +1647,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				Script *base_type = Object::cast_to<Script>(to_type->operator Object *());
 
-				KS_ERR_BREAK(!base_type);
+				VOY_ERR_BREAK(!base_type);
 
 #ifdef DEBUG_ENABLED
 				if (src->operator Object *() && !src->get_validated_object()) {
@@ -1724,7 +1724,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				int argc = _code_ptr[ip + 1];
 
 				int constructor_idx = _code_ptr[ip + 2];
-				KS_ERR_BREAK(constructor_idx < 0 || constructor_idx >= _constructors_count);
+				VOY_ERR_BREAK(constructor_idx < 0 || constructor_idx >= _constructors_count);
 				Variant::ValidatedConstructor constructor = _constructors_ptr[constructor_idx];
 
 				Variant **argptrs = instruction_args;
@@ -1769,7 +1769,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_INSTRUCTION_ARG(script_type, argc + 1);
 				Variant::Type builtin_type = (Variant::Type)_code_ptr[ip + 2];
 				int native_type_idx = _code_ptr[ip + 3];
-				KS_ERR_BREAK(native_type_idx < 0 || native_type_idx >= _global_names_count);
+				VOY_ERR_BREAK(native_type_idx < 0 || native_type_idx >= _global_names_count);
 				const StringName native_type = _global_names_ptr[native_type_idx];
 
 				Array array;
@@ -1822,13 +1822,13 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_INSTRUCTION_ARG(key_script_type, argc * 2 + 1);
 				Variant::Type key_builtin_type = (Variant::Type)_code_ptr[ip + 2];
 				int key_native_type_idx = _code_ptr[ip + 3];
-				KS_ERR_BREAK(key_native_type_idx < 0 || key_native_type_idx >= _global_names_count);
+				VOY_ERR_BREAK(key_native_type_idx < 0 || key_native_type_idx >= _global_names_count);
 				const StringName key_native_type = _global_names_ptr[key_native_type_idx];
 
 				GET_INSTRUCTION_ARG(value_script_type, argc * 2 + 2);
 				Variant::Type value_builtin_type = (Variant::Type)_code_ptr[ip + 4];
 				int value_native_type_idx = _code_ptr[ip + 5];
-				KS_ERR_BREAK(value_native_type_idx < 0 || value_native_type_idx >= _global_names_count);
+				VOY_ERR_BREAK(value_native_type_idx < 0 || value_native_type_idx >= _global_names_count);
 				const StringName value_native_type = _global_names_ptr[value_native_type_idx];
 
 				Dictionary dict;
@@ -1862,10 +1862,10 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				ip += instr_arg_count;
 
 				int argc = _code_ptr[ip + 1];
-				KS_ERR_BREAK(argc < 0);
+				VOY_ERR_BREAK(argc < 0);
 
 				int methodname_idx = _code_ptr[ip + 2];
-				KS_ERR_BREAK(methodname_idx < 0 || methodname_idx >= _global_names_count);
+				VOY_ERR_BREAK(methodname_idx < 0 || methodname_idx >= _global_names_count);
 				const StringName *methodname = &_global_names_ptr[methodname_idx];
 
 				GET_INSTRUCTION_ARG(base, argc);
@@ -1979,8 +1979,8 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				ip += instr_arg_count;
 
 				int argc = _code_ptr[ip + 1];
-				KS_ERR_BREAK(argc < 0);
-				KS_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _methods_count);
+				VOY_ERR_BREAK(argc < 0);
+				VOY_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _methods_count);
 				MethodBind *method = _methods_ptr[_code_ptr[ip + 2]];
 
 				GET_INSTRUCTION_ARG(base, argc);
@@ -2061,15 +2061,15 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				ip += instr_arg_count;
 
-				KS_ERR_BREAK(_code_ptr[ip + 1] < 0 || _code_ptr[ip + 1] >= Variant::VARIANT_MAX);
+				VOY_ERR_BREAK(_code_ptr[ip + 1] < 0 || _code_ptr[ip + 1] >= Variant::VARIANT_MAX);
 				Variant::Type builtin_type = (Variant::Type)_code_ptr[ip + 1];
 
 				int methodname_idx = _code_ptr[ip + 2];
-				KS_ERR_BREAK(methodname_idx < 0 || methodname_idx >= _global_names_count);
+				VOY_ERR_BREAK(methodname_idx < 0 || methodname_idx >= _global_names_count);
 				const StringName *methodname = &_global_names_ptr[methodname_idx];
 
 				int argc = _code_ptr[ip + 3];
-				KS_ERR_BREAK(argc < 0);
+				VOY_ERR_BREAK(argc < 0);
 
 				GET_INSTRUCTION_ARG(ret, argc);
 
@@ -2095,11 +2095,11 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				ip += instr_arg_count;
 
-				KS_ERR_BREAK(_code_ptr[ip + 1] < 0 || _code_ptr[ip + 1] >= _methods_count);
+				VOY_ERR_BREAK(_code_ptr[ip + 1] < 0 || _code_ptr[ip + 1] >= _methods_count);
 				MethodBind *method = _methods_ptr[_code_ptr[ip + 1]];
 
 				int argc = _code_ptr[ip + 2];
-				KS_ERR_BREAK(argc < 0);
+				VOY_ERR_BREAK(argc < 0);
 
 				GET_INSTRUCTION_ARG(ret, argc);
 
@@ -2139,9 +2139,9 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				ip += instr_arg_count;
 
 				int argc = _code_ptr[ip + 1];
-				KS_ERR_BREAK(argc < 0);
+				VOY_ERR_BREAK(argc < 0);
 
-				KS_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _methods_count);
+				VOY_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _methods_count);
 				MethodBind *method = _methods_ptr[_code_ptr[ip + 2]];
 
 				Variant **argptrs = instruction_args;
@@ -2175,9 +2175,9 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				ip += instr_arg_count;
 
 				int argc = _code_ptr[ip + 1];
-				KS_ERR_BREAK(argc < 0);
+				VOY_ERR_BREAK(argc < 0);
 
-				KS_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _methods_count);
+				VOY_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _methods_count);
 				MethodBind *method = _methods_ptr[_code_ptr[ip + 2]];
 
 				Variant **argptrs = instruction_args;
@@ -2211,9 +2211,9 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				ip += instr_arg_count;
 
 				int argc = _code_ptr[ip + 1];
-				KS_ERR_BREAK(argc < 0);
+				VOY_ERR_BREAK(argc < 0);
 
-				KS_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _methods_count);
+				VOY_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _methods_count);
 				MethodBind *method = _methods_ptr[_code_ptr[ip + 2]];
 
 				GET_INSTRUCTION_ARG(base, argc);
@@ -2263,9 +2263,9 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				ip += instr_arg_count;
 
 				int argc = _code_ptr[ip + 1];
-				KS_ERR_BREAK(argc < 0);
+				VOY_ERR_BREAK(argc < 0);
 
-				KS_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _methods_count);
+				VOY_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _methods_count);
 				MethodBind *method = _methods_ptr[_code_ptr[ip + 2]];
 
 				GET_INSTRUCTION_ARG(base, argc);
@@ -2314,11 +2314,11 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				ip += instr_arg_count;
 
 				int argc = _code_ptr[ip + 1];
-				KS_ERR_BREAK(argc < 0);
+				VOY_ERR_BREAK(argc < 0);
 
 				GET_INSTRUCTION_ARG(base, argc);
 
-				KS_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _builtin_methods_count);
+				VOY_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _builtin_methods_count);
 				Variant::ValidatedBuiltInMethod method = _builtin_methods_ptr[_code_ptr[ip + 2]];
 				Variant **argptrs = instruction_args;
 
@@ -2336,9 +2336,9 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				ip += instr_arg_count;
 
 				int argc = _code_ptr[ip + 1];
-				KS_ERR_BREAK(argc < 0);
+				VOY_ERR_BREAK(argc < 0);
 
-				KS_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _global_names_count);
+				VOY_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _global_names_count);
 				StringName function = _global_names_ptr[_code_ptr[ip + 2]];
 
 				Variant **argptrs = instruction_args;
@@ -2371,9 +2371,9 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				ip += instr_arg_count;
 
 				int argc = _code_ptr[ip + 1];
-				KS_ERR_BREAK(argc < 0);
+				VOY_ERR_BREAK(argc < 0);
 
-				KS_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _utilities_count);
+				VOY_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _utilities_count);
 				Variant::ValidatedUtilityFunction function = _utilities_ptr[_code_ptr[ip + 2]];
 
 				Variant **argptrs = instruction_args;
@@ -2393,10 +2393,10 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				ip += instr_arg_count;
 
 				int argc = _code_ptr[ip + 1];
-				KS_ERR_BREAK(argc < 0);
+				VOY_ERR_BREAK(argc < 0);
 
-				KS_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _gds_utilities_count);
-				VoyScriptUtilityFunctions::FunctionPtr function = _gds_utilities_ptr[_code_ptr[ip + 2]];
+				VOY_ERR_BREAK(_code_ptr[ip + 2] < 0 || _code_ptr[ip + 2] >= _kss_utilities_count);
+				VoyScriptUtilityFunctions::FunctionPtr function = _kss_utilities_ptr[_code_ptr[ip + 2]];
 
 				Variant **argptrs = instruction_args;
 
@@ -2428,7 +2428,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				ip += instr_arg_count;
 
 				int argc = _code_ptr[ip + 1];
-				KS_ERR_BREAK(argc < 0);
+				VOY_ERR_BREAK(argc < 0);
 
 				int self_fun = _code_ptr[ip + 2];
 #ifdef DEBUG_ENABLED
@@ -2598,10 +2598,10 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				ip += instr_arg_count;
 
 				int captures_count = _code_ptr[ip + 1];
-				KS_ERR_BREAK(captures_count < 0);
+				VOY_ERR_BREAK(captures_count < 0);
 
 				int lambda_index = _code_ptr[ip + 2];
-				KS_ERR_BREAK(lambda_index < 0 || lambda_index >= _lambdas_count);
+				VOY_ERR_BREAK(lambda_index < 0 || lambda_index >= _lambdas_count);
 				VoyScriptFunction *lambda = _lambdas_ptr[lambda_index];
 
 				Vector<Variant> captures;
@@ -2624,15 +2624,15 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				LOAD_INSTRUCTION_ARGS
 				CHECK_SPACE(2 + instr_arg_count);
 
-				KS_ERR_BREAK(p_instance == nullptr);
+				VOY_ERR_BREAK(p_instance == nullptr);
 
 				ip += instr_arg_count;
 
 				int captures_count = _code_ptr[ip + 1];
-				KS_ERR_BREAK(captures_count < 0);
+				VOY_ERR_BREAK(captures_count < 0);
 
 				int lambda_index = _code_ptr[ip + 2];
-				KS_ERR_BREAK(lambda_index < 0 || lambda_index >= _lambdas_count);
+				VOY_ERR_BREAK(lambda_index < 0 || lambda_index >= _lambdas_count);
 				VoyScriptFunction *lambda = _lambdas_ptr[lambda_index];
 
 				Vector<Variant> captures;
@@ -2660,7 +2660,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				CHECK_SPACE(2);
 				int to = _code_ptr[ip + 1];
 
-				KS_ERR_BREAK(to < 0 || to > _code_size);
+				VOY_ERR_BREAK(to < 0 || to > _code_size);
 				ip = to;
 			}
 			DISPATCH_OPCODE;
@@ -2674,7 +2674,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				if (result) {
 					int to = _code_ptr[ip + 2];
-					KS_ERR_BREAK(to < 0 || to > _code_size);
+					VOY_ERR_BREAK(to < 0 || to > _code_size);
 					ip = to;
 				} else {
 					ip += 3;
@@ -2691,7 +2691,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				if (!result) {
 					int to = _code_ptr[ip + 2];
-					KS_ERR_BREAK(to < 0 || to > _code_size);
+					VOY_ERR_BREAK(to < 0 || to > _code_size);
 					ip = to;
 				} else {
 					ip += 3;
@@ -2712,7 +2712,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				if (val->is_shared()) {
 					int to = _code_ptr[ip + 2];
-					KS_ERR_BREAK(to < 0 || to > _code_size);
+					VOY_ERR_BREAK(to < 0 || to > _code_size);
 					ip = to;
 				} else {
 					ip += 3;
@@ -2735,7 +2735,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(r, 0);
 
 				Variant::Type ret_type = (Variant::Type)_code_ptr[ip + 2];
-				KS_ERR_BREAK(ret_type < 0 || ret_type >= Variant::VARIANT_MAX);
+				VOY_ERR_BREAK(ret_type < 0 || ret_type >= Variant::VARIANT_MAX);
 
 				if (r->get_type() != ret_type) {
 					if (Variant::can_convert_strict(r->get_type(), ret_type)) {
@@ -2768,7 +2768,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(script_type, 1);
 				Variant::Type builtin_type = (Variant::Type)_code_ptr[ip + 3];
 				int native_type_idx = _code_ptr[ip + 4];
-				KS_ERR_BREAK(native_type_idx < 0 || native_type_idx >= _global_names_count);
+				VOY_ERR_BREAK(native_type_idx < 0 || native_type_idx >= _global_names_count);
 				const StringName native_type = _global_names_ptr[native_type_idx];
 
 				if (r->get_type() != Variant::ARRAY) {
@@ -2804,13 +2804,13 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				GET_VARIANT_PTR(key_script_type, 1);
 				Variant::Type key_builtin_type = (Variant::Type)_code_ptr[ip + 4];
 				int key_native_type_idx = _code_ptr[ip + 5];
-				KS_ERR_BREAK(key_native_type_idx < 0 || key_native_type_idx >= _global_names_count);
+				VOY_ERR_BREAK(key_native_type_idx < 0 || key_native_type_idx >= _global_names_count);
 				const StringName key_native_type = _global_names_ptr[key_native_type_idx];
 
 				GET_VARIANT_PTR(value_script_type, 2);
 				Variant::Type value_builtin_type = (Variant::Type)_code_ptr[ip + 6];
 				int value_native_type_idx = _code_ptr[ip + 7];
-				KS_ERR_BREAK(value_native_type_idx < 0 || value_native_type_idx >= _global_names_count);
+				VOY_ERR_BREAK(value_native_type_idx < 0 || value_native_type_idx >= _global_names_count);
 				const StringName value_native_type = _global_names_ptr[value_native_type_idx];
 
 				if (r->get_type() != Variant::DICTIONARY) {
@@ -2848,7 +2848,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				GET_VARIANT_PTR(type, 1);
 				VoyScriptNativeClass *nc = Object::cast_to<VoyScriptNativeClass>(type->operator Object *());
-				KS_ERR_BREAK(!nc);
+				VOY_ERR_BREAK(!nc);
 
 				if (r->get_type() != Variant::OBJECT && r->get_type() != Variant::NIL) {
 					err_text = vformat(R"(Trying to return value of type "%s" from a function whose return type is "%s".)",
@@ -2888,7 +2888,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				GET_VARIANT_PTR(type, 1);
 				Script *base_type = Object::cast_to<Script>(type->operator Object *());
-				KS_ERR_BREAK(!base_type);
+				VOY_ERR_BREAK(!base_type);
 
 				if (r->get_type() != Variant::OBJECT && r->get_type() != Variant::NIL) {
 #ifdef DEBUG_ENABLED
@@ -2964,7 +2964,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 					}
 #endif
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				} else {
 					GET_VARIANT_PTR(iterator, 2);
@@ -3002,7 +3002,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				} else {
 					// Jump to end of loop.
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				}
 			}
@@ -3029,7 +3029,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				} else {
 					// Jump to end of loop.
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				}
 			}
@@ -3056,7 +3056,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				} else {
 					// Jump to end of loop.
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				}
 			}
@@ -3083,7 +3083,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				} else {
 					// Jump to end of loop.
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				}
 			}
@@ -3115,7 +3115,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				} else {
 					// Jump to end of loop.
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				}
 			}
@@ -3147,7 +3147,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				} else {
 					// Jump to end of loop.
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				}
 			}
@@ -3174,7 +3174,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				} else {
 					// Jump to end of loop.
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				}
 			}
@@ -3199,7 +3199,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				} else {
 					// Jump to end of loop.
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				}
 			}
@@ -3225,7 +3225,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 				} else {
 					// Jump to end of loop.
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				}
 			}
@@ -3247,7 +3247,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 			ip += 5;                                                                                                       \
 		} else {                                                                                                           \
 			int jumpto = _code_ptr[ip + 4];                                                                                \
-			KS_ERR_BREAK(jumpto<0 || jumpto> _code_size);                                                                  \
+			VOY_ERR_BREAK(jumpto<0 || jumpto> _code_size);                                                                  \
 			ip = jumpto;                                                                                                   \
 		}                                                                                                                  \
 	}                                                                                                                      \
@@ -3305,7 +3305,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 #endif
 				if (!has_next.booleanize()) {
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				} else {
 					*counter = ref[0];
@@ -3339,7 +3339,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 					}
 #endif
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				} else {
 					GET_VARIANT_PTR(iterator, 2);
@@ -3369,7 +3369,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				if (*count >= size) {
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				} else {
 					GET_VARIANT_PTR(iterator, 2);
@@ -3393,7 +3393,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				if (*count >= size) {
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				} else {
 					GET_VARIANT_PTR(iterator, 2);
@@ -3417,7 +3417,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				if (*count >= bounds->y) {
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				} else {
 					GET_VARIANT_PTR(iterator, 2);
@@ -3441,7 +3441,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				if (*count >= bounds->y) {
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				} else {
 					GET_VARIANT_PTR(iterator, 2);
@@ -3465,7 +3465,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				if ((bounds->z < 0 && *count <= bounds->y) || (bounds->z > 0 && *count >= bounds->y)) {
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				} else {
 					GET_VARIANT_PTR(iterator, 2);
@@ -3489,7 +3489,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				if ((bounds->z < 0 && *count <= bounds->y) || (bounds->z > 0 && *count >= bounds->y)) {
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				} else {
 					GET_VARIANT_PTR(iterator, 2);
@@ -3512,7 +3512,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				if (*idx >= str->length()) {
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				} else {
 					GET_VARIANT_PTR(iterator, 2);
@@ -3534,7 +3534,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				if (!next) {
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				} else {
 					GET_VARIANT_PTR(iterator, 2);
@@ -3558,7 +3558,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 
 				if (*idx >= array->size()) {
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				} else {
 					GET_VARIANT_PTR(iterator, 2);
@@ -3579,7 +3579,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 		(*idx)++;                                                                                   \
 		if (*idx >= array->size()) {                                                                \
 			int jumpto = _code_ptr[ip + 4];                                                         \
-			KS_ERR_BREAK(jumpto<0 || jumpto> _code_size);                                           \
+			VOY_ERR_BREAK(jumpto<0 || jumpto> _code_size);                                           \
 			ip = jumpto;                                                                            \
 		} else {                                                                                    \
 			GET_VARIANT_PTR(iterator, 2);                                                           \
@@ -3639,7 +3639,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 #endif
 				if (!has_next.booleanize()) {
 					int jumpto = _code_ptr[ip + 4];
-					KS_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
+					VOY_ERR_BREAK(jumpto < 0 || jumpto > _code_size);
 					ip = jumpto;
 				} else {
 					*counter = ref[0];
@@ -3661,7 +3661,7 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 			OPCODE(OPCODE_STORE_GLOBAL) {
 				CHECK_SPACE(3);
 				int global_idx = _code_ptr[ip + 2];
-				KS_ERR_BREAK(global_idx < 0 || global_idx >= VoyScriptLanguage::get_singleton()->get_global_array_size());
+				VOY_ERR_BREAK(global_idx < 0 || global_idx >= VoyScriptLanguage::get_singleton()->get_global_array_size());
 
 				GET_VARIANT_PTR(dst, 0);
 				*dst = VoyScriptLanguage::get_singleton()->get_global_array()[global_idx];
@@ -3673,9 +3673,9 @@ Variant VoyScriptFunction::call(VoyScriptInstance *p_instance, const Variant **p
 			OPCODE(OPCODE_STORE_NAMED_GLOBAL) {
 				CHECK_SPACE(3);
 				int globalname_idx = _code_ptr[ip + 2];
-				KS_ERR_BREAK(globalname_idx < 0 || globalname_idx >= _global_names_count);
+				VOY_ERR_BREAK(globalname_idx < 0 || globalname_idx >= _global_names_count);
 				const StringName *globalname = &_global_names_ptr[globalname_idx];
-				KS_ERR_BREAK(!VoyScriptLanguage::get_singleton()->get_named_globals_map().has(*globalname));
+				VOY_ERR_BREAK(!VoyScriptLanguage::get_singleton()->get_named_globals_map().has(*globalname));
 
 				GET_VARIANT_PTR(dst, 0);
 				*dst = VoyScriptLanguage::get_singleton()->get_named_globals_map()[*globalname];

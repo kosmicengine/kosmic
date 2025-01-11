@@ -21,8 +21,8 @@ namespace Kosmic.SourceGenerators
                toggle != null &&
                toggle.Equals("disabled", StringComparison.OrdinalIgnoreCase);
 
-        public static bool IsGodotToolsProject(this GeneratorExecutionContext context)
-            => context.TryGetGlobalAnalyzerProperty("IsGodotToolsProject", out string? toggle) &&
+        public static bool IsKosmicToolsProject(this GeneratorExecutionContext context)
+            => context.TryGetGlobalAnalyzerProperty("IsKosmicToolsProject", out string? toggle) &&
                toggle != null &&
                toggle.Equals("true", StringComparison.OrdinalIgnoreCase);
 
@@ -70,15 +70,15 @@ namespace Kosmic.SourceGenerators
             if (nativeType == null)
                 return null;
 
-            var godotClassNameAttr = nativeType.GetAttributes()
+            var kosmicClassNameAttr = nativeType.GetAttributes()
                 .FirstOrDefault(a => a.AttributeClass?.IsKosmicClassNameAttribute() ?? false);
 
-            string? godotClassName = null;
+            string? kosmicClassName = null;
 
-            if (godotClassNameAttr is { ConstructorArguments: { Length: > 0 } })
-                godotClassName = godotClassNameAttr.ConstructorArguments[0].Value?.ToString();
+            if (kosmicClassNameAttr is { ConstructorArguments: { Length: > 0 } })
+                kosmicClassName = kosmicClassNameAttr.ConstructorArguments[0].Value?.ToString();
 
-            return godotClassName ?? nativeType.Name;
+            return kosmicClassName ?? nativeType.Name;
         }
 
         private static bool TryGetKosmicScriptClass(
@@ -278,25 +278,25 @@ namespace Kosmic.SourceGenerators
         public static bool IsKosmicSignalAttribute(this INamedTypeSymbol symbol)
             => symbol.FullQualifiedNameOmitGlobal() == KosmicClasses.SignalAttr;
 
-        public static bool IsGodotMustBeVariantAttribute(this INamedTypeSymbol symbol)
+        public static bool IsKosmicMustBeVariantAttribute(this INamedTypeSymbol symbol)
             => symbol.FullQualifiedNameOmitGlobal() == KosmicClasses.MustBeVariantAttr;
 
         public static bool IsKosmicClassNameAttribute(this INamedTypeSymbol symbol)
             => symbol.FullQualifiedNameOmitGlobal() == KosmicClasses.KosmicClassNameAttr;
 
-        public static bool IsGodotGlobalClassAttribute(this INamedTypeSymbol symbol)
+        public static bool IsKosmicGlobalClassAttribute(this INamedTypeSymbol symbol)
             => symbol.FullQualifiedNameOmitGlobal() == KosmicClasses.GlobalClassAttr;
 
         public static bool IsKosmicExportToolButtonAttribute(this INamedTypeSymbol symbol)
             => symbol.FullQualifiedNameOmitGlobal() == KosmicClasses.ExportToolButtonAttr;
 
-        public static bool IsGodotToolAttribute(this INamedTypeSymbol symbol)
+        public static bool IsKosmicToolAttribute(this INamedTypeSymbol symbol)
             => symbol.FullQualifiedNameOmitGlobal() == KosmicClasses.ToolAttr;
 
         public static bool IsSystemFlagsAttribute(this INamedTypeSymbol symbol)
             => symbol.FullQualifiedNameOmitGlobal() == KosmicClasses.SystemFlagsAttr;
 
-        public static GodotMethodData? HasKosmicCompatibleSignature(
+        public static KosmicMethodData? HasKosmicCompatibleSignature(
             this IMethodSymbol method,
             MarshalUtils.TypeCache typeCache
         )
@@ -326,12 +326,12 @@ namespace Kosmic.SourceGenerators
             if (parameters.Length > paramTypes.Length)
                 return null; // Ignore incompatible method
 
-            return new GodotMethodData(method, paramTypes,
+            return new KosmicMethodData(method, paramTypes,
                 parameters.Select(p => p.Type).ToImmutableArray(),
                 retType != null ? (retType.Value, retSymbol) : null);
         }
 
-        public static IEnumerable<GodotMethodData> WhereHasKosmicCompatibleSignature(
+        public static IEnumerable<KosmicMethodData> WhereHasKosmicCompatibleSignature(
             this IEnumerable<IMethodSymbol> methods,
             MarshalUtils.TypeCache typeCache
         )

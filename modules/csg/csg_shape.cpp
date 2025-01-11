@@ -495,7 +495,7 @@ void CSGShape3D::mikktSetTSpaceDefault(const SMikkTSpaceContext *pContext, const
 	int i = iFace * 3 + iVert;
 	Vector3 normal = surface.normalsw[i];
 	Vector3 tangent = Vector3(fvTangent[0], fvTangent[1], fvTangent[2]);
-	Vector3 bitangent = Vector3(-fvBiTangent[0], -fvBiTangent[1], -fvBiTangent[2]); // for some reason these are reversed, something with the coordinate system in Godot
+	Vector3 bitangent = Vector3(-fvBiTangent[0], -fvBiTangent[1], -fvBiTangent[2]); // for some reason these are reversed, something with the coordinate system in Kosmic
 	float d = bitangent.dot(normal.cross(tangent));
 
 	i *= 4;
@@ -726,7 +726,7 @@ bool CSGShape3D::_is_debug_collision_shape_visible() {
 }
 
 void CSGShape3D::_update_debug_collision_shape() {
-	if (!use_collision || !is_root_shape() || !root_collision_shape.is_valid() || !_is_debug_collision_shape_visible()) {
+	if (!use_collision || !is_root_shape() || root_collision_shape.is_null() || !_is_debug_collision_shape_visible()) {
 		return;
 	}
 
@@ -1038,7 +1038,7 @@ CSGPrimitive3D::CSGPrimitive3D() {
 /////////////////////
 
 CSGBrush *CSGMesh3D::_build_brush() {
-	if (!mesh.is_valid()) {
+	if (mesh.is_null()) {
 		return memnew(CSGBrush);
 	}
 
@@ -2256,7 +2256,11 @@ CSGBrush *CSGPolygon3D::_build_brush() {
 					current_xform.translate_local(Vector3(0, 0, -depth));
 				} break;
 				case MODE_SPIN: {
-					current_xform.rotate(Vector3(0, 1, 0), spin_step);
+					if (end_count == 0 && x0 == extrusions - 1) {
+						current_xform = base_xform;
+					} else {
+						current_xform.rotate(Vector3(0, 1, 0), spin_step);
+					}
 				} break;
 				case MODE_PATH: {
 					double previous_offset = x0 * extrusion_step;

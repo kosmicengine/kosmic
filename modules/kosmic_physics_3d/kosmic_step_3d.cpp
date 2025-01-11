@@ -42,7 +42,7 @@
 #define ISLAND_SIZE_RESERVE 512
 #define CONSTRAINT_COUNT_RESERVE 1024
 
-void KosmicStep3D::_populate_island(GodotBody3D *p_body, LocalVector<GodotBody3D *> &p_body_island, LocalVector<KosmicConstraint3D *> &p_constraint_island) {
+void KosmicStep3D::_populate_island(KosmicBody3D *p_body, LocalVector<KosmicBody3D *> &p_body_island, LocalVector<KosmicConstraint3D *> &p_constraint_island) {
 	p_body->set_island_step(_step);
 
 	if (p_body->get_mode() > PhysicsServer3D::BODY_MODE_KINEMATIC) {
@@ -65,7 +65,7 @@ void KosmicStep3D::_populate_island(GodotBody3D *p_body, LocalVector<GodotBody3D
 			if (i == E.value) {
 				continue;
 			}
-			GodotBody3D *other_body = constraint->get_body_ptr()[i];
+			KosmicBody3D *other_body = constraint->get_body_ptr()[i];
 			if (other_body->get_island_step() == _step) {
 				continue; // Already processed.
 			}
@@ -86,7 +86,7 @@ void KosmicStep3D::_populate_island(GodotBody3D *p_body, LocalVector<GodotBody3D
 	}
 }
 
-void KosmicStep3D::_populate_island_soft_body(KosmicSoftBody3D *p_soft_body, LocalVector<GodotBody3D *> &p_body_island, LocalVector<KosmicConstraint3D *> &p_constraint_island) {
+void KosmicStep3D::_populate_island_soft_body(KosmicSoftBody3D *p_soft_body, LocalVector<KosmicBody3D *> &p_body_island, LocalVector<KosmicConstraint3D *> &p_constraint_island) {
 	p_soft_body->set_island_step(_step);
 
 	for (KosmicConstraint3D *E : p_soft_body->get_constraints()) {
@@ -101,7 +101,7 @@ void KosmicStep3D::_populate_island_soft_body(KosmicSoftBody3D *p_soft_body, Loc
 
 		// Find connected rigid bodies.
 		for (int i = 0; i < constraint->get_body_count(); i++) {
-			GodotBody3D *body = constraint->get_body_ptr()[i];
+			KosmicBody3D *body = constraint->get_body_ptr()[i];
 			if (body->get_island_step() == _step) {
 				continue; // Already processed.
 			}
@@ -159,12 +159,12 @@ void KosmicStep3D::_solve_island(uint32_t p_island_index, void *p_userdata) {
 	}
 }
 
-void KosmicStep3D::_check_suspend(const LocalVector<GodotBody3D *> &p_body_island) const {
+void KosmicStep3D::_check_suspend(const LocalVector<KosmicBody3D *> &p_body_island) const {
 	bool can_sleep = true;
 
 	uint32_t body_count = p_body_island.size();
 	for (uint32_t body_index = 0; body_index < body_count; ++body_index) {
-		GodotBody3D *body = p_body_island[body_index];
+		KosmicBody3D *body = p_body_island[body_index];
 
 		if (!body->sleep_test(delta)) {
 			can_sleep = false;
@@ -173,7 +173,7 @@ void KosmicStep3D::_check_suspend(const LocalVector<GodotBody3D *> &p_body_islan
 
 	// Put all to sleep or wake up everyone.
 	for (uint32_t body_index = 0; body_index < body_count; ++body_index) {
-		GodotBody3D *body = p_body_island[body_index];
+		KosmicBody3D *body = p_body_island[body_index];
 
 		bool active = body->is_active();
 
@@ -193,7 +193,7 @@ void KosmicStep3D::step(KosmicSpace3D *p_space, real_t p_delta) {
 	iterations = p_space->get_solver_iterations();
 	delta = p_delta;
 
-	const SelfList<GodotBody3D>::List *body_list = &p_space->get_active_body_list();
+	const SelfList<KosmicBody3D>::List *body_list = &p_space->get_active_body_list();
 
 	const SelfList<KosmicSoftBody3D>::List *soft_body_list = &p_space->get_active_soft_body_list();
 
@@ -204,7 +204,7 @@ void KosmicStep3D::step(KosmicSpace3D *p_space, real_t p_delta) {
 
 	int active_count = 0;
 
-	const SelfList<GodotBody3D> *b = body_list->first();
+	const SelfList<KosmicBody3D> *b = body_list->first();
 	while (b) {
 		b->self()->integrate_forces(p_delta);
 		b = b->next();
@@ -235,7 +235,7 @@ void KosmicStep3D::step(KosmicSpace3D *p_space, real_t p_delta) {
 
 	uint32_t island_count = 0;
 
-	const SelfList<GodotArea3D>::List &aml = p_space->get_moved_area_list();
+	const SelfList<KosmicArea3D>::List &aml = p_space->get_moved_area_list();
 
 	while (aml.first()) {
 		for (KosmicConstraint3D *E : aml.first()->self()->get_constraints()) {
@@ -256,7 +256,7 @@ void KosmicStep3D::step(KosmicSpace3D *p_space, real_t p_delta) {
 			all_constraints.push_back(constraint);
 			constraint_island.push_back(constraint);
 		}
-		p_space->area_remove_from_moved_list((SelfList<GodotArea3D> *)aml.first()); //faster to remove here
+		p_space->area_remove_from_moved_list((SelfList<KosmicArea3D> *)aml.first()); //faster to remove here
 	}
 
 	/* GENERATE CONSTRAINT ISLANDS FOR ACTIVE RIGID BODIES */
@@ -266,14 +266,14 @@ void KosmicStep3D::step(KosmicSpace3D *p_space, real_t p_delta) {
 	uint32_t body_island_count = 0;
 
 	while (b) {
-		GodotBody3D *body = b->self();
+		KosmicBody3D *body = b->self();
 
 		if (body->get_island_step() != _step) {
 			++body_island_count;
 			if (body_islands.size() < body_island_count) {
 				body_islands.resize(body_island_count);
 			}
-			LocalVector<GodotBody3D *> &body_island = body_islands[body_island_count - 1];
+			LocalVector<KosmicBody3D *> &body_island = body_islands[body_island_count - 1];
 			body_island.clear();
 			body_island.reserve(BODY_ISLAND_SIZE_RESERVE);
 
@@ -309,7 +309,7 @@ void KosmicStep3D::step(KosmicSpace3D *p_space, real_t p_delta) {
 			if (body_islands.size() < body_island_count) {
 				body_islands.resize(body_island_count);
 			}
-			LocalVector<GodotBody3D *> &body_island = body_islands[body_island_count - 1];
+			LocalVector<KosmicBody3D *> &body_island = body_islands[body_island_count - 1];
 			body_island.clear();
 			body_island.reserve(BODY_ISLAND_SIZE_RESERVE);
 
@@ -378,7 +378,7 @@ void KosmicStep3D::step(KosmicSpace3D *p_space, real_t p_delta) {
 
 	b = body_list->first();
 	while (b) {
-		const SelfList<GodotBody3D> *n = b->next();
+		const SelfList<KosmicBody3D> *n = b->next();
 		b->self()->integrate_velocities(p_delta);
 		b = n;
 	}

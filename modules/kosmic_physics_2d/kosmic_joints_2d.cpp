@@ -64,7 +64,7 @@ void KosmicJoint2D::copy_settings_from(KosmicJoint2D *p_joint) {
 	disable_collisions_between_bodies(p_joint->is_disabled_collisions_between_bodies());
 }
 
-static inline real_t k_scalar(GodotBody2D *a, GodotBody2D *b, const Vector2 &rA, const Vector2 &rB, const Vector2 &n) {
+static inline real_t k_scalar(KosmicBody2D *a, KosmicBody2D *b, const Vector2 &rA, const Vector2 &rB, const Vector2 &n) {
 	real_t value = 0.0;
 
 	{
@@ -83,7 +83,7 @@ static inline real_t k_scalar(GodotBody2D *a, GodotBody2D *b, const Vector2 &rA,
 }
 
 static inline Vector2
-relative_velocity(GodotBody2D *a, GodotBody2D *b, Vector2 rA, Vector2 rB) {
+relative_velocity(KosmicBody2D *a, KosmicBody2D *b, Vector2 rA, Vector2 rB) {
 	Vector2 sum = a->get_linear_velocity() - (rA - a->get_center_of_mass()).orthogonal() * a->get_angular_velocity();
 	if (b) {
 		return (b->get_linear_velocity() - (rB - b->get_center_of_mass()).orthogonal() * b->get_angular_velocity()) - sum;
@@ -93,7 +93,7 @@ relative_velocity(GodotBody2D *a, GodotBody2D *b, Vector2 rA, Vector2 rB) {
 }
 
 static inline real_t
-normal_relative_velocity(GodotBody2D *a, GodotBody2D *b, Vector2 rA, Vector2 rB, Vector2 n) {
+normal_relative_velocity(KosmicBody2D *a, KosmicBody2D *b, Vector2 rA, Vector2 rB, Vector2 n) {
 	return relative_velocity(a, b, rA, rB).dot(n);
 }
 
@@ -315,7 +315,7 @@ bool KosmicPinJoint2D::get_flag(PhysicsServer2D::PinJointFlag p_flag) const {
 	ERR_FAIL_V(false);
 }
 
-KosmicPinJoint2D::KosmicPinJoint2D(const Vector2 &p_pos, GodotBody2D *p_body_a, GodotBody2D *p_body_b) :
+KosmicPinJoint2D::KosmicPinJoint2D(const Vector2 &p_pos, KosmicBody2D *p_body_a, KosmicBody2D *p_body_b) :
 		KosmicJoint2D(_arr, p_body_b ? 2 : 1) {
 	A = p_body_a;
 	B = p_body_b;
@@ -334,7 +334,7 @@ KosmicPinJoint2D::KosmicPinJoint2D(const Vector2 &p_pos, GodotBody2D *p_body_a, 
 //////////////////////////////////////////////
 
 static inline void
-k_tensor(GodotBody2D *a, GodotBody2D *b, Vector2 r1, Vector2 r2, Vector2 *k1, Vector2 *k2) {
+k_tensor(KosmicBody2D *a, KosmicBody2D *b, Vector2 r1, Vector2 r2, Vector2 *k1, Vector2 *k2) {
 	// calculate mass matrix
 	// If I wasn't lazy and wrote a proper matrix class, this wouldn't be so gross...
 	real_t k11, k12, k21, k22;
@@ -359,7 +359,7 @@ k_tensor(GodotBody2D *a, GodotBody2D *b, Vector2 r1, Vector2 r2, Vector2 *k1, Ve
 	k21 += r1nxy;
 	k22 += r1xsq;
 
-	// add the influnce from r2
+	// add the influence from r2
 	real_t b_i_inv = b->get_inv_inertia();
 	real_t r2xsq = r2.x * r2.x * b_i_inv;
 	real_t r2ysq = r2.y * r2.y * b_i_inv;
@@ -383,7 +383,7 @@ mult_k(const Vector2 &vr, const Vector2 &k1, const Vector2 &k2) {
 	return Vector2(vr.dot(k1), vr.dot(k2));
 }
 
-bool GodotGrooveJoint2D::setup(real_t p_step) {
+bool KosmicGrooveJoint2D::setup(real_t p_step) {
 	dynamic_A = (A->get_mode() > PhysicsServer2D::BODY_MODE_KINEMATIC);
 	dynamic_B = (B->get_mode() > PhysicsServer2D::BODY_MODE_KINEMATIC);
 
@@ -439,7 +439,7 @@ bool GodotGrooveJoint2D::setup(real_t p_step) {
 	return true;
 }
 
-bool GodotGrooveJoint2D::pre_solve(real_t p_step) {
+bool KosmicGrooveJoint2D::pre_solve(real_t p_step) {
 	// Apply accumulated impulse.
 	if (dynamic_A) {
 		A->apply_impulse(-jn_acc, rA);
@@ -451,7 +451,7 @@ bool GodotGrooveJoint2D::pre_solve(real_t p_step) {
 	return true;
 }
 
-void GodotGrooveJoint2D::solve(real_t p_step) {
+void KosmicGrooveJoint2D::solve(real_t p_step) {
 	// compute impulse
 	Vector2 vr = relative_velocity(A, B, rA, rB);
 
@@ -471,7 +471,7 @@ void GodotGrooveJoint2D::solve(real_t p_step) {
 	}
 }
 
-GodotGrooveJoint2D::GodotGrooveJoint2D(const Vector2 &p_a_groove1, const Vector2 &p_a_groove2, const Vector2 &p_b_anchor, GodotBody2D *p_body_a, GodotBody2D *p_body_b) :
+KosmicGrooveJoint2D::KosmicGrooveJoint2D(const Vector2 &p_a_groove1, const Vector2 &p_a_groove2, const Vector2 &p_b_anchor, KosmicBody2D *p_body_a, KosmicBody2D *p_body_b) :
 		KosmicJoint2D(_arr, 2) {
 	A = p_body_a;
 	B = p_body_b;
@@ -582,7 +582,7 @@ real_t KosmicDampedSpringJoint2D::get_param(PhysicsServer2D::DampedSpringParam p
 	ERR_FAIL_V(0);
 }
 
-KosmicDampedSpringJoint2D::KosmicDampedSpringJoint2D(const Vector2 &p_anchor_a, const Vector2 &p_anchor_b, GodotBody2D *p_body_a, GodotBody2D *p_body_b) :
+KosmicDampedSpringJoint2D::KosmicDampedSpringJoint2D(const Vector2 &p_anchor_a, const Vector2 &p_anchor_b, KosmicBody2D *p_body_a, KosmicBody2D *p_body_b) :
 		KosmicJoint2D(_arr, 2) {
 	A = p_body_a;
 	B = p_body_b;

@@ -28,8 +28,8 @@ Table of contents:
 - [Documentation](#Documentation)
 - [Editor](#Editor)
 - [Export](#Export)
-- [GDExtension](#GDExtension)
-- [GDScript](#GDScript)
+- [KSExtension](#KSExtension)
+- [VoyScript](#VoyScript)
 - [GUI](#GUI)
 - [Import](#Import)
 - [Input](#Input)
@@ -866,7 +866,7 @@ Table of contents:
 - Remove traces of the extinct RID preallocate feature ([GH-86570](https://github.com/godotengine/godot/pull/86570)).
 - Enhance & fix `WorkerThreadPool` ([GH-86587](https://github.com/godotengine/godot/pull/86587)).
 - Initialize pointers in `a_star.cpp` ([GH-86590](https://github.com/godotengine/godot/pull/86590)).
-- Improve GDExtension Tools Integration with Editor Debug Tooling ([GH-86721](https://github.com/godotengine/godot/pull/86721)).
+- Improve KSExtension Tools Integration with Editor Debug Tooling ([GH-86721](https://github.com/godotengine/godot/pull/86721)).
 - Promote CowData to 64 bits ([GH-86730](https://github.com/godotengine/godot/pull/86730)).
 - Optimize comparisons for Object's `get_argument_options` ([GH-86743](https://github.com/godotengine/godot/pull/86743)).
 - Add autocompletion for `Engine.get_singleton` & similar ([GH-86753](https://github.com/godotengine/godot/pull/86753)).
@@ -1098,7 +1098,7 @@ Table of contents:
 - Post-merge fixes to Node & OS documentation ([GH-86903](https://github.com/godotengine/godot/pull/86903)).
 - Fill the documentation of a few overlooked classes ([GH-86927](https://github.com/godotengine/godot/pull/86927)).
 - Add missing documentation for AudioStream & AudioStreamPlayback ([GH-86958](https://github.com/godotengine/godot/pull/86958)).
-- Add class reference documentation for GDExtension & GDExtensionManager ([GH-86968](https://github.com/godotengine/godot/pull/86968)).
+- Add class reference documentation for KSExtension & KSExtensionManager ([GH-86968](https://github.com/godotengine/godot/pull/86968)).
 - Add documentation to EditorExportPlatformWeb ([GH-86977](https://github.com/godotengine/godot/pull/86977)).
 - Add missing documentation to Viewport ([GH-86994](https://github.com/godotengine/godot/pull/86994)).
 - Add missing descriptions for Image's documentation ([GH-86997](https://github.com/godotengine/godot/pull/86997)).
@@ -1148,7 +1148,7 @@ Table of contents:
 - Add keywords to improve search in the class reference ([GH-88641](https://github.com/godotengine/godot/pull/88641)).
 - Docs: Fix some experimental/deprecated hints ([GH-88708](https://github.com/godotengine/godot/pull/88708)).
 - Clarify behavior of opening a new file in `FileAccess` ([GH-88758](https://github.com/godotengine/godot/pull/88758)).
-- Doc: Fix GDScript casing of `String.num_scientific` ([GH-88767](https://github.com/godotengine/godot/pull/88767)).
+- Doc: Fix VoyScript casing of `String.num_scientific` ([GH-88767](https://github.com/godotengine/godot/pull/88767)).
 - Document that `parse_input_event` doesn't influence the OS ([GH-88810](https://github.com/godotengine/godot/pull/88810)).
 - Add necessary elaboration to documentation for `Node3D::get_parent_node_3d` ([GH-88841](https://github.com/godotengine/godot/pull/88841)).
 - Explain gutter types in the TextEdit documentation ([GH-88875](https://github.com/godotengine/godot/pull/88875)).
@@ -1282,7 +1282,7 @@ Table of contents:
 - Fix texture compression descriptions in RenderingDevice docs ([GH-94393](https://github.com/godotengine/godot/pull/94393)).
 - Add tutorial link to Parallax2D doc ([GH-94433](https://github.com/godotengine/godot/pull/94433)).
 - Font: Fix typo in `get_supported_variation_list` example ([GH-94443](https://github.com/godotengine/godot/pull/94443)).
-- Add note about `Script.has_source_code` and GDScript binary tokenization ([GH-94527](https://github.com/godotengine/godot/pull/94527)).
+- Add note about `Script.has_source_code` and VoyScript binary tokenization ([GH-94527](https://github.com/godotengine/godot/pull/94527)).
 - Clarify documentation for `AnimationPlayer.queue` ([GH-94541](https://github.com/godotengine/godot/pull/94541)).
 - Add note to `shadow_mesh` docs to warn about improper usage ([GH-94547](https://github.com/godotengine/godot/pull/94547)).
 - Update link in CONTRIBUTING.md ([GH-94565](https://github.com/godotengine/godot/pull/94565)).
@@ -1596,7 +1596,7 @@ Table of contents:
 - Include 'Orphan Resource Explorer' and 'Upgrade Mesh Surfaces' in Command Palette ([GH-90078](https://github.com/godotengine/godot/pull/90078)).
 - [Project Manager] Replace title bar logo with color variant ([GH-90080](https://github.com/godotengine/godot/pull/90080)).
 - Improve string extraction of ETR POT file ([GH-90162](https://github.com/godotengine/godot/pull/90162)).
-- Expose `goto_help` for GDExtension on `ScriptEditor` ([GH-90189](https://github.com/godotengine/godot/pull/90189)).
+- Expose `goto_help` for KSExtension on `ScriptEditor` ([GH-90189](https://github.com/godotengine/godot/pull/90189)).
 - Fix crash on invalid values in EditorPropertyArray/Dict ([GH-90265](https://github.com/godotengine/godot/pull/90265)).
 - SceneTreeEditor: Fix crash when TreeItem is removed before callback ([GH-90266](https://github.com/godotengine/godot/pull/90266)).
 - Ignore `ERR_FILE_CANT_OPEN` error when loading ([GH-90269](https://github.com/godotengine/godot/pull/90269)).
@@ -1833,7 +1833,7 @@ Table of contents:
 - Add clearer error message for missing project icon during Android export ([GH-87208](https://github.com/godotengine/godot/pull/87208)).
 - Add basic multimesh data needed for headless export to the Dummy rendering server ([GH-87390](https://github.com/godotengine/godot/pull/87390)).
 - Add DummyShader handling to Dummy RenderingServer to ensure shader parameters are saved in headless export ([GH-87392](https://github.com/godotengine/godot/pull/87392)).
-- GDScript: Reintroduce binary tokenization on export ([GH-87634](https://github.com/godotengine/godot/pull/87634)).
+- VoyScript: Reintroduce binary tokenization on export ([GH-87634](https://github.com/godotengine/godot/pull/87634)).
 - [macOS export] Allow unpacked .app export in "Distribution" export mode ([GH-87657](https://github.com/godotengine/godot/pull/87657)).
 - Remove workaround in GLTF exporter that double converts `ra` textures to `rg` ([GH-87775](https://github.com/godotengine/godot/pull/87775)).
 - Don't invoke adb with no runnable Android preset ([GH-87823](https://github.com/godotengine/godot/pull/87823)).
@@ -1843,21 +1843,21 @@ Table of contents:
 - Allow export plugins to override export option values ([GH-88291](https://github.com/godotengine/godot/pull/88291)).
 - Android: Allow using alternative Gradle build directory ([GH-88297](https://github.com/godotengine/godot/pull/88297)).
 - Unify settings for PC texture formats, removed obsoleted ETC feature ([GH-88325](https://github.com/godotengine/godot/pull/88325)).
-- GDScript: Fix extension comparison for exported scripts ([GH-88365](https://github.com/godotengine/godot/pull/88365)).
+- VoyScript: Fix extension comparison for exported scripts ([GH-88365](https://github.com/godotengine/godot/pull/88365)).
 - Add export setting to specify whether the native libraries should be compressed for the gradle build ([GH-88385](https://github.com/godotengine/godot/pull/88385)).
 - Add an `Advanced Options` toggle to the editor export preset ([GH-88419](https://github.com/godotengine/godot/pull/88419)).
 - Display a warning if device CPU architecture is not active in the export preset ([GH-88611](https://github.com/godotengine/godot/pull/88611)).
 - Physics: Fix exporting with 3D disabled ([GH-88668](https://github.com/godotengine/godot/pull/88668)).
 - Update the list of advanced export options for the Android platform ([GH-88840](https://github.com/godotengine/godot/pull/88840)).
-- GDScript: Canonicalize script path in FQCN ([GH-88853](https://github.com/godotengine/godot/pull/88853)).
+- VoyScript: Canonicalize script path in FQCN ([GH-88853](https://github.com/godotengine/godot/pull/88853)).
 - Don't attempt shutting down adb on exit if not started ([GH-88865](https://github.com/godotengine/godot/pull/88865)).
-- GDScript: Fix paths in `ResourceFormatLoaderGDScript::load()` ([GH-89005](https://github.com/godotengine/godot/pull/89005)).
+- VoyScript: Fix paths in `ResourceFormatLoaderVoyScript::load()` ([GH-89005](https://github.com/godotengine/godot/pull/89005)).
 - Linux: Handle export preset compat with 'Linux/X11' platform name ([GH-89044](https://github.com/godotengine/godot/pull/89044)).
 - Update the Android export validation logic to account for the custom gradle android source template ([GH-89173](https://github.com/godotengine/godot/pull/89173)).
 - Use relative file base offset for embedded PCK ([GH-89214](https://github.com/godotengine/godot/pull/89214)).
 - Fix reporting exit code when command line export fails ([GH-89234](https://github.com/godotengine/godot/pull/89234)).
 - iOS: Restore backward compatibility with old export templates ([GH-89348](https://github.com/godotengine/godot/pull/89348)).
-- GDScript: Fix continuation lines in `GDScriptTokenizerBuffer` ([GH-89472](https://github.com/godotengine/godot/pull/89472)).
+- VoyScript: Fix continuation lines in `VoyScriptTokenizerBuffer` ([GH-89472](https://github.com/godotengine/godot/pull/89472)).
 - Windows: Fix exporting as ZIP when console wrapper and/or embedded PCK is enabled ([GH-89511](https://github.com/godotengine/godot/pull/89511)).
 - Fix `gdextensionlibs.json` storage path in Android gradle build ([GH-89579](https://github.com/godotengine/godot/pull/89579)).
 - [iOS Export] Check directory content before deleting old export leftovers ([GH-89790](https://github.com/godotengine/godot/pull/89790)).
@@ -1897,70 +1897,70 @@ Table of contents:
 - [macOS export] Do not stop export on signing errors ([GH-94677](https://github.com/godotengine/godot/pull/94677)).
 - Fix Android export failing with custom keystores and no JDK setup in the OS environment ([GH-94809](https://github.com/godotengine/godot/pull/94809)).
 - Windows: Improve editor grouping, set friendly name registry key for exported projects ([GH-94976](https://github.com/godotengine/godot/pull/94976)).
-- iOS: Fix dylib GDExtension conversion ([GH-95323](https://github.com/godotengine/godot/pull/95323)).
+- iOS: Fix dylib KSExtension conversion ([GH-95323](https://github.com/godotengine/godot/pull/95323)).
 
-#### GDExtension
+#### KSExtension
 
-- Allow registering "runtime classes" from GDExtension ([GH-82554](https://github.com/godotengine/godot/pull/82554)).
+- Allow registering "runtime classes" from KSExtension ([GH-82554](https://github.com/godotengine/godot/pull/82554)).
 - Add an interface for loading extra documentation ([GH-83747](https://github.com/godotengine/godot/pull/83747)).
 - Fix some DEFVALs to use the right type ([GH-84906](https://github.com/godotengine/godot/pull/84906)).
-- Fix updating cached singletons when reloading GDScripts ([GH-85373](https://github.com/godotengine/godot/pull/85373)).
-- CI: Add 4.2-stable.expected file for GDExtension compatibility checks ([GH-85748](https://github.com/godotengine/godot/pull/85748)).
-- Fix overriding `CollisionObject3D::_mouse_enter()` and `_mouse_exit()` from GDExtension ([GH-85870](https://github.com/godotengine/godot/pull/85870)).
-- Fix operator documentation in GDExtension API dump with docs ([GH-86087](https://github.com/godotengine/godot/pull/86087)).
-- Replace `GDVIRTUAL_CALL` with `GDVIRTUAL_REQUIRED_CALL` where applicable ([GH-86169](https://github.com/godotengine/godot/pull/86169)).
+- Fix updating cached singletons when reloading VoyScripts ([GH-85373](https://github.com/godotengine/godot/pull/85373)).
+- CI: Add 4.2-stable.expected file for KSExtension compatibility checks ([GH-85748](https://github.com/godotengine/godot/pull/85748)).
+- Fix overriding `CollisionObject3D::_mouse_enter()` and `_mouse_exit()` from KSExtension ([GH-85870](https://github.com/godotengine/godot/pull/85870)).
+- Fix operator documentation in KSExtension API dump with docs ([GH-86087](https://github.com/godotengine/godot/pull/86087)).
+- Replace `KSVIRTUAL_CALL` with `KSVIRTUAL_REQUIRED_CALL` where applicable ([GH-86169](https://github.com/godotengine/godot/pull/86169)).
 - Correctly register editor-only module classes with the API ([GH-86209](https://github.com/godotengine/godot/pull/86209)).
 - Fix `ScriptLanguageExtension::_find_function` argument names ([GH-86520](https://github.com/godotengine/godot/pull/86520)).
 - Distinguish between dynamic library not found and can't be opened ([GH-86682](https://github.com/godotengine/godot/pull/86682)).
 - Fix Android dynamic library loading ([GH-86792](https://github.com/godotengine/godot/pull/86792)).
 - Editor: Add missing virtual bind to `EditorNode3DGizmo(Plugin)` ([GH-86881](https://github.com/godotengine/godot/pull/86881)).
-- Fix virtual calls for GDExtension in `CollisionObject2D` ([GH-86908](https://github.com/godotengine/godot/pull/86908)).
+- Fix virtual calls for KSExtension in `CollisionObject2D` ([GH-86908](https://github.com/godotengine/godot/pull/86908)).
 - Add renaming of PDB files to avoid blocking them ([GH-87117](https://github.com/godotengine/godot/pull/87117)).
-- Allow GDExtensions to register virtual methods and call them on scripts ([GH-87758](https://github.com/godotengine/godot/pull/87758)).
+- Allow KSExtensions to register virtual methods and call them on scripts ([GH-87758](https://github.com/godotengine/godot/pull/87758)).
 - Expose `NOTIFICATION_EXTENSION_RELOADED` to `ClassDB` ([GH-87863](https://github.com/godotengine/godot/pull/87863)).
-- Add null check for GDExtension deinitialization ([GH-87938](https://github.com/godotengine/godot/pull/87938)).
+- Add null check for KSExtension deinitialization ([GH-87938](https://github.com/godotengine/godot/pull/87938)).
 - Fix `gdextension_compat_hashes.cpp` for double precision builds ([GH-88188](https://github.com/godotengine/godot/pull/88188)).
-- Fix loading GDExtension dependencies on Android ([GH-88381](https://github.com/godotengine/godot/pull/88381)).
-- Allow GDExtensions to set a `compatibility_maximum` ([GH-88417](https://github.com/godotengine/godot/pull/88417)).
-- Unbind GDExtension methods that can't reasonably be used ([GH-88418](https://github.com/godotengine/godot/pull/88418)).
+- Fix loading KSExtension dependencies on Android ([GH-88381](https://github.com/godotengine/godot/pull/88381)).
+- Allow KSExtensions to set a `compatibility_maximum` ([GH-88417](https://github.com/godotengine/godot/pull/88417)).
+- Unbind KSExtension methods that can't reasonably be used ([GH-88418](https://github.com/godotengine/godot/pull/88418)).
 - Fix `-Wtype-limits` warning in `compatibility_maximum` patch check ([GH-88527](https://github.com/godotengine/godot/pull/88527)).
 - Expose OpenXR hand tracker handles ([GH-88566](https://github.com/godotengine/godot/pull/88566)).
-- Allow registering "runtime classes" in modules (not just GDExtension) ([GH-88683](https://github.com/godotengine/godot/pull/88683)).
+- Allow registering "runtime classes" in modules (not just KSExtension) ([GH-88683](https://github.com/godotengine/godot/pull/88683)).
 - Use godot-cpp 4.2 for the "Godot CPP" CI workflow ([GH-88736](https://github.com/godotengine/godot/pull/88736)).
 - Fix calling ancestor methods on runtime classes ([GH-88870](https://github.com/godotengine/godot/pull/88870)).
 - Add extension support for argument count to `ScriptInstance` ([GH-89050](https://github.com/godotengine/godot/pull/89050)).
 - Pass count when freeing method and property lists for script instances ([GH-89055](https://github.com/godotengine/godot/pull/89055)).
-- TextServer: Use GDVIRTUAL_REQUIRED_CALL for required extensions methods, update extension docs ([GH-89207](https://github.com/godotengine/godot/pull/89207)).
-- OpenXR: Allow GDExtensions to provide multiple, ordered composition layers ([GH-89460](https://github.com/godotengine/godot/pull/89460)).
-- Print correct path when unable to find GDExtension library ([GH-89677](https://github.com/godotengine/godot/pull/89677)).
+- TextServer: Use KSVIRTUAL_REQUIRED_CALL for required extensions methods, update extension docs ([GH-89207](https://github.com/godotengine/godot/pull/89207)).
+- OpenXR: Allow KSExtensions to provide multiple, ordered composition layers ([GH-89460](https://github.com/godotengine/godot/pull/89460)).
+- Print correct path when unable to find KSExtension library ([GH-89677](https://github.com/godotengine/godot/pull/89677)).
 - Bind constants related to 6DOF joints ([GH-89851](https://github.com/godotengine/godot/pull/89851)).
-- Fix `Resource::get_rid override` not working in GDExtension ([GH-90273](https://github.com/godotengine/godot/pull/90273)).
+- Fix `Resource::get_rid override` not working in KSExtension ([GH-90273](https://github.com/godotengine/godot/pull/90273)).
 - XR: Fix binds for composition layer virtuals ([GH-90391](https://github.com/godotengine/godot/pull/90391)).
 - Use `likely()` in `PtrToArg<T *>` when checking for null `Object *`s ([GH-90394](https://github.com/godotengine/godot/pull/90394)).
-- Fix GDExtension hot reload for classes not created via `ClassDB::instantiate()` ([GH-90447](https://github.com/godotengine/godot/pull/90447)).
+- Fix KSExtension hot reload for classes not created via `ClassDB::instantiate()` ([GH-90447](https://github.com/godotengine/godot/pull/90447)).
 - Defer call to `set_break_language` ([GH-90776](https://github.com/godotengine/godot/pull/90776)).
 - Compatibility: Add stub for VisualShaderNodeComment ([GH-90797](https://github.com/godotengine/godot/pull/90797)).
 - Expose `ClassDB::class_get_property_default_value` method ([GH-90916](https://github.com/godotengine/godot/pull/90916)).
 - Fix missing library path breaking hot reloading ([GH-90961](https://github.com/godotengine/godot/pull/90961)).
-- Fix GDExtension documentation disappearing after hot-reload ([GH-91126](https://github.com/godotengine/godot/pull/91126)).
-- Fix ptrcalls to static GDExtension methods ([GH-91153](https://github.com/godotengine/godot/pull/91153)).
+- Fix KSExtension documentation disappearing after hot-reload ([GH-91126](https://github.com/godotengine/godot/pull/91126)).
+- Fix ptrcalls to static KSExtension methods ([GH-91153](https://github.com/godotengine/godot/pull/91153)).
 - Provide `free_property_list_func` with length of array ([GH-91179](https://github.com/godotengine/godot/pull/91179)).
-- Bind compatibility GDExtension methods removed in #88418 ([GH-91502](https://github.com/godotengine/godot/pull/91502)).
-- Generate docs from GDExtensions using `--gdextension-docs` with `--doctool` ([GH-91518](https://github.com/godotengine/godot/pull/91518)).
+- Bind compatibility KSExtension methods removed in #88418 ([GH-91502](https://github.com/godotengine/godot/pull/91502)).
+- Generate docs from KSExtensions using `--gdextension-docs` with `--doctool` ([GH-91518](https://github.com/godotengine/godot/pull/91518)).
 - Add default implementation of `ScriptLanguageExtension::preferred_file_name_casing` ([GH-91570](https://github.com/godotengine/godot/pull/91570)).
 - Prevent crash during shutdown as singletons are deleted ([GH-91806](https://github.com/godotengine/godot/pull/91806)).
-- Release Engine after unregistering GDExtensions ([GH-92060](https://github.com/godotengine/godot/pull/92060)).
+- Release Engine after unregistering KSExtensions ([GH-92060](https://github.com/godotengine/godot/pull/92060)).
 - Don't use `ERR_PRINT_ONCE()` for runtime class error because it will hide errors ([GH-92216](https://github.com/godotengine/godot/pull/92216)).
 - Fix `ClassDB` not checking for editor classes properly ([GH-92345](https://github.com/godotengine/godot/pull/92345)).
-- [TextServer, GDExtension] Fix building text servers as GDExtension, expose new/changed low-level methods to GDExtension API ([GH-92715](https://github.com/godotengine/godot/pull/92715)).
-- Use GDExtension `to_string` in Node ([GH-92827](https://github.com/godotengine/godot/pull/92827)).
-- Make `profiling_get_frame_data` call the correct GDVIRTUAL method ([GH-93281](https://github.com/godotengine/godot/pull/93281)).
-- Object: Use const correct `GDExtensionConstStringNamePtr` ([GH-93288](https://github.com/godotengine/godot/pull/93288)).
+- [TextServer, KSExtension] Fix building text servers as KSExtension, expose new/changed low-level methods to KSExtension API ([GH-92715](https://github.com/godotengine/godot/pull/92715)).
+- Use KSExtension `to_string` in Node ([GH-92827](https://github.com/godotengine/godot/pull/92827)).
+- Make `profiling_get_frame_data` call the correct KSVIRTUAL method ([GH-93281](https://github.com/godotengine/godot/pull/93281)).
+- Object: Use const correct `KSExtensionConstStringNamePtr` ([GH-93288](https://github.com/godotengine/godot/pull/93288)).
 - Fix setting base class properties on a runtime class ([GH-94089](https://github.com/godotengine/godot/pull/94089)).
-- GDExtension docs: Advise bindings to use `uint64_t` for bitfields ([GH-94307](https://github.com/godotengine/godot/pull/94307)).
+- KSExtension docs: Advise bindings to use `uint64_t` for bitfields ([GH-94307](https://github.com/godotengine/godot/pull/94307)).
 - Fix to restore `library_path` as absolute path ([GH-94373](https://github.com/godotengine/godot/pull/94373)).
 
-#### GDScript
+#### VoyScript
 
 - Add editor settings for autocompletion with NodePath and StringName ([GH-66481](https://github.com/godotengine/godot/pull/66481)).
 - Add `@export_custom` annotation ([GH-72912](https://github.com/godotengine/godot/pull/72912)).
@@ -1969,7 +1969,7 @@ Table of contents:
 - Add module description in markdown ([GH-81345](https://github.com/godotengine/godot/pull/81345)).
 - Documentation: Add support for deprecated/experimental messages ([GH-81458](https://github.com/godotengine/godot/pull/81458)).
 - Include lambda dependencies ([GH-81629](https://github.com/godotengine/godot/pull/81629)).
-- Change GDScriptDataType `container_element_type` to vector container ([GH-81662](https://github.com/godotengine/godot/pull/81662)).
+- Change VoyScriptDataType `container_element_type` to vector container ([GH-81662](https://github.com/godotengine/godot/pull/81662)).
 - Add `@export_storage` annotation ([GH-82122](https://github.com/godotengine/godot/pull/82122)).
 - Core: Allow methods of built-in `Variant` types to be used as Callables ([GH-82264](https://github.com/godotengine/godot/pull/82264)).
 - Improve error messages for invalid indexing ([GH-82639](https://github.com/godotengine/godot/pull/82639)).
@@ -1992,9 +1992,9 @@ Table of contents:
 - Suggest scene unique nodes in `get_node` autocompletion ([GH-85384](https://github.com/godotengine/godot/pull/85384)).
 - Make annotations register statically in parser ([GH-85487](https://github.com/godotengine/godot/pull/85487)).
 - Move "Expected indented block" error message's line number back to where the error is ([GH-85488](https://github.com/godotengine/godot/pull/85488)).
-- Stop caching packed scenes in GDScript cache (on preload) ([GH-85501](https://github.com/godotengine/godot/pull/85501)).
-- Speed up `GDScript::get_must_clear_dependencies()` ([GH-85603](https://github.com/godotengine/godot/pull/85603)).
-- Make GDScriptAnalyzer aware of properties from other languages ([GH-85703](https://github.com/godotengine/godot/pull/85703)).
+- Stop caching packed scenes in VoyScript cache (on preload) ([GH-85501](https://github.com/godotengine/godot/pull/85501)).
+- Speed up `VoyScript::get_must_clear_dependencies()` ([GH-85603](https://github.com/godotengine/godot/pull/85603)).
+- Make VoyScriptAnalyzer aware of properties from other languages ([GH-85703](https://github.com/godotengine/godot/pull/85703)).
 - Adjust `STATIC_CALLED_ON_INSTANCE` warning to not force native type ([GH-85918](https://github.com/godotengine/godot/pull/85918)).
 - Fix accessing static function as `Callable` in static context ([GH-86088](https://github.com/godotengine/godot/pull/86088)).
 - Fix POT generator skips some nodes ([GH-86091](https://github.com/godotengine/godot/pull/86091)).
@@ -2006,17 +2006,17 @@ Table of contents:
 - Lambda hotswap fixes ([GH-86569](https://github.com/godotengine/godot/pull/86569)).
 - Improve sorting of enum autocompletion ([GH-86667](https://github.com/godotengine/godot/pull/86667)).
 - Hot-reload changed scripts only ([GH-86676](https://github.com/godotengine/godot/pull/86676)).
-- Add `StringName` support to `@GDScript.len` ([GH-86704](https://github.com/godotengine/godot/pull/86704)).
+- Add `StringName` support to `@VoyScript.len` ([GH-86704](https://github.com/godotengine/godot/pull/86704)).
 - Allow utility functions to be used as `Callable` ([GH-86823](https://github.com/godotengine/godot/pull/86823)).
 - Allow specifying a scene in completion tests ([GH-86961](https://github.com/godotengine/godot/pull/86961)).
 - Add tests for `get_node` autocompletion ([GH-86973](https://github.com/godotengine/godot/pull/86973)).
-- Improve error message when a GDScript instance fails to be constructed ([GH-86999](https://github.com/godotengine/godot/pull/86999)).
+- Improve error message when a VoyScript instance fails to be constructed ([GH-86999](https://github.com/godotengine/godot/pull/86999)).
 - Simplify script paths to ensure proper resource path checks ([GH-87124](https://github.com/godotengine/godot/pull/87124)).
-- Handle GDScript in `_type_from_variant` for autocompletion ([GH-87278](https://github.com/godotengine/godot/pull/87278)).
+- Handle VoyScript in `_type_from_variant` for autocompletion ([GH-87278](https://github.com/godotengine/godot/pull/87278)).
 - Allow `free()` to be used as Callable ([GH-87294](https://github.com/godotengine/godot/pull/87294)).
 - Better hide internal properties from users ([GH-87381](https://github.com/godotengine/godot/pull/87381)).
-- Use autoload singleton name in `GDScriptDocGen` ([GH-87421](https://github.com/godotengine/godot/pull/87421)).
-- Make `GDScriptUtilityCallable` return call error when method is invalid ([GH-87783](https://github.com/godotengine/godot/pull/87783)).
+- Use autoload singleton name in `VoyScriptDocGen` ([GH-87421](https://github.com/godotengine/godot/pull/87421)).
+- Make `VoyScriptUtilityCallable` return call error when method is invalid ([GH-87783](https://github.com/godotengine/godot/pull/87783)).
 - Add `is not` operator ([GH-87939](https://github.com/godotengine/godot/pull/87939)).
 - Prevent running `String` number functions on invalid literal ([GH-87941](https://github.com/godotengine/godot/pull/87941)).
 - Set `has_type` false if it is `BUILTIN` but `Variant::NIL` ([GH-88020](https://github.com/godotengine/godot/pull/88020)).
@@ -2027,10 +2027,10 @@ Table of contents:
 - Clean up some unused code ([GH-88899](https://github.com/godotengine/godot/pull/88899)).
 - Core: Add `Callable.create` static method for `Variant` callables ([GH-88948](https://github.com/godotengine/godot/pull/88948)).
 - Fix some test file paths ([GH-89151](https://github.com/godotengine/godot/pull/89151)).
-- Fix use after free in `GDScriptLanguage::debug_get_globals` ([GH-89274](https://github.com/godotengine/godot/pull/89274)).
+- Fix use after free in `VoyScriptLanguage::debug_get_globals` ([GH-89274](https://github.com/godotengine/godot/pull/89274)).
 - Allow LSP to process multiple messages per poll ([GH-89284](https://github.com/godotengine/godot/pull/89284)).
 - Fix enum autocompletion for core classes ([GH-89382](https://github.com/godotengine/godot/pull/89382)).
-- Update `@GDScript` documentation ([GH-89484](https://github.com/godotengine/godot/pull/89484)).
+- Update `@VoyScript` documentation ([GH-89484](https://github.com/godotengine/godot/pull/89484)).
 - Fix missing gutter icon for inner class method overrides ([GH-89545](https://github.com/godotengine/godot/pull/89545)).
 - Fix object iterator opcodes ([GH-89639](https://github.com/godotengine/godot/pull/89639)).
 - Correctly report invalid read-only access ([GH-89648](https://github.com/godotengine/godot/pull/89648)).
@@ -2053,7 +2053,7 @@ Table of contents:
 - Fix some export annotation issues ([GH-90716](https://github.com/godotengine/godot/pull/90716)).
 - Warn when enum variable has no default ([GH-90756](https://github.com/godotengine/godot/pull/90756)).
 - Suppress unused constant warning with underscore ([GH-90794](https://github.com/godotengine/godot/pull/90794)).
-- LSP: Have `GDScriptWorkspace::list_script_files` respect `.gdignore` ([GH-90949](https://github.com/godotengine/godot/pull/90949)).
+- LSP: Have `VoyScriptWorkspace::list_script_files` respect `.gdignore` ([GH-90949](https://github.com/godotengine/godot/pull/90949)).
 - Fix test `reset_uninit_local_vars.gd` failure ([GH-91120](https://github.com/godotengine/godot/pull/91120)).
 - Perform validated calls with static methods ([GH-91192](https://github.com/godotengine/godot/pull/91192)).
 - Call implicit ready on base script first ([GH-91364](https://github.com/godotengine/godot/pull/91364)).
@@ -2069,13 +2069,13 @@ Table of contents:
 - Fix completion for `new` arguments ([GH-92251](https://github.com/godotengine/godot/pull/92251)).
 - Fix synchronization of global class name ([GH-92303](https://github.com/godotengine/godot/pull/92303)).
 - DAP: Add `--dap-port` as a command line argument ([GH-92336](https://github.com/godotengine/godot/pull/92336)).
-- [GDScript LSP] Fix `show_native_symbol_in_editor` ([GH-92386](https://github.com/godotengine/godot/pull/92386)).
-- Fix subscript resolution on constant non-metatype GDScript base ([GH-92544](https://github.com/godotengine/godot/pull/92544)).
+- [VoyScript LSP] Fix `show_native_symbol_in_editor` ([GH-92386](https://github.com/godotengine/godot/pull/92386)).
+- Fix subscript resolution on constant non-metatype VoyScript base ([GH-92544](https://github.com/godotengine/godot/pull/92544)).
 - Do not produce `INFERRED_DECLARATION` on type import ([GH-92558](https://github.com/godotengine/godot/pull/92558)).
 - Partially allow member lookup on invalid scripts ([GH-92609](https://github.com/godotengine/godot/pull/92609)).
 - Invalidate cached parser chain when reloading ([GH-92616](https://github.com/godotengine/godot/pull/92616)).
 - Add more autocompletion tests ([GH-92688](https://github.com/godotengine/godot/pull/92688)).
-- Editor: Hide GDScript internal functions from method selectors ([GH-92802](https://github.com/godotengine/godot/pull/92802)).
+- Editor: Hide VoyScript internal functions from method selectors ([GH-92802](https://github.com/godotengine/godot/pull/92802)).
 - Add coloring for completion of Color components ([GH-92874](https://github.com/godotengine/godot/pull/92874)).
 - Fix goto definition for `new` method ([GH-92885](https://github.com/godotengine/godot/pull/92885)).
 - Avoid deadlock possibility in multi-threaded load ([GH-93032](https://github.com/godotengine/godot/pull/93032)).
@@ -2088,7 +2088,7 @@ Table of contents:
 - Add `CONFUSABLE_CAPTURE_REASSIGNMENT` warning ([GH-93691](https://github.com/godotengine/godot/pull/93691)).
 - Fix false positive `CONFUSABLE_CAPTURE_REASSIGNMENT` warnings ([GH-93699](https://github.com/godotengine/godot/pull/93699)).
 - Autocompletion: Don't use `in` operator to decide over variant lookup ([GH-93815](https://github.com/godotengine/godot/pull/93815)).
-- Fix GDScript analyzer error when instantiating EditorPlugins ([GH-93942](https://github.com/godotengine/godot/pull/93942)).
+- Fix VoyScript analyzer error when instantiating EditorPlugins ([GH-93942](https://github.com/godotengine/godot/pull/93942)).
 - Fix `get_argument_count` for lambda `Callable`s ([GH-93964](https://github.com/godotengine/godot/pull/93964)).
 - Fix implicit cast to typed array when passing parameter ([GH-94025](https://github.com/godotengine/godot/pull/94025)).
 - Fix `get_method` for lambda self `Callable`s ([GH-94076](https://github.com/godotengine/godot/pull/94076)).
@@ -2097,12 +2097,12 @@ Table of contents:
 - Make errors on `RefCounted.free()` more accurate ([GH-94238](https://github.com/godotengine/godot/pull/94238)).
 - Restore support for `Token::UNDERSCORE` in identifiers ([GH-94327](https://github.com/godotengine/godot/pull/94327)).
 - Autocompletion: Register depended parsers with the main parser ([GH-94424](https://github.com/godotengine/godot/pull/94424)).
-- Speed up `GDScriptLanguage::finish` ([GH-94505](https://github.com/godotengine/godot/pull/94505)).
+- Speed up `VoyScriptLanguage::finish` ([GH-94505](https://github.com/godotengine/godot/pull/94505)).
 - Fix false positive cases of `ENUM_VARIABLE_WITHOUT_DEFAULT` ([GH-94635](https://github.com/godotengine/godot/pull/94635)).
 - Fix incorrect default values ​​in `_make_arguments_hint()` ([GH-94664](https://github.com/godotengine/godot/pull/94664)).
 - Fix incorrect setter call for reference types ([GH-94674](https://github.com/godotengine/godot/pull/94674)).
-- GDScriptTestRunner: Fix compiler error output ([GH-94676](https://github.com/godotengine/godot/pull/94676)).
-- GDScriptCache: Clear abandoned parser refs ([GH-94678](https://github.com/godotengine/godot/pull/94678)).
+- VoyScriptTestRunner: Fix compiler error output ([GH-94676](https://github.com/godotengine/godot/pull/94676)).
+- VoyScriptCache: Clear abandoned parser refs ([GH-94678](https://github.com/godotengine/godot/pull/94678)).
 - Fix locals clearing after exiting `while` block ([GH-94730](https://github.com/godotengine/godot/pull/94730)).
 - Fix common mismatched external parser errors (second try) ([GH-94871](https://github.com/godotengine/godot/pull/94871)).
 - Fix unnecessary calls to `remove_parser` ([GH-95115](https://github.com/godotengine/godot/pull/95115)).
@@ -2822,7 +2822,7 @@ Table of contents:
 - Improve Project Settings' Plugin display ([GH-88308](https://github.com/godotengine/godot/pull/88308)).
 - Update scene tabs after marking as unsaved ([GH-90135](https://github.com/godotengine/godot/pull/90135)).
 - Fix `add_root_node()` being no-op ([GH-90136](https://github.com/godotengine/godot/pull/90136)).
-- Expose `EditorFileDialog::popup_file_dialog()` to GDScript and GDExtension ([GH-91331](https://github.com/godotengine/godot/pull/91331)).
+- Expose `EditorFileDialog::popup_file_dialog()` to VoyScript and KSExtension ([GH-91331](https://github.com/godotengine/godot/pull/91331)).
 - Add logic to unregister the Godot plugins on engine termination ([GH-92143](https://github.com/godotengine/godot/pull/92143)).
 - Prevent static XCFramework bundles from being embedded on iOS ([GH-92519](https://github.com/godotengine/godot/pull/92519)).
 
@@ -3462,15 +3462,15 @@ Table of contents:
 - OpenXR: Add Meta touch plus interaction profile ([GH-86982](https://github.com/godotengine/godot/pull/86982)).
 - Add support for OpenXR local floor extension ([GH-87235](https://github.com/godotengine/godot/pull/87235)).
 - Add bone update option to OpenXRHand to allow preserving original hand scale ([GH-87240](https://github.com/godotengine/godot/pull/87240)).
-- OpenXR: Make it possible to implement vendor extensions to hand tracking from GDExtension ([GH-87546](https://github.com/godotengine/godot/pull/87546)).
-- OpenXR: Allow moving vendor passthrough extensions to GDExtension ([GH-87630](https://github.com/godotengine/godot/pull/87630)).
+- OpenXR: Make it possible to implement vendor extensions to hand tracking from KSExtension ([GH-87546](https://github.com/godotengine/godot/pull/87546)).
+- OpenXR: Allow moving vendor passthrough extensions to KSExtension ([GH-87630](https://github.com/godotengine/godot/pull/87630)).
 - OpenXR: Allow changing play area mode during active session ([GH-87745](https://github.com/godotengine/godot/pull/87745)).
 - Enable getting suggested tracker names from OpenXR extensions ([GH-88311](https://github.com/godotengine/godot/pull/88311)).
 - Add XR Face Tracking support ([GH-88312](https://github.com/godotengine/godot/pull/88312)).
 - WebXR: Add support for hand tracking ([GH-88411](https://github.com/godotengine/godot/pull/88411)).
 - OpenXR: Update to version 1.0.34 ([GH-88574](https://github.com/godotengine/godot/pull/88574)).
 - Provide generic interface for XR hand tracking ([GH-88639](https://github.com/godotengine/godot/pull/88639)).
-- Fix crash when using OpenXR extension wrappers from GDExtension ([GH-88689](https://github.com/godotengine/godot/pull/88689)).
+- Fix crash when using OpenXR extension wrappers from KSExtension ([GH-88689](https://github.com/godotengine/godot/pull/88689)).
 - Fix building on MinGW ([GH-88724](https://github.com/godotengine/godot/pull/88724)).
 - Fix lint errors in WebXR module ([GH-88740](https://github.com/godotengine/godot/pull/88740)).
 - OpenXR: Register eye gaze even when disabled ([GH-88754](https://github.com/godotengine/godot/pull/88754)).

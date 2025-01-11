@@ -44,18 +44,18 @@
 		        {
 		            if (dir.CurrentIsDir())
 		            {
-		                KS.Print($"Found directory: {fileName}");
+		                GD.Print($"Found directory: {fileName}");
 		            }
 		            else
 		            {
-		                KS.Print($"Found file: {fileName}");
+		                GD.Print($"Found file: {fileName}");
 		            }
 		            fileName = dir.GetNext();
 		        }
 		    }
 		    else
 		    {
-		        KS.Print("An error occurred when trying to access the path.");
+		        GD.Print("An error occurred when trying to access the path.");
 		    }
 		}
 		[/csharp]

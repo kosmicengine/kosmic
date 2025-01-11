@@ -59,10 +59,10 @@ class Sample {
 	 * @throws {ReferenceError} When no `Sample` is found
 	 */
 	static getSample(id) {
-		if (!GodotAudio.samples.has(id)) {
+		if (!KosmicAudio.samples.has(id)) {
 			throw new ReferenceError(`Could not find sample "${id}"`);
 		}
-		return GodotAudio.samples.get(id);
+		return KosmicAudio.samples.get(id);
 	}
 
 	/**
@@ -71,19 +71,19 @@ class Sample {
 	 * @returns {Sample?}
 	 */
 	static getSampleOrNull(id) {
-		return GodotAudio.samples.get(id) ?? null;
+		return KosmicAudio.samples.get(id) ?? null;
 	}
 
 	/**
 	 * Creates a `Sample` based on the params. Will register it to the
-	 * `GodotAudio.samples` registry.
+	 * `KosmicAudio.samples` registry.
 	 * @param {SampleParams} params Base params
 	 * @param {SampleOptions | undefined} options Optional params.
 	 * @returns {Sample}
 	 */
 	static create(params, options = {}) {
-		const sample = new GodotAudio.Sample(params, options);
-		GodotAudio.samples.set(params.id, sample);
+		const sample = new KosmicAudio.Sample(params, options);
+		KosmicAudio.samples.set(params.id, sample);
 		return sample;
 	}
 
@@ -93,7 +93,7 @@ class Sample {
 	 * @returns {void}
 	 */
 	static delete(id) {
-		GodotAudio.samples.delete(id);
+		KosmicAudio.samples.delete(id);
 	}
 
 	/**
@@ -143,7 +143,7 @@ class Sample {
 	 */
 	clear() {
 		this.setAudioBuffer(null);
-		GodotAudio.Sample.delete(this.id);
+		KosmicAudio.Sample.delete(this.id);
 	}
 
 	/**
@@ -160,7 +160,7 @@ class Sample {
 			const channel = new Float32Array(this._audioBuffer.getChannelData(i));
 			channels[i] = channel;
 		}
-		const buffer = GodotAudio.ctx.createBuffer(
+		const buffer = KosmicAudio.ctx.createBuffer(
 			this.numberOfChannels,
 			this._audioBuffer.length,
 			this._audioBuffer.sampleRate
@@ -183,7 +183,7 @@ class SampleNodeBus {
 	 * @returns {SampleNodeBus}
 	 */
 	static create(bus) {
-		return new GodotAudio.SampleNodeBus(bus);
+		return new KosmicAudio.SampleNodeBus(bus);
 	}
 
 	/**
@@ -197,63 +197,63 @@ class SampleNodeBus {
 		this._bus = bus;
 
 		/** @type {ChannelSplitterNode} */
-		this._channelSplitter = GodotAudio.ctx.createChannelSplitter(NUMBER_OF_WEB_CHANNELS);
+		this._channelSplitter = KosmicAudio.ctx.createChannelSplitter(NUMBER_OF_WEB_CHANNELS);
 		/** @type {GainNode} */
-		this._l = GodotAudio.ctx.createGain();
+		this._l = KosmicAudio.ctx.createGain();
 		/** @type {GainNode} */
-		this._r = GodotAudio.ctx.createGain();
+		this._r = KosmicAudio.ctx.createGain();
 		/** @type {GainNode} */
-		this._sl = GodotAudio.ctx.createGain();
+		this._sl = KosmicAudio.ctx.createGain();
 		/** @type {GainNode} */
-		this._sr = GodotAudio.ctx.createGain();
+		this._sr = KosmicAudio.ctx.createGain();
 		/** @type {GainNode} */
-		this._c = GodotAudio.ctx.createGain();
+		this._c = KosmicAudio.ctx.createGain();
 		/** @type {GainNode} */
-		this._lfe = GodotAudio.ctx.createGain();
+		this._lfe = KosmicAudio.ctx.createGain();
 		/** @type {ChannelMergerNode} */
-		this._channelMerger = GodotAudio.ctx.createChannelMerger(NUMBER_OF_WEB_CHANNELS);
+		this._channelMerger = KosmicAudio.ctx.createChannelMerger(NUMBER_OF_WEB_CHANNELS);
 
 		this._channelSplitter
-			.connect(this._l, GodotAudio.WebChannel.CHANNEL_L)
+			.connect(this._l, KosmicAudio.WebChannel.CHANNEL_L)
 			.connect(
 				this._channelMerger,
-				GodotAudio.WebChannel.CHANNEL_L,
-				GodotAudio.WebChannel.CHANNEL_L
+				KosmicAudio.WebChannel.CHANNEL_L,
+				KosmicAudio.WebChannel.CHANNEL_L
 			);
 		this._channelSplitter
-			.connect(this._r, GodotAudio.WebChannel.CHANNEL_R)
+			.connect(this._r, KosmicAudio.WebChannel.CHANNEL_R)
 			.connect(
 				this._channelMerger,
-				GodotAudio.WebChannel.CHANNEL_L,
-				GodotAudio.WebChannel.CHANNEL_R
+				KosmicAudio.WebChannel.CHANNEL_L,
+				KosmicAudio.WebChannel.CHANNEL_R
 			);
 		this._channelSplitter
-			.connect(this._sl, GodotAudio.WebChannel.CHANNEL_SL)
+			.connect(this._sl, KosmicAudio.WebChannel.CHANNEL_SL)
 			.connect(
 				this._channelMerger,
-				GodotAudio.WebChannel.CHANNEL_L,
-				GodotAudio.WebChannel.CHANNEL_SL
+				KosmicAudio.WebChannel.CHANNEL_L,
+				KosmicAudio.WebChannel.CHANNEL_SL
 			);
 		this._channelSplitter
-			.connect(this._sr, GodotAudio.WebChannel.CHANNEL_SR)
+			.connect(this._sr, KosmicAudio.WebChannel.CHANNEL_SR)
 			.connect(
 				this._channelMerger,
-				GodotAudio.WebChannel.CHANNEL_L,
-				GodotAudio.WebChannel.CHANNEL_SR
+				KosmicAudio.WebChannel.CHANNEL_L,
+				KosmicAudio.WebChannel.CHANNEL_SR
 			);
 		this._channelSplitter
-			.connect(this._c, GodotAudio.WebChannel.CHANNEL_C)
+			.connect(this._c, KosmicAudio.WebChannel.CHANNEL_C)
 			.connect(
 				this._channelMerger,
-				GodotAudio.WebChannel.CHANNEL_L,
-				GodotAudio.WebChannel.CHANNEL_C
+				KosmicAudio.WebChannel.CHANNEL_L,
+				KosmicAudio.WebChannel.CHANNEL_C
 			);
 		this._channelSplitter
-			.connect(this._lfe, GodotAudio.WebChannel.CHANNEL_L)
+			.connect(this._lfe, KosmicAudio.WebChannel.CHANNEL_L)
 			.connect(
 				this._channelMerger,
-				GodotAudio.WebChannel.CHANNEL_L,
-				GodotAudio.WebChannel.CHANNEL_LFE
+				KosmicAudio.WebChannel.CHANNEL_L,
+				KosmicAudio.WebChannel.CHANNEL_LFE
 			);
 
 		this._channelMerger.connect(this._bus.getInputNode());
@@ -281,17 +281,17 @@ class SampleNodeBus {
 	 * @returns {void}
 	 */
 	setVolume(volume) {
-		if (volume.length !== GodotAudio.MAX_VOLUME_CHANNELS) {
+		if (volume.length !== KosmicAudio.MAX_VOLUME_CHANNELS) {
 			throw new Error(
-				`Volume length isn't "${GodotAudio.MAX_VOLUME_CHANNELS}", is ${volume.length} instead`
+				`Volume length isn't "${KosmicAudio.MAX_VOLUME_CHANNELS}", is ${volume.length} instead`
 			);
 		}
-		this._l.gain.value = volume[GodotAudio.KosmicChannel.CHANNEL_L] ?? 0;
-		this._r.gain.value = volume[GodotAudio.KosmicChannel.CHANNEL_R] ?? 0;
-		this._sl.gain.value = volume[GodotAudio.KosmicChannel.CHANNEL_SL] ?? 0;
-		this._sr.gain.value = volume[GodotAudio.KosmicChannel.CHANNEL_SR] ?? 0;
-		this._c.gain.value = volume[GodotAudio.KosmicChannel.CHANNEL_C] ?? 0;
-		this._lfe.gain.value = volume[GodotAudio.KosmicChannel.CHANNEL_LFE] ?? 0;
+		this._l.gain.value = volume[KosmicAudio.KosmicChannel.CHANNEL_L] ?? 0;
+		this._r.gain.value = volume[KosmicAudio.KosmicChannel.CHANNEL_R] ?? 0;
+		this._sl.gain.value = volume[KosmicAudio.KosmicChannel.CHANNEL_SL] ?? 0;
+		this._sr.gain.value = volume[KosmicAudio.KosmicChannel.CHANNEL_SR] ?? 0;
+		this._c.gain.value = volume[KosmicAudio.KosmicChannel.CHANNEL_C] ?? 0;
+		this._lfe.gain.value = volume[KosmicAudio.KosmicChannel.CHANNEL_LFE] ?? 0;
 	}
 
 	/**
@@ -348,10 +348,10 @@ class SampleNode {
 	 * @throws {ReferenceError} When no `SampleNode` is not found
 	 */
 	static getSampleNode(id) {
-		if (!GodotAudio.sampleNodes.has(id)) {
+		if (!KosmicAudio.sampleNodes.has(id)) {
 			throw new ReferenceError(`Could not find sample node "${id}"`);
 		}
-		return GodotAudio.sampleNodes.get(id);
+		return KosmicAudio.sampleNodes.get(id);
 	}
 
 	/**
@@ -360,7 +360,7 @@ class SampleNode {
 	 * @returns {SampleNode?}
 	 */
 	static getSampleNodeOrNull(id) {
-		return GodotAudio.sampleNodes.get(id) ?? null;
+		return KosmicAudio.sampleNodes.get(id) ?? null;
 	}
 
 	/**
@@ -369,7 +369,7 @@ class SampleNode {
 	 * @returns {void}
 	 */
 	static stopSampleNode(id) {
-		const sampleNode = GodotAudio.SampleNode.getSampleNodeOrNull(id);
+		const sampleNode = KosmicAudio.SampleNode.getSampleNodeOrNull(id);
 		if (sampleNode == null) {
 			return;
 		}
@@ -383,7 +383,7 @@ class SampleNode {
 	 * @returns {void}
 	 */
 	static pauseSampleNode(id, enable) {
-		const sampleNode = GodotAudio.SampleNode.getSampleNodeOrNull(id);
+		const sampleNode = KosmicAudio.SampleNode.getSampleNodeOrNull(id);
 		if (sampleNode == null) {
 			return;
 		}
@@ -392,14 +392,14 @@ class SampleNode {
 
 	/**
 	 * Creates a `SampleNode` based on the params. Will register the `SampleNode` to
-	 * the `GodotAudio.sampleNodes` regisery.
+	 * the `KosmicAudio.sampleNodes` regisery.
 	 * @param {SampleNodeParams} params Base params.
 	 * @param {SampleNodeOptions | undefined} options Optional params.
 	 * @returns {SampleNode}
 	 */
 	static create(params, options = {}) {
-		const sampleNode = new GodotAudio.SampleNode(params, options);
-		GodotAudio.sampleNodes.set(params.id, sampleNode);
+		const sampleNode = new KosmicAudio.SampleNode(params, options);
+		KosmicAudio.sampleNodes.set(params.id, sampleNode);
 		return sampleNode;
 	}
 
@@ -409,7 +409,7 @@ class SampleNode {
 	 * @returns {void}
 	 */
 	static delete(id) {
-		GodotAudio.sampleNodes.delete(id);
+		KosmicAudio.sampleNodes.delete(id);
 	}
 
 	/**
@@ -446,7 +446,7 @@ class SampleNode {
 		/** @type {Map<Bus, SampleNodeBus>} */
 		this._sampleNodeBuses = new Map();
 		/** @type {AudioBufferSourceNode | null} */
-		this._source = GodotAudio.ctx.createBufferSource();
+		this._source = KosmicAudio.ctx.createBufferSource();
 
 		this._onended = null;
 		/** @type {AudioWorkletNode | null} */
@@ -457,7 +457,7 @@ class SampleNode {
 
 		this._addEndedListener();
 
-		const bus = GodotAudio.Bus.getBus(params.busIndex);
+		const bus = KosmicAudio.Bus.getBus(params.busIndex);
 		const sampleNodeBus = this.getSampleNodeBus(bus);
 		sampleNodeBus.setVolume(options.volume);
 
@@ -513,7 +513,7 @@ class SampleNode {
 	 * @returns {Sample}
 	 */
 	getSample() {
-		return GodotAudio.Sample.getSample(this.streamObjectId);
+		return KosmicAudio.Sample.getSample(this.streamObjectId);
 	}
 
 	/**
@@ -588,8 +588,8 @@ class SampleNode {
 			const sampleNodeBus = this.getSampleNodeBus(buses[busIdx]);
 			sampleNodeBus.setVolume(
 				volumes.slice(
-					busIdx * GodotAudio.MAX_VOLUME_CHANNELS,
-					(busIdx * GodotAudio.MAX_VOLUME_CHANNELS) + GodotAudio.MAX_VOLUME_CHANNELS
+					busIdx * KosmicAudio.MAX_VOLUME_CHANNELS,
+					(busIdx * KosmicAudio.MAX_VOLUME_CHANNELS) + KosmicAudio.MAX_VOLUME_CHANNELS
 				)
 			);
 		}
@@ -602,7 +602,7 @@ class SampleNode {
 	 */
 	getSampleNodeBus(bus) {
 		if (!this._sampleNodeBuses.has(bus)) {
-			const sampleNodeBus = GodotAudio.SampleNodeBus.create(bus);
+			const sampleNodeBus = KosmicAudio.SampleNodeBus.create(bus);
 			this._sampleNodeBuses.set(bus, sampleNodeBus);
 			this._source.connect(sampleNodeBus.getInputNode());
 		}
@@ -624,8 +624,8 @@ class SampleNode {
 			if (error?.name !== 'InvalidStateError') {
 				throw error;
 			}
-			const path = KosmicConfig.locate_file('godot.audio.position.worklet.js');
-			GodotAudio.ctx.audioWorklet
+			const path = KosmicConfig.locate_file('kosmic.audio.position.worklet.js');
+			KosmicAudio.ctx.audioWorklet
 				.addModule(path)
 				.then(() => {
 					if (!this.isCanceled) {
@@ -647,8 +647,8 @@ class SampleNode {
 	 */
 	createPositionWorklet() {
 		const worklet = new AudioWorkletNode(
-			GodotAudio.ctx,
-			'godot-position-reporting-processor'
+			KosmicAudio.ctx,
+			'kosmic-position-reporting-processor'
 		);
 		worklet.port.onmessage = (event) => {
 			switch (event.data['type']) {
@@ -692,7 +692,7 @@ class SampleNode {
 			this._positionWorklet = null;
 		}
 
-		GodotAudio.SampleNode.delete(this.id);
+		KosmicAudio.SampleNode.delete(this.id);
 	}
 
 	/**
@@ -700,7 +700,7 @@ class SampleNode {
 	 * @returns {void}
 	 */
 	_resetSourceStartTime() {
-		this._sourceStartTime = GodotAudio.ctx.currentTime;
+		this._sourceStartTime = KosmicAudio.ctx.currentTime;
 	}
 
 	/**
@@ -720,7 +720,7 @@ class SampleNode {
 		if (this._source != null) {
 			this._source.disconnect();
 		}
-		this._source = GodotAudio.ctx.createBufferSource();
+		this._source = KosmicAudio.ctx.createBufferSource();
 		this._source.buffer = this.getSample().getAudioBuffer();
 
 		// Make sure that we connect the new source to the sample node bus.
@@ -743,7 +743,7 @@ class SampleNode {
 	 */
 	_pause() {
 		this.isPaused = true;
-		this.pauseTime = (GodotAudio.ctx.currentTime - this._sourceStartTime) / this.getPlaybackRate();
+		this.pauseTime = (KosmicAudio.ctx.currentTime - this._sourceStartTime) / this.getPlaybackRate();
 		this._source.stop();
 	}
 
@@ -778,9 +778,9 @@ class SampleNode {
 			case 'disabled': {
 				const id = this.id;
 				self.stop();
-				if (GodotAudio.sampleFinishedCallback != null) {
+				if (KosmicAudio.sampleFinishedCallback != null) {
 					const idCharPtr = KosmicRuntime.allocString(id);
-					GodotAudio.sampleFinishedCallback(idCharPtr);
+					KosmicAudio.sampleFinishedCallback(idCharPtr);
 					KosmicRuntime.free(idCharPtr);
 				}
 			} break;
@@ -806,7 +806,7 @@ class Bus {
 	 * @returns {number}
 	 */
 	static getCount() {
-		return GodotAudio.buses.length;
+		return KosmicAudio.buses.length;
 	}
 
 	/**
@@ -816,7 +816,7 @@ class Bus {
 	 * @returns {void}
 	 */
 	static setCount(val) {
-		const buses = GodotAudio.buses;
+		const buses = KosmicAudio.buses;
 		if (val === buses.length) {
 			return;
 		}
@@ -828,12 +828,12 @@ class Bus {
 				const deletedBus = deletedBuses[i];
 				deletedBus.clear();
 			}
-			GodotAudio.buses = buses.slice(0, val);
+			KosmicAudio.buses = buses.slice(0, val);
 			return;
 		}
 
-		for (let i = GodotAudio.buses.length; i < val; i++) {
-			GodotAudio.Bus.create();
+		for (let i = KosmicAudio.buses.length; i < val; i++) {
+			KosmicAudio.Bus.create();
 		}
 	}
 
@@ -844,10 +844,10 @@ class Bus {
 	 * @throws {ReferenceError} If the index value is outside the registry.
 	 */
 	static getBus(index) {
-		if (index < 0 || index >= GodotAudio.buses.length) {
+		if (index < 0 || index >= KosmicAudio.buses.length) {
 			throw new ReferenceError(`invalid bus index "${index}"`);
 		}
-		return GodotAudio.buses[index];
+		return KosmicAudio.buses[index];
 	}
 
 	/**
@@ -856,10 +856,10 @@ class Bus {
 	 * @returns {Bus?}
 	 */
 	static getBusOrNull(index) {
-		if (index < 0 || index >= GodotAudio.buses.length) {
+		if (index < 0 || index >= KosmicAudio.buses.length) {
 			return null;
 		}
-		return GodotAudio.buses[index];
+		return KosmicAudio.buses[index];
 	}
 
 	/**
@@ -869,14 +869,14 @@ class Bus {
 	 * @returns {void}
 	 */
 	static move(fromIndex, toIndex) {
-		const movedBus = GodotAudio.Bus.getBusOrNull(fromIndex);
+		const movedBus = KosmicAudio.Bus.getBusOrNull(fromIndex);
 		if (movedBus == null) {
 			return;
 		}
-		const buses = GodotAudio.buses.filter((_, i) => i !== fromIndex);
+		const buses = KosmicAudio.buses.filter((_, i) => i !== fromIndex);
 		// Inserts at index.
 		buses.splice(toIndex - 1, 0, movedBus);
-		GodotAudio.buses = buses;
+		KosmicAudio.buses = buses;
 	}
 
 	/**
@@ -885,9 +885,9 @@ class Bus {
 	 * @returns {void}
 	 */
 	static addAt(index) {
-		const newBus = GodotAudio.Bus.create();
+		const newBus = KosmicAudio.Bus.create();
 		if (index !== newBus.getId()) {
-			GodotAudio.Bus.move(newBus.getId(), index);
+			KosmicAudio.Bus.move(newBus.getId(), index);
 		}
 	}
 
@@ -896,13 +896,13 @@ class Bus {
 	 * @returns {Bus}
 	 */
 	static create() {
-		const newBus = new GodotAudio.Bus();
-		const isFirstBus = GodotAudio.buses.length === 0;
-		GodotAudio.buses.push(newBus);
+		const newBus = new KosmicAudio.Bus();
+		const isFirstBus = KosmicAudio.buses.length === 0;
+		KosmicAudio.buses.push(newBus);
 		if (isFirstBus) {
 			newBus.setSend(null);
 		} else {
-			newBus.setSend(GodotAudio.Bus.getBus(0));
+			newBus.setSend(KosmicAudio.Bus.getBus(0));
 		}
 		return newBus;
 	}
@@ -919,11 +919,11 @@ class Bus {
 		this._send = null;
 
 		/** @type {GainNode} */
-		this._gainNode = GodotAudio.ctx.createGain();
+		this._gainNode = KosmicAudio.ctx.createGain();
 		/** @type {GainNode} */
-		this._soloNode = GodotAudio.ctx.createGain();
+		this._soloNode = KosmicAudio.ctx.createGain();
 		/** @type {GainNode} */
-		this._muteNode = GodotAudio.ctx.createGain();
+		this._muteNode = KosmicAudio.ctx.createGain();
 
 		this._gainNode
 			.connect(this._soloNode)
@@ -935,7 +935,7 @@ class Bus {
 	 * @returns {number}
 	 */
 	getId() {
-		return GodotAudio.buses.indexOf(this);
+		return KosmicAudio.buses.indexOf(this);
 	}
 
 	/**
@@ -943,7 +943,7 @@ class Bus {
 	 * @returns {number}
 	 */
 	getVolumeDb() {
-		return GodotAudio.linear_to_db(this._gainNode.gain.value);
+		return KosmicAudio.linear_to_db(this._gainNode.gain.value);
 	}
 
 	/**
@@ -952,7 +952,7 @@ class Bus {
 	 * @returns {void}
 	 */
 	setVolumeDb(val) {
-		const linear = GodotAudio.db_to_linear(val);
+		const linear = KosmicAudio.db_to_linear(val);
 		if (isFinite(linear)) {
 			this._gainNode.gain.value = linear;
 		}
@@ -982,7 +982,7 @@ class Bus {
 		this._send = val;
 		if (val == null) {
 			if (this.getId() == 0) {
-				this.getOutputNode().connect(GodotAudio.ctx.destination);
+				this.getOutputNode().connect(KosmicAudio.ctx.destination);
 				return;
 			}
 			throw new Error(
@@ -1026,8 +1026,8 @@ class Bus {
 		}
 
 		if (enable) {
-			if (GodotAudio.busSolo != null && GodotAudio.busSolo !== this) {
-				GodotAudio.busSolo._disableSolo();
+			if (KosmicAudio.busSolo != null && KosmicAudio.busSolo !== this) {
+				KosmicAudio.busSolo._disableSolo();
 			}
 			this._enableSolo();
 			return;
@@ -1075,7 +1075,7 @@ class Bus {
 	 * @returns {void}
 	 */
 	clear() {
-		GodotAudio.buses = GodotAudio.buses.filter((v) => v !== this);
+		KosmicAudio.buses = KosmicAudio.buses.filter((v) => v !== this);
 	}
 
 	_syncSampleNodes() {
@@ -1093,9 +1093,9 @@ class Bus {
 	 */
 	_enableSolo() {
 		this.isSolo = true;
-		GodotAudio.busSolo = this;
+		KosmicAudio.busSolo = this;
 		this._soloNode.gain.value = 1;
-		const otherBuses = GodotAudio.buses.filter(
+		const otherBuses = KosmicAudio.buses.filter(
 			(otherBus) => otherBus !== this
 		);
 		for (let i = 0; i < otherBuses.length; i++) {
@@ -1110,9 +1110,9 @@ class Bus {
 	 */
 	_disableSolo() {
 		this.isSolo = false;
-		GodotAudio.busSolo = null;
+		KosmicAudio.busSolo = null;
 		this._soloNode.gain.value = 1;
-		const otherBuses = GodotAudio.buses.filter(
+		const otherBuses = KosmicAudio.buses.filter(
 			(otherBus) => otherBus !== this
 		);
 		for (let i = 0; i < otherBuses.length; i++) {
@@ -1122,9 +1122,9 @@ class Bus {
 	}
 }
 
-const _GodotAudio = {
-	$GodotAudio__deps: ['$KosmicRuntime', '$KosmicOS'],
-	$GodotAudio: {
+const _KosmicAudio = {
+	$KosmicAudio__deps: ['$KosmicRuntime', '$KosmicOS'],
+	$KosmicAudio: {
 		/**
 		 * Max number of volume channels.
 		 */
@@ -1221,21 +1221,21 @@ const _GodotAudio = {
 
 		init: function (mix_rate, latency, onstatechange, onlatencyupdate) {
 			// Initialize classes static values.
-			GodotAudio.samples = new Map();
-			GodotAudio.sampleNodes = new Map();
-			GodotAudio.buses = [];
-			GodotAudio.busSolo = null;
+			KosmicAudio.samples = new Map();
+			KosmicAudio.sampleNodes = new Map();
+			KosmicAudio.buses = [];
+			KosmicAudio.busSolo = null;
 
 			const opts = {};
 			// If mix_rate is 0, let the browser choose.
 			if (mix_rate) {
-				GodotAudio.sampleRate = mix_rate;
+				KosmicAudio.sampleRate = mix_rate;
 				opts['sampleRate'] = mix_rate;
 			}
 			// Do not specify, leave 'interactive' for good performance.
 			// opts['latencyHint'] = latency / 1000;
 			const ctx = new (window.AudioContext || window.webkitAudioContext)(opts);
-			GodotAudio.ctx = ctx;
+			KosmicAudio.ctx = ctx;
 			ctx.onstatechange = function () {
 				let state = 0;
 				switch (ctx.state) {
@@ -1255,28 +1255,28 @@ const _GodotAudio = {
 			};
 			ctx.onstatechange(); // Immediately notify state.
 			// Update computed latency
-			GodotAudio.interval = setInterval(function () {
+			KosmicAudio.interval = setInterval(function () {
 				let computed_latency = 0;
 				if (ctx.baseLatency) {
-					computed_latency += GodotAudio.ctx.baseLatency;
+					computed_latency += KosmicAudio.ctx.baseLatency;
 				}
 				if (ctx.outputLatency) {
-					computed_latency += GodotAudio.ctx.outputLatency;
+					computed_latency += KosmicAudio.ctx.outputLatency;
 				}
 				onlatencyupdate(computed_latency);
 			}, 1000);
-			KosmicOS.atexit(GodotAudio.close_async);
+			KosmicOS.atexit(KosmicAudio.close_async);
 			return ctx.destination.channelCount;
 		},
 
 		create_input: function (callback) {
-			if (GodotAudio.input) {
+			if (KosmicAudio.input) {
 				return 0; // Already started.
 			}
 			function gotMediaInput(stream) {
 				try {
-					GodotAudio.input = GodotAudio.ctx.createMediaStreamSource(stream);
-					callback(GodotAudio.input);
+					KosmicAudio.input = KosmicAudio.ctx.createMediaStreamSource(stream);
+					callback(KosmicAudio.input);
 				} catch (e) {
 					KosmicRuntime.error('Failed creating input.', e);
 				}
@@ -1305,27 +1305,27 @@ const _GodotAudio = {
 		},
 
 		close_async: function (resolve, reject) {
-			const ctx = GodotAudio.ctx;
-			GodotAudio.ctx = null;
+			const ctx = KosmicAudio.ctx;
+			KosmicAudio.ctx = null;
 			// Audio was not initialized.
 			if (!ctx) {
 				resolve();
 				return;
 			}
 			// Remove latency callback
-			if (GodotAudio.interval) {
-				clearInterval(GodotAudio.interval);
-				GodotAudio.interval = 0;
+			if (KosmicAudio.interval) {
+				clearInterval(KosmicAudio.interval);
+				KosmicAudio.interval = 0;
 			}
 			// Disconnect input, if it was started.
-			if (GodotAudio.input) {
-				GodotAudio.input.disconnect();
-				GodotAudio.input = null;
+			if (KosmicAudio.input) {
+				KosmicAudio.input.disconnect();
+				KosmicAudio.input = null;
 			}
 			// Disconnect output
 			let closed = Promise.resolve();
-			if (GodotAudio.driver) {
-				closed = GodotAudio.driver.close();
+			if (KosmicAudio.driver) {
+				closed = KosmicAudio.driver.close();
 			}
 			closed.then(function () {
 				return ctx.close();
@@ -1353,8 +1353,8 @@ const _GodotAudio = {
 			busIndex,
 			startOptions
 		) {
-			GodotAudio.SampleNode.stopSampleNode(playbackObjectId);
-			GodotAudio.SampleNode.create(
+			KosmicAudio.SampleNode.stopSampleNode(playbackObjectId);
+			KosmicAudio.SampleNode.create(
 				{
 					busIndex,
 					id: playbackObjectId,
@@ -1370,7 +1370,7 @@ const _GodotAudio = {
 		 * @returns {void}
 		 */
 		stop_sample: function (playbackObjectId) {
-			GodotAudio.SampleNode.stopSampleNode(playbackObjectId);
+			KosmicAudio.SampleNode.stopSampleNode(playbackObjectId);
 		},
 
 		/**
@@ -1380,7 +1380,7 @@ const _GodotAudio = {
 		 * @returns {void}
 		 */
 		sample_set_pause: function (playbackObjectId, pause) {
-			GodotAudio.SampleNode.pauseSampleNode(playbackObjectId, pause);
+			KosmicAudio.SampleNode.pauseSampleNode(playbackObjectId, pause);
 		},
 
 		/**
@@ -1390,7 +1390,7 @@ const _GodotAudio = {
 		 * @returns {void}
 		 */
 		update_sample_pitch_scale: function (playbackObjectId, pitchScale) {
-			const sampleNode = GodotAudio.SampleNode.getSampleNodeOrNull(playbackObjectId);
+			const sampleNode = KosmicAudio.SampleNode.getSampleNodeOrNull(playbackObjectId);
 			if (sampleNode == null) {
 				return;
 			}
@@ -1405,11 +1405,11 @@ const _GodotAudio = {
 		 * @returns {void}
 		 */
 		sample_set_volumes_linear: function (playbackObjectId, busIndexes, volumes) {
-			const sampleNode = GodotAudio.SampleNode.getSampleNodeOrNull(playbackObjectId);
+			const sampleNode = KosmicAudio.SampleNode.getSampleNodeOrNull(playbackObjectId);
 			if (sampleNode == null) {
 				return;
 			}
-			const buses = busIndexes.map((busIndex) => GodotAudio.Bus.getBus(busIndex));
+			const buses = busIndexes.map((busIndex) => KosmicAudio.Bus.getBus(busIndex));
 			sampleNode.setVolumes(buses, volumes);
 		},
 
@@ -1419,7 +1419,7 @@ const _GodotAudio = {
 		 * @returns {void}
 		 */
 		set_sample_bus_count: function (count) {
-			GodotAudio.Bus.setCount(count);
+			KosmicAudio.Bus.setCount(count);
 		},
 
 		/**
@@ -1428,7 +1428,7 @@ const _GodotAudio = {
 		 * @returns {void}
 		 */
 		remove_sample_bus: function (index) {
-			const bus = GodotAudio.Bus.getBusOrNull(index);
+			const bus = KosmicAudio.Bus.getBusOrNull(index);
 			if (bus == null) {
 				return;
 			}
@@ -1441,7 +1441,7 @@ const _GodotAudio = {
 		 * @returns {void}
 		 */
 		add_sample_bus: function (atPos) {
-			GodotAudio.Bus.addAt(atPos);
+			KosmicAudio.Bus.addAt(atPos);
 		},
 
 		/**
@@ -1451,7 +1451,7 @@ const _GodotAudio = {
 		 * @returns {void}
 		 */
 		move_sample_bus: function (busIndex, toPos) {
-			GodotAudio.Bus.move(busIndex, toPos);
+			KosmicAudio.Bus.move(busIndex, toPos);
 		},
 
 		/**
@@ -1461,15 +1461,15 @@ const _GodotAudio = {
 		 * @returns {void}
 		 */
 		set_sample_bus_send: function (busIndex, sendIndex) {
-			const bus = GodotAudio.Bus.getBusOrNull(busIndex);
+			const bus = KosmicAudio.Bus.getBusOrNull(busIndex);
 			if (bus == null) {
 				// Cannot send from an invalid bus.
 				return;
 			}
-			let targetBus = GodotAudio.Bus.getBusOrNull(sendIndex);
+			let targetBus = KosmicAudio.Bus.getBusOrNull(sendIndex);
 			if (targetBus == null) {
 				// Send to master.
-				targetBus = GodotAudio.Bus.getBus(0);
+				targetBus = KosmicAudio.Bus.getBus(0);
 			}
 			bus.setSend(targetBus);
 		},
@@ -1481,7 +1481,7 @@ const _GodotAudio = {
 		 * @returns {void}
 		 */
 		set_sample_bus_volume_db: function (busIndex, volumeDb) {
-			const bus = GodotAudio.Bus.getBusOrNull(busIndex);
+			const bus = KosmicAudio.Bus.getBusOrNull(busIndex);
 			if (bus == null) {
 				return;
 			}
@@ -1495,7 +1495,7 @@ const _GodotAudio = {
 		 * @returns {void}
 		 */
 		set_sample_bus_solo: function (busIndex, enable) {
-			const bus = GodotAudio.Bus.getBusOrNull(busIndex);
+			const bus = KosmicAudio.Bus.getBusOrNull(busIndex);
 			if (bus == null) {
 				return;
 			}
@@ -1509,7 +1509,7 @@ const _GodotAudio = {
 		 * @returns {void}
 		 */
 		set_sample_bus_mute: function (busIndex, enable) {
-			const bus = GodotAudio.Bus.getBusOrNull(busIndex);
+			const bus = KosmicAudio.Bus.getBusOrNull(busIndex);
 			if (bus == null) {
 				return;
 			}
@@ -1529,13 +1529,13 @@ const _GodotAudio = {
 	kosmic_audio_has_worklet__proxy: 'sync',
 	kosmic_audio_has_worklet__sig: 'i',
 	kosmic_audio_has_worklet: function () {
-		return GodotAudio.ctx && GodotAudio.ctx.audioWorklet ? 1 : 0;
+		return KosmicAudio.ctx && KosmicAudio.ctx.audioWorklet ? 1 : 0;
 	},
 
 	kosmic_audio_has_script_processor__proxy: 'sync',
 	kosmic_audio_has_script_processor__sig: 'i',
 	kosmic_audio_has_script_processor: function () {
-		return GodotAudio.ctx && GodotAudio.ctx.createScriptProcessor ? 1 : 0;
+		return KosmicAudio.ctx && KosmicAudio.ctx.createScriptProcessor ? 1 : 0;
 	},
 
 	kosmic_audio_init__proxy: 'sync',
@@ -1549,42 +1549,42 @@ const _GodotAudio = {
 		const statechange = KosmicRuntime.get_func(p_state_change);
 		const latencyupdate = KosmicRuntime.get_func(p_latency_update);
 		const mix_rate = KosmicRuntime.getHeapValue(p_mix_rate, 'i32');
-		const channels = GodotAudio.init(
+		const channels = KosmicAudio.init(
 			mix_rate,
 			p_latency,
 			statechange,
 			latencyupdate
 		);
-		KosmicRuntime.setHeapValue(p_mix_rate, GodotAudio.ctx.sampleRate, 'i32');
+		KosmicRuntime.setHeapValue(p_mix_rate, KosmicAudio.ctx.sampleRate, 'i32');
 		return channels;
 	},
 
 	kosmic_audio_resume__proxy: 'sync',
 	kosmic_audio_resume__sig: 'v',
 	kosmic_audio_resume: function () {
-		if (GodotAudio.ctx && GodotAudio.ctx.state !== 'running') {
-			GodotAudio.ctx.resume();
+		if (KosmicAudio.ctx && KosmicAudio.ctx.state !== 'running') {
+			KosmicAudio.ctx.resume();
 		}
 	},
 
 	kosmic_audio_input_start__proxy: 'sync',
 	kosmic_audio_input_start__sig: 'i',
 	kosmic_audio_input_start: function () {
-		return GodotAudio.create_input(function (input) {
-			input.connect(GodotAudio.driver.get_node());
+		return KosmicAudio.create_input(function (input) {
+			input.connect(KosmicAudio.driver.get_node());
 		});
 	},
 
 	kosmic_audio_input_stop__proxy: 'sync',
 	kosmic_audio_input_stop__sig: 'v',
 	kosmic_audio_input_stop: function () {
-		if (GodotAudio.input) {
-			const tracks = GodotAudio.input['mediaStream']['getTracks']();
+		if (KosmicAudio.input) {
+			const tracks = KosmicAudio.input['mediaStream']['getTracks']();
 			for (let i = 0; i < tracks.length; i++) {
 				tracks[i]['stop']();
 			}
-			GodotAudio.input.disconnect();
-			GodotAudio.input = null;
+			KosmicAudio.input.disconnect();
+			KosmicAudio.input = null;
 		}
 	},
 
@@ -1597,7 +1597,7 @@ const _GodotAudio = {
 	 */
 	kosmic_audio_sample_stream_is_registered: function (streamObjectIdStrPtr) {
 		const streamObjectId = KosmicRuntime.parseString(streamObjectIdStrPtr);
-		return Number(GodotAudio.Sample.getSampleOrNull(streamObjectId) != null);
+		return Number(KosmicAudio.Sample.getSampleOrNull(streamObjectId) != null);
 	},
 
 	kosmic_audio_sample_register_stream__proxy: 'sync',
@@ -1624,7 +1624,7 @@ const _GodotAudio = {
 		const streamObjectId = KosmicRuntime.parseString(streamObjectIdStrPtr);
 		const loopMode = KosmicRuntime.parseString(loopModeStrPtr);
 		const numberOfChannels = 2;
-		const sampleRate = GodotAudio.ctx.sampleRate;
+		const sampleRate = KosmicAudio.ctx.sampleRate;
 
 		/** @type {Float32Array} */
 		const subLeft = KosmicRuntime.heapSub(HEAPF32, framesPtr, framesTotal);
@@ -1635,7 +1635,7 @@ const _GodotAudio = {
 			framesTotal
 		);
 
-		const audioBuffer = GodotAudio.ctx.createBuffer(
+		const audioBuffer = KosmicAudio.ctx.createBuffer(
 			numberOfChannels,
 			framesTotal,
 			sampleRate
@@ -1643,7 +1643,7 @@ const _GodotAudio = {
 		audioBuffer.copyToChannel(new Float32Array(subLeft), 0, 0);
 		audioBuffer.copyToChannel(new Float32Array(subRight), 1, 0);
 
-		GodotAudio.Sample.create(
+		KosmicAudio.Sample.create(
 			{
 				id: streamObjectId,
 				audioBuffer,
@@ -1667,7 +1667,7 @@ const _GodotAudio = {
 	 */
 	kosmic_audio_sample_unregister_stream: function (streamObjectIdStrPtr) {
 		const streamObjectId = KosmicRuntime.parseString(streamObjectIdStrPtr);
-		const sample = GodotAudio.Sample.getSampleOrNull(streamObjectId);
+		const sample = KosmicAudio.Sample.getSampleOrNull(streamObjectId);
 		if (sample != null) {
 			sample.clear();
 		}
@@ -1707,7 +1707,7 @@ const _GodotAudio = {
 			pitchScale,
 			start: true,
 		};
-		GodotAudio.start_sample(
+		KosmicAudio.start_sample(
 			playbackObjectId,
 			streamObjectId,
 			busIndex,
@@ -1724,7 +1724,7 @@ const _GodotAudio = {
 	 */
 	kosmic_audio_sample_stop: function (playbackObjectIdStrPtr) {
 		const playbackObjectId = KosmicRuntime.parseString(playbackObjectIdStrPtr);
-		GodotAudio.stop_sample(playbackObjectId);
+		KosmicAudio.stop_sample(playbackObjectId);
 	},
 
 	kosmic_audio_sample_set_pause__proxy: 'sync',
@@ -1736,7 +1736,7 @@ const _GodotAudio = {
 	 */
 	kosmic_audio_sample_set_pause: function (playbackObjectIdStrPtr, pause) {
 		const playbackObjectId = KosmicRuntime.parseString(playbackObjectIdStrPtr);
-		GodotAudio.sample_set_pause(playbackObjectId, Boolean(pause));
+		KosmicAudio.sample_set_pause(playbackObjectId, Boolean(pause));
 	},
 
 	kosmic_audio_sample_is_active__proxy: 'sync',
@@ -1748,7 +1748,7 @@ const _GodotAudio = {
 	 */
 	kosmic_audio_sample_is_active: function (playbackObjectIdStrPtr) {
 		const playbackObjectId = KosmicRuntime.parseString(playbackObjectIdStrPtr);
-		return Number(GodotAudio.sampleNodes.has(playbackObjectId));
+		return Number(KosmicAudio.sampleNodes.has(playbackObjectId));
 	},
 
 	kosmic_audio_get_sample_playback_position__proxy: 'sync',
@@ -1760,7 +1760,7 @@ const _GodotAudio = {
 	 */
 	kosmic_audio_get_sample_playback_position: function (playbackObjectIdStrPtr) {
 		const playbackObjectId = KosmicRuntime.parseString(playbackObjectIdStrPtr);
-		const sampleNode = GodotAudio.SampleNode.getSampleNodeOrNull(playbackObjectId);
+		const sampleNode = KosmicAudio.SampleNode.getSampleNodeOrNull(playbackObjectId);
 		if (sampleNode == null) {
 			return 0;
 		}
@@ -1780,7 +1780,7 @@ const _GodotAudio = {
 		pitchScale
 	) {
 		const playbackObjectId = KosmicRuntime.parseString(playbackObjectIdStrPtr);
-		GodotAudio.update_sample_pitch_scale(playbackObjectId, pitchScale);
+		KosmicAudio.update_sample_pitch_scale(playbackObjectId, pitchScale);
 	},
 
 	kosmic_audio_sample_set_volumes_linear__proxy: 'sync',
@@ -1809,7 +1809,7 @@ const _GodotAudio = {
 		/** @type {Float32Array} */
 		const volumes = KosmicRuntime.heapSub(HEAPF32, volumesPtr, volumesSize);
 
-		GodotAudio.sample_set_volumes_linear(
+		KosmicAudio.sample_set_volumes_linear(
 			playbackObjectId,
 			Array.from(buses),
 			volumes
@@ -1824,7 +1824,7 @@ const _GodotAudio = {
 	 * @returns {void}
 	 */
 	kosmic_audio_sample_bus_set_count: function (count) {
-		GodotAudio.set_sample_bus_count(count);
+		KosmicAudio.set_sample_bus_count(count);
 	},
 
 	kosmic_audio_sample_bus_remove__proxy: 'sync',
@@ -1835,7 +1835,7 @@ const _GodotAudio = {
 	 * @returns {void}
 	 */
 	kosmic_audio_sample_bus_remove: function (index) {
-		GodotAudio.remove_sample_bus(index);
+		KosmicAudio.remove_sample_bus(index);
 	},
 
 	kosmic_audio_sample_bus_add__proxy: 'sync',
@@ -1846,7 +1846,7 @@ const _GodotAudio = {
 	 * @returns {void}
 	 */
 	kosmic_audio_sample_bus_add: function (atPos) {
-		GodotAudio.add_sample_bus(atPos);
+		KosmicAudio.add_sample_bus(atPos);
 	},
 
 	kosmic_audio_sample_bus_move__proxy: 'sync',
@@ -1858,7 +1858,7 @@ const _GodotAudio = {
 	 * @returns {void}
 	 */
 	kosmic_audio_sample_bus_move: function (fromPos, toPos) {
-		GodotAudio.move_sample_bus(fromPos, toPos);
+		KosmicAudio.move_sample_bus(fromPos, toPos);
 	},
 
 	kosmic_audio_sample_bus_set_send__proxy: 'sync',
@@ -1870,7 +1870,7 @@ const _GodotAudio = {
 	 * @returns {void}
 	 */
 	kosmic_audio_sample_bus_set_send: function (bus, sendIndex) {
-		GodotAudio.set_sample_bus_send(bus, sendIndex);
+		KosmicAudio.set_sample_bus_send(bus, sendIndex);
 	},
 
 	kosmic_audio_sample_bus_set_volume_db__proxy: 'sync',
@@ -1882,7 +1882,7 @@ const _GodotAudio = {
 	 * @returns {void}
 	 */
 	kosmic_audio_sample_bus_set_volume_db: function (bus, volumeDb) {
-		GodotAudio.set_sample_bus_volume_db(bus, volumeDb);
+		KosmicAudio.set_sample_bus_volume_db(bus, volumeDb);
 	},
 
 	kosmic_audio_sample_bus_set_solo__proxy: 'sync',
@@ -1894,7 +1894,7 @@ const _GodotAudio = {
 	 * @returns {void}
 	 */
 	kosmic_audio_sample_bus_set_solo: function (bus, enable) {
-		GodotAudio.set_sample_bus_solo(bus, Boolean(enable));
+		KosmicAudio.set_sample_bus_solo(bus, Boolean(enable));
 	},
 
 	kosmic_audio_sample_bus_set_mute__proxy: 'sync',
@@ -1906,7 +1906,7 @@ const _GodotAudio = {
 	 * @returns {void}
 	 */
 	kosmic_audio_sample_bus_set_mute: function (bus, enable) {
-		GodotAudio.set_sample_bus_mute(bus, Boolean(enable));
+		KosmicAudio.set_sample_bus_mute(bus, Boolean(enable));
 	},
 
 	kosmic_audio_sample_set_finished_callback__proxy: 'sync',
@@ -1917,44 +1917,44 @@ const _GodotAudio = {
 	 * @returns {void}
 	 */
 	kosmic_audio_sample_set_finished_callback: function (callbackPtr) {
-		GodotAudio.sampleFinishedCallback = KosmicRuntime.get_func(callbackPtr);
+		KosmicAudio.sampleFinishedCallback = KosmicRuntime.get_func(callbackPtr);
 	},
 };
 
-autoAddDeps(_GodotAudio, '$GodotAudio');
-mergeInto(LibraryManager.library, _GodotAudio);
+autoAddDeps(_KosmicAudio, '$KosmicAudio');
+mergeInto(LibraryManager.library, _KosmicAudio);
 
 /**
  * The AudioWorklet API driver, used when threads are available.
  */
-const GodotAudioWorklet = {
-	$GodotAudioWorklet__deps: ['$GodotAudio', '$KosmicConfig'],
-	$GodotAudioWorklet: {
+const KosmicAudioWorklet = {
+	$KosmicAudioWorklet__deps: ['$KosmicAudio', '$KosmicConfig'],
+	$KosmicAudioWorklet: {
 		promise: null,
 		worklet: null,
 		ring_buffer: null,
 
 		create: function (channels) {
-			const path = KosmicConfig.locate_file('godot.audio.worklet.js');
-			GodotAudioWorklet.promise = GodotAudio.ctx.audioWorklet
+			const path = KosmicConfig.locate_file('kosmic.audio.worklet.js');
+			KosmicAudioWorklet.promise = KosmicAudio.ctx.audioWorklet
 				.addModule(path)
 				.then(function () {
-					GodotAudioWorklet.worklet = new AudioWorkletNode(
-						GodotAudio.ctx,
-						'godot-processor',
+					KosmicAudioWorklet.worklet = new AudioWorkletNode(
+						KosmicAudio.ctx,
+						'kosmic-processor',
 						{
 							outputChannelCount: [channels],
 						}
 					);
 					return Promise.resolve();
 				});
-			GodotAudio.driver = GodotAudioWorklet;
+			KosmicAudio.driver = KosmicAudioWorklet;
 		},
 
 		start: function (in_buf, out_buf, state) {
-			GodotAudioWorklet.promise.then(function () {
-				const node = GodotAudioWorklet.worklet;
-				node.connect(GodotAudio.ctx.destination);
+			KosmicAudioWorklet.promise.then(function () {
+				const node = KosmicAudioWorklet.worklet;
+				node.connect(KosmicAudio.ctx.destination);
 				node.port.postMessage({
 					'cmd': 'start',
 					'data': [state, in_buf, out_buf],
@@ -2025,24 +2025,24 @@ const GodotAudioWorklet = {
 					send(port);
 				};
 			}
-			GodotAudioWorklet.ring_buffer = new RingBuffer();
-			GodotAudioWorklet.promise.then(function () {
-				const node = GodotAudioWorklet.worklet;
+			KosmicAudioWorklet.ring_buffer = new RingBuffer();
+			KosmicAudioWorklet.promise.then(function () {
+				const node = KosmicAudioWorklet.worklet;
 				const buffer = KosmicRuntime.heapSlice(HEAPF32, p_out_buf, p_out_size);
-				node.connect(GodotAudio.ctx.destination);
+				node.connect(KosmicAudio.ctx.destination);
 				node.port.postMessage({
 					'cmd': 'start_nothreads',
 					'data': [buffer, p_in_size],
 				});
 				node.port.onmessage = function (event) {
-					if (!GodotAudioWorklet.worklet) {
+					if (!KosmicAudioWorklet.worklet) {
 						return;
 					}
 					if (event.data['cmd'] === 'read') {
 						const read = event.data['data'];
-						GodotAudioWorklet.ring_buffer.consumed(
+						KosmicAudioWorklet.ring_buffer.consumed(
 							read,
-							GodotAudioWorklet.worklet.port
+							KosmicAudioWorklet.worklet.port
 						);
 					} else if (event.data['cmd'] === 'input') {
 						const buf = event.data['data'];
@@ -2050,7 +2050,7 @@ const GodotAudioWorklet = {
 							KosmicRuntime.error('Input chunk is too big');
 							return;
 						}
-						GodotAudioWorklet.ring_buffer.receive(buf);
+						KosmicAudioWorklet.ring_buffer.receive(buf);
 					} else {
 						KosmicRuntime.error(event.data);
 					}
@@ -2059,24 +2059,24 @@ const GodotAudioWorklet = {
 		},
 
 		get_node: function () {
-			return GodotAudioWorklet.worklet;
+			return KosmicAudioWorklet.worklet;
 		},
 
 		close: function () {
 			return new Promise(function (resolve, reject) {
-				if (GodotAudioWorklet.promise === null) {
+				if (KosmicAudioWorklet.promise === null) {
 					return;
 				}
-				const p = GodotAudioWorklet.promise;
+				const p = KosmicAudioWorklet.promise;
 				p.then(function () {
-					GodotAudioWorklet.worklet.port.postMessage({
+					KosmicAudioWorklet.worklet.port.postMessage({
 						'cmd': 'stop',
 						'data': null,
 					});
-					GodotAudioWorklet.worklet.disconnect();
-					GodotAudioWorklet.worklet.port.onmessage = null;
-					GodotAudioWorklet.worklet = null;
-					GodotAudioWorklet.promise = null;
+					KosmicAudioWorklet.worklet.disconnect();
+					KosmicAudioWorklet.worklet.port.onmessage = null;
+					KosmicAudioWorklet.worklet = null;
+					KosmicAudioWorklet.promise = null;
 					resolve();
 				}).catch(function (err) {
 					// Aborted?
@@ -2090,7 +2090,7 @@ const GodotAudioWorklet = {
 	kosmic_audio_worklet_create__sig: 'ii',
 	kosmic_audio_worklet_create: function (channels) {
 		try {
-			GodotAudioWorklet.create(channels);
+			KosmicAudioWorklet.create(channels);
 		} catch (e) {
 			KosmicRuntime.error('Error starting AudioDriverWorklet', e);
 			return 1;
@@ -2110,7 +2110,7 @@ const GodotAudioWorklet = {
 		const out_buffer = KosmicRuntime.heapSub(HEAPF32, p_out_buf, p_out_size);
 		const in_buffer = KosmicRuntime.heapSub(HEAPF32, p_in_buf, p_in_size);
 		const state = KosmicRuntime.heapSub(HEAP32, p_state, 4);
-		GodotAudioWorklet.start(in_buffer, out_buffer, state);
+		KosmicAudioWorklet.start(in_buffer, out_buffer, state);
 	},
 
 	kosmic_audio_worklet_start_no_threads__proxy: 'sync',
@@ -2125,7 +2125,7 @@ const GodotAudioWorklet = {
 	) {
 		const out_callback = KosmicRuntime.get_func(p_out_callback);
 		const in_callback = KosmicRuntime.get_func(p_in_callback);
-		GodotAudioWorklet.start_no_threads(
+		KosmicAudioWorklet.start_no_threads(
 			p_out_buf,
 			p_out_size,
 			out_callback,
@@ -2157,33 +2157,33 @@ const GodotAudioWorklet = {
 	},
 };
 
-autoAddDeps(GodotAudioWorklet, '$GodotAudioWorklet');
-mergeInto(LibraryManager.library, GodotAudioWorklet);
+autoAddDeps(KosmicAudioWorklet, '$KosmicAudioWorklet');
+mergeInto(LibraryManager.library, KosmicAudioWorklet);
 
 /*
  * The ScriptProcessorNode API, used as a fallback if AudioWorklet is not available.
  */
-const GodotAudioScript = {
-	$GodotAudioScript__deps: ['$GodotAudio'],
-	$GodotAudioScript: {
+const KosmicAudioScript = {
+	$KosmicAudioScript__deps: ['$KosmicAudio'],
+	$KosmicAudioScript: {
 		script: null,
 
 		create: function (buffer_length, channel_count) {
-			GodotAudioScript.script = GodotAudio.ctx.createScriptProcessor(
+			KosmicAudioScript.script = KosmicAudio.ctx.createScriptProcessor(
 				buffer_length,
 				2,
 				channel_count
 			);
-			GodotAudio.driver = GodotAudioScript;
-			return GodotAudioScript.script.bufferSize;
+			KosmicAudio.driver = KosmicAudioScript;
+			return KosmicAudioScript.script.bufferSize;
 		},
 
 		start: function (p_in_buf, p_in_size, p_out_buf, p_out_size, onprocess) {
-			GodotAudioScript.script.onaudioprocess = function (event) {
+			KosmicAudioScript.script.onaudioprocess = function (event) {
 				// Read input
 				const inb = KosmicRuntime.heapSub(HEAPF32, p_in_buf, p_in_size);
 				const input = event.inputBuffer;
-				if (GodotAudio.input) {
+				if (KosmicAudio.input) {
 					const inlen = input.getChannelData(0).length;
 					for (let ch = 0; ch < 2; ch++) {
 						const data = input.getChannelData(ch);
@@ -2208,18 +2208,18 @@ const GodotAudioScript = {
 					}
 				}
 			};
-			GodotAudioScript.script.connect(GodotAudio.ctx.destination);
+			KosmicAudioScript.script.connect(KosmicAudio.ctx.destination);
 		},
 
 		get_node: function () {
-			return GodotAudioScript.script;
+			return KosmicAudioScript.script;
 		},
 
 		close: function () {
 			return new Promise(function (resolve, reject) {
-				GodotAudioScript.script.disconnect();
-				GodotAudioScript.script.onaudioprocess = null;
-				GodotAudioScript.script = null;
+				KosmicAudioScript.script.disconnect();
+				KosmicAudioScript.script.onaudioprocess = null;
+				KosmicAudioScript.script = null;
 				resolve();
 			});
 		},
@@ -2230,7 +2230,7 @@ const GodotAudioScript = {
 	kosmic_audio_script_create: function (buffer_length, channel_count) {
 		const buf_len = KosmicRuntime.getHeapValue(buffer_length, 'i32');
 		try {
-			const out_len = GodotAudioScript.create(buf_len, channel_count);
+			const out_len = KosmicAudioScript.create(buf_len, channel_count);
 			KosmicRuntime.setHeapValue(buffer_length, out_len, 'i32');
 		} catch (e) {
 			KosmicRuntime.error('Error starting AudioDriverScriptProcessor', e);
@@ -2249,7 +2249,7 @@ const GodotAudioScript = {
 		p_cb
 	) {
 		const onprocess = KosmicRuntime.get_func(p_cb);
-		GodotAudioScript.start(
+		KosmicAudioScript.start(
 			p_in_buf,
 			p_in_size,
 			p_out_buf,
@@ -2259,5 +2259,5 @@ const GodotAudioScript = {
 	},
 };
 
-autoAddDeps(GodotAudioScript, '$GodotAudioScript');
-mergeInto(LibraryManager.library, GodotAudioScript);
+autoAddDeps(KosmicAudioScript, '$KosmicAudioScript');
+mergeInto(LibraryManager.library, KosmicAudioScript);

@@ -11,7 +11,7 @@ namespace Kosmic
         {
             try
             {
-                Dispatcher.InitializeDefaultGodotTaskScheduler();
+                Dispatcher.InitializeDefaultKosmicTaskScheduler();
 
                 if (isDebug.ToBool())
                 {

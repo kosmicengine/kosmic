@@ -46,6 +46,7 @@
 #include "core/os/os.h"
 #include "editor/editor_help.h"
 #include "editor/editor_node.h"
+
 #include "modules/voyscript/voyscript_analyzer.h"
 #include "modules/regex/regex.h"
 
@@ -315,10 +316,10 @@ inline lsp::Position lsp_pos(int line, int character) {
 	return p;
 }
 
-void test_position_roundtrip(lsp::Position p_lsp, KosmicPosition p_gd, const PackedStringArray &p_lines) {
-	KosmicPosition actual_gd = KosmicPosition::from_lsp(p_lsp, p_lines);
-	CHECK_EQ(p_gd, actual_gd);
-	lsp::Position actual_lsp = p_gd.to_lsp(p_lines);
+void test_position_roundtrip(lsp::Position p_lsp, KosmicPosition p_ks, const PackedStringArray &p_lines) {
+	KosmicPosition actual_ks = KosmicPosition::from_lsp(p_lsp, p_lines);
+	CHECK_EQ(p_ks, actual_ks);
+	lsp::Position actual_lsp = p_ks.to_lsp(p_lines);
 	CHECK_EQ(p_lsp, actual_lsp);
 }
 
@@ -330,9 +331,9 @@ void test_position_roundtrip(lsp::Position p_lsp, KosmicPosition p_gd, const Pac
 //      -> Character on `r` -> cursor between `a`&`r`s for tests:
 // * Line & Char:
 //   * LSP: both 0-based
-//   * Godot: both 1-based
+//   * Kosmic: both 1-based
 TEST_SUITE("[Modules][VoyScript][LSP]") {
-	TEST_CASE("Can convert positions to and from Godot") {
+	TEST_CASE("Can convert positions to and from Kosmic") {
 		String code = R"(extends Node
 
 var member := 42

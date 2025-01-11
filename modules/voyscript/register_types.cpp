@@ -67,9 +67,9 @@
 #include "tests/test_macros.h"
 #endif
 
-VoyScriptLanguage *script_language_gd = nullptr;
-Ref<ResourceFormatLoaderVoyScript> resource_loader_gd;
-Ref<ResourceFormatSaverVoyScript> resource_saver_gd;
+VoyScriptLanguage *script_language_ks = nullptr;
+Ref<ResourceFormatLoaderVoyScript> resource_loader_ks;
+Ref<ResourceFormatSaverVoyScript> resource_saver_ks;
 VoyScriptCache *voyscript_cache = nullptr;
 
 #ifdef TOOLS_ENABLED
@@ -118,9 +118,9 @@ public:
 };
 
 static void _editor_init() {
-	Ref<EditorExportVoyScript> gd_export;
-	gd_export.instantiate();
-	EditorExport::get_singleton()->add_export_plugin(gd_export);
+	Ref<EditorExportVoyScript> ks_export;
+	ks_export.instantiate();
+	EditorExport::get_singleton()->add_export_plugin(ks_export);
 
 #ifdef TOOLS_ENABLED
 	Ref<VoyScriptSyntaxHighlighter> voyscript_syntax_highlighter;
@@ -142,14 +142,14 @@ void initialize_voyscript_module(ModuleInitializationLevel p_level) {
 	if (p_level == MODULE_INITIALIZATION_LEVEL_SERVERS) {
 		KSREGISTER_CLASS(VoyScript);
 
-		script_language_gd = memnew(VoyScriptLanguage);
-		ScriptServer::register_language(script_language_gd);
+		script_language_ks = memnew(VoyScriptLanguage);
+		ScriptServer::register_language(script_language_ks);
 
-		resource_loader_gd.instantiate();
-		ResourceLoader::add_resource_format_loader(resource_loader_gd);
+		resource_loader_ks.instantiate();
+		ResourceLoader::add_resource_format_loader(resource_loader_ks);
 
-		resource_saver_gd.instantiate();
-		ResourceSaver::add_resource_format_saver(resource_saver_gd);
+		resource_saver_ks.instantiate();
+		ResourceSaver::add_resource_format_saver(resource_saver_ks);
 
 		voyscript_cache = memnew(VoyScriptCache);
 
@@ -175,21 +175,21 @@ void initialize_voyscript_module(ModuleInitializationLevel p_level) {
 
 void uninitialize_voyscript_module(ModuleInitializationLevel p_level) {
 	if (p_level == MODULE_INITIALIZATION_LEVEL_SERVERS) {
-		ScriptServer::unregister_language(script_language_gd);
+		ScriptServer::unregister_language(script_language_ks);
 
 		if (voyscript_cache) {
 			memdelete(voyscript_cache);
 		}
 
-		if (script_language_gd) {
-			memdelete(script_language_gd);
+		if (script_language_ks) {
+			memdelete(script_language_ks);
 		}
 
-		ResourceLoader::remove_resource_format_loader(resource_loader_gd);
-		resource_loader_gd.unref();
+		ResourceLoader::remove_resource_format_loader(resource_loader_ks);
+		resource_loader_ks.unref();
 
-		ResourceSaver::remove_resource_format_saver(resource_saver_gd);
-		resource_saver_gd.unref();
+		ResourceSaver::remove_resource_format_saver(resource_saver_ks);
+		resource_saver_ks.unref();
 
 		VoyScriptParser::cleanup();
 		VoyScriptUtilityFunctions::unregister_functions();

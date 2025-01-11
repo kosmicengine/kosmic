@@ -32,7 +32,7 @@
 #ifndef TEXT_SERVER_EXTENSION_H
 #define TEXT_SERVER_EXTENSION_H
 
-#include "core/object/ksvirtual.gen.inc"
+#include "core/object/gdvirtual.gen.inc"
 #include "core/os/thread_safe.h"
 #include "core/variant/native_ptr.h"
 #include "core/variant/typed_array.h"
@@ -445,9 +445,11 @@ public:
 
 	virtual int64_t shaped_get_span_count(const RID &p_shaped) const override;
 	virtual Variant shaped_get_span_meta(const RID &p_shaped, int64_t p_index) const override;
+	virtual Variant shaped_get_span_embedded_object(const RID &p_shaped, int64_t p_index) const override;
 	virtual void shaped_set_span_update_font(const RID &p_shaped, int64_t p_index, const TypedArray<RID> &p_fonts, int64_t p_size, const Dictionary &p_opentype_features = Dictionary()) override;
 	KSVIRTUAL1RC_REQUIRED(int64_t, _shaped_get_span_count, RID);
 	KSVIRTUAL2RC_REQUIRED(Variant, _shaped_get_span_meta, RID, int64_t);
+	KSVIRTUAL2RC_REQUIRED(Variant, _shaped_get_span_embedded_object, RID, int64_t);
 	KSVIRTUAL5_REQUIRED(_shaped_set_span_update_font, RID, int64_t, const TypedArray<RID> &, int64_t, const Dictionary &);
 
 	virtual RID shaped_text_substr(const RID &p_shaped, int64_t p_start, int64_t p_length) const override;

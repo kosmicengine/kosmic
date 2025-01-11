@@ -241,6 +241,9 @@
 		<member name="docks/scene_tree/center_node_on_reparent" type="bool" setter="" getter="">
 			If [code]true[/code], new node created when reparenting node(s) will be positioned at the average position of the selected node(s).
 		</member>
+		<member name="docks/scene_tree/hide_filtered_out_parents" type="bool" setter="" getter="">
+			If [code]true[/code], the scene tree dock will only show nodes that match the filter, without showing parents that don't. This settings can also be changed in the Scene dock's top menu.
+		</member>
 		<member name="docks/scene_tree/start_create_dialog_fully_expanded" type="bool" setter="" getter="">
 			If [code]true[/code], the Create dialog (Create New Node/Create New Resource) will start with all its sections expanded. Otherwise, sections will be collapsed until the user starts searching (which will automatically expand sections as needed).
 		</member>
@@ -431,6 +434,9 @@
 		</member>
 		<member name="editors/3d_gizmos/gizmo_colors/fog_volume" type="Color" setter="" getter="">
 			The 3D editor gizmo color for [FogVolume] nodes.
+		</member>
+		<member name="editors/3d_gizmos/gizmo_colors/gridmap_grid" type="Color" setter="" getter="">
+			The 3D editor gizmo color for the [GridMap] grid.
 		</member>
 		<member name="editors/3d_gizmos/gizmo_colors/instantiated" type="Color" setter="" getter="">
 			The color override to use for 3D editor gizmos if the [Node3D] in question is part of an instantiated scene file (from the perspective of the current scene).
@@ -1360,7 +1366,7 @@
 		<member name="text_editor/theme/color_theme" type="String" setter="" getter="">
 			The syntax theme to use in the script editor.
 			You can save your own syntax theme from your current settings by using [b]File &gt; Theme &gt; Save As...[/b] at the top of the script editor. The syntax theme will then be available locally in the list of color themes.
-			You can find additional syntax themes to install in the [url=https://github.com/godotengine/godot-syntax-themes]godot-syntax-themes[/url] repository.
+			You can find additional syntax themes to install in the [url=https://github.com/godotengine/kosmic-syntax-themes]kosmic-syntax-themes[/url] repository.
 		</member>
 		<member name="text_editor/theme/highlighting/background_color" type="Color" setter="" getter="">
 			The script editor's background color. If set to a translucent color, the editor theme's base color will be visible behind.

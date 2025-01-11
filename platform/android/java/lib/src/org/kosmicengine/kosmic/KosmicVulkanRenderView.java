@@ -62,7 +62,7 @@ class KosmicVulkanRenderView extends VkSurfaceView implements KosmicRenderView {
 		super(host.getActivity());
 
 		this.host = host;
-		this.kosmic = godot;
+		this.kosmic = kosmic;
 		mInputHandler = inputHandler;
 		mRenderer = new VkRenderer();
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -184,10 +184,10 @@ class KosmicVulkanRenderView extends VkSurfaceView implements KosmicRenderView {
 			try {
 				Bitmap bitmap = null;
 				if (!TextUtils.isEmpty(imagePath)) {
-					if (godot.getDirectoryAccessHandler().filesystemFileExists(imagePath)) {
+					if (kosmic.getDirectoryAccessHandler().filesystemFileExists(imagePath)) {
 						// Try to load the bitmap from the file system
 						bitmap = BitmapFactory.decodeFile(imagePath);
-					} else if (godot.getDirectoryAccessHandler().assetsFileExists(imagePath)) {
+					} else if (kosmic.getDirectoryAccessHandler().assetsFileExists(imagePath)) {
 						// Try to load the bitmap from the assets directory
 						AssetManager am = getContext().getAssets();
 						InputStream imageInputStream = am.open(imagePath);

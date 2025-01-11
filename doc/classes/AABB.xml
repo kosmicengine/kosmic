@@ -52,8 +52,8 @@
 				[csharp]
 				var box = new Aabb(new Vector3(5, 0, 5), new Vector3(-20, -10, -5));
 				var absolute = box.Abs();
-				KS.Print(absolute.Position); // Prints (-15, -10, 0)
-				KS.Print(absolute.Size);     // Prints (20, 10, 5)
+				GD.Print(absolute.Position); // Prints (-15, -10, 0)
+				GD.Print(absolute.Size);     // Prints (20, 10, 5)
 				[/csharp]
 				[/codeblocks]
 				[b]Note:[/b] It's recommended to use this method when [member size] is negative, as most other methods in Godot assume that the [member size]'s components are greater than [code]0[/code].
@@ -79,9 +79,9 @@
 				var b = new Aabb(new Vector3(1, 1, 1), new Vector3(3, 3, 3));
 				var c = new Aabb(new Vector3(2, 2, 2), new Vector3(8, 8, 8));
 
-				KS.Print(a.Encloses(a)); // Prints True
-				KS.Print(a.Encloses(b)); // Prints True
-				KS.Print(a.Encloses(c)); // Prints False
+				GD.Print(a.Encloses(a)); // Prints True
+				GD.Print(a.Encloses(b)); // Prints True
+				GD.Print(a.Encloses(c)); // Prints False
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -107,12 +107,12 @@
 				var box = new Aabb(new Vector3(0, 0, 0), new Vector3(5, 2, 5));
 
 				box = box.Expand(new Vector3(10, 0, 0));
-				KS.Print(box.Position); // Prints (0, 0, 0)
-				KS.Print(box.Size);     // Prints (10, 2, 5)
+				GD.Print(box.Position); // Prints (0, 0, 0)
+				GD.Print(box.Size);     // Prints (10, 2, 5)
 
 				box = box.Expand(new Vector3(-5, 0, 5));
-				KS.Print(box.Position); // Prints (-5, 0, 0)
-				KS.Print(box.Size);     // Prints (15, 2, 5)
+				GD.Print(box.Position); // Prints (-5, 0, 0)
+				GD.Print(box.Size);     // Prints (15, 2, 5)
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -145,9 +145,9 @@
 				[csharp]
 				var box = new Aabb(new Vector3(0, 0, 0), new Vector3(2, 4, 8));
 
-				KS.Print(box.GetLongestAxis());      // Prints (0, 0, 1)
-				KS.Print(box.GetLongestAxisIndex()); // Prints Z
-				KS.Print(box.GetLongestAxisSize());  // Prints 8
+				GD.Print(box.GetLongestAxis());      // Prints (0, 0, 1)
+				GD.Print(box.GetLongestAxisIndex()); // Prints Z
+				GD.Print(box.GetLongestAxisSize());  // Prints 8
 				[/csharp]
 				[/codeblocks]
 				See also [method get_longest_axis_index] and [method get_longest_axis_size].
@@ -182,9 +182,9 @@
 				[csharp]
 				var box = new Aabb(new Vector3(0, 0, 0), new Vector3(2, 4, 8));
 
-				KS.Print(box.GetShortestAxis());      // Prints (1, 0, 0)
-				KS.Print(box.GetShortestAxisIndex()); // Prints X
-				KS.Print(box.GetShortestAxisSize());  // Prints 2
+				GD.Print(box.GetShortestAxis());      // Prints (1, 0, 0)
+				GD.Print(box.GetShortestAxisIndex()); // Prints X
+				GD.Print(box.GetShortestAxisSize());  // Prints 2
 				[/csharp]
 				[/codeblocks]
 				See also [method get_shortest_axis_index] and [method get_shortest_axis_size].
@@ -234,12 +234,12 @@
 				[/voyscript]
 				[csharp]
 				var a = new Aabb(new Vector3(4, 4, 4), new Vector3(8, 8, 8)).Grow(4);
-				KS.Print(a.Position); // Prints (0, 0, 0)
-				KS.Print(a.Size);     // Prints (16, 16, 16)
+				GD.Print(a.Position); // Prints (0, 0, 0)
+				GD.Print(a.Size);     // Prints (16, 16, 16)
 
 				var b = new Aabb(new Vector3(0, 0, 0), new Vector3(8, 4, 2)).Grow(2);
-				KS.Print(b.Position); // Prints (-2, -2, -2)
-				KS.Print(b.Size);     // Prints (12, 8, 6)
+				GD.Print(b.Position); // Prints (-2, -2, -2)
+				GD.Print(b.Size);     // Prints (12, 8, 6)
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -283,8 +283,8 @@
 				var box2 = new Aabb(new Vector3(2, 0, 2), new Vector3(8, 4, 4));
 
 				var intersection = box1.Intersection(box2);
-				KS.Print(intersection.Position); // Prints (2, 0, 2)
-				KS.Print(intersection.Size);     // Prints (3, 2, 4)
+				GD.Print(intersection.Position); // Prints (2, 0, 2)
+				GD.Print(intersection.Size);     // Prints (3, 2, 4)
 				[/csharp]
 				[/codeblocks]
 				[b]Note:[/b] If you only need to know whether two bounding boxes are intersecting, use [method intersects], instead.

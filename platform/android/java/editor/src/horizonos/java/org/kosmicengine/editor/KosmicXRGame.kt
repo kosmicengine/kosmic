@@ -2,7 +2,7 @@
 /*  GodotXRGame.kt                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           KOSMIC ENGINE                                */
+/*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -36,7 +36,7 @@ import org.kosmicengine.kosmic.xr.XRMode
 /**
  * Provide support for running XR apps / games from the editor window.
  */
-open class GodotXRGame: GodotGame() {
+open class GodotXRGame: KosmicGame() {
 
 	override fun overrideOrientationRequest() = true
 

@@ -24,7 +24,7 @@
 		    return abs(u_pos.x - v_pos.x) + abs(u_pos.y - v_pos.y) + abs(u_pos.z - v_pos.z)
 		[/voyscript]
 		[csharp]
-		using Godot;
+		using Kosmic;
 
 		[GlobalClass]
 		public partial class MyAStar3D : AStar3D

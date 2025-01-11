@@ -39,7 +39,7 @@
 		[/voyscript]
 		[csharp]
 		// ServerNode.cs
-		using Godot;
+		using Kosmic;
 
 		public partial class ServerNode : Node
 		{
@@ -50,8 +50,8 @@
 		    public override void _Ready()
 		    {
 		        _server.Listen(4242);
-		        var key = KS.Load&lt;CryptoKey&gt;("key.key"); // Your private key.
-		        var cert = KS.Load&lt;X509Certificate&gt;("cert.crt"); // Your X509 certificate.
+		        var key = GD.Load&lt;CryptoKey&gt;("key.key"); // Your private key.
+		        var cert = GD.Load&lt;X509Certificate&gt;("cert.crt"); // Your X509 certificate.
 		        _dtls.Setup(TlsOptions.Server(key, cert));
 		    }
 
@@ -65,7 +65,7 @@
 		            {
 		                continue; // It is normal that 50% of the connections fails due to cookie exchange.
 		            }
-		            KS.Print("Peer connected!");
+		            GD.Print("Peer connected!");
 		            _peers.Add(dtlsPeer);
 		        }
 
@@ -76,7 +76,7 @@
 		            {
 		                while (p.GetAvailablePacketCount() &gt; 0)
 		                {
-		                    KS.Print($"Received Message From Client: {p.GetPacket().GetStringFromUtf8()}");
+		                    GD.Print($"Received Message From Client: {p.GetPacket().GetStringFromUtf8()}");
 		                    p.PutPacket("Hello DTLS Client".ToUtf8Buffer());
 		                }
 		            }
@@ -110,7 +110,7 @@
 		[/voyscript]
 		[csharp]
 		// ClientNode.cs
-		using Godot;
+		using Kosmic;
 		using System.Text;
 
 		public partial class ClientNode : Node
@@ -137,7 +137,7 @@
 		            }
 		            while (_dtls.GetAvailablePacketCount() &gt; 0)
 		            {
-		                KS.Print($"Connected: {_dtls.GetPacket().GetStringFromUtf8()}");
+		                GD.Print($"Connected: {_dtls.GetPacket().GetStringFromUtf8()}");
 		                _connected = true;
 		            }
 		        }

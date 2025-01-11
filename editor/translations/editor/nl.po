@@ -1,7 +1,7 @@
 # Dutch translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # aelspire <aelspire@gmail.com>, 2017.
 # Aram Nap <xyphex.aram@gmail.com>, 2017.
 # Arjan219 <arjannugteren1@gmail.com>, 2017-2018, 2020.
@@ -82,11 +82,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-09-10 14:09+0000\n"
 "Last-Translator: pim wagemans <pimwagemans09@gmail.com>\n"
-"Language-Team: Dutch <https://hosted.weblate.org/projects/godot-engine/godot/"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/kosmic-engine/godot/"
 "nl/>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
@@ -2024,7 +2024,7 @@ msgstr ""
 "Klik om het versienummer te kopiëeren."
 
 msgid "Godot Engine contributors"
-msgstr "Bijdragers aan Godot Engine"
+msgstr "Bijdragers aan Kosmic Engine"
 
 msgid "Project Founders"
 msgstr "Projectoprichters"
@@ -2578,8 +2578,8 @@ msgstr "[leeg]"
 msgid "[unsaved]"
 msgstr "[niet opgeslagen]"
 
-msgid "%s - Godot Engine"
-msgstr "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
+msgstr "%s - Kosmic Engine"
 
 msgid "Move this dock right one tab."
 msgstr "Beweeg dit paneel een tabblad naar links."
@@ -8450,11 +8450,11 @@ msgstr ""
 "en 'y''."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
-"Aangepaste Kosmic Shader Language expressie, met aangepast aantal in- en "
+"Aangepaste Godot Shader Language expressie, met aangepast aantal in- en "
 "uitvoerpoorten. Dit is een directe injectie van code in de vertex/fragment/"
 "light functie, niet gebruiken om functie declaraties in te schrijven."
 

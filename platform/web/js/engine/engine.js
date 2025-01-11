@@ -93,7 +93,7 @@ const Engine = (function () {
 					return new Promise(function (resolve, reject) {
 						promise.then(function (response) {
 							const cloned = new Response(response.clone().body, { 'headers': [['content-type', 'application/wasm']] });
-							Godot(me.config.getModuleConfig(loadPath, cloned)).then(function (module) {
+							Kosmic(me.config.getModuleConfig(loadPath, cloned)).then(function (module) {
 								const paths = me.config.persistentPaths;
 								module['initFS'](paths).then(function (err) {
 									me.rtenv = module;
@@ -163,7 +163,7 @@ const Engine = (function () {
 					me.rtenv['initConfig'](config);
 
 					// Preload KSExtension libraries.
-					if (me.config.voyextensionLibs.length > 0 && !me.rtenv['loadDynamicLibrary']) {
+					if (me.config.ksextensionLibs.length > 0 && !me.rtenv['loadDynamicLibrary']) {
 						return Promise.reject(new Error('KSExtension libraries are not supported by this engine version. '
 							+ 'Enable "Extensions Support" for your export preset and/or build your custom template with "dlink_enabled=yes".'));
 					}

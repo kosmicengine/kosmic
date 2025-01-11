@@ -143,13 +143,13 @@ void OS_MacOS::finalize() {
 
 	delete_main_loop();
 
-	if (joypad_macos) {
-		memdelete(joypad_macos);
+	if (joypad_apple) {
+		memdelete(joypad_apple);
 	}
 }
 
 void OS_MacOS::initialize_joypads() {
-	joypad_macos = memnew(JoypadMacOS());
+	joypad_apple = memnew(JoypadApple());
 }
 
 void OS_MacOS::set_main_loop(MainLoop *p_main_loop) {
@@ -835,7 +835,7 @@ void OS_MacOS::run() {
 				if (DisplayServer::get_singleton()) {
 					DisplayServer::get_singleton()->process_events(); // Get rid of pending events.
 				}
-				joypad_macos->start_processing();
+				joypad_apple->process_joypads();
 
 				if (Main::iteration()) {
 					quit = true;
@@ -880,7 +880,7 @@ OS_MacOS::OS_MacOS() {
 	DisplayServerMacOS::register_macos_driver();
 
 	// Implicitly create shared NSApplication instance.
-	[GodotApplication sharedApplication];
+	[KosmicApplication sharedApplication];
 
 	// In case we are unbundled, make us a proper UI application.
 	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
@@ -893,7 +893,7 @@ OS_MacOS::OS_MacOS() {
 	[NSApp setMainMenu:main_menu];
 	[NSApp finishLaunching];
 
-	id delegate = [[GodotApplicationDelegate alloc] init];
+	id delegate = [[KosmicApplicationDelegate alloc] init];
 	ERR_FAIL_NULL(delegate);
 	[NSApp setDelegate:delegate];
 	[NSApp registerUserInterfaceItemSearchHandler:delegate];

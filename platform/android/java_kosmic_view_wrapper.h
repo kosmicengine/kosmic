@@ -39,7 +39,7 @@
 #include <android/log.h>
 #include <jni.h>
 
-// Class that makes functions in java/src/org/godotengine/godot/KosmicRenderView.java callable from C++
+// Class that makes functions in java/src/org/kosmicengine/kosmic/KosmicRenderView.java callable from C++
 class KosmicJavaViewWrapper {
 private:
 	jclass _cls;

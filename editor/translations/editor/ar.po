@@ -1,7 +1,7 @@
 # Arabic translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Adel <dragonhunter250@gmail.com>, 2018.
 # athomield <athomield@hotmail.com>, 2017.
 # Basil Al-Khateeb <basil.y.alkhateeb@gmail.com>, 2017.
@@ -98,11 +98,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-09-02 12:09+0000\n"
 "Last-Translator: Spirit <spirit@programmer.net>\n"
-"Language-Team: Arabic <https://hosted.weblate.org/projects/godot-engine/godot/"
+"Language-Team: Arabic <https://hosted.weblate.org/projects/kosmic-engine/godot/"
 "ar/>\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
@@ -2557,7 +2557,7 @@ msgstr "[فارغ]"
 msgid "[unsaved]"
 msgstr "[غير محفوظ]"
 
-msgid "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
 msgstr "%s - محرك جَوْدَتْ"
 
 msgid "Move this dock right one tab."
@@ -12360,7 +12360,7 @@ msgid "4D vector parameter."
 msgstr "مَعلم مُتجه رباعي الأبعاد."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
@@ -12370,7 +12370,7 @@ msgstr ""
 "البرمجية داخلها."
 
 msgid ""
-"Custom Kosmic Shader Language expression, which is placed on top of the "
+"Custom Godot Shader Language expression, which is placed on top of the "
 "resulted shader. You can place various function definitions inside and call "
 "it later in the Expressions. You can also declare varyings, parameters and "
 "constants."

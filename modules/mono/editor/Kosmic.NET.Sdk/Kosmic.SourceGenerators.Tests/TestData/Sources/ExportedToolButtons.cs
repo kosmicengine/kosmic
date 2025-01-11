@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 using System;
 
 [Tool]

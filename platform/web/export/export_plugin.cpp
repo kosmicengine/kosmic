@@ -42,10 +42,8 @@
 #include "editor/themes/editor_scale.h"
 #include "scene/resources/image_texture.h"
 
-#include "modules/modules_enabled.gen.h" // For mono and svg.
-#ifdef MODULE_SVG_ENABLED
+#include "modules/modules_enabled.gen.h" // For mono.
 #include "modules/svg/image_loader_svg.h"
-#endif
 
 Error EditorExportPlatformWeb::_extract_template(const String &p_template, const String &p_dir, const String &p_name, bool pwa) {
 	Ref<FileAccess> io_fa;
@@ -77,7 +75,7 @@ Error EditorExportPlatformWeb::_extract_template(const String &p_template, const
 		}
 
 		// Skip service worker and offline page if not exporting pwa.
-		if (!pwa && (file == "godot.service.worker.js" || file == "godot.offline.html")) {
+		if (!pwa && (file == "kosmic.service.worker.js" || file == "kosmic.offline.html")) {
 			continue;
 		}
 		Vector<uint8_t> data;
@@ -171,6 +169,12 @@ void EditorExportPlatformWeb::_fix_html(Vector<uint8_t> &p_html, const Ref<Edito
 	replaces["$KOSMIC_HEAD_INCLUDE"] = head_include + custom_head_include;
 	replaces["$KOSMIC_CONFIG"] = str_config;
 	replaces["$KOSMIC_SPLASH_COLOR"] = "#" + Color(GLOBAL_GET("application/boot_splash/bg_color")).to_html(false);
+
+	LocalVector<String> kosmic_splash_classes;
+	kosmic_splash_classes.push_back("show-image--" + String(GLOBAL_GET("application/boot_splash/show_image")));
+	kosmic_splash_classes.push_back("fullsize--" + String(GLOBAL_GET("application/boot_splash/fullsize")));
+	kosmic_splash_classes.push_back("use-filter--" + String(GLOBAL_GET("application/boot_splash/use_filter")));
+	replaces["$KOSMIC_SPLASH_CLASSES"] = String(" ").join(kosmic_splash_classes);
 	replaces["$KOSMIC_SPLASH"] = p_name + ".png";
 
 	if (p_preset->get("variant/thread_support")) {
@@ -218,7 +222,7 @@ Error EditorExportPlatformWeb::_add_manifest_icon(const String &p_path, const St
 Error EditorExportPlatformWeb::_build_pwa(const Ref<EditorExportPreset> &p_preset, const String p_path, const Vector<SharedObject> &p_shared_objects) {
 	String proj_name = GLOBAL_GET("application/config/name");
 	if (proj_name.is_empty()) {
-		proj_name = "Godot Game";
+		proj_name = "Kosmic Game";
 	}
 
 	// Service worker
@@ -335,9 +339,11 @@ Error EditorExportPlatformWeb::_build_pwa(const Ref<EditorExportPreset> &p_prese
 void EditorExportPlatformWeb::get_preset_features(const Ref<EditorExportPreset> &p_preset, List<String> *r_features) const {
 	if (p_preset->get("vram_texture_compression/for_desktop")) {
 		r_features->push_back("s3tc");
+		r_features->push_back("bptc");
 	}
 	if (p_preset->get("vram_texture_compression/for_mobile")) {
 		r_features->push_back("etc2");
+		r_features->push_back("astc");
 	}
 	if (p_preset->get("variant/thread_support").operator bool()) {
 		r_features->push_back("threads");
@@ -398,7 +404,7 @@ Ref<Texture2D> EditorExportPlatformWeb::get_logo() const {
 bool EditorExportPlatformWeb::has_valid_export_configuration(const Ref<EditorExportPreset> &p_preset, String &r_error, bool &r_missing_templates, bool p_debug) const {
 #ifdef MODULE_MONO_ENABLED
 	// Don't check for additional errors, as this particular error cannot be resolved.
-	r_error += TTR("Exporting to Web is currently not supported in Godot 4 when using C#/.NET. Use Godot 3 to target Web with C#/Mono instead.") + "\n";
+	r_error += TTR("Exporting to Web is currently not supported in Kosmic 1 when using C#/.NET.") + "\n";
 	r_error += TTR("If this project does not use C#, use a non-C# editor build to export the project.") + "\n";
 	return false;
 #else
@@ -899,7 +905,6 @@ EditorExportPlatformWeb::EditorExportPlatformWeb() {
 	if (EditorNode::get_singleton()) {
 		server.instantiate();
 
-#ifdef MODULE_SVG_ENABLED
 		Ref<Image> img = memnew(Image);
 		const bool upsample = !Math::is_equal_approx(Math::round(EDSCALE), EDSCALE);
 
@@ -908,7 +913,6 @@ EditorExportPlatformWeb::EditorExportPlatformWeb() {
 
 		ImageLoaderSVG::create_image_from_string(img, _web_run_icon_svg, EDSCALE, upsample, false);
 		run_icon = ImageTexture::create_from_image(img);
-#endif
 
 		Ref<Theme> theme = EditorNode::get_singleton()->get_editor_theme();
 		if (theme.is_valid()) {

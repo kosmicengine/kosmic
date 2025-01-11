@@ -38,11 +38,11 @@
 #include "servers/physics_server_3d.h"
 
 class KosmicSpace3D;
-class GodotBody3D;
+class KosmicBody3D;
 class KosmicSoftBody3D;
 class KosmicConstraint3D;
 
-class GodotArea3D : public KosmicCollisionObject3D {
+class KosmicArea3D : public KosmicCollisionObject3D {
 	PhysicsServer3D::AreaSpaceOverrideMode gravity_override_mode = PhysicsServer3D::AREA_SPACE_OVERRIDE_DISABLED;
 	PhysicsServer3D::AreaSpaceOverrideMode linear_damping_override_mode = PhysicsServer3D::AREA_SPACE_OVERRIDE_DISABLED;
 	PhysicsServer3D::AreaSpaceOverrideMode angular_damping_override_mode = PhysicsServer3D::AREA_SPACE_OVERRIDE_DISABLED;
@@ -63,8 +63,8 @@ class GodotArea3D : public KosmicCollisionObject3D {
 	Callable monitor_callback;
 	Callable area_monitor_callback;
 
-	SelfList<GodotArea3D> monitor_query_list;
-	SelfList<GodotArea3D> moved_list;
+	SelfList<KosmicArea3D> monitor_query_list;
+	SelfList<KosmicArea3D> moved_list;
 
 	struct BodyKey {
 		RID rid;
@@ -85,8 +85,8 @@ class GodotArea3D : public KosmicCollisionObject3D {
 
 		_FORCE_INLINE_ BodyKey() {}
 		BodyKey(KosmicSoftBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
-		BodyKey(GodotBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
-		BodyKey(GodotArea3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
+		BodyKey(KosmicBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
+		BodyKey(KosmicArea3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
 	};
 
 	struct BodyState {
@@ -113,14 +113,14 @@ public:
 	void set_area_monitor_callback(const Callable &p_callback);
 	_FORCE_INLINE_ bool has_area_monitor_callback() const { return area_monitor_callback.is_valid(); }
 
-	_FORCE_INLINE_ void add_body_to_query(GodotBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
-	_FORCE_INLINE_ void remove_body_from_query(GodotBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
+	_FORCE_INLINE_ void add_body_to_query(KosmicBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
+	_FORCE_INLINE_ void remove_body_from_query(KosmicBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape);
 
 	_FORCE_INLINE_ void add_soft_body_to_query(KosmicSoftBody3D *p_soft_body, uint32_t p_soft_body_shape, uint32_t p_area_shape);
 	_FORCE_INLINE_ void remove_soft_body_from_query(KosmicSoftBody3D *p_soft_body, uint32_t p_soft_body_shape, uint32_t p_area_shape);
 
-	_FORCE_INLINE_ void add_area_to_query(GodotArea3D *p_area, uint32_t p_area_shape, uint32_t p_self_shape);
-	_FORCE_INLINE_ void remove_area_from_query(GodotArea3D *p_area, uint32_t p_area_shape, uint32_t p_self_shape);
+	_FORCE_INLINE_ void add_area_to_query(KosmicArea3D *p_area, uint32_t p_area_shape, uint32_t p_self_shape);
+	_FORCE_INLINE_ void remove_area_from_query(KosmicArea3D *p_area, uint32_t p_area_shape, uint32_t p_self_shape);
 
 	void set_param(PhysicsServer3D::AreaParameter p_param, const Variant &p_value);
 	Variant get_param(PhysicsServer3D::AreaParameter p_param) const;
@@ -174,11 +174,11 @@ public:
 
 	void compute_gravity(const Vector3 &p_position, Vector3 &r_gravity) const;
 
-	GodotArea3D();
-	~GodotArea3D();
+	KosmicArea3D();
+	~KosmicArea3D();
 };
 
-void GodotArea3D::add_soft_body_to_query(KosmicSoftBody3D *p_soft_body, uint32_t p_soft_body_shape, uint32_t p_area_shape) {
+void KosmicArea3D::add_soft_body_to_query(KosmicSoftBody3D *p_soft_body, uint32_t p_soft_body_shape, uint32_t p_area_shape) {
 	BodyKey bk(p_soft_body, p_soft_body_shape, p_area_shape);
 	monitored_soft_bodies[bk].inc();
 	if (!monitor_query_list.in_list()) {
@@ -186,7 +186,7 @@ void GodotArea3D::add_soft_body_to_query(KosmicSoftBody3D *p_soft_body, uint32_t
 	}
 }
 
-void GodotArea3D::remove_soft_body_from_query(KosmicSoftBody3D *p_soft_body, uint32_t p_soft_body_shape, uint32_t p_area_shape) {
+void KosmicArea3D::remove_soft_body_from_query(KosmicSoftBody3D *p_soft_body, uint32_t p_soft_body_shape, uint32_t p_area_shape) {
 	BodyKey bk(p_soft_body, p_soft_body_shape, p_area_shape);
 	monitored_soft_bodies[bk].dec();
 	if (get_space() && !monitor_query_list.in_list()) {
@@ -194,7 +194,7 @@ void GodotArea3D::remove_soft_body_from_query(KosmicSoftBody3D *p_soft_body, uin
 	}
 }
 
-void GodotArea3D::add_body_to_query(GodotBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape) {
+void KosmicArea3D::add_body_to_query(KosmicBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape) {
 	BodyKey bk(p_body, p_body_shape, p_area_shape);
 	monitored_bodies[bk].inc();
 	if (!monitor_query_list.in_list()) {
@@ -202,7 +202,7 @@ void GodotArea3D::add_body_to_query(GodotBody3D *p_body, uint32_t p_body_shape, 
 	}
 }
 
-void GodotArea3D::remove_body_from_query(GodotBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape) {
+void KosmicArea3D::remove_body_from_query(KosmicBody3D *p_body, uint32_t p_body_shape, uint32_t p_area_shape) {
 	BodyKey bk(p_body, p_body_shape, p_area_shape);
 	monitored_bodies[bk].dec();
 	if (get_space() && !monitor_query_list.in_list()) {
@@ -210,7 +210,7 @@ void GodotArea3D::remove_body_from_query(GodotBody3D *p_body, uint32_t p_body_sh
 	}
 }
 
-void GodotArea3D::add_area_to_query(GodotArea3D *p_area, uint32_t p_area_shape, uint32_t p_self_shape) {
+void KosmicArea3D::add_area_to_query(KosmicArea3D *p_area, uint32_t p_area_shape, uint32_t p_self_shape) {
 	BodyKey bk(p_area, p_area_shape, p_self_shape);
 	monitored_areas[bk].inc();
 	if (!monitor_query_list.in_list()) {
@@ -218,7 +218,7 @@ void GodotArea3D::add_area_to_query(GodotArea3D *p_area, uint32_t p_area_shape, 
 	}
 }
 
-void GodotArea3D::remove_area_from_query(GodotArea3D *p_area, uint32_t p_area_shape, uint32_t p_self_shape) {
+void KosmicArea3D::remove_area_from_query(KosmicArea3D *p_area, uint32_t p_area_shape, uint32_t p_self_shape) {
 	BodyKey bk(p_area, p_area_shape, p_self_shape);
 	monitored_areas[bk].dec();
 	if (get_space() && !monitor_query_list.in_list()) {
@@ -227,12 +227,12 @@ void GodotArea3D::remove_area_from_query(GodotArea3D *p_area, uint32_t p_area_sh
 }
 
 struct AreaCMP {
-	GodotArea3D *area = nullptr;
+	KosmicArea3D *area = nullptr;
 	int refCount = 0;
 	_FORCE_INLINE_ bool operator==(const AreaCMP &p_cmp) const { return area->get_self() == p_cmp.area->get_self(); }
 	_FORCE_INLINE_ bool operator<(const AreaCMP &p_cmp) const { return area->get_priority() < p_cmp.area->get_priority(); }
 	_FORCE_INLINE_ AreaCMP() {}
-	_FORCE_INLINE_ AreaCMP(GodotArea3D *p_area) {
+	_FORCE_INLINE_ AreaCMP(KosmicArea3D *p_area) {
 		area = p_area;
 		refCount = 1;
 	}

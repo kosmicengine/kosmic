@@ -6,16 +6,16 @@
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
   <PropertyGroup>
-    <Description>Core C# source generator for Godot projects.</Description>
-    <Authors>Godot Engine contributors</Authors>
+    <Description>Core C# source generator for Kosmic projects.</Description>
+    <Authors>Kosmic Engine contributors</Authors>
 
     <PackageId>Kosmic.SourceGenerators</PackageId>
-    <Version>4.4.0</Version>
-    <PackageVersion>$(PackageVersion_Godot_SourceGenerators)</PackageVersion>
-    <RepositoryUrl>https://github.com/godotengine/godot/tree/master/modules/mono/editor/Kosmic.NET.Sdk/Kosmic.SourceGenerators</RepositoryUrl>
+    <Version>1.0.0</Version>
+    <PackageVersion>$(PackageVersion_Kosmic_SourceGenerators)</PackageVersion>
+    <RepositoryUrl>https://github.com/kosmicengine/kosmic/tree/main/modules/mono/editor/Kosmic.NET.Sdk/Kosmic.SourceGenerators</RepositoryUrl>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright (c) Godot Engine contributors</Copyright>
+    <Copyright>Copyright (c) Kosmic Engine contributors</Copyright>
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <!-- Do not include the generator as a lib dependency -->

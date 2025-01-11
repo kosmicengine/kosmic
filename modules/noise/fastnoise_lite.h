@@ -125,7 +125,7 @@ private:
 	real_t domain_warp_fractal_lacunarity = 6;
 	real_t domain_warp_fractal_gain = 0.5;
 
-	// This needs manual conversion because Godots Inspector property API does not support discontiguous enum indices.
+	// This needs manual conversion because kosmicS Inspector property API does not support discontiguous enum indices.
 	_FastNoiseLite::FractalType _convert_domain_warp_fractal_type_enum(DomainWarpFractalType p_domain_warp_fractal_type);
 
 public:

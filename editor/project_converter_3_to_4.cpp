@@ -33,10 +33,6 @@
 
 #ifndef DISABLE_DEPRECATED
 
-#include "modules/modules_enabled.gen.h" // For regex.
-
-#ifdef MODULE_REGEX_ENABLED
-
 #include "core/error/error_macros.h"
 #include "core/io/dir_access.h"
 #include "core/io/file_access.h"
@@ -44,18 +40,19 @@
 #include "core/os/time.h"
 #include "core/templates/list.h"
 #include "editor/renames_map_3_to_4.h"
+
 #include "modules/regex/regex.h"
 
 // Find "OS.set_property(x)", capturing x into $1.
-static String make_regex_gds_os_property_set(const String &name_set) {
+static String make_regex_kss_os_property_set(const String &name_set) {
 	return String("\\bOS\\.") + name_set + "\\s*\\((.*)\\)";
 }
 // Find "OS.property = x", capturing x into $1 or $2.
-static String make_regex_gds_os_property_assign(const String &name) {
+static String make_regex_kss_os_property_assign(const String &name) {
 	return String("\\bOS\\.") + name + "\\s*=\\s*([^#]+)";
 }
 // Find "OS.property" OR "OS.get_property()" / "OS.is_property()".
-static String make_regex_gds_os_property_get(const String &name, const String &get) {
+static String make_regex_kss_os_property_get(const String &name, const String &get) {
 	return String("\\bOS\\.(") + get + "_)?" + name + "(\\s*\\(\\s*\\))?";
 }
 
@@ -87,26 +84,26 @@ public:
 	RegEx reg_os_window_size = RegEx("\\bOS\\.((set_|get_)?)window_size\\b");
 	RegEx reg_os_getset_screen_orient = RegEx("\\bOS\\.(s|g)et_screen_orientation\\b");
 	// OS property getters/setters for non trivial replacements.
-	RegEx reg_os_set_window_resizable = RegEx(make_regex_gds_os_property_set("set_window_resizable"));
-	RegEx reg_os_assign_window_resizable = RegEx(make_regex_gds_os_property_assign("window_resizable"));
-	RegEx reg_os_is_window_resizable = RegEx(make_regex_gds_os_property_get("window_resizable", "is"));
-	RegEx reg_os_set_fullscreen = RegEx(make_regex_gds_os_property_set("set_window_fullscreen"));
-	RegEx reg_os_assign_fullscreen = RegEx(make_regex_gds_os_property_assign("window_fullscreen"));
-	RegEx reg_os_is_fullscreen = RegEx(make_regex_gds_os_property_get("window_fullscreen", "is"));
-	RegEx reg_os_set_maximized = RegEx(make_regex_gds_os_property_set("set_window_maximized"));
-	RegEx reg_os_assign_maximized = RegEx(make_regex_gds_os_property_assign("window_maximized"));
-	RegEx reg_os_is_maximized = RegEx(make_regex_gds_os_property_get("window_maximized", "is"));
-	RegEx reg_os_set_minimized = RegEx(make_regex_gds_os_property_set("set_window_minimized"));
-	RegEx reg_os_assign_minimized = RegEx(make_regex_gds_os_property_assign("window_minimized"));
-	RegEx reg_os_is_minimized = RegEx(make_regex_gds_os_property_get("window_minimized", "is"));
-	RegEx reg_os_set_vsync = RegEx(make_regex_gds_os_property_set("set_use_vsync"));
-	RegEx reg_os_assign_vsync = RegEx(make_regex_gds_os_property_assign("vsync_enabled"));
-	RegEx reg_os_is_vsync = RegEx(make_regex_gds_os_property_get("vsync_enabled", "is"));
+	RegEx reg_os_set_window_resizable = RegEx(make_regex_kss_os_property_set("set_window_resizable"));
+	RegEx reg_os_assign_window_resizable = RegEx(make_regex_kss_os_property_assign("window_resizable"));
+	RegEx reg_os_is_window_resizable = RegEx(make_regex_kss_os_property_get("window_resizable", "is"));
+	RegEx reg_os_set_fullscreen = RegEx(make_regex_kss_os_property_set("set_window_fullscreen"));
+	RegEx reg_os_assign_fullscreen = RegEx(make_regex_kss_os_property_assign("window_fullscreen"));
+	RegEx reg_os_is_fullscreen = RegEx(make_regex_kss_os_property_get("window_fullscreen", "is"));
+	RegEx reg_os_set_maximized = RegEx(make_regex_kss_os_property_set("set_window_maximized"));
+	RegEx reg_os_assign_maximized = RegEx(make_regex_kss_os_property_assign("window_maximized"));
+	RegEx reg_os_is_maximized = RegEx(make_regex_kss_os_property_get("window_maximized", "is"));
+	RegEx reg_os_set_minimized = RegEx(make_regex_kss_os_property_set("set_window_minimized"));
+	RegEx reg_os_assign_minimized = RegEx(make_regex_kss_os_property_assign("window_minimized"));
+	RegEx reg_os_is_minimized = RegEx(make_regex_kss_os_property_get("window_minimized", "is"));
+	RegEx reg_os_set_vsync = RegEx(make_regex_kss_os_property_set("set_use_vsync"));
+	RegEx reg_os_assign_vsync = RegEx(make_regex_kss_os_property_assign("vsync_enabled"));
+	RegEx reg_os_is_vsync = RegEx(make_regex_kss_os_property_get("vsync_enabled", "is"));
 	// OS properties specific cases & specific replacements.
 	RegEx reg_os_assign_screen_orient = RegEx("^(\\s*)OS\\.screen_orientation\\s*=\\s*([^#]+)"); // $1 - indent, $2 - value
-	RegEx reg_os_set_always_on_top = RegEx(make_regex_gds_os_property_set("set_window_always_on_top"));
+	RegEx reg_os_set_always_on_top = RegEx(make_regex_kss_os_property_set("set_window_always_on_top"));
 	RegEx reg_os_is_always_on_top = RegEx("\\bOS\\.is_window_always_on_top\\s*\\(.*\\)");
-	RegEx reg_os_set_borderless = RegEx(make_regex_gds_os_property_set("set_borderless_window"));
+	RegEx reg_os_set_borderless = RegEx(make_regex_kss_os_property_set("set_borderless_window"));
 	RegEx reg_os_get_borderless = RegEx("\\bOS\\.get_borderless_window\\s*\\(\\s*\\)");
 	RegEx reg_os_screen_orient_enum = RegEx("\\bOS\\.SCREEN_ORIENTATION_(\\w+)\\b"); // $1 - constant suffix
 
@@ -144,7 +141,7 @@ public:
 
 	// Classes.
 	LocalVector<RegEx *> class_tscn_regexes;
-	LocalVector<RegEx *> class_voy_regexes;
+	LocalVector<RegEx *> class_ks_regexes;
 	LocalVector<RegEx *> class_shader_regexes;
 
 	// Keycode.
@@ -162,11 +159,11 @@ public:
 	LocalVector<RegEx *> class_regexes;
 
 	RegEx class_temp_tscn = RegEx("\\bTEMP_RENAMED_CLASS.tscn\\b");
-	RegEx class_temp_gd = RegEx("\\bTEMP_RENAMED_CLASS.voy\\b");
+	RegEx class_temp_ks = RegEx("\\bTEMP_RENAMED_CLASS.voy\\b");
 	RegEx class_temp_shader = RegEx("\\bTEMP_RENAMED_CLASS.shader\\b");
 
 	LocalVector<String> class_temp_tscn_renames;
-	LocalVector<String> class_temp_voy_renames;
+	LocalVector<String> class_temp_ks_renames;
 	LocalVector<String> class_temp_shader_renames;
 
 	// Common.
@@ -253,13 +250,13 @@ public:
 			for (unsigned int current_index = 0; RenamesMap3To4::class_renames[current_index][0]; current_index++) {
 				const String class_name = RenamesMap3To4::class_renames[current_index][0];
 				class_tscn_regexes.push_back(memnew(RegEx(String("\\b") + class_name + ".tscn\\b")));
-				class_voy_regexes.push_back(memnew(RegEx(String("\\b") + class_name + ".voy\\b")));
+				class_ks_regexes.push_back(memnew(RegEx(String("\\b") + class_name + ".voy\\b")));
 				class_shader_regexes.push_back(memnew(RegEx(String("\\b") + class_name + ".shader\\b")));
 
 				class_regexes.push_back(memnew(RegEx(String("\\b") + class_name + "\\b")));
 
 				class_temp_tscn_renames.push_back(class_name + ".tscn");
-				class_temp_voy_renames.push_back(class_name + ".voy");
+				class_temp_ks_renames.push_back(class_name + ".voy");
 				class_temp_shader_renames.push_back(class_name + ".shader");
 			}
 		}
@@ -270,7 +267,7 @@ public:
 		}
 		for (unsigned int i = 0; i < class_tscn_regexes.size(); i++) {
 			memdelete(class_tscn_regexes[i]);
-			memdelete(class_voy_regexes[i]);
+			memdelete(class_ks_regexes[i]);
 			memdelete(class_shader_regexes[i]);
 			memdelete(class_regexes[i]);
 		}
@@ -1551,7 +1548,7 @@ void ProjectConverter3To4::rename_classes(Vector<SourceLine> &source_lines, cons
 					if (line.contains(String(RenamesMap3To4::class_renames[current_index][0]) + ".")) {
 						found_ignored_items = true;
 						line = reg_container.class_tscn_regexes[current_index]->sub(line, "TEMP_RENAMED_CLASS.tscn", true);
-						line = reg_container.class_voy_regexes[current_index]->sub(line, "TEMP_RENAMED_CLASS.voy", true);
+						line = reg_container.class_ks_regexes[current_index]->sub(line, "TEMP_RENAMED_CLASS.voy", true);
 						line = reg_container.class_shader_regexes[current_index]->sub(line, "TEMP_RENAMED_CLASS.shader", true);
 					}
 
@@ -1561,7 +1558,7 @@ void ProjectConverter3To4::rename_classes(Vector<SourceLine> &source_lines, cons
 					// Restore Spatial.tscn from TEMP_RENAMED_CLASS.tscn.
 					if (found_ignored_items) {
 						line = reg_container.class_temp_tscn.sub(line, reg_container.class_temp_tscn_renames[current_index], true);
-						line = reg_container.class_temp_gd.sub(line, reg_container.class_temp_voy_renames[current_index], true);
+						line = reg_container.class_temp_ks.sub(line, reg_container.class_temp_ks_renames[current_index], true);
 						line = reg_container.class_temp_shader.sub(line, reg_container.class_temp_shader_renames[current_index], true);
 					}
 				}
@@ -1585,7 +1582,7 @@ Vector<String> ProjectConverter3To4::check_for_rename_classes(Vector<String> &li
 					if (line.contains(String(RenamesMap3To4::class_renames[current_index][0]) + ".")) {
 						found_ignored_items = true;
 						line = reg_container.class_tscn_regexes[current_index]->sub(line, "TEMP_RENAMED_CLASS.tscn", true);
-						line = reg_container.class_voy_regexes[current_index]->sub(line, "TEMP_RENAMED_CLASS.voy", true);
+						line = reg_container.class_ks_regexes[current_index]->sub(line, "TEMP_RENAMED_CLASS.voy", true);
 						line = reg_container.class_shader_regexes[current_index]->sub(line, "TEMP_RENAMED_CLASS.shader", true);
 					}
 
@@ -1598,7 +1595,7 @@ Vector<String> ProjectConverter3To4::check_for_rename_classes(Vector<String> &li
 					// Restore Spatial.tscn from TEMP_RENAMED_CLASS.tscn.
 					if (found_ignored_items) {
 						line = reg_container.class_temp_tscn.sub(line, reg_container.class_temp_tscn_renames[current_index], true);
-						line = reg_container.class_temp_gd.sub(line, reg_container.class_temp_voy_renames[current_index], true);
+						line = reg_container.class_temp_ks.sub(line, reg_container.class_temp_ks_renames[current_index], true);
 						line = reg_container.class_temp_shader.sub(line, reg_container.class_temp_shader_renames[current_index], true);
 					}
 				}
@@ -2957,7 +2954,5 @@ String ProjectConverter3To4::collect_string_from_vector(Vector<SourceLine> &vect
 	}
 	return string;
 }
-
-#endif // MODULE_REGEX_ENABLED
 
 #endif // DISABLE_DEPRECATED

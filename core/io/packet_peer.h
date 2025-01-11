@@ -37,7 +37,7 @@
 #include "core/templates/ring_buffer.h"
 
 #include "core/extension/ext_wrappers.gen.inc"
-#include "core/object/ksvirtual.gen.inc"
+#include "core/object/gdvirtual.gen.inc"
 #include "core/variant/native_ptr.h"
 
 class PacketPeer : public RefCounted {

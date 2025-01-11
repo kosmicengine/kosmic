@@ -1,7 +1,7 @@
 # Finnish translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # basse <basse@roiske.org>, 2017.
 # Bastian Salmela <bastian.salmela@gmail.com>, 2017, 2018.
 # ekeimaja <ekeimaja@gmail.com>, 2017-2018.
@@ -24,11 +24,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-06-10 12:09+0000\n"
 "Last-Translator: Viljami Lokasaari <v.lokasaari13@gmail.com>\n"
-"Language-Team: Finnish <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Finnish <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/fi/>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
@@ -2186,7 +2186,7 @@ msgstr "[tyhjä]"
 msgid "[unsaved]"
 msgstr "[tallentamaton]"
 
-msgid "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
 msgstr "%s - Godot Pelimoottori"
 
 msgid "Dock Position"
@@ -9292,11 +9292,11 @@ msgid "4D vector parameter."
 msgstr "4D vektori parametri."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
-"Mukautettu Kosmic Shader Language lauseke, jolla on haluttu määrä tulo- ja "
+"Mukautettu Godot Shader Language lauseke, jolla on haluttu määrä tulo- ja "
 "lähtöportteja. Tämä tarkoittaa koodin lisäämistä suoraan vertex/fragment/"
 "light funktioiden sisään, älä käytä sitä kirjoittaaksesi funktioesittelyitä."
 

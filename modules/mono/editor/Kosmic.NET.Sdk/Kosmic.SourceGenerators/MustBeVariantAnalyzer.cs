@@ -70,7 +70,7 @@ namespace Kosmic.SourceGenerators
 
                 if (typeSymbol is ITypeParameterSymbol typeParamSymbol)
                 {
-                    if (!typeParamSymbol.GetAttributes().Any(a => a.AttributeClass?.IsGodotMustBeVariantAttribute() ?? false))
+                    if (!typeParamSymbol.GetAttributes().Any(a => a.AttributeClass?.IsKosmicMustBeVariantAttribute() ?? false))
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
                             Common.GenericTypeParameterMustBeVariantAnnotatedRule,
@@ -152,7 +152,7 @@ namespace Kosmic.SourceGenerators
             if (typeParamSymbol != null)
             {
                 return typeParamSymbol.GetAttributes()
-                    .Any(a => a.AttributeClass?.IsGodotMustBeVariantAttribute() ?? false);
+                    .Any(a => a.AttributeClass?.IsKosmicMustBeVariantAttribute() ?? false);
             }
 
             context.ReportDiagnostic(Diagnostic.Create(

@@ -75,12 +75,12 @@ private:
 	KosmicPhysicsDirectSpaceState3D *direct_access = nullptr;
 	RID self;
 
-	GodotBroadPhase3D *broadphase = nullptr;
-	SelfList<GodotBody3D>::List active_list;
-	SelfList<GodotBody3D>::List mass_properties_update_list;
-	SelfList<GodotBody3D>::List state_query_list;
-	SelfList<GodotArea3D>::List monitor_query_list;
-	SelfList<GodotArea3D>::List area_moved_list;
+	KosmicBroadPhase3D *broadphase = nullptr;
+	SelfList<KosmicBody3D>::List active_list;
+	SelfList<KosmicBody3D>::List mass_properties_update_list;
+	SelfList<KosmicBody3D>::List state_query_list;
+	SelfList<KosmicArea3D>::List monitor_query_list;
+	SelfList<KosmicArea3D>::List area_moved_list;
 	SelfList<KosmicSoftBody3D>::List active_soft_body_list;
 
 	static void *_broadphase_pair(KosmicCollisionObject3D *A, int p_subindex_A, KosmicCollisionObject3D *B, int p_subindex_B, void *p_self);
@@ -88,7 +88,7 @@ private:
 
 	HashSet<KosmicCollisionObject3D *> objects;
 
-	GodotArea3D *area = nullptr;
+	KosmicArea3D *area = nullptr;
 
 	int solver_iterations = 0;
 
@@ -123,35 +123,35 @@ private:
 
 	friend class KosmicPhysicsDirectSpaceState3D;
 
-	int _cull_aabb_for_body(GodotBody3D *p_body, const AABB &p_aabb);
+	int _cull_aabb_for_body(KosmicBody3D *p_body, const AABB &p_aabb);
 
 public:
 	_FORCE_INLINE_ void set_self(const RID &p_self) { self = p_self; }
 	_FORCE_INLINE_ RID get_self() const { return self; }
 
-	void set_default_area(GodotArea3D *p_area) { area = p_area; }
-	GodotArea3D *get_default_area() const { return area; }
+	void set_default_area(KosmicArea3D *p_area) { area = p_area; }
+	KosmicArea3D *get_default_area() const { return area; }
 
-	const SelfList<GodotBody3D>::List &get_active_body_list() const;
-	void body_add_to_active_list(SelfList<GodotBody3D> *p_body);
-	void body_remove_from_active_list(SelfList<GodotBody3D> *p_body);
-	void body_add_to_mass_properties_update_list(SelfList<GodotBody3D> *p_body);
-	void body_remove_from_mass_properties_update_list(SelfList<GodotBody3D> *p_body);
+	const SelfList<KosmicBody3D>::List &get_active_body_list() const;
+	void body_add_to_active_list(SelfList<KosmicBody3D> *p_body);
+	void body_remove_from_active_list(SelfList<KosmicBody3D> *p_body);
+	void body_add_to_mass_properties_update_list(SelfList<KosmicBody3D> *p_body);
+	void body_remove_from_mass_properties_update_list(SelfList<KosmicBody3D> *p_body);
 
-	void body_add_to_state_query_list(SelfList<GodotBody3D> *p_body);
-	void body_remove_from_state_query_list(SelfList<GodotBody3D> *p_body);
+	void body_add_to_state_query_list(SelfList<KosmicBody3D> *p_body);
+	void body_remove_from_state_query_list(SelfList<KosmicBody3D> *p_body);
 
-	void area_add_to_monitor_query_list(SelfList<GodotArea3D> *p_area);
-	void area_remove_from_monitor_query_list(SelfList<GodotArea3D> *p_area);
-	void area_add_to_moved_list(SelfList<GodotArea3D> *p_area);
-	void area_remove_from_moved_list(SelfList<GodotArea3D> *p_area);
-	const SelfList<GodotArea3D>::List &get_moved_area_list() const;
+	void area_add_to_monitor_query_list(SelfList<KosmicArea3D> *p_area);
+	void area_remove_from_monitor_query_list(SelfList<KosmicArea3D> *p_area);
+	void area_add_to_moved_list(SelfList<KosmicArea3D> *p_area);
+	void area_remove_from_moved_list(SelfList<KosmicArea3D> *p_area);
+	const SelfList<KosmicArea3D>::List &get_moved_area_list() const;
 
 	const SelfList<KosmicSoftBody3D>::List &get_active_soft_body_list() const;
 	void soft_body_add_to_active_list(SelfList<KosmicSoftBody3D> *p_soft_body);
 	void soft_body_remove_from_active_list(SelfList<KosmicSoftBody3D> *p_soft_body);
 
-	GodotBroadPhase3D *get_broadphase();
+	KosmicBroadPhase3D *get_broadphase();
 
 	void add_object(KosmicCollisionObject3D *p_object);
 	void remove_object(KosmicCollisionObject3D *p_object);
@@ -206,7 +206,7 @@ public:
 	void set_elapsed_time(ElapsedTime p_time, uint64_t p_msec) { elapsed_time[p_time] = p_msec; }
 	uint64_t get_elapsed_time(ElapsedTime p_time) const { return elapsed_time[p_time]; }
 
-	bool test_body_motion(GodotBody3D *p_body, const PhysicsServer3D::MotionParameters &p_parameters, PhysicsServer3D::MotionResult *r_result);
+	bool test_body_motion(KosmicBody3D *p_body, const PhysicsServer3D::MotionParameters &p_parameters, PhysicsServer3D::MotionResult *r_result);
 
 	KosmicSpace3D();
 	~KosmicSpace3D();

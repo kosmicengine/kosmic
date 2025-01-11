@@ -57,7 +57,7 @@ private:
 	struct Shape {
 		Transform2D xform;
 		Transform2D xform_inv;
-		GodotBroadPhase2D::ID bpid = 0;
+		KosmicBroadPhase2D::ID bpid = 0;
 		Rect2 aabb_cache; //for rayqueries
 		KosmicShape2D *shape = nullptr;
 		bool disabled = false;

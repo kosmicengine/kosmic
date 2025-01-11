@@ -1,7 +1,7 @@
-using Godot;
+using Kosmic;
 using Kosmic.Collections;
 
-public partial class ExportDiagnostics_GD0107_OK : Node
+public partial class ExportDiagnostics_KS0107_OK : Node
 {
     [Export]
     public Node NodeField;
@@ -10,7 +10,7 @@ public partial class ExportDiagnostics_GD0107_OK : Node
     public Node[] SystemArrayOfNodesField;
 
     [Export]
-    public Array<Node> GodotArrayOfNodesField;
+    public Array<Node> KosmicArrayOfNodesField;
 
     [Export]
     public Dictionary<Node, string> KosmicDictionaryWithNodeAsKeyField;
@@ -25,7 +25,7 @@ public partial class ExportDiagnostics_GD0107_OK : Node
     public Node[] SystemArrayOfNodesProperty { get; set; }
 
     [Export]
-    public Array<Node> GodotArrayOfNodesProperty { get; set; }
+    public Array<Node> KosmicArrayOfNodesProperty { get; set; }
 
     [Export]
     public Dictionary<Node, string> KosmicDictionaryWithNodeAsKeyProperty { get; set; }
@@ -34,35 +34,35 @@ public partial class ExportDiagnostics_GD0107_OK : Node
     public Dictionary<string, Node> KosmicDictionaryWithNodeAsValueProperty { get; set; }
 }
 
-public partial class ExportDiagnostics_GD0107_KO : Resource
+public partial class ExportDiagnostics_KS0107_KO : Resource
 {
     [Export]
-    public Node {|GD0107:NodeField|};
+    public Node {|KS0107:NodeField|};
 
     [Export]
-    public Node[] {|GD0107:SystemArrayOfNodesField|};
+    public Node[] {|KS0107:SystemArrayOfNodesField|};
 
     [Export]
-    public Array<Node> {|GD0107:GodotArrayOfNodesField|};
+    public Array<Node> {|KS0107:KosmicArrayOfNodesField|};
 
     [Export]
-    public Dictionary<Node, string> {|GD0107:KosmicDictionaryWithNodeAsKeyField|};
+    public Dictionary<Node, string> {|KS0107:KosmicDictionaryWithNodeAsKeyField|};
 
     [Export]
-    public Dictionary<string, Node> {|GD0107:KosmicDictionaryWithNodeAsValueField|};
+    public Dictionary<string, Node> {|KS0107:KosmicDictionaryWithNodeAsValueField|};
 
     [Export]
-    public Node {|GD0107:NodeProperty|} { get; set; }
+    public Node {|KS0107:NodeProperty|} { get; set; }
 
     [Export]
-    public Node[] {|GD0107:SystemArrayOfNodesProperty|} { get; set; }
+    public Node[] {|KS0107:SystemArrayOfNodesProperty|} { get; set; }
 
     [Export]
-    public Array<Node> {|GD0107:GodotArrayOfNodesProperty|} { get; set; }
+    public Array<Node> {|KS0107:KosmicArrayOfNodesProperty|} { get; set; }
 
     [Export]
-    public Dictionary<Node, string> {|GD0107:KosmicDictionaryWithNodeAsKeyProperty|} { get; set; }
+    public Dictionary<Node, string> {|KS0107:KosmicDictionaryWithNodeAsKeyProperty|} { get; set; }
 
     [Export]
-    public Dictionary<string, Node> {|GD0107:KosmicDictionaryWithNodeAsValueProperty|} { get; set; }
+    public Dictionary<string, Node> {|KS0107:KosmicDictionaryWithNodeAsValueProperty|} { get; set; }
 }

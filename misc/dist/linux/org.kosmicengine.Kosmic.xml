@@ -1,31 +1,31 @@
 <?xml version="1.0"?>
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
-  <mime-type type="application/x-godot-project">
+  <mime-type type="application/x-kosmic-project">
     <comment>Godot Engine project</comment>
     <sub-class-of type="text/plain"/>
-    <icon name="x-godot-project"/>
+    <icon name="x-kosmic-project"/>
     <glob pattern="project.kosmic"/>
   </mime-type>
 
-  <mime-type type="application/x-godot-resource">
+  <mime-type type="application/x-kosmic-resource">
     <comment>Godot Engine resource</comment>
-    <icon name="x-godot-resource"/>
+    <icon name="x-kosmic-resource"/>
     <glob pattern="*.res"/>
     <glob pattern="*.tres"/>
   </mime-type>
 
-  <mime-type type="application/x-godot-scene">
+  <mime-type type="application/x-kosmic-scene">
     <comment>Godot Engine scene</comment>
-    <icon name="x-godot-scene"/>
+    <icon name="x-kosmic-scene"/>
     <glob pattern="*.scn"/>
     <glob pattern="*.tscn"/>
     <glob pattern="*.escn"/>
   </mime-type>
 
-  <mime-type type="application/x-godot-shader">
+  <mime-type type="application/x-kosmic-shader">
     <comment>Godot Engine shader</comment>
     <sub-class-of type="text/plain"/>
-    <icon name="x-godot-shader"/>
+    <icon name="x-kosmic-shader"/>
     <glob pattern="*.voyshader"/>
   </mime-type>
 

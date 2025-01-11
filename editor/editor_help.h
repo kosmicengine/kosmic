@@ -242,7 +242,7 @@ public:
 
 	void update_toggle_scripts_button();
 
-	static void init_gdext_pointers();
+	static void init_ksext_pointers();
 
 	EditorHelp();
 	~EditorHelp();

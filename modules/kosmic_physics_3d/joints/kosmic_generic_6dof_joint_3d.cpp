@@ -30,7 +30,7 @@
 /**************************************************************************/
 
 /*
-Adapted to Godot from the Bullet library.
+Adapted to Kosmic from the Bullet library.
 */
 
 /*
@@ -50,7 +50,7 @@ subject to the following restrictions:
 
 /*
 2007-09-09
-GodotGeneric6DOFJoint3D Refactored by Francisco Le?n
+KosmicGeneric6DOFJoint3D Refactored by Francisco Le?n
 email: projectileman@yahoo.com
 http://gimpact.sf.net
 */
@@ -59,9 +59,9 @@ http://gimpact.sf.net
 
 #define GENERIC_D6_DISABLE_WARMSTARTING 1
 
-//////////////////////////// GodotG6DOFRotationalLimitMotor3D ////////////////////////////////////
+//////////////////////////// KosmicG6DOFRotationalLimitMotor3D ////////////////////////////////////
 
-int GodotG6DOFRotationalLimitMotor3D::testLimitValue(real_t test_value) {
+int KosmicG6DOFRotationalLimitMotor3D::testLimitValue(real_t test_value) {
 	if (m_loLimit > m_hiLimit) {
 		m_currentLimit = 0; //Free from violation
 		return 0;
@@ -81,9 +81,9 @@ int GodotG6DOFRotationalLimitMotor3D::testLimitValue(real_t test_value) {
 	return 0;
 }
 
-real_t GodotG6DOFRotationalLimitMotor3D::solveAngularLimits(
+real_t KosmicG6DOFRotationalLimitMotor3D::solveAngularLimits(
 		real_t timeStep, Vector3 &axis, real_t jacDiagABInv,
-		GodotBody3D *body0, GodotBody3D *body1, bool p_body0_dynamic, bool p_body1_dynamic) {
+		KosmicBody3D *body0, KosmicBody3D *body1, bool p_body0_dynamic, bool p_body1_dynamic) {
 	if (!needApplyTorques()) {
 		return 0.0f;
 	}
@@ -149,13 +149,13 @@ real_t GodotG6DOFRotationalLimitMotor3D::solveAngularLimits(
 	return clippedMotorImpulse;
 }
 
-//////////////////////////// GodotG6DOFTranslationalLimitMotor3D ////////////////////////////////////
+//////////////////////////// KosmicG6DOFTranslationalLimitMotor3D ////////////////////////////////////
 
-real_t GodotG6DOFTranslationalLimitMotor3D::solveLinearAxis(
+real_t KosmicG6DOFTranslationalLimitMotor3D::solveLinearAxis(
 		real_t timeStep,
 		real_t jacDiagABInv,
-		GodotBody3D *body1, const Vector3 &pointInA,
-		GodotBody3D *body2, const Vector3 &pointInB,
+		KosmicBody3D *body1, const Vector3 &pointInA,
+		KosmicBody3D *body2, const Vector3 &pointInB,
 		bool p_body1_dynamic, bool p_body2_dynamic,
 		int limit_index,
 		const Vector3 &axis_normal_on_a,
@@ -217,9 +217,9 @@ real_t GodotG6DOFTranslationalLimitMotor3D::solveLinearAxis(
 	return normalImpulse;
 }
 
-//////////////////////////// GodotGeneric6DOFJoint3D ////////////////////////////////////
+//////////////////////////// KosmicGeneric6DOFJoint3D ////////////////////////////////////
 
-GodotGeneric6DOFJoint3D::GodotGeneric6DOFJoint3D(GodotBody3D *rbA, GodotBody3D *rbB, const Transform3D &frameInA, const Transform3D &frameInB, bool useLinearReferenceFrameA) :
+KosmicGeneric6DOFJoint3D::KosmicGeneric6DOFJoint3D(KosmicBody3D *rbA, KosmicBody3D *rbB, const Transform3D &frameInA, const Transform3D &frameInB, bool useLinearReferenceFrameA) :
 		KosmicJoint3D(_arr, 2),
 		m_frameInA(frameInA),
 		m_frameInB(frameInB),
@@ -230,7 +230,7 @@ GodotGeneric6DOFJoint3D::GodotGeneric6DOFJoint3D(GodotBody3D *rbA, GodotBody3D *
 	B->add_constraint(this, 1);
 }
 
-void GodotGeneric6DOFJoint3D::calculateAngleInfo() {
+void KosmicGeneric6DOFJoint3D::calculateAngleInfo() {
 	Basis relative_frame = m_calculatedTransformB.basis.inverse() * m_calculatedTransformA.basis;
 
 	m_calculatedAxisAngleDiff = relative_frame.get_euler(EulerOrder::XYZ);
@@ -270,14 +270,14 @@ void GodotGeneric6DOFJoint3D::calculateAngleInfo() {
 	*/
 }
 
-void GodotGeneric6DOFJoint3D::calculateTransforms() {
+void KosmicGeneric6DOFJoint3D::calculateTransforms() {
 	m_calculatedTransformA = A->get_transform() * m_frameInA;
 	m_calculatedTransformB = B->get_transform() * m_frameInB;
 
 	calculateAngleInfo();
 }
 
-void GodotGeneric6DOFJoint3D::buildLinearJacobian(
+void KosmicGeneric6DOFJoint3D::buildLinearJacobian(
 		KosmicJacobianEntry3D &jacLinear, const Vector3 &normalWorld,
 		const Vector3 &pivotAInW, const Vector3 &pivotBInW) {
 	memnew_placement(
@@ -294,7 +294,7 @@ void GodotGeneric6DOFJoint3D::buildLinearJacobian(
 					B->get_inv_mass()));
 }
 
-void GodotGeneric6DOFJoint3D::buildAngularJacobian(
+void KosmicGeneric6DOFJoint3D::buildAngularJacobian(
 		KosmicJacobianEntry3D &jacAngular, const Vector3 &jointAxisW) {
 	memnew_placement(
 			&jacAngular,
@@ -306,7 +306,7 @@ void GodotGeneric6DOFJoint3D::buildAngularJacobian(
 					B->get_inv_inertia()));
 }
 
-bool GodotGeneric6DOFJoint3D::testAngularLimitMotor(int axis_index) {
+bool KosmicGeneric6DOFJoint3D::testAngularLimitMotor(int axis_index) {
 	real_t angle = m_calculatedAxisAngleDiff[axis_index];
 
 	//test limits
@@ -314,7 +314,7 @@ bool GodotGeneric6DOFJoint3D::testAngularLimitMotor(int axis_index) {
 	return m_angularLimits[axis_index].needApplyTorques();
 }
 
-bool GodotGeneric6DOFJoint3D::setup(real_t p_timestep) {
+bool KosmicGeneric6DOFJoint3D::setup(real_t p_timestep) {
 	dynamic_A = (A->get_mode() > PhysicsServer3D::BODY_MODE_KINEMATIC);
 	dynamic_B = (B->get_mode() > PhysicsServer3D::BODY_MODE_KINEMATIC);
 
@@ -370,7 +370,7 @@ bool GodotGeneric6DOFJoint3D::setup(real_t p_timestep) {
 	return true;
 }
 
-void GodotGeneric6DOFJoint3D::solve(real_t p_timestep) {
+void KosmicGeneric6DOFJoint3D::solve(real_t p_timestep) {
 	m_timeStep = p_timestep;
 
 	//calculateTransforms();
@@ -419,19 +419,19 @@ void GodotGeneric6DOFJoint3D::solve(real_t p_timestep) {
 	}
 }
 
-void GodotGeneric6DOFJoint3D::updateRHS(real_t timeStep) {
+void KosmicGeneric6DOFJoint3D::updateRHS(real_t timeStep) {
 	(void)timeStep;
 }
 
-Vector3 GodotGeneric6DOFJoint3D::getAxis(int axis_index) const {
+Vector3 KosmicGeneric6DOFJoint3D::getAxis(int axis_index) const {
 	return m_calculatedAxis[axis_index];
 }
 
-real_t GodotGeneric6DOFJoint3D::getAngle(int axis_index) const {
+real_t KosmicGeneric6DOFJoint3D::getAngle(int axis_index) const {
 	return m_calculatedAxisAngleDiff[axis_index];
 }
 
-void GodotGeneric6DOFJoint3D::calcAnchorPos() {
+void KosmicGeneric6DOFJoint3D::calcAnchorPos() {
 	real_t imA = A->get_inv_mass();
 	real_t imB = B->get_inv_mass();
 	real_t weight;
@@ -445,7 +445,7 @@ void GodotGeneric6DOFJoint3D::calcAnchorPos() {
 	m_AnchorPos = pA * weight + pB * (real_t(1.0) - weight);
 }
 
-void GodotGeneric6DOFJoint3D::set_param(Vector3::Axis p_axis, PhysicsServer3D::G6DOFJointAxisParam p_param, real_t p_value) {
+void KosmicGeneric6DOFJoint3D::set_param(Vector3::Axis p_axis, PhysicsServer3D::G6DOFJointAxisParam p_param, real_t p_value) {
 	ERR_FAIL_INDEX(p_axis, 3);
 	switch (p_param) {
 		case PhysicsServer3D::G6DOF_JOINT_LINEAR_LOWER_LIMIT: {
@@ -532,7 +532,7 @@ void GodotGeneric6DOFJoint3D::set_param(Vector3::Axis p_axis, PhysicsServer3D::G
 	}
 }
 
-real_t GodotGeneric6DOFJoint3D::get_param(Vector3::Axis p_axis, PhysicsServer3D::G6DOFJointAxisParam p_param) const {
+real_t KosmicGeneric6DOFJoint3D::get_param(Vector3::Axis p_axis, PhysicsServer3D::G6DOFJointAxisParam p_param) const {
 	ERR_FAIL_INDEX_V(p_axis, 3, 0);
 	switch (p_param) {
 		case PhysicsServer3D::G6DOF_JOINT_LINEAR_LOWER_LIMIT: {
@@ -620,7 +620,7 @@ real_t GodotGeneric6DOFJoint3D::get_param(Vector3::Axis p_axis, PhysicsServer3D:
 	return 0;
 }
 
-void GodotGeneric6DOFJoint3D::set_flag(Vector3::Axis p_axis, PhysicsServer3D::G6DOFJointAxisFlag p_flag, bool p_value) {
+void KosmicGeneric6DOFJoint3D::set_flag(Vector3::Axis p_axis, PhysicsServer3D::G6DOFJointAxisFlag p_flag, bool p_value) {
 	ERR_FAIL_INDEX(p_axis, 3);
 
 	switch (p_flag) {
@@ -647,7 +647,7 @@ void GodotGeneric6DOFJoint3D::set_flag(Vector3::Axis p_axis, PhysicsServer3D::G6
 	}
 }
 
-bool GodotGeneric6DOFJoint3D::get_flag(Vector3::Axis p_axis, PhysicsServer3D::G6DOFJointAxisFlag p_flag) const {
+bool KosmicGeneric6DOFJoint3D::get_flag(Vector3::Axis p_axis, PhysicsServer3D::G6DOFJointAxisFlag p_flag) const {
 	ERR_FAIL_INDEX_V(p_axis, 3, false);
 	switch (p_flag) {
 		case PhysicsServer3D::G6DOF_JOINT_FLAG_ENABLE_LINEAR_LIMIT: {

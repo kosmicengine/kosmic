@@ -129,7 +129,7 @@ public:
 	void get_peers(List<Ref<ENetPacketPeer>> &r_peers);
 	int get_local_port() const;
 
-	// Godot additions
+	// Kosmic additions
 	Error dtls_server_setup(const Ref<TLSOptions> &p_options);
 	Error dtls_client_setup(const String &p_hostname, const Ref<TLSOptions> &p_options);
 	void refuse_new_connections(bool p_refuse);

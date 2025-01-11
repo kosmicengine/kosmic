@@ -7,21 +7,21 @@ namespace Kosmic.Bridge
     internal static class CSharpInstanceBridge
     {
         [UnmanagedCallersOnly]
-        internal static unsafe kosmic_bool Call(IntPtr godotObjectGCHandle, kosmic_string_name* method,
+        internal static unsafe kosmic_bool Call(IntPtr kosmicObjectGCHandle, kosmic_string_name* method,
             kosmic_variant** args, int argCount, kosmic_variant_call_error* refCallError, kosmic_variant* ret)
         {
             try
             {
-                var godotObject = (KosmicObject)GCHandle.FromIntPtr(godotObjectGCHandle).Target;
+                var kosmicObject = (KosmicObject)GCHandle.FromIntPtr(kosmicObjectGCHandle).Target;
 
-                if (godotObject == null)
+                if (kosmicObject == null)
                 {
                     *ret = default;
                     (*refCallError).Error = kosmic_variant_call_error_error.KOSMIC_CALL_ERROR_CALL_ERROR_INSTANCE_IS_NULL;
                     return kosmic_bool.False;
                 }
 
-                bool methodInvoked = godotObject.InvokeKosmicClassMethod(CustomUnsafe.AsRef(method),
+                bool methodInvoked = kosmicObject.InvokeKosmicClassMethod(CustomUnsafe.AsRef(method),
                     new NativeVariantPtrArgs(args, argCount), out kosmic_variant retValue);
 
                 if (!methodInvoked)
@@ -45,16 +45,16 @@ namespace Kosmic.Bridge
         }
 
         [UnmanagedCallersOnly]
-        internal static unsafe kosmic_bool Set(IntPtr godotObjectGCHandle, kosmic_string_name* name, kosmic_variant* value)
+        internal static unsafe kosmic_bool Set(IntPtr kosmicObjectGCHandle, kosmic_string_name* name, kosmic_variant* value)
         {
             try
             {
-                var godotObject = (KosmicObject)GCHandle.FromIntPtr(godotObjectGCHandle).Target;
+                var kosmicObject = (KosmicObject)GCHandle.FromIntPtr(kosmicObjectGCHandle).Target;
 
-                if (godotObject == null)
+                if (kosmicObject == null)
                     throw new InvalidOperationException();
 
-                if (godotObject.SetKosmicClassPropertyValue(CustomUnsafe.AsRef(name), CustomUnsafe.AsRef(value)))
+                if (kosmicObject.SetKosmicClassPropertyValue(CustomUnsafe.AsRef(name), CustomUnsafe.AsRef(value)))
                 {
                     return kosmic_bool.True;
                 }
@@ -64,7 +64,7 @@ namespace Kosmic.Bridge
 
                 Variant valueManaged = Variant.CreateCopyingBorrowed(*value);
 
-                return godotObject._Set(nameManaged, valueManaged).ToGodotBool();
+                return kosmicObject._Set(nameManaged, valueManaged).ToKosmicBool();
             }
             catch (Exception e)
             {
@@ -74,35 +74,35 @@ namespace Kosmic.Bridge
         }
 
         [UnmanagedCallersOnly]
-        internal static unsafe kosmic_bool Get(IntPtr godotObjectGCHandle, kosmic_string_name* name,
+        internal static unsafe kosmic_bool Get(IntPtr kosmicObjectGCHandle, kosmic_string_name* name,
             kosmic_variant* outRet)
         {
             try
             {
-                var godotObject = (KosmicObject)GCHandle.FromIntPtr(godotObjectGCHandle).Target;
+                var kosmicObject = (KosmicObject)GCHandle.FromIntPtr(kosmicObjectGCHandle).Target;
 
-                if (godotObject == null)
+                if (kosmicObject == null)
                     throw new InvalidOperationException();
 
                 // Properties
-                if (godotObject.GetKosmicClassPropertyValue(CustomUnsafe.AsRef(name), out kosmic_variant outRetValue))
+                if (kosmicObject.GetKosmicClassPropertyValue(CustomUnsafe.AsRef(name), out kosmic_variant outRetValue))
                 {
                     *outRet = outRetValue;
                     return kosmic_bool.True;
                 }
 
                 // Signals
-                if (godotObject.HasKosmicClassSignal(CustomUnsafe.AsRef(name)))
+                if (kosmicObject.HasKosmicClassSignal(CustomUnsafe.AsRef(name)))
                 {
-                    kosmic_signal signal = new kosmic_signal(NativeFuncs.kosmicsharp_string_name_new_copy(*name), godotObject.GetInstanceId());
+                    kosmic_signal signal = new kosmic_signal(NativeFuncs.kosmicsharp_string_name_new_copy(*name), kosmicObject.GetInstanceId());
                     *outRet = VariantUtils.CreateFromSignalTakingOwnershipOfDisposableValue(signal);
                     return kosmic_bool.True;
                 }
 
                 // Methods
-                if (godotObject.HasKosmicClassMethod(CustomUnsafe.AsRef(name)))
+                if (kosmicObject.HasKosmicClassMethod(CustomUnsafe.AsRef(name)))
                 {
-                    kosmic_callable method = new kosmic_callable(NativeFuncs.kosmicsharp_string_name_new_copy(*name), godotObject.GetInstanceId());
+                    kosmic_callable method = new kosmic_callable(NativeFuncs.kosmicsharp_string_name_new_copy(*name), kosmicObject.GetInstanceId());
                     *outRet = VariantUtils.CreateFromCallableTakingOwnershipOfDisposableValue(method);
                     return kosmic_bool.True;
                 }
@@ -110,7 +110,7 @@ namespace Kosmic.Bridge
                 var nameManaged = StringName.CreateTakingOwnershipOfDisposableValue(
                     NativeFuncs.kosmicsharp_string_name_new_copy(CustomUnsafe.AsRef(name)));
 
-                Variant ret = godotObject._Get(nameManaged);
+                Variant ret = kosmicObject._Get(nameManaged);
 
                 if (ret.VariantType == Variant.Type.Nil)
                 {
@@ -130,16 +130,16 @@ namespace Kosmic.Bridge
         }
 
         [UnmanagedCallersOnly]
-        internal static void CallDispose(IntPtr godotObjectGCHandle, kosmic_bool okIfNull)
+        internal static void CallDispose(IntPtr kosmicObjectGCHandle, kosmic_bool okIfNull)
         {
             try
             {
-                var godotObject = (KosmicObject)GCHandle.FromIntPtr(godotObjectGCHandle).Target;
+                var kosmicObject = (KosmicObject)GCHandle.FromIntPtr(kosmicObjectGCHandle).Target;
 
                 if (okIfNull.ToBool())
-                    godotObject?.Dispose();
+                    kosmicObject?.Dispose();
                 else
-                    godotObject!.Dispose();
+                    kosmicObject!.Dispose();
             }
             catch (Exception e)
             {
@@ -148,11 +148,11 @@ namespace Kosmic.Bridge
         }
 
         [UnmanagedCallersOnly]
-        internal static unsafe void CallToString(IntPtr godotObjectGCHandle, kosmic_string* outRes, kosmic_bool* outValid)
+        internal static unsafe void CallToString(IntPtr kosmicObjectGCHandle, kosmic_string* outRes, kosmic_bool* outValid)
         {
             try
             {
-                var self = (KosmicObject)GCHandle.FromIntPtr(godotObjectGCHandle).Target;
+                var self = (KosmicObject)GCHandle.FromIntPtr(kosmicObjectGCHandle).Target;
 
                 if (self == null)
                 {
@@ -182,16 +182,16 @@ namespace Kosmic.Bridge
         }
 
         [UnmanagedCallersOnly]
-        internal static unsafe kosmic_bool HasMethodUnknownParams(IntPtr godotObjectGCHandle, kosmic_string_name* method)
+        internal static unsafe kosmic_bool HasMethodUnknownParams(IntPtr kosmicObjectGCHandle, kosmic_string_name* method)
         {
             try
             {
-                var godotObject = (KosmicObject)GCHandle.FromIntPtr(godotObjectGCHandle).Target;
+                var kosmicObject = (KosmicObject)GCHandle.FromIntPtr(kosmicObjectGCHandle).Target;
 
-                if (godotObject == null)
+                if (kosmicObject == null)
                     return kosmic_bool.False;
 
-                return godotObject.HasKosmicClassMethod(CustomUnsafe.AsRef(method)).ToGodotBool();
+                return kosmicObject.HasKosmicClassMethod(CustomUnsafe.AsRef(method)).ToKosmicBool();
             }
             catch (Exception e)
             {
@@ -202,22 +202,22 @@ namespace Kosmic.Bridge
 
         [UnmanagedCallersOnly]
         internal static unsafe void SerializeState(
-            IntPtr godotObjectGCHandle,
+            IntPtr kosmicObjectGCHandle,
             kosmic_dictionary* propertiesState,
             kosmic_dictionary* signalEventsState
         )
         {
             try
             {
-                var godotObject = (KosmicObject)GCHandle.FromIntPtr(godotObjectGCHandle).Target;
+                var kosmicObject = (KosmicObject)GCHandle.FromIntPtr(kosmicObjectGCHandle).Target;
 
-                if (godotObject == null)
+                if (kosmicObject == null)
                     return;
 
                 // Call OnBeforeSerialize
 
                 // ReSharper disable once SuspiciousTypeConversion.Global
-                if (godotObject is ISerializationListener serializationListener)
+                if (kosmicObject is ISerializationListener serializationListener)
                     serializationListener.OnBeforeSerialize();
 
                 // Save instance state
@@ -225,7 +225,7 @@ namespace Kosmic.Bridge
                 using var info = KosmicSerializationInfo.CreateCopyingBorrowed(
                     *propertiesState, *signalEventsState);
 
-                godotObject.SaveKosmicObjectData(info);
+                kosmicObject.SaveKosmicObjectData(info);
             }
             catch (Exception e)
             {
@@ -235,16 +235,16 @@ namespace Kosmic.Bridge
 
         [UnmanagedCallersOnly]
         internal static unsafe void DeserializeState(
-            IntPtr godotObjectGCHandle,
+            IntPtr kosmicObjectGCHandle,
             kosmic_dictionary* propertiesState,
             kosmic_dictionary* signalEventsState
         )
         {
             try
             {
-                var godotObject = (KosmicObject)GCHandle.FromIntPtr(godotObjectGCHandle).Target;
+                var kosmicObject = (KosmicObject)GCHandle.FromIntPtr(kosmicObjectGCHandle).Target;
 
-                if (godotObject == null)
+                if (kosmicObject == null)
                     return;
 
                 // Restore instance state
@@ -252,12 +252,12 @@ namespace Kosmic.Bridge
                 using var info = KosmicSerializationInfo.CreateCopyingBorrowed(
                     *propertiesState, *signalEventsState);
 
-                godotObject.RestoreKosmicObjectData(info);
+                kosmicObject.RestoreKosmicObjectData(info);
 
                 // Call OnAfterDeserialize
 
                 // ReSharper disable once SuspiciousTypeConversion.Global
-                if (godotObject is ISerializationListener serializationListener)
+                if (kosmicObject is ISerializationListener serializationListener)
                     serializationListener.OnAfterDeserialize();
             }
             catch (Exception e)

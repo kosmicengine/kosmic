@@ -35,6 +35,7 @@
 #include "editor/editor_log.h"
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
+#include "editor/gui/editor_scene_tabs.h"
 #include "editor/gui/editor_toaster.h"
 #include "editor/themes/editor_scale.h"
 #include "servers/rendering_server.h"
@@ -88,7 +89,7 @@ void SurfaceUpgradeTool::_show_popup() {
 
 	// These messages are supposed to be translated as they are critical to users migrating their projects.
 
-	const String confirmation_message = TTR("This project uses meshes with an outdated mesh format from previous Godot versions. The engine needs to update the format in order to use those meshes. Please use the 'Upgrade Mesh Surfaces' tool from the 'Project > Tools' menu. You can ignore this message and keep using outdated meshes, but keep in mind that this leads to increased load times every time you load the project.");
+	const String confirmation_message = TTR("This project uses meshes with an outdated mesh format from previous Kosmic versions. The engine needs to update the format in order to use those meshes. Please use the 'Upgrade Mesh Surfaces' tool from the 'Project > Tools' menu. You can ignore this message and keep using outdated meshes, but keep in mind that this leads to increased load times every time you load the project.");
 	EditorNode::get_log()->add_message(confirmation_message, EditorLog::MSG_TYPE_WARNING);
 
 	const String toast_message = TTR("This project uses meshes with an outdated mesh format. Check the output log.");
@@ -119,7 +120,7 @@ void SurfaceUpgradeTool::begin_upgrade() {
 }
 
 void SurfaceUpgradeTool::finish_upgrade() {
-	EditorNode::get_singleton()->trigger_menu_option(EditorNode::FILE_CLOSE_ALL, true);
+	EditorNode::get_singleton()->trigger_menu_option(EditorSceneTabs::SCENE_CLOSE_ALL, true);
 
 	// Update all meshes here.
 	Vector<String> resave_paths = EditorSettings::get_singleton()->get_project_metadata("surface_upgrade_tool", "resave_paths", Vector<String>());

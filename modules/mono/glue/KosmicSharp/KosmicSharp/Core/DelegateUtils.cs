@@ -21,7 +21,7 @@ namespace Kosmic
             {
                 var @delegateA = (Delegate?)GCHandle.FromIntPtr(delegateGCHandleA).Target;
                 var @delegateB = (Delegate?)GCHandle.FromIntPtr(delegateGCHandleB).Target;
-                return (@delegateA! == @delegateB!).ToGodotBool();
+                return (@delegateA! == @delegateB!).ToKosmicBool();
             }
             catch (Exception e)
             {
@@ -164,14 +164,14 @@ namespace Kosmic
                         return true;
                     }
                 }
-                case KosmicObject godotObject:
+                case KosmicObject kosmicObject:
                 {
                     using (var stream = new MemoryStream())
                     using (var writer = new BinaryWriter(stream))
                     {
                         writer.Write((ulong)TargetKind.KosmicObject);
                         // ReSharper disable once RedundantCast
-                        writer.Write((ulong)godotObject.GetInstanceId());
+                        writer.Write((ulong)kosmicObject.GetInstanceId());
 
                         SerializeType(writer, @delegate.GetType());
 
@@ -323,7 +323,7 @@ namespace Kosmic
                 var @delegate = (Delegate)GCHandle.FromIntPtr(delegateGCHandle).Target!;
 
                 return TrySerializeDelegate(@delegate, serializedData)
-                    .ToGodotBool();
+                    .ToKosmicBool();
             }
             catch (Exception e)
             {
@@ -436,8 +436,8 @@ namespace Kosmic
                     case TargetKind.KosmicObject:
                     {
                         ulong objectId = reader.ReadUInt64();
-                        KosmicObject? godotObject = KosmicObject.InstanceFromId(objectId);
-                        if (godotObject == null)
+                        KosmicObject? kosmicObject = KosmicObject.InstanceFromId(objectId);
+                        if (kosmicObject == null)
                             return false;
 
                         Type? delegateType = DeserializeType(reader);
@@ -447,7 +447,7 @@ namespace Kosmic
                         if (!TryDeserializeMethodInfo(reader, out MethodInfo? methodInfo))
                             return false;
 
-                        @delegate = Delegate.CreateDelegate(delegateType, godotObject, methodInfo,
+                        @delegate = Delegate.CreateDelegate(delegateType, kosmicObject, methodInfo,
                             throwOnBindFailure: false);
 
                         if (@delegate == null)
@@ -580,7 +580,7 @@ namespace Kosmic
         }
 
         // Returns true, if unloading the delegate is necessary for assembly unloading to succeed.
-        // This check is not perfect and only intended to prevent things in GodotTools from being reloaded.
+        // This check is not perfect and only intended to prevent things in KosmicTools from being reloaded.
         internal static bool IsDelegateCollectible(Delegate @delegate)
         {
             if (@delegate.GetType().IsCollectible)
@@ -706,28 +706,28 @@ namespace Kosmic
                         return VariantUtils.CreateFrom(nodePathArray);
                     case Rid[] ridArray:
                         return VariantUtils.CreateFrom(ridArray);
-                    case KosmicObject[] godotObjectArray:
-                        return VariantUtils.CreateFrom(godotObjectArray);
+                    case KosmicObject[] kosmicObjectArray:
+                        return VariantUtils.CreateFrom(kosmicObjectArray);
                     case StringName stringName:
                         return VariantUtils.CreateFrom(stringName);
                     case NodePath nodePath:
                         return VariantUtils.CreateFrom(nodePath);
                     case Rid rid:
                         return VariantUtils.CreateFrom(rid);
-                    case Collections.Dictionary godotDictionary:
-                        return VariantUtils.CreateFrom(godotDictionary);
-                    case Collections.Array godotArray:
-                        return VariantUtils.CreateFrom(godotArray);
+                    case Collections.Dictionary kosmicDictionary:
+                        return VariantUtils.CreateFrom(kosmicDictionary);
+                    case Collections.Array kosmicArray:
+                        return VariantUtils.CreateFrom(kosmicArray);
                     case Variant variant:
                         return VariantUtils.CreateFrom(variant);
-                    case KosmicObject godotObject:
-                        return VariantUtils.CreateFrom(godotObject);
+                    case KosmicObject kosmicObject:
+                        return VariantUtils.CreateFrom(kosmicObject);
                     case Enum @enum:
                         return VariantUtils.CreateFrom(Convert.ToInt64(@enum, CultureInfo.InvariantCulture));
-                    case Collections.IGenericKosmicDictionary godotDictionary:
-                        return VariantUtils.CreateFrom(godotDictionary.UnderlyingDictionary);
-                    case Collections.IGenericGodotArray godotArray:
-                        return VariantUtils.CreateFrom(godotArray.UnderlyingArray);
+                    case Collections.IGenericKosmicDictionary kosmicDictionary:
+                        return VariantUtils.CreateFrom(kosmicDictionary.UnderlyingDictionary);
+                    case Collections.IGenericKosmicArray kosmicArray:
+                        return VariantUtils.CreateFrom(kosmicArray.UnderlyingArray);
                 }
 
                 KS.PushError("Attempted to convert an unmarshallable managed type to Variant. Name: '" +
@@ -817,8 +817,8 @@ namespace Kosmic
                         return ret;
                     }
 
-                    using var godotArray = NativeFuncs.kosmicsharp_variant_as_array(variant);
-                    return ConvertToSystemArrayOfKosmicObject(godotArray, type);
+                    using var kosmicArray = NativeFuncs.kosmicsharp_variant_as_array(variant);
+                    return ConvertToSystemArrayOfKosmicObject(kosmicArray, type);
                 }
 
                 if (type.IsEnum)

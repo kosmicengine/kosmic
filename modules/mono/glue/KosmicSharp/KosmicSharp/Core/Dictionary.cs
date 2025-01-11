@@ -89,7 +89,7 @@ namespace Kosmic.Collections
         {
             kosmic_dictionary newDictionary;
             var self = (kosmic_dictionary)NativeValue;
-            NativeFuncs.kosmicsharp_dictionary_duplicate(ref self, deep.ToGodotBool(), out newDictionary);
+            NativeFuncs.kosmicsharp_dictionary_duplicate(ref self, deep.ToKosmicBool(), out newDictionary);
             return CreateTakingOwnershipOfDisposableValue(newDictionary);
         }
 
@@ -109,7 +109,7 @@ namespace Kosmic.Collections
 
             var self = (kosmic_dictionary)NativeValue;
             var other = (kosmic_dictionary)dictionary.NativeValue;
-            NativeFuncs.kosmicsharp_dictionary_merge(ref self, in other, overwrite.ToGodotBool());
+            NativeFuncs.kosmicsharp_dictionary_merge(ref self, in other, overwrite.ToKosmicBool());
         }
 
         /// <summary>
@@ -492,8 +492,8 @@ namespace Kosmic.Collections
         IReadOnlyDictionary<TKey, TValue>,
         IGenericKosmicDictionary
     {
-        private static kosmic_variant ToVariantFunc(scoped in Dictionary<TKey, TValue> godotDictionary) =>
-            VariantUtils.CreateFromDictionary(godotDictionary);
+        private static kosmic_variant ToVariantFunc(scoped in Dictionary<TKey, TValue> kosmicDictionary) =>
+            VariantUtils.CreateFromDictionary(kosmicDictionary);
 
         private static Dictionary<TKey, TValue> FromVariantFunc(in kosmic_variant variant) =>
             VariantUtils.ConvertToDictionary<TKey, TValue>(variant);

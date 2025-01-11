@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading.Tasks;
-using Godot;
-using GodotTools.Internals;
-using File = GodotTools.Utils.File;
+using Kosmic;
+using KosmicTools.Internals;
+using File = KosmicTools.Utils.File;
 
 namespace KosmicTools.Build
 {
@@ -83,7 +83,7 @@ namespace KosmicTools.Build
                 BuildStarted?.Invoke(buildInfo);
 
                 // Required in order to update the build tasks list.
-                Internal.GodotMainIteration();
+                Internal.KosmicMainIteration();
 
                 try
                 {
@@ -178,7 +178,7 @@ namespace KosmicTools.Build
                 BuildStarted?.Invoke(buildInfo);
 
                 // Required in order to update the build tasks list.
-                Internal.GodotMainIteration();
+                Internal.KosmicMainIteration();
 
                 try
                 {
@@ -280,7 +280,7 @@ namespace KosmicTools.Build
 
             // If a platform was not specified, try determining the current one. If that fails, let MSBuild auto-detect it.
             if (platform != null || Utils.OS.PlatformNameMap.TryGetValue(OS.GetName(), out platform))
-                buildInfo.CustomProperties.Add($"GodotTargetPlatform={platform}");
+                buildInfo.CustomProperties.Add($"KosmicTargetPlatform={platform}");
 
             if (Internal.KosmicIsRealTDouble())
                 buildInfo.CustomProperties.Add("KosmicFloat64=true");
@@ -305,7 +305,7 @@ namespace KosmicTools.Build
                 buildInfo.CustomProperties.Add("DebugSymbols=false");
             }
 
-            buildInfo.CustomProperties.Add($"GodotTargetPlatform={platform}");
+            buildInfo.CustomProperties.Add($"KosmicTargetPlatform={platform}");
 
             if (Internal.KosmicIsRealTDouble())
                 buildInfo.CustomProperties.Add("KosmicFloat64=true");
@@ -353,7 +353,7 @@ namespace KosmicTools.Build
         private static bool GenerateXCFramework(List<string> outputPaths, string xcFrameworkPath)
         {
             // Required in order to update the build tasks list.
-            Internal.GodotMainIteration();
+            Internal.KosmicMainIteration();
 
             try
             {

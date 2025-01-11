@@ -123,7 +123,7 @@ void ImageLoaderJPG::get_recognized_extensions(List<String> *p_extensions) const
 	p_extensions->push_back("jpeg");
 }
 
-static Ref<Image> _jpegd_mem_loader_func(const uint8_t *p_png, int p_size) {
+static Ref<Image> _jpeks_mem_loader_func(const uint8_t *p_png, int p_size) {
 	Ref<Image> img;
 	img.instantiate();
 	Error err = jpeg_load_image_from_buffer(img.ptr(), p_png, p_size);
@@ -152,7 +152,7 @@ public:
 	}
 };
 
-static Error _jpgd_save_to_output_stream(jpge::output_stream *p_output_stream, const Ref<Image> &p_img, float p_quality) {
+static Error _jpks_save_to_output_stream(jpge::output_stream *p_output_stream, const Ref<Image> &p_img, float p_quality) {
 	ERR_FAIL_COND_V(p_img.is_null() || p_img->is_empty(), ERR_INVALID_PARAMETER);
 	Ref<Image> image = p_img->duplicate();
 	if (image->is_compressed()) {
@@ -184,27 +184,27 @@ static Error _jpgd_save_to_output_stream(jpge::output_stream *p_output_stream, c
 	}
 }
 
-static Vector<uint8_t> _jpgd_buffer_save_func(const Ref<Image> &p_img, float p_quality) {
+static Vector<uint8_t> _jpks_buffer_save_func(const Ref<Image> &p_img, float p_quality) {
 	Vector<uint8_t> output;
 	ImageLoaderJPGOSBuffer ob;
 	ob.buffer = &output;
-	if (_jpgd_save_to_output_stream(&ob, p_img, p_quality) != OK) {
+	if (_jpks_save_to_output_stream(&ob, p_img, p_quality) != OK) {
 		return Vector<uint8_t>();
 	}
 	return output;
 }
 
-static Error _jpgd_save_func(const String &p_path, const Ref<Image> &p_img, float p_quality) {
+static Error _jpks_save_func(const String &p_path, const Ref<Image> &p_img, float p_quality) {
 	Error err;
 	Ref<FileAccess> file = FileAccess::open(p_path, FileAccess::WRITE, &err);
 	ERR_FAIL_COND_V_MSG(err, err, vformat("Can't save JPG at path: '%s'.", p_path));
 	ImageLoaderJPGOSFile ob;
 	ob.f = file;
-	return _jpgd_save_to_output_stream(&ob, p_img, p_quality);
+	return _jpks_save_to_output_stream(&ob, p_img, p_quality);
 }
 
 ImageLoaderJPG::ImageLoaderJPG() {
-	Image::_jpg_mem_loader_func = _jpegd_mem_loader_func;
-	Image::save_jpg_func = _jpgd_save_func;
-	Image::save_jpg_buffer_func = _jpgd_buffer_save_func;
+	Image::_jpg_mem_loader_func = _jpeks_mem_loader_func;
+	Image::save_jpg_func = _jpks_save_func;
+	Image::save_jpg_buffer_func = _jpks_buffer_save_func;
 }

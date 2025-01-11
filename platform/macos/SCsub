@@ -17,7 +17,7 @@ def generate_bundle(target, source, env):
 
     if env.editor_build:
         # Editor bundle.
-        prefix = "godot." + env["platform"] + "." + env["target"]
+        prefix = "kosmic." + env["platform"] + "." + env["target"]
         if env.dev_build:
             prefix += ".dev"
         if env["precision"] == "double":
@@ -37,7 +37,7 @@ def generate_bundle(target, source, env):
         if not os.path.isdir(app_dir + "/Contents/MacOS"):
             os.mkdir(app_dir + "/Contents/MacOS")
         if target_bin != "":
-            shutil.copy(target_bin, app_dir + "/Contents/MacOS/Godot")
+            shutil.copy(target_bin, app_dir + "/Contents/MacOS/Kosmic")
         if "mono" in env.module_version_string:
             shutil.copytree(Dir("#bin/KosmicSharp").abspath, app_dir + "/Contents/Resources/KosmicSharp")
         version = get_build_version(False)
@@ -68,9 +68,9 @@ def generate_bundle(target, source, env):
             subprocess.run(sign_command)
     else:
         # Template bundle.
-        app_prefix = "godot." + env["platform"]
-        rel_prefix = "godot." + env["platform"] + "." + "template_release"
-        dbg_prefix = "godot." + env["platform"] + "." + "template_debug"
+        app_prefix = "kosmic." + env["platform"]
+        rel_prefix = "kosmic." + env["platform"] + "." + "template_release"
+        dbg_prefix = "kosmic." + env["platform"] + "." + "template_debug"
         if env.dev_build:
             app_prefix += ".dev"
             rel_prefix += ".dev"
@@ -123,13 +123,12 @@ files = [
     "native_menu_macos.mm",
     "dir_access_macos.mm",
     "tts_macos.mm",
-    "joypad_macos.mm",
     "rendering_context_driver_vulkan_macos.mm",
     "gl_manager_macos_angle.mm",
     "gl_manager_macos_legacy.mm",
 ]
 
-prog = env.add_program("#bin/godot", files)
+prog = env.add_program("#bin/kosmic", files)
 
 if env["debug_symbols"] and env["separate_debug_symbols"]:
     env.AddPostAction(prog, env.Run(platform_macos_builders.make_debug_macos))

@@ -1,7 +1,7 @@
 # Galician translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 #
 # Andy Barcia <andybarcia4@gmail.com>, 2021.
 # PokeGalaico <abloodyfreaks@gmail.com>, 2021.
@@ -17,10 +17,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "PO-Revision-Date: 2024-09-05 14:09+0000\n"
 "Last-Translator: \"Aquiles T. M.\" <aquiles.sonido@gmail.com>\n"
-"Language-Team: Galician <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Galician <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/gl/>\n"
 "Language: gl\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1629,7 +1629,7 @@ msgid "(unknown)"
 msgstr "(descoñecido)"
 
 msgid "Godot Engine contributors"
-msgstr "Colaboradores de Godot Engine"
+msgstr "Colaboradores de Kosmic Engine"
 
 msgid "Project Founders"
 msgstr "Fundadores do Proxecto"

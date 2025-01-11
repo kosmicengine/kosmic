@@ -103,7 +103,7 @@ Ref<ENetPacketPeer> ENetConnection::connect_to_host(const String &p_address, int
 #ifdef KOSMIC_ENET
 	enet_address_set_ip(&address, ip.get_ipv6(), 16);
 #else
-	ERR_FAIL_COND_V_MSG(!ip.is_ipv4(), out, "Connecting to an IPv6 server isn't supported when using vanilla ENet. Recompile Godot with the bundled ENet library.");
+	ERR_FAIL_COND_V_MSG(!ip.is_ipv4(), out, "Connecting to an IPv6 server isn't supported when using vanilla ENet. Recompile Kosmic with the bundled ENet library.");
 	address.host = *(uint32_t *)ip.get_ipv4();
 #endif
 	address.port = p_port;
@@ -364,7 +364,7 @@ void ENetConnection::socket_send(const String &p_address, int p_port, const Pack
 #ifdef KOSMIC_ENET
 	enet_address_set_ip(&address, ip.get_ipv6(), 16);
 #else
-	ERR_FAIL_COND_MSG(!ip.is_ipv4(), "Connecting to an IPv6 server isn't supported when using vanilla ENet. Recompile Godot with the bundled ENet library.");
+	ERR_FAIL_COND_MSG(!ip.is_ipv4(), "Connecting to an IPv6 server isn't supported when using vanilla ENet. Recompile Kosmic with the bundled ENet library.");
 	address.host = *(uint32_t *)ip.get_ipv4();
 #endif
 	address.port = p_port;

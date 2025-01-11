@@ -69,7 +69,7 @@ public class KosmicRenderer implements GLSurfaceView.Renderer {
 
 	@Override
 	public void onRenderThreadExiting() {
-		Log.d(TAG, "Destroying Godot Engine");
+		Log.d(TAG, "Destroying Kosmic Engine");
 		KosmicLib.ondestroy();
 	}
 

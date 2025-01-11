@@ -37,9 +37,9 @@
 #include "kosmic_constraint_3d.h"
 #include "kosmic_soft_body_3d.h"
 
-class GodotAreaPair3D : public KosmicConstraint3D {
-	GodotBody3D *body = nullptr;
-	GodotArea3D *area = nullptr;
+class KosmicAreaPair3D : public KosmicConstraint3D {
+	KosmicBody3D *body = nullptr;
+	KosmicArea3D *area = nullptr;
 	int body_shape;
 	int area_shape;
 	bool colliding = false;
@@ -52,13 +52,13 @@ public:
 	virtual bool pre_solve(real_t p_step) override;
 	virtual void solve(real_t p_step) override;
 
-	GodotAreaPair3D(GodotBody3D *p_body, int p_body_shape, GodotArea3D *p_area, int p_area_shape);
-	~GodotAreaPair3D();
+	KosmicAreaPair3D(KosmicBody3D *p_body, int p_body_shape, KosmicArea3D *p_area, int p_area_shape);
+	~KosmicAreaPair3D();
 };
 
-class GodotArea2Pair3D : public KosmicConstraint3D {
-	GodotArea3D *area_a = nullptr;
-	GodotArea3D *area_b = nullptr;
+class KosmicArea2Pair3D : public KosmicConstraint3D {
+	KosmicArea3D *area_a = nullptr;
+	KosmicArea3D *area_b = nullptr;
 	int shape_a;
 	int shape_b;
 	bool colliding_a = false;
@@ -73,13 +73,13 @@ public:
 	virtual bool pre_solve(real_t p_step) override;
 	virtual void solve(real_t p_step) override;
 
-	GodotArea2Pair3D(GodotArea3D *p_area_a, int p_shape_a, GodotArea3D *p_area_b, int p_shape_b);
-	~GodotArea2Pair3D();
+	KosmicArea2Pair3D(KosmicArea3D *p_area_a, int p_shape_a, KosmicArea3D *p_area_b, int p_shape_b);
+	~KosmicArea2Pair3D();
 };
 
-class GodotAreaSoftBodyPair3D : public KosmicConstraint3D {
+class KosmicAreaSoftBodyPair3D : public KosmicConstraint3D {
 	KosmicSoftBody3D *soft_body = nullptr;
-	GodotArea3D *area = nullptr;
+	KosmicArea3D *area = nullptr;
 	int soft_body_shape;
 	int area_shape;
 	bool colliding = false;
@@ -92,8 +92,8 @@ public:
 	virtual bool pre_solve(real_t p_step) override;
 	virtual void solve(real_t p_step) override;
 
-	GodotAreaSoftBodyPair3D(KosmicSoftBody3D *p_sof_body, int p_soft_body_shape, GodotArea3D *p_area, int p_area_shape);
-	~GodotAreaSoftBodyPair3D();
+	KosmicAreaSoftBodyPair3D(KosmicSoftBody3D *p_sof_body, int p_soft_body_shape, KosmicArea3D *p_area, int p_area_shape);
+	~KosmicAreaSoftBodyPair3D();
 };
 
 #endif // KOSMIC_AREA_PAIR_3D_H

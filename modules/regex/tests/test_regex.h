@@ -66,7 +66,7 @@ TEST_CASE("[RegEx] Initialization") {
 }
 
 TEST_CASE("[RegEx] Clearing") {
-	RegEx re("Godot");
+	RegEx re("Kosmic");
 	REQUIRE(re.is_valid());
 	re.clear();
 	CHECK(re.is_valid() == false);
@@ -159,22 +159,22 @@ TEST_CASE("[RegEx] Substitution") {
 
 TEST_CASE("[RegEx] Substitution with empty input and/or replacement") {
 	const String s1 = "";
-	const String s2 = "gogogo";
+	const String s2 = "kokoko";
 
 	RegEx re1("");
 	REQUIRE(re1.is_valid());
 	CHECK(re1.sub(s1, "") == "");
 	CHECK(re1.sub(s1, "a") == "a");
-	CHECK(re1.sub(s2, "") == "gogogo");
+	CHECK(re1.sub(s2, "") == "kokoko");
 
-	RegEx re2("go");
+	RegEx re2("ko");
 	REQUIRE(re2.is_valid());
-	CHECK(re2.sub(s2, "") == "gogo");
+	CHECK(re2.sub(s2, "") == "koko");
 	CHECK(re2.sub(s2, "", true) == "");
 }
 
 TEST_CASE("[RegEx] Uninitialized use") {
-	const String s = "Godot";
+	const String s = "Kosmic";
 
 	RegEx re;
 	ERR_PRINT_OFF;
@@ -187,7 +187,7 @@ TEST_CASE("[RegEx] Uninitialized use") {
 }
 
 TEST_CASE("[RegEx] Empty pattern") {
-	const String s = "Godot";
+	const String s = "Kosmic";
 
 	RegEx re;
 	CHECK(re.compile("") == OK);
@@ -207,7 +207,7 @@ TEST_CASE("[RegEx] Complex Grouping") {
 	CHECK(expr->get_string(0) == "https://docs.kosmicengine.org");
 
 	CHECK(expr->get_string(1) == "docs");
-	CHECK(expr->get_string(2) == "godotengine");
+	CHECK(expr->get_string(2) == "kosmicengine");
 	CHECK(expr->get_string(3) == "org");
 }
 
@@ -237,7 +237,7 @@ TEST_CASE("[RegEx] Number Expression") {
 }
 
 TEST_CASE("[RegEx] Invalid end position") {
-	const String s = "Godot";
+	const String s = "Kosmic";
 
 	RegEx re("o");
 	REQUIRE(re.is_valid());
@@ -253,19 +253,19 @@ TEST_CASE("[RegEx] Invalid end position") {
 	REQUIRE(match.is_valid());
 	CHECK(match->get_string(0) == String("o"));
 
-	CHECK(re.sub(s, "", true, 0, 10) == "Gdt");
+	CHECK(re.sub(s, "", true, 0, 10) == "Ksmic");
 }
 
 TEST_CASE("[RegEx] Get match string list") {
-	const String s = "Godot Engine";
+	const String s = "Kosmic Engine";
 
-	RegEx re("(Go)(dot)");
+	RegEx re("(Kos)(mic)");
 	Ref<RegExMatch> match = re.search(s);
 	REQUIRE(match.is_valid());
 	PackedStringArray result;
-	result.append("Godot");
-	result.append("Go");
-	result.append("dot");
+	result.append("Kosmic");
+	result.append("Kos");
+	result.append("mic");
 	CHECK(match->get_strings() == result);
 }
 
@@ -288,7 +288,7 @@ TEST_CASE("[RegEx] Match start and end positions") {
 }
 
 TEST_CASE("[RegEx] Asterisk search all") {
-	const String s = "Godot Engine";
+	const String s = "Kosmic Engine";
 
 	RegEx re("o*");
 	REQUIRE(re.is_valid());
@@ -312,7 +312,7 @@ TEST_CASE("[RegEx] Asterisk search all") {
 }
 
 TEST_CASE("[RegEx] Simple lookahead") {
-	const String s = "Godot Engine";
+	const String s = "Kosmic Engine";
 
 	RegEx re("o(?=t)");
 	REQUIRE(re.is_valid());
@@ -346,7 +346,7 @@ TEST_CASE("[RegEx] Lookahead groups empty matches") {
 }
 
 TEST_CASE("[RegEx] Simple lookbehind") {
-	const String s = "Godot Engine";
+	const String s = "Kosmic Engine";
 
 	RegEx re("(?<=d)o");
 	REQUIRE(re.is_valid());

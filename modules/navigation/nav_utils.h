@@ -40,7 +40,7 @@
 
 struct NavBaseIteration;
 
-namespace gd {
+namespace ks {
 struct Polygon;
 
 union PointKey {
@@ -153,7 +153,7 @@ struct NavigationPoly {
 		traversable_poly_index = UINT32_MAX;
 		back_navigation_poly_id = -1;
 		back_navigation_edge = -1;
-		traveled_distance = 0.0;
+		traveled_distance = FLT_MAX;
 		distance_to_destination = 0.0;
 	}
 };
@@ -202,6 +202,7 @@ class Heap {
 	Indexer _indexer;
 
 public:
+	static constexpr uint32_t INVALID_INDEX = UINT32_MAX;
 	void reserve(uint32_t p_size) {
 		_buffer.reserve(p_size);
 	}
@@ -223,7 +224,7 @@ public:
 	T pop() {
 		ERR_FAIL_COND_V_MSG(_buffer.is_empty(), T(), "Can't pop an empty heap.");
 		T value = _buffer[0];
-		_indexer(value, UINT32_MAX);
+		_indexer(value, INVALID_INDEX);
 		if (_buffer.size() > 1) {
 			_buffer[0] = _buffer[_buffer.size() - 1];
 			_indexer(_buffer[0], 0);
@@ -247,7 +248,7 @@ public:
 
 	void clear() {
 		for (const T &value : _buffer) {
-			_indexer(value, UINT32_MAX);
+			_indexer(value, INVALID_INDEX);
 		}
 		_buffer.clear();
 	}
@@ -339,6 +340,6 @@ struct PerformanceData {
 	}
 };
 
-} // namespace gd
+} // namespace ks
 
 #endif // NAV_UTILS_H

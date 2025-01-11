@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  GodotTextInputWrapper.java                                            */
+/*  KosmicTextInputWrapper.java                                            */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             KOSMIC ENGINE                              */
@@ -42,11 +42,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-public class GodotTextInputWrapper implements TextWatcher, OnEditorActionListener {
+public class KosmicTextInputWrapper implements TextWatcher, OnEditorActionListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	private static final String TAG = GodotTextInputWrapper.class.getSimpleName();
+	private static final String TAG = KosmicTextInputWrapper.class.getSimpleName();
 
 	// ===========================================================
 	// Fields
@@ -60,7 +60,7 @@ public class GodotTextInputWrapper implements TextWatcher, OnEditorActionListene
 	// Constructors
 	// ===========================================================
 
-	public GodotTextInputWrapper(final KosmicRenderView view, final KosmicEditText edit) {
+	public KosmicTextInputWrapper(final KosmicRenderView view, final KosmicEditText edit) {
 		mRenderView = view;
 		mEdit = edit;
 	}

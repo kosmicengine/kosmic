@@ -74,7 +74,7 @@ public class KosmicEditText extends EditText {
 	// Fields
 	// ===========================================================
 	private KosmicRenderView mRenderView;
-	private GodotTextInputWrapper mInputWrapper;
+	private KosmicTextInputWrapper mInputWrapper;
 	private EditHandler sHandler = new EditHandler(this);
 	private String mOriginText;
 	private int mMaxInputLength = Integer.MAX_VALUE;
@@ -210,7 +210,7 @@ public class KosmicEditText extends EditText {
 	public void setView(final KosmicRenderView view) {
 		mRenderView = view;
 		if (mInputWrapper == null)
-			mInputWrapper = new GodotTextInputWrapper(mRenderView, this);
+			mInputWrapper = new KosmicTextInputWrapper(mRenderView, this);
 		setOnEditorActionListener(mInputWrapper);
 		view.getView().requestFocus();
 	}
@@ -232,8 +232,8 @@ public class KosmicEditText extends EditText {
 			return mRenderView.getInputHandler().onKeyDown(keyCode, keyEvent);
 		}
 
-		// pass event to godot in special cases
-		if (needHandlingInGodot(keyCode, keyEvent) && mRenderView.getInputHandler().onKeyDown(keyCode, keyEvent)) {
+		// pass event to Kosmic in special cases
+		if (needHandlingInKosmic(keyCode, keyEvent) && mRenderView.getInputHandler().onKeyDown(keyCode, keyEvent)) {
 			return true;
 		} else {
 			return super.onKeyDown(keyCode, keyEvent);
@@ -249,14 +249,14 @@ public class KosmicEditText extends EditText {
 			return mRenderView.getInputHandler().onKeyUp(keyCode, keyEvent);
 		}
 
-		if (needHandlingInGodot(keyCode, keyEvent) && mRenderView.getInputHandler().onKeyUp(keyCode, keyEvent)) {
+		if (needHandlingInKosmic(keyCode, keyEvent) && mRenderView.getInputHandler().onKeyUp(keyCode, keyEvent)) {
 			return true;
 		} else {
 			return super.onKeyUp(keyCode, keyEvent);
 		}
 	}
 
-	private boolean needHandlingInGodot(int keyCode, KeyEvent keyEvent) {
+	private boolean needHandlingInKosmic(int keyCode, KeyEvent keyEvent) {
 		boolean isArrowKey = keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_DPAD_DOWN ||
 				keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT;
 		boolean isModifiedKey = keyEvent.isAltPressed() || keyEvent.isCtrlPressed() || keyEvent.isSymPressed() ||

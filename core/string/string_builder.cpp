@@ -75,7 +75,7 @@ String StringBuilder::as_string() const {
 		const int32_t str_len = appended_strings[i];
 
 		if (str_len == -1) {
-			// Godot string
+			// Kosmic string
 			const String &s = strings[kosmic_string_elem];
 
 			memcpy(buffer + current_position, s.ptr(), s.length() * sizeof(char32_t));

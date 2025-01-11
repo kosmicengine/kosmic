@@ -35,7 +35,7 @@
 #import <AppKit/AppKit.h>
 #import <Foundation/Foundation.h>
 
-@interface GodotMenuDelegate : NSObject <NSMenuDelegate> {
+@interface KosmicMenuDelegate : NSObject <NSMenuDelegate> {
 }
 
 - (void)doNothing:(id)sender;

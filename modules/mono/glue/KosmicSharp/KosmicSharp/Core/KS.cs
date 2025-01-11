@@ -172,8 +172,8 @@ namespace Kosmic
         /// <param name="what">Message that will be printed.</param>
         public static void Print(string what)
         {
-            using var godotStr = Marshaling.ConvertStringToNative(what);
-            NativeFuncs.kosmicsharp_print(godotStr);
+            using var kosmicStr = Marshaling.ConvertStringToNative(what);
+            NativeFuncs.kosmicsharp_print(kosmicStr);
         }
 
         /// <summary>
@@ -217,8 +217,8 @@ namespace Kosmic
         /// <param name="what">Message that will be printed.</param>
         public static void PrintRich(string what)
         {
-            using var godotStr = Marshaling.ConvertStringToNative(what);
-            NativeFuncs.kosmicsharp_print_rich(godotStr);
+            using var kosmicStr = Marshaling.ConvertStringToNative(what);
+            NativeFuncs.kosmicsharp_print_rich(kosmicStr);
         }
 
         /// <summary>
@@ -256,8 +256,8 @@ namespace Kosmic
         /// <param name="what">Message that will be printed.</param>
         public static void PrintErr(string what)
         {
-            using var godotStr = Marshaling.ConvertStringToNative(what);
-            NativeFuncs.kosmicsharp_printerr(godotStr);
+            using var kosmicStr = Marshaling.ConvertStringToNative(what);
+            NativeFuncs.kosmicsharp_printerr(kosmicStr);
         }
 
         /// <summary>
@@ -281,8 +281,8 @@ namespace Kosmic
         /// <param name="what">Message that will be printed.</param>
         public static void PrintRaw(string what)
         {
-            using var godotStr = Marshaling.ConvertStringToNative(what);
-            NativeFuncs.kosmicsharp_printraw(godotStr);
+            using var kosmicStr = Marshaling.ConvertStringToNative(what);
+            NativeFuncs.kosmicsharp_printraw(kosmicStr);
         }
 
         /// <summary>
@@ -315,8 +315,8 @@ namespace Kosmic
         public static void PrintS(params object[] what)
         {
             string message = AppendPrintParams(' ', what);
-            using var godotStr = Marshaling.ConvertStringToNative(message);
-            NativeFuncs.kosmicsharp_prints(godotStr);
+            using var kosmicStr = Marshaling.ConvertStringToNative(message);
+            NativeFuncs.kosmicsharp_prints(kosmicStr);
         }
 
         /// <summary>
@@ -331,8 +331,8 @@ namespace Kosmic
         public static void PrintT(params object[] what)
         {
             string message = AppendPrintParams('\t', what);
-            using var godotStr = Marshaling.ConvertStringToNative(message);
-            NativeFuncs.kosmicsharp_printt(godotStr);
+            using var kosmicStr = Marshaling.ConvertStringToNative(message);
+            NativeFuncs.kosmicsharp_printt(kosmicStr);
         }
 
         [StackTraceHidden]
@@ -618,8 +618,8 @@ namespace Kosmic
         /// <returns>The decoded <c>Variant</c>.</returns>
         public static Variant StrToVar(string str)
         {
-            using var godotStr = Marshaling.ConvertStringToNative(str);
-            NativeFuncs.kosmicsharp_str_to_var(godotStr, out kosmic_variant ret);
+            using var kosmicStr = Marshaling.ConvertStringToNative(str);
+            NativeFuncs.kosmicsharp_str_to_var(kosmicStr, out kosmic_variant ret);
             return Variant.CreateTakingOwnershipOfDisposableValue(ret);
         }
 

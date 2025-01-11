@@ -1,7 +1,7 @@
 # Japanese translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # akirakido <achts.y@gmail.com>, 2016-2017, 2018, 2019.
 # D_first <dntk.daisei@gmail.com>, 2017, 2018.
 # Daisuke Saito <d.saito@coriginate.com>, 2017, 2018, 2023.
@@ -74,11 +74,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-08-09 17:09+0000\n"
 "Last-Translator: Tomoo Amano <sh.eer.cat@gmail.com>\n"
-"Language-Team: Japanese <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Japanese <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -2552,7 +2552,7 @@ msgstr "[空]"
 msgid "[unsaved]"
 msgstr "[未保存]"
 
-msgid "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
 msgstr "%s - Godot エンジン"
 
 msgid "Move this dock right one tab."
@@ -13464,7 +13464,7 @@ msgid ""
 msgstr "グラフを整理するための説明テキストを含められる長方形の領域。"
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
@@ -13473,7 +13473,7 @@ msgstr ""
 "めにそれを使用しないでください。"
 
 msgid ""
-"Custom Kosmic Shader Language expression, which is placed on top of the "
+"Custom Godot Shader Language expression, which is placed on top of the "
 "resulted shader. You can place various function definitions inside and call "
 "it later in the Expressions. You can also declare varyings, parameters and "
 "constants."

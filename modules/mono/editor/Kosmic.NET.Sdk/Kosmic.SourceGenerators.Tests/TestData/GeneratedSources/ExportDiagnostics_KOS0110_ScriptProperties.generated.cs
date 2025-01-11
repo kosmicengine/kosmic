@@ -1,7 +1,7 @@
-using Godot;
+using Kosmic;
 using Kosmic.NativeInterop;
 
-partial class ExportDiagnostics_GD0110
+partial class ExportDiagnostics_KS0110
 {
 #pragma warning disable CS0109 // Disable warning about redundant 'new' keyword
     /// <summary>

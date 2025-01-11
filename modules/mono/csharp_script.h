@@ -33,7 +33,7 @@
 #define CSHARP_SCRIPT_H
 
 #include "mono_gc_handle.h"
-#include "mono_gd/gd_mono.h"
+#include "mono_ks/ks_mono.h"
 
 #include "core/doc_data.h"
 #include "core/io/resource_loader.h"
@@ -146,7 +146,7 @@ private:
 
 	/**
 	 * Base script that this script derives from, or null if it derives from a
-	 * native Godot class.
+	 * native Kosmic class.
 	 */
 	Ref<CSharpScript> base_script;
 
@@ -408,7 +408,7 @@ class CSharpLanguage : public ScriptLanguage {
 	bool finalizing = false;
 	bool finalized = false;
 
-	KSMono *ksmono = nullptr;
+	KSMono *gdmono = nullptr;
 	SelfList<CSharpScript>::List script_list;
 
 	Mutex script_instances_mutex;

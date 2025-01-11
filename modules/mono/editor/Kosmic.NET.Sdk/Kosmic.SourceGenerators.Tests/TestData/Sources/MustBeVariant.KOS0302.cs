@@ -1,6 +1,6 @@
-using Godot;
+using Kosmic;
 
-public class MustBeVariantGD0302
+public class MustBeVariantKS0302
 {
     public void MethodOk<[MustBeVariant] T>()
     {
@@ -11,9 +11,9 @@ public class MustBeVariantGD0302
 
     public void MethodFail<T>()
     {
-        // These two calls raise a GD0302 diagnostic error: T is not valid here because it may not a Variant type and method call and class require it.
-        new ExampleClass<{|GD0302:T|}>();
-        Method<{|GD0302:T|}>();
+        // These two calls raise a KS0302 diagnostic error: T is not valid here because it may not a Variant type and method call and class require it.
+        new ExampleClass<{|KS0302:T|}>();
+        Method<{|KS0302:T|}>();
     }
 
     public void Method<[MustBeVariant] T>()

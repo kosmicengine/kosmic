@@ -35,4 +35,4 @@ unzip /tmp/vulkan-sdk.zip -d /tmp
 rm -rf /tmp/InstallVulkan.app
 rm -f /tmp/vulkan-sdk.zip
 
-echo 'Vulkan SDK installed successfully! You can now build Godot by running "scons".'
+echo 'Vulkan SDK installed successfully! You can now build Kosmic by running "scons".'

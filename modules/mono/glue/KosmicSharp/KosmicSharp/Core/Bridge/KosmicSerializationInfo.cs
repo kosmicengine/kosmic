@@ -59,7 +59,7 @@ public sealed class KosmicSerializationInfo : IDisposable
     {
         if (_signalEvents.TryGetValue(name, out Variant serializedData))
         {
-            if (DelegateUtils.TryDeserializeDelegate(serializedData.AsGodotArray(), out var eventDelegate))
+            if (DelegateUtils.TryDeserializeDelegate(serializedData.AsKosmicArray(), out var eventDelegate))
             {
                 value = eventDelegate as T;
 

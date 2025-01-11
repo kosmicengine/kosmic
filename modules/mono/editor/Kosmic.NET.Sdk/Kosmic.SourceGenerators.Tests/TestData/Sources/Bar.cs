@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 
 public partial class Bar : KosmicObject
 {

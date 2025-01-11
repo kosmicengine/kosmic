@@ -33,11 +33,11 @@
 
 #import "app_delegate.h"
 
-@interface GodotApplicationDelegate ()
+@interface KosmicApplicationDelegate ()
 
 @end
 
-@implementation GodotApplicationDelegate
+@implementation KosmicApplicationDelegate
 
 static NSMutableArray<ApplicationDelegateService *> *services = nil;
 

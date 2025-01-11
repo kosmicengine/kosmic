@@ -39,7 +39,7 @@
 #include <kosmic_cpp/templates/vector.hpp>
 #include <kosmic_cpp/variant/string.hpp>
 
-using namespace godot;
+using namespace Kosmic;
 
 #elif defined(KOSMIC_MODULE)
 

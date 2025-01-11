@@ -505,6 +505,7 @@ void register_scene_types() {
 	KSREGISTER_CLASS(IntervalTweener);
 	KSREGISTER_CLASS(CallbackTweener);
 	KSREGISTER_CLASS(MethodTweener);
+	KSREGISTER_CLASS(SubtweenTweener);
 
 	KSREGISTER_ABSTRACT_CLASS(AnimationMixer);
 	KSREGISTER_CLASS(AnimationPlayer);

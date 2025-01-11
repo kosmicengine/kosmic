@@ -323,12 +323,12 @@ class VoyScriptByteCodeGenerator : public VoyScriptCodeGenerator {
 		return pos;
 	}
 
-	int get_gds_utility_pos(const VoyScriptUtilityFunctions::FunctionPtr p_gds_utility) {
-		if (gds_utilities_map.has(p_gds_utility)) {
-			return gds_utilities_map[p_gds_utility];
+	int get_kss_utility_pos(const VoyScriptUtilityFunctions::FunctionPtr p_kss_utility) {
+		if (gds_utilities_map.has(p_kss_utility)) {
+			return gds_utilities_map[p_kss_utility];
 		}
 		int pos = gds_utilities_map.size();
-		gds_utilities_map[p_gds_utility] = pos;
+		gds_utilities_map[p_kss_utility] = pos;
 		return pos;
 	}
 
@@ -436,8 +436,8 @@ class VoyScriptByteCodeGenerator : public VoyScriptCodeGenerator {
 		opcodes.push_back(get_utility_pos(p_utility));
 	}
 
-	void append(const VoyScriptUtilityFunctions::FunctionPtr p_gds_utility) {
-		opcodes.push_back(get_gds_utility_pos(p_gds_utility));
+	void append(const VoyScriptUtilityFunctions::FunctionPtr p_kss_utility) {
+		opcodes.push_back(get_kss_utility_pos(p_kss_utility));
 	}
 
 	void append(MethodBind *p_method) {

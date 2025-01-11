@@ -1,5 +1,5 @@
-using Godot;
-using static GodotTools.Internals.Globals;
+using Kosmic;
+using static KosmicTools.Internals.Globals;
 
 namespace KosmicTools.Build
 {

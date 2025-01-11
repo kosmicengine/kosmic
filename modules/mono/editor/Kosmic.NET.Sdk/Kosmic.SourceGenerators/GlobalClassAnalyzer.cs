@@ -25,7 +25,7 @@ namespace Kosmic.SourceGenerators
         {
             // Return if not a type symbol or the type is not a global class.
             if (context.ContainingSymbol is not INamedTypeSymbol typeSymbol ||
-                !typeSymbol.GetAttributes().Any(a => a.AttributeClass?.IsGodotGlobalClassAttribute() ?? false))
+                !typeSymbol.GetAttributes().Any(a => a.AttributeClass?.IsKosmicGlobalClassAttribute() ?? false))
                 return;
 
             if (typeSymbol.IsGenericType)

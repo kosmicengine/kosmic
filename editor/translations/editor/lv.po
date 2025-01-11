@@ -1,7 +1,7 @@
 # Latvian translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Gustavs Porietis (pg829-) <porietisgustavs@gmail.com>, 2018.
 # Martch Zagorski <martchzagorski@gmail.com>, 2018, 2020.
 # Jānis Ondzuls <janisond@inbox.lv>, 2020.
@@ -16,11 +16,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2023-11-16 07:52+0000\n"
 "Last-Translator: Peter Lauris <peterlauris@gmail.com>\n"
-"Language-Team: Latvian <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Latvian <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/lv/>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"

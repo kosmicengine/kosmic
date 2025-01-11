@@ -31,7 +31,7 @@
 
 #include "kosmicsharp_dirs.h"
 
-#include "mono_gd/gd_mono.h"
+#include "mono_ks/ks_mono.h"
 #include "utils/path_utils.h"
 
 #include "core/config/project_settings.h"
@@ -93,7 +93,7 @@ String _get_mono_user_dir() {
 }
 
 #if !TOOLS_ENABLED
-// This should be the equivalent of GodotTools.Utils.OS.PlatformNameMap.
+// This should be the equivalent of KosmicTools.Utils.OS.PlatformNameMap.
 static const char *platform_name_map[][2] = {
 	{ "Windows", "windows" },
 	{ "macOS", "macos" },

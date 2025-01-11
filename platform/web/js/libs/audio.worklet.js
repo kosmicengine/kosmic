@@ -211,4 +211,4 @@ class KosmicProcessor extends AudioWorkletProcessor {
 	}
 }
 
-registerProcessor('godot-processor', KosmicProcessor);
+registerProcessor('kosmic-processor', KosmicProcessor);

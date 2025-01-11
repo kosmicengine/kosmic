@@ -19,7 +19,7 @@ namespace Kosmic.SourceGenerators
             if (context.IsKosmicSourceGeneratorDisabled("ScriptSerialization"))
                 return;
 
-            INamedTypeSymbol[] godotClasses = context
+            INamedTypeSymbol[] kosmicClasses = context
                 .Compilation.SyntaxTrees
                 .SelectMany(tree =>
                     tree.GetRoot().DescendantNodes()
@@ -45,13 +45,13 @@ namespace Kosmic.SourceGenerators
                 .Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default)
                 .ToArray();
 
-            if (godotClasses.Length > 0)
+            if (kosmicClasses.Length > 0)
             {
                 var typeCache = new MarshalUtils.TypeCache(context.Compilation);
 
-                foreach (var godotClass in godotClasses)
+                foreach (var kosmicClass in kosmicClasses)
                 {
-                    VisitKosmicScriptClass(context, typeCache, godotClass);
+                    VisitKosmicScriptClass(context, typeCache, kosmicClass);
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace Kosmic.SourceGenerators
 
             var source = new StringBuilder();
 
-            source.Append("using Godot;\n");
+            source.Append("using Kosmic;\n");
             source.Append("using Kosmic.NativeInterop;\n");
             source.Append("\n");
 
@@ -123,10 +123,10 @@ namespace Kosmic.SourceGenerators
 
             // TODO: We should still restore read-only properties after reloading assembly. Two possible ways: reflection or turn RestoreKosmicObjectData into a constructor overload.
             // Ignore properties without a getter, without a setter or with an init-only setter. Godot properties must be both readable and writable.
-            var godotClassProperties = propertySymbols.Where(property => !(property.IsReadOnly || property.IsWriteOnly || property.SetMethod!.IsInitOnly))
+            var kosmicClassProperties = propertySymbols.Where(property => !(property.IsReadOnly || property.IsWriteOnly || property.SetMethod!.IsInitOnly))
                 .WhereIsKosmicCompatibleType(typeCache)
                 .ToArray();
-            var godotClassFields = fieldSymbols.Where(property => !property.IsReadOnly)
+            var kosmicClassFields = fieldSymbols.Where(property => !property.IsReadOnly)
                 .WhereIsKosmicCompatibleType(typeCache)
                 .ToArray();
 
@@ -137,7 +137,7 @@ namespace Kosmic.SourceGenerators
                 .Where(s => s.GetAttributes()
                     .Any(a => a.AttributeClass?.IsKosmicSignalAttribute() ?? false));
 
-            List<KosmicSignalDelegateData> godotSignalDelegates = new();
+            List<KosmicSignalDelegateData> kosmicSignalDelegates = new();
 
             foreach (var signalDelegateSymbol in signalDelegateSymbols)
             {
@@ -154,7 +154,7 @@ namespace Kosmic.SourceGenerators
                 if (invokeMethodData == null)
                     continue;
 
-                godotSignalDelegates.Add(new(signalName, signalDelegateSymbol, invokeMethodData.Value));
+                kosmicSignalDelegates.Add(new(signalName, signalDelegateSymbol, invokeMethodData.Value));
             }
 
             source.Append("    /// <inheritdoc/>\n");
@@ -165,7 +165,7 @@ namespace Kosmic.SourceGenerators
 
             // Save properties
 
-            foreach (var property in godotClassProperties)
+            foreach (var property in kosmicClassProperties)
             {
                 string propertyName = property.PropertySymbol.Name;
 
@@ -179,7 +179,7 @@ namespace Kosmic.SourceGenerators
 
             // Save fields
 
-            foreach (var field in godotClassFields)
+            foreach (var field in kosmicClassFields)
             {
                 string fieldName = field.FieldSymbol.Name;
 
@@ -193,7 +193,7 @@ namespace Kosmic.SourceGenerators
 
             // Save signal events
 
-            foreach (var signalDelegate in godotSignalDelegates)
+            foreach (var signalDelegate in kosmicSignalDelegates)
             {
                 string signalName = signalDelegate.Name;
 
@@ -214,7 +214,7 @@ namespace Kosmic.SourceGenerators
 
             // Restore properties
 
-            foreach (var property in godotClassProperties)
+            foreach (var property in kosmicClassProperties)
             {
                 string propertyName = property.PropertySymbol.Name;
 
@@ -233,7 +233,7 @@ namespace Kosmic.SourceGenerators
 
             // Restore fields
 
-            foreach (var field in godotClassFields)
+            foreach (var field in kosmicClassFields)
             {
                 string fieldName = field.FieldSymbol.Name;
 
@@ -252,7 +252,7 @@ namespace Kosmic.SourceGenerators
 
             // Restore signal events
 
-            foreach (var signalDelegate in godotSignalDelegates)
+            foreach (var signalDelegate in kosmicSignalDelegates)
             {
                 string signalName = signalDelegate.Name;
                 string signalDelegateQualifiedName = signalDelegate.DelegateSymbol.FullQualifiedNameIncludeGlobal();

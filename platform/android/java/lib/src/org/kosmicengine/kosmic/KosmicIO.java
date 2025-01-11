@@ -31,13 +31,12 @@
 
 package org.kosmicengine.kosmic;
 
+import org.kosmicengine.kosmic.error.Error;
 import org.kosmicengine.kosmic.input.KosmicEditText;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
@@ -48,7 +47,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.DisplayCutout;
-import android.view.Surface;
 import android.view.WindowInsets;
 
 import androidx.core.content.FileProvider;
@@ -122,10 +120,10 @@ public class KosmicIO {
 			}
 
 			activity.startActivity(intent);
-			return 0;
+			return Error.OK.toNativeValue();
 		} catch (Exception e) {
 			Log.e(TAG, "Unable to open uri " + uriString, e);
-			return 1;
+			return Error.FAILED.toNativeValue();
 		}
 	}
 

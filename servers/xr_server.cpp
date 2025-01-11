@@ -433,7 +433,7 @@ void XRServer::_process() {
 
 	// process all active interfaces
 	for (int i = 0; i < interfaces.size(); i++) {
-		if (!interfaces[i].is_valid()) {
+		if (interfaces[i].is_null()) {
 			// ignore, not a valid reference
 		} else if (interfaces[i]->is_initialized()) {
 			interfaces.write[i]->process();
@@ -447,7 +447,7 @@ void XRServer::pre_render() {
 
 	// process all active interfaces
 	for (int i = 0; i < interfaces.size(); i++) {
-		if (!interfaces[i].is_valid()) {
+		if (interfaces[i].is_null()) {
 			// ignore, not a valid reference
 		} else if (interfaces[i]->is_initialized()) {
 			interfaces.write[i]->pre_render();
@@ -460,7 +460,7 @@ void XRServer::end_frame() {
 
 	// process all active interfaces
 	for (int i = 0; i < interfaces.size(); i++) {
-		if (!interfaces[i].is_valid()) {
+		if (interfaces[i].is_null()) {
 			// ignore, not a valid reference
 		} else if (interfaces[i]->is_initialized()) {
 			interfaces.write[i]->end_frame();

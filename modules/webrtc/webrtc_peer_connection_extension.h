@@ -35,7 +35,7 @@
 #include "webrtc_peer_connection.h"
 
 #include "core/extension/ext_wrappers.gen.inc"
-#include "core/object/ksvirtual.gen.inc"
+#include "core/object/gdvirtual.gen.inc"
 
 class WebRTCPeerConnectionExtension : public WebRTCPeerConnection {
 	KSCLASS(WebRTCPeerConnectionExtension, WebRTCPeerConnection);

@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  GodotActivity.kt                                                      */
+/*  KosmicActivity.kt                                                      */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             KOSMIC ENGINE                              */
@@ -48,10 +48,10 @@ import org.kosmicengine.kosmic.utils.ProcessPhoenix
  * Also a reference implementation for how to setup and use the [KosmicFragment] fragment
  * within an Android app.
  */
-abstract class GodotActivity : FragmentActivity(), KosmicHost {
+abstract class KosmicActivity : FragmentActivity(), KosmicHost {
 
 	companion object {
-		private val TAG = GodotActivity::class.java.simpleName
+		private val TAG = KosmicActivity::class.java.simpleName
 
 		@JvmStatic
 		protected val EXTRA_NEW_LAUNCH = "new_launch_requested"
@@ -60,31 +60,31 @@ abstract class GodotActivity : FragmentActivity(), KosmicHost {
 	/**
 	 * Interaction with the [Godot] object is delegated to the [KosmicFragment] class.
 	 */
-	protected var godotFragment: KosmicFragment? = null
+	protected var kosmicFragment: KosmicFragment? = null
 		private set
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		setContentView(getGodotAppLayout())
+		setContentView(getKosmicAppLayout())
 
 		handleStartIntent(intent, true)
 
 		val currentFragment = supportFragmentManager.findFragmentById(R.id.kosmic_fragment_container)
 		if (currentFragment is KosmicFragment) {
 			Log.v(TAG, "Reusing existing Godot fragment instance.")
-			godotFragment = currentFragment
+			kosmicFragment = currentFragment
 		} else {
 			Log.v(TAG, "Creating new Godot fragment instance.")
-			godotFragment = initKosmicInstance()
-			supportFragmentManager.beginTransaction().replace(R.id.kosmic_fragment_container, godotFragment!!).setPrimaryNavigationFragment(godotFragment).commitNowAllowingStateLoss()
+			kosmicFragment = initKosmicInstance()
+			supportFragmentManager.beginTransaction().replace(R.id.kosmic_fragment_container, kosmicFragment!!).setPrimaryNavigationFragment(kosmicFragment).commitNowAllowingStateLoss()
 		}
 	}
 
 	@LayoutRes
-	protected open fun getGodotAppLayout() = R.layout.kosmic_app_layout
+	protected open fun getKosmicAppLayout() = R.layout.kosmic_app_layout
 
 	override fun onDestroy() {
-		Log.v(TAG, "Destroying GodotActivity $this...")
+		Log.v(TAG, "Destroying KosmicActivity $this...")
 		super.onDestroy()
 	}
 
@@ -93,7 +93,7 @@ abstract class GodotActivity : FragmentActivity(), KosmicHost {
 	}
 
 	private fun terminateKosmicInstance(instance: Godot) {
-		godotFragment?.let {
+		kosmicFragment?.let {
 			if (instance === it.kosmic) {
 				Log.v(TAG, "Force quitting Godot instance")
 				ProcessPhoenix.forceQuit(this)
@@ -103,7 +103,7 @@ abstract class GodotActivity : FragmentActivity(), KosmicHost {
 
 	override fun onKosmicRestartRequested(instance: Godot) {
 		runOnUiThread {
-			godotFragment?.let {
+			kosmicFragment?.let {
 				if (instance === it.kosmic) {
 					// It's very hard to properly de-initialize Godot on Android to restart the game
 					// from scratch. Therefore, we need to kill the whole app process and relaunch it.
@@ -123,7 +123,7 @@ abstract class GodotActivity : FragmentActivity(), KosmicHost {
 
 		handleStartIntent(newIntent, false)
 
-		godotFragment?.onNewIntent(newIntent)
+		kosmicFragment?.onNewIntent(newIntent)
 	}
 
 	private fun handleStartIntent(intent: Intent, newLaunch: Boolean) {
@@ -141,13 +141,13 @@ abstract class GodotActivity : FragmentActivity(), KosmicHost {
 	@CallSuper
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 		super.onActivityResult(requestCode, resultCode, data)
-		godotFragment?.onActivityResult(requestCode, resultCode, data)
+		kosmicFragment?.onActivityResult(requestCode, resultCode, data)
 	}
 
 	@CallSuper
 	override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-		godotFragment?.onRequestPermissionsResult(requestCode, permissions, grantResults)
+		kosmicFragment?.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
 		// Logging the result of permission requests
 		if (requestCode == PermissionsUtil.REQUEST_ALL_PERMISSION_REQ_CODE || requestCode == PermissionsUtil.REQUEST_SINGLE_PERMISSION_REQ_CODE) {
@@ -160,15 +160,15 @@ abstract class GodotActivity : FragmentActivity(), KosmicHost {
 	}
 
 	override fun onBackPressed() {
-		godotFragment?.onBackPressed() ?: super.onBackPressed()
+		kosmicFragment?.onBackPressed() ?: super.onBackPressed()
 	}
 
 	override fun getActivity(): Activity? {
 		return this
 	}
 
-	override fun getGodot(): Godot? {
-		return godotFragment?.kosmic
+	override fun getKosmic(): Kosmic? {
+		return kosmicFragment?.kosmic
 	}
 
 	/**

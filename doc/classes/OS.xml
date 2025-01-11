@@ -160,10 +160,10 @@
 				print(OS.find_keycode_from_string("Unknown"))   # Prints 0 (KEY_NONE)
 				[/voyscript]
 				[csharp]
-				KS.Print(OS.FindKeycodeFromString("C"));         // Prints C (Key.C)
-				KS.Print(OS.FindKeycodeFromString("Escape"));    // Prints Escape (Key.Escape)
-				KS.Print(OS.FindKeycodeFromString("Shift+Tab")); // Prints 37748738 (KeyModifierMask.MaskShift | Key.Tab)
-				KS.Print(OS.FindKeycodeFromString("Unknown"));   // Prints None (Key.None)
+				GD.Print(OS.FindKeycodeFromString("C"));         // Prints C (Key.C)
+				GD.Print(OS.FindKeycodeFromString("Escape"));    // Prints Escape (Key.Escape)
+				GD.Print(OS.FindKeycodeFromString("Shift+Tab")); // Prints 37748738 (KeyModifierMask.MaskShift | Key.Tab)
+				GD.Print(OS.FindKeycodeFromString("Unknown"));   // Prints None (Key.None)
 				[/csharp]
 				[/codeblocks]
 				See also [method get_keycode_string].
@@ -309,9 +309,9 @@
 				print(OS.get_keycode_string(KEY_MASK_SHIFT | KEY_TAB)) # Prints "Shift+Tab"
 				[/voyscript]
 				[csharp]
-				KS.Print(OS.GetKeycodeString(Key.C));                                    // Prints "C"
-				KS.Print(OS.GetKeycodeString(Key.Escape));                               // Prints "Escape"
-				KS.Print(OS.GetKeycodeString((Key)KeyModifierMask.MaskShift | Key.Tab)); // Prints "Shift+Tab"
+				GD.Print(OS.GetKeycodeString(Key.C));                                    // Prints "C"
+				GD.Print(OS.GetKeycodeString(Key.Escape));                               // Prints "Escape"
+				GD.Print(OS.GetKeycodeString((Key)KeyModifierMask.MaskShift | Key.Tab)); // Prints "Shift+Tab"
 				[/csharp]
 				[/codeblocks]
 				See also [method find_keycode_from_string], [member InputEventKey.keycode], and [method InputEventKey.get_keycode_with_modifiers].
@@ -393,26 +393,26 @@
 				switch (OS.GetName())
 				{
 				    case "Windows":
-				        KS.Print("Welcome to Windows");
+				        GD.Print("Welcome to Windows");
 				        break;
 				    case "macOS":
-				        KS.Print("Welcome to macOS!");
+				        GD.Print("Welcome to macOS!");
 				        break;
 				    case "Linux":
 				    case "FreeBSD":
 				    case "NetBSD":
 				    case "OpenBSD":
 				    case "BSD":
-				        KS.Print("Welcome to Linux/BSD!");
+				        GD.Print("Welcome to Linux/BSD!");
 				        break;
 				    case "Android":
-				        KS.Print("Welcome to Android!");
+				        GD.Print("Welcome to Android!");
 				        break;
 				    case "iOS":
-				        KS.Print("Welcome to iOS!");
+				        GD.Print("Welcome to iOS!");
 				        break;
 				    case "Web":
-				        KS.Print("Welcome to the Web!");
+				        GD.Print("Welcome to the Web!");
 				        break;
 				}
 				[/csharp]
@@ -638,10 +638,10 @@
 				print(OS.is_keycode_unicode(KEY_ESCAPE)) # Prints false
 				[/voyscript]
 				[csharp]
-				KS.Print(OS.IsKeycodeUnicode((long)Key.G));      // Prints True
-				KS.Print(OS.IsKeycodeUnicode((long)Key.Kp4));    // Prints True
-				KS.Print(OS.IsKeycodeUnicode((long)Key.Tab));    // Prints False
-				KS.Print(OS.IsKeycodeUnicode((long)Key.Escape)); // Prints False
+				GD.Print(OS.IsKeycodeUnicode((long)Key.G));      // Prints True
+				GD.Print(OS.IsKeycodeUnicode((long)Key.Kp4));    // Prints True
+				GD.Print(OS.IsKeycodeUnicode((long)Key.Tab));    // Prints False
+				GD.Print(OS.IsKeycodeUnicode((long)Key.Escape)); // Prints False
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -747,14 +747,19 @@
 			<return type="bool" />
 			<param index="0" name="name" type="String" />
 			<description>
-				Requests permission from the OS for the given [param name]. Returns [code]true[/code] if the permission has been successfully granted.
-				[b]Note:[/b] This method is currently only implemented on Android, to specifically request permission for [code]"RECORD_AUDIO"[/code] by [code]AudioDriverOpenSL[/code].
+				Requests permission from the OS for the given [param name]. Returns [code]true[/code] if the permission has already been granted. See also [signal MainLoop.on_request_permissions_result].
+				The [param name] must be the full permission name. For example:
+				- [code]OS.request_permission("android.permission.READ_EXTERNAL_STORAGE")[/code]
+				- [code]OS.request_permission("android.permission.POST_NOTIFICATIONS")[/code]
+				[b]Note:[/b] Permission must be checked during export.
+				[b]Note:[/b] This method is only implemented on Android.
 			</description>
 		</method>
 		<method name="request_permissions">
 			<return type="bool" />
 			<description>
-				Requests [i]dangerous[/i] permissions from the OS. Returns [code]true[/code] if permissions have been successfully granted.
+				Requests [i]dangerous[/i] permissions from the OS. Returns [code]true[/code] if permissions have already been granted. See also [signal MainLoop.on_request_permissions_result].
+				[b]Note:[/b] Permissions must be checked during export.
 				[b]Note:[/b] This method is only implemented on Android. Normal permissions are automatically granted at install time in Android applications.
 			</description>
 		</method>
@@ -804,7 +809,8 @@
 			<param index="0" name="uri" type="String" />
 			<description>
 				Requests the OS to open a resource identified by [param uri] with the most appropriate program. For example:
-				- [code]OS.shell_open("C:\\Users\name\Downloads")[/code] on Windows opens the file explorer at the user's Downloads folder.
+				- [code]OS.shell_open("C:\\Users\\name\\Downloads")[/code] on Windows opens the file explorer at the user's Downloads folder.
+				- [code]OS.shell_open("C:/Users/name/Downloads")[/code] also works on Windows and opens the file explorer at the user's Downloads folder.
 				- [code]OS.shell_open("https://godotengine.org")[/code] opens the default web browser on the official Godot website.
 				- [code]OS.shell_open("mailto:example@example.com")[/code] opens the default email client with the "To" field set to [code]example@example.com[/code]. See [url=https://datatracker.ietf.org/doc/html/rfc2368]RFC 2368 - The [code]mailto[/code] URL scheme[/url] for a list of fields that can be added.
 				Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or [code]user://[/code] project path into a system path for use with this method.

@@ -6,14 +6,14 @@ namespace Kosmic
 {
     public static class Dispatcher
     {
-        internal static GodotTaskScheduler DefaultGodotTaskScheduler;
+        internal static KosmicTaskScheduler DefaultKosmicTaskScheduler;
 
-        internal static void InitializeDefaultGodotTaskScheduler()
+        internal static void InitializeDefaultKosmicTaskScheduler()
         {
-            DefaultGodotTaskScheduler?.Dispose();
-            DefaultGodotTaskScheduler = new GodotTaskScheduler();
+            DefaultKosmicTaskScheduler?.Dispose();
+            DefaultKosmicTaskScheduler = new KosmicTaskScheduler();
         }
 
-        public static KosmicSynchronizationContext SynchronizationContext => DefaultGodotTaskScheduler.Context;
+        public static KosmicSynchronizationContext SynchronizationContext => DefaultKosmicTaskScheduler.Context;
     }
 }

@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  GodotNetUtils.java                                                    */
+/*  KosmicNetUtils.java                                                    */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             KOSMIC ENGINE                              */
@@ -48,14 +48,14 @@ import java.util.Enumeration;
  * It provides access to the CA certificates KeyStore, and the WifiManager.MulticastLock, which is needed on some devices
  * to receive broadcast and multicast packets.
  */
-public class GodotNetUtils {
+public class KosmicNetUtils {
 	/* A single, reference counted, multicast lock, or null if permission CHANGE_WIFI_MULTICAST_STATE is missing */
 	private WifiManager.MulticastLock multicastLock;
 
-	public GodotNetUtils(Context context) {
+	public KosmicNetUtils(Context context) {
 		if (PermissionsUtil.hasManifestPermission(context, "android.permission.CHANGE_WIFI_MULTICAST_STATE")) {
 			WifiManager wifi = (WifiManager)context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-			multicastLock = wifi.createMulticastLock("GodotMulticastLock");
+			multicastLock = wifi.createMulticastLock("KosmicMulticastLock");
 			multicastLock.setReferenceCounted(true);
 		}
 	}

@@ -87,7 +87,7 @@ void VoyScriptCompiler::_set_error(const String &p_error, const VoyScriptParser:
 	}
 }
 
-VoyScriptDataType VoyScriptCompiler::_gdtype_from_datatype(const VoyScriptParser::DataType &p_datatype, VoyScript *p_owner, bool p_handle_metatype) {
+VoyScriptDataType VoyScriptCompiler::_kstype_from_datatype(const VoyScriptParser::DataType &p_datatype, VoyScript *p_owner, bool p_handle_metatype) {
 	if (!p_datatype.is_set() || !p_datatype.is_hard_type() || p_datatype.is_coroutine) {
 		return VoyScriptDataType();
 	}
@@ -201,7 +201,7 @@ VoyScriptDataType VoyScriptCompiler::_gdtype_from_datatype(const VoyScriptParser
 	}
 
 	for (int i = 0; i < p_datatype.container_element_types.size(); i++) {
-		result.set_container_element_type(i, _gdtype_from_datatype(p_datatype.get_container_element_type_or_variant(i), p_owner, false));
+		result.set_container_element_type(i, _kstype_from_datatype(p_datatype.get_container_element_type_or_variant(i), p_owner, false));
 	}
 
 	return result;
@@ -293,7 +293,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 					// Try class members.
 					if (_is_class_member_property(codegen, identifier)) {
 						// Get property.
-						VoyScriptCodeGenerator::Address temp = codegen.add_temporary(_gdtype_from_datatype(p_expression->get_datatype(), codegen.script));
+						VoyScriptCodeGenerator::Address temp = codegen.add_temporary(_kstype_from_datatype(p_expression->get_datatype(), codegen.script));
 						gen->write_get_member(temp, identifier);
 						return temp;
 					}
@@ -422,7 +422,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 						// This is so one autoload doesn't try to load another before it's compiled.
 						HashMap<StringName, ProjectSettings::AutoloadInfo> autoloads = ProjectSettings::get_singleton()->get_autoload_list();
 						if (autoloads.has(identifier) && autoloads[identifier].is_singleton) {
-							VoyScriptCodeGenerator::Address global = codegen.add_temporary(_gdtype_from_datatype(in->get_datatype(), codegen.script));
+							VoyScriptCodeGenerator::Address global = codegen.add_temporary(_kstype_from_datatype(in->get_datatype(), codegen.script));
 							int idx = VoyScriptLanguage::get_singleton()->get_global_map()[identifier];
 							gen->write_store_global(global, idx);
 							return global;
@@ -504,7 +504,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 			Vector<VoyScriptCodeGenerator::Address> values;
 
 			// Create the result temporary first since it's the last to be killed.
-			VoyScriptDataType array_type = _gdtype_from_datatype(an->get_datatype(), codegen.script);
+			VoyScriptDataType array_type = _kstype_from_datatype(an->get_datatype(), codegen.script);
 			VoyScriptCodeGenerator::Address result = codegen.add_temporary(array_type);
 
 			for (int i = 0; i < an->elements.size(); i++) {
@@ -534,7 +534,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 			Vector<VoyScriptCodeGenerator::Address> elements;
 
 			// Create the result temporary first since it's the last to be killed.
-			VoyScriptDataType dict_type = _gdtype_from_datatype(dn->get_datatype(), codegen.script);
+			VoyScriptDataType dict_type = _kstype_from_datatype(dn->get_datatype(), codegen.script);
 			VoyScriptCodeGenerator::Address result = codegen.add_temporary(dict_type);
 
 			for (int i = 0; i < dn->elements.size(); i++) {
@@ -581,7 +581,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 		} break;
 		case VoyScriptParser::Node::CAST: {
 			const VoyScriptParser::CastNode *cn = static_cast<const VoyScriptParser::CastNode *>(p_expression);
-			VoyScriptDataType cast_type = _gdtype_from_datatype(cn->get_datatype(), codegen.script, false);
+			VoyScriptDataType cast_type = _kstype_from_datatype(cn->get_datatype(), codegen.script, false);
 
 			VoyScriptCodeGenerator::Address result;
 			if (cast_type.has_type) {
@@ -604,7 +604,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 		case VoyScriptParser::Node::CALL: {
 			const VoyScriptParser::CallNode *call = static_cast<const VoyScriptParser::CallNode *>(p_expression);
 			bool is_awaited = p_expression == awaited_node;
-			VoyScriptDataType type = _gdtype_from_datatype(call->get_datatype(), codegen.script);
+			VoyScriptDataType type = _kstype_from_datatype(call->get_datatype(), codegen.script);
 			VoyScriptCodeGenerator::Address result;
 			if (p_root) {
 				result = VoyScriptCodeGenerator::Address(VoyScriptCodeGenerator::Address::NIL);
@@ -748,7 +748,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 			Vector<VoyScriptCodeGenerator::Address> args;
 			args.push_back(codegen.add_constant(NodePath(get_node->full_path)));
 
-			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_gdtype_from_datatype(get_node->get_datatype(), codegen.script));
+			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_kstype_from_datatype(get_node->get_datatype(), codegen.script));
 
 			MethodBind *get_node_method = ClassDB::get_method("Node", "get_node");
 			gen->write_call_method_bind_validated(result, VoyScriptCodeGenerator::Address(VoyScriptCodeGenerator::Address::SELF), get_node_method, args);
@@ -764,7 +764,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 		case VoyScriptParser::Node::AWAIT: {
 			const VoyScriptParser::AwaitNode *await = static_cast<const VoyScriptParser::AwaitNode *>(p_expression);
 
-			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_gdtype_from_datatype(p_expression->get_datatype(), codegen.script));
+			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_kstype_from_datatype(p_expression->get_datatype(), codegen.script));
 			VoyScriptParser::ExpressionNode *previous_awaited_node = awaited_node;
 			awaited_node = await->to_await;
 			VoyScriptCodeGenerator::Address argument = _parse_expression(codegen, r_error, await->to_await);
@@ -784,7 +784,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 		// Indexing operator.
 		case VoyScriptParser::Node::SUBSCRIPT: {
 			const VoyScriptParser::SubscriptNode *subscript = static_cast<const VoyScriptParser::SubscriptNode *>(p_expression);
-			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_gdtype_from_datatype(subscript->get_datatype(), codegen.script));
+			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_kstype_from_datatype(subscript->get_datatype(), codegen.script));
 
 			VoyScriptCodeGenerator::Address base = _parse_expression(codegen, r_error, subscript->base);
 			if (r_error) {
@@ -812,7 +812,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 						// Remove result temp as we don't need it.
 						gen->pop_temporary();
 						// Faster than indexing self (as if no self. had been used).
-						return VoyScriptCodeGenerator::Address(VoyScriptCodeGenerator::Address::MEMBER, MI->value.index, _gdtype_from_datatype(subscript->get_datatype(), codegen.script));
+						return VoyScriptCodeGenerator::Address(VoyScriptCodeGenerator::Address::MEMBER, MI->value.index, _kstype_from_datatype(subscript->get_datatype(), codegen.script));
 					}
 				}
 
@@ -850,7 +850,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 		case VoyScriptParser::Node::UNARY_OPERATOR: {
 			const VoyScriptParser::UnaryOpNode *unary = static_cast<const VoyScriptParser::UnaryOpNode *>(p_expression);
 
-			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_gdtype_from_datatype(unary->get_datatype(), codegen.script));
+			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_kstype_from_datatype(unary->get_datatype(), codegen.script));
 
 			VoyScriptCodeGenerator::Address operand = _parse_expression(codegen, r_error, unary->operand);
 			if (r_error) {
@@ -868,7 +868,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 		case VoyScriptParser::Node::BINARY_OPERATOR: {
 			const VoyScriptParser::BinaryOpNode *binary = static_cast<const VoyScriptParser::BinaryOpNode *>(p_expression);
 
-			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_gdtype_from_datatype(binary->get_datatype(), codegen.script));
+			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_kstype_from_datatype(binary->get_datatype(), codegen.script));
 
 			switch (binary->operation) {
 				case VoyScriptParser::BinaryOpNode::OP_LOGIC_AND: {
@@ -922,7 +922,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 		case VoyScriptParser::Node::TERNARY_OPERATOR: {
 			// x IF a ELSE y operator with early out on failure.
 			const VoyScriptParser::TernaryOpNode *ternary = static_cast<const VoyScriptParser::TernaryOpNode *>(p_expression);
-			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_gdtype_from_datatype(ternary->get_datatype(), codegen.script));
+			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_kstype_from_datatype(ternary->get_datatype(), codegen.script));
 
 			gen->write_start_ternary(result);
 
@@ -960,10 +960,10 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 		} break;
 		case VoyScriptParser::Node::TYPE_TEST: {
 			const VoyScriptParser::TypeTestNode *type_test = static_cast<const VoyScriptParser::TypeTestNode *>(p_expression);
-			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_gdtype_from_datatype(type_test->get_datatype(), codegen.script));
+			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_kstype_from_datatype(type_test->get_datatype(), codegen.script));
 
 			VoyScriptCodeGenerator::Address operand = _parse_expression(codegen, r_error, type_test->operand);
-			VoyScriptDataType test_type = _gdtype_from_datatype(type_test->test_datatype, codegen.script, false);
+			VoyScriptDataType test_type = _kstype_from_datatype(type_test->test_datatype, codegen.script, false);
 			if (r_error) {
 				return VoyScriptCodeGenerator::Address();
 			}
@@ -1101,7 +1101,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 						break;
 					}
 					const VoyScriptParser::SubscriptNode *subscript_elem = E->get();
-					VoyScriptCodeGenerator::Address value = codegen.add_temporary(_gdtype_from_datatype(subscript_elem->get_datatype(), codegen.script));
+					VoyScriptCodeGenerator::Address value = codegen.add_temporary(_kstype_from_datatype(subscript_elem->get_datatype(), codegen.script));
 					VoyScriptCodeGenerator::Address key;
 					StringName name;
 
@@ -1140,8 +1140,8 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 
 				// Perform operator if any.
 				if (assignment->operation != VoyScriptParser::AssignmentNode::OP_NONE) {
-					VoyScriptCodeGenerator::Address op_result = codegen.add_temporary(_gdtype_from_datatype(assignment->get_datatype(), codegen.script));
-					VoyScriptCodeGenerator::Address value = codegen.add_temporary(_gdtype_from_datatype(subscript->get_datatype(), codegen.script));
+					VoyScriptCodeGenerator::Address op_result = codegen.add_temporary(_kstype_from_datatype(assignment->get_datatype(), codegen.script));
+					VoyScriptCodeGenerator::Address value = codegen.add_temporary(_kstype_from_datatype(subscript->get_datatype(), codegen.script));
 					if (subscript->is_attribute) {
 						gen->write_get_named(value, name, prev_base);
 					} else {
@@ -1261,8 +1261,8 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 				StringName name = static_cast<VoyScriptParser::IdentifierNode *>(assignment->assignee)->name;
 
 				if (has_operation) {
-					VoyScriptCodeGenerator::Address op_result = codegen.add_temporary(_gdtype_from_datatype(assignment->get_datatype(), codegen.script));
-					VoyScriptCodeGenerator::Address member = codegen.add_temporary(_gdtype_from_datatype(assignment->assignee->get_datatype(), codegen.script));
+					VoyScriptCodeGenerator::Address op_result = codegen.add_temporary(_kstype_from_datatype(assignment->get_datatype(), codegen.script));
+					VoyScriptCodeGenerator::Address member = codegen.add_temporary(_kstype_from_datatype(assignment->assignee->get_datatype(), codegen.script));
 					gen->write_get_member(member, name);
 					gen->write_binary_operator(op_result, assignment->variant_op, member, assigned_value);
 					gen->pop_temporary(); // Pop member temp.
@@ -1346,7 +1346,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 				bool has_operation = assignment->operation != VoyScriptParser::AssignmentNode::OP_NONE;
 				if (has_operation) {
 					// Perform operation.
-					VoyScriptCodeGenerator::Address op_result = codegen.add_temporary(_gdtype_from_datatype(assignment->get_datatype(), codegen.script));
+					VoyScriptCodeGenerator::Address op_result = codegen.add_temporary(_kstype_from_datatype(assignment->get_datatype(), codegen.script));
 					VoyScriptCodeGenerator::Address og_value = _parse_expression(codegen, r_error, assignment->assignee);
 					gen->write_binary_operator(op_result, assignment->variant_op, og_value, assigned_value);
 					to_assign = op_result;
@@ -1396,7 +1396,7 @@ VoyScriptCodeGenerator::Address VoyScriptCompiler::_parse_expression(CodeGen &co
 		} break;
 		case VoyScriptParser::Node::LAMBDA: {
 			const VoyScriptParser::LambdaNode *lambda = static_cast<const VoyScriptParser::LambdaNode *>(p_expression);
-			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_gdtype_from_datatype(lambda->get_datatype(), codegen.script));
+			VoyScriptCodeGenerator::Address result = codegen.add_temporary(_kstype_from_datatype(lambda->get_datatype(), codegen.script));
 
 			Vector<VoyScriptCodeGenerator::Address> captures;
 			captures.resize(lambda->captures.size());
@@ -1876,7 +1876,7 @@ List<VoyScriptCodeGenerator::Address> VoyScriptCompiler::_add_block_locals(CodeG
 			// Parameters are added directly from function and loop variables are declared explicitly.
 			continue;
 		}
-		addresses.push_back(codegen.add_local(p_block->locals[i].name, _gdtype_from_datatype(p_block->locals[i].get_datatype(), codegen.script)));
+		addresses.push_back(codegen.add_local(p_block->locals[i].name, _kstype_from_datatype(p_block->locals[i].get_datatype(), codegen.script)));
 	}
 	return addresses;
 }
@@ -1917,7 +1917,7 @@ Error VoyScriptCompiler::_parse_block(CodeGen &codegen, const VoyScriptParser::S
 				codegen.start_block(); // Add an extra block, since @special locals belong to the match scope.
 
 				// Evaluate the match expression.
-				VoyScriptCodeGenerator::Address value = codegen.add_local("@match_value", _gdtype_from_datatype(match->test->get_datatype(), codegen.script));
+				VoyScriptCodeGenerator::Address value = codegen.add_local("@match_value", _kstype_from_datatype(match->test->get_datatype(), codegen.script));
 				VoyScriptCodeGenerator::Address value_expr = _parse_expression(codegen, err, match->test);
 				if (err) {
 					return err;
@@ -2050,9 +2050,9 @@ Error VoyScriptCompiler::_parse_block(CodeGen &codegen, const VoyScriptParser::S
 				// Also we use custom logic to clear block locals.
 				codegen.start_block();
 
-				VoyScriptCodeGenerator::Address iterator = codegen.add_local(for_n->variable->name, _gdtype_from_datatype(for_n->variable->get_datatype(), codegen.script));
+				VoyScriptCodeGenerator::Address iterator = codegen.add_local(for_n->variable->name, _kstype_from_datatype(for_n->variable->get_datatype(), codegen.script));
 
-				gen->start_for(iterator.type, _gdtype_from_datatype(for_n->list->get_datatype(), codegen.script));
+				gen->start_for(iterator.type, _kstype_from_datatype(for_n->list->get_datatype(), codegen.script));
 
 				VoyScriptCodeGenerator::Address list = _parse_expression(codegen, err, for_n->list);
 				if (err) {
@@ -2181,7 +2181,7 @@ Error VoyScriptCompiler::_parse_block(CodeGen &codegen, const VoyScriptParser::S
 				const VoyScriptParser::VariableNode *lv = static_cast<const VoyScriptParser::VariableNode *>(s);
 				// Should be already in stack when the block began.
 				VoyScriptCodeGenerator::Address local = codegen.locals[lv->identifier->name];
-				VoyScriptDataType local_type = _gdtype_from_datatype(lv->get_datatype(), codegen.script);
+				VoyScriptDataType local_type = _kstype_from_datatype(lv->get_datatype(), codegen.script);
 
 				bool initialized = false;
 				if (lv->initializer != nullptr) {
@@ -2276,7 +2276,7 @@ VoyScriptFunction *VoyScriptCompiler::_parse_function(Error &r_error, VoyScript 
 		}
 		is_static = p_func->is_static;
 		rpc_config = p_func->rpc_config;
-		return_type = _gdtype_from_datatype(p_func->get_datatype(), p_script);
+		return_type = _kstype_from_datatype(p_func->get_datatype(), p_script);
 	} else {
 		if (p_for_ready) {
 			func_name = "@implicit_ready";
@@ -2300,7 +2300,7 @@ VoyScriptFunction *VoyScriptCompiler::_parse_function(Error &r_error, VoyScript 
 	if (p_func) {
 		for (int i = 0; i < p_func->parameters.size(); i++) {
 			const VoyScriptParser::ParameterNode *parameter = p_func->parameters[i];
-			VoyScriptDataType par_type = _gdtype_from_datatype(parameter->get_datatype(), p_script);
+			VoyScriptDataType par_type = _kstype_from_datatype(parameter->get_datatype(), p_script);
 			uint32_t par_addr = codegen.generator->add_parameter(parameter->identifier->name, parameter->initializer != nullptr, par_type);
 			codegen.parameters[parameter->identifier->name] = VoyScriptCodeGenerator::Address(VoyScriptCodeGenerator::Address::FUNCTION_PARAMETER, par_addr, par_type);
 
@@ -2333,7 +2333,7 @@ VoyScriptFunction *VoyScriptCompiler::_parse_function(Error &r_error, VoyScript 
 				continue;
 			}
 
-			VoyScriptDataType field_type = _gdtype_from_datatype(field->get_datatype(), codegen.script);
+			VoyScriptDataType field_type = _kstype_from_datatype(field->get_datatype(), codegen.script);
 			if (field_type.has_type) {
 				codegen.generator->write_newline(field->start_line);
 
@@ -2378,7 +2378,7 @@ VoyScriptFunction *VoyScriptCompiler::_parse_function(Error &r_error, VoyScript 
 					return nullptr;
 				}
 
-				VoyScriptDataType field_type = _gdtype_from_datatype(field->get_datatype(), codegen.script);
+				VoyScriptDataType field_type = _kstype_from_datatype(field->get_datatype(), codegen.script);
 				VoyScriptCodeGenerator::Address dst_address(VoyScriptCodeGenerator::Address::MEMBER, codegen.script->member_indices[field->identifier->name].index, field_type);
 
 				if (field->use_conversion_assign) {
@@ -2457,38 +2457,38 @@ VoyScriptFunction *VoyScriptCompiler::_parse_function(Error &r_error, VoyScript 
 		codegen.generator->set_initial_line(0);
 	}
 
-	VoyScriptFunction *voy_function = codegen.generator->write_end();
+	VoyScriptFunction *ks_function = codegen.generator->write_end();
 
 	if (is_initializer) {
-		p_script->initializer = voy_function;
+		p_script->initializer = ks_function;
 	} else if (is_implicit_initializer) {
-		p_script->implicit_initializer = voy_function;
+		p_script->implicit_initializer = ks_function;
 	} else if (is_implicit_ready) {
-		p_script->implicit_ready = voy_function;
+		p_script->implicit_ready = ks_function;
 	}
 
 	if (p_func) {
 		// If no `return` statement, then return type is `void`, not `Variant`.
 		if (p_func->body->has_return) {
-			voy_function->return_type = _gdtype_from_datatype(p_func->get_datatype(), p_script);
+			ks_function->return_type = _kstype_from_datatype(p_func->get_datatype(), p_script);
 			method_info.return_val = p_func->get_datatype().to_property_info(String());
 		} else {
-			voy_function->return_type = VoyScriptDataType();
-			voy_function->return_type.has_type = true;
-			voy_function->return_type.kind = VoyScriptDataType::BUILTIN;
-			voy_function->return_type.builtin_type = Variant::NIL;
+			ks_function->return_type = VoyScriptDataType();
+			ks_function->return_type.has_type = true;
+			ks_function->return_type.kind = VoyScriptDataType::BUILTIN;
+			ks_function->return_type.builtin_type = Variant::NIL;
 		}
 	}
 
-	voy_function->method_info = method_info;
+	ks_function->method_info = method_info;
 
 	if (!is_implicit_initializer && !is_implicit_ready && !p_for_lambda) {
-		p_script->member_functions[func_name] = voy_function;
+		p_script->member_functions[func_name] = ks_function;
 	}
 
 	memdelete(codegen.generator);
 
-	return voy_function;
+	return ks_function;
 }
 
 VoyScriptFunction *VoyScriptCompiler::_make_static_initializer(Error &r_error, VoyScript *p_script, const VoyScriptParser::ClassNode *p_class) {
@@ -2528,7 +2528,7 @@ VoyScriptFunction *VoyScriptCompiler::_make_static_initializer(Error &r_error, V
 			continue;
 		}
 
-		VoyScriptDataType field_type = _gdtype_from_datatype(field->get_datatype(), codegen.script);
+		VoyScriptDataType field_type = _kstype_from_datatype(field->get_datatype(), codegen.script);
 		if (field_type.has_type) {
 			codegen.generator->write_newline(field->start_line);
 
@@ -2573,7 +2573,7 @@ VoyScriptFunction *VoyScriptCompiler::_make_static_initializer(Error &r_error, V
 				return nullptr;
 			}
 
-			VoyScriptDataType field_type = _gdtype_from_datatype(field->get_datatype(), codegen.script);
+			VoyScriptDataType field_type = _kstype_from_datatype(field->get_datatype(), codegen.script);
 			VoyScriptCodeGenerator::Address temp = codegen.add_temporary(field_type);
 
 			if (field->use_conversion_assign) {
@@ -2619,11 +2619,11 @@ VoyScriptFunction *VoyScriptCompiler::_make_static_initializer(Error &r_error, V
 
 	codegen.generator->set_initial_line(p_class->start_line);
 
-	VoyScriptFunction *voy_function = codegen.generator->write_end();
+	VoyScriptFunction *ks_function = codegen.generator->write_end();
 
 	memdelete(codegen.generator);
 
-	return voy_function;
+	return ks_function;
 }
 
 Error VoyScriptCompiler::_parse_setter_getter(VoyScript *p_script, const VoyScriptParser::ClassNode *p_class, const VoyScriptParser::VariableNode *p_variable, bool p_is_setter) {
@@ -2718,7 +2718,7 @@ Error VoyScriptCompiler::_prepare_compilation(VoyScript *p_script, const VoyScri
 		}
 	}
 
-	VoyScriptDataType base_type = _gdtype_from_datatype(p_class->base_type, p_script, false);
+	VoyScriptDataType base_type = _kstype_from_datatype(p_class->base_type, p_script, false);
 
 	if (base_type.native_type == StringName()) {
 		_set_error(vformat(R"(Parser bug (please report): Empty native type in base class "%s")", p_script->path), p_class);
@@ -2816,7 +2816,7 @@ Error VoyScriptCompiler::_prepare_compilation(VoyScript *p_script, const VoyScri
 						}
 						break;
 				}
-				minfo.data_type = _gdtype_from_datatype(variable->get_datatype(), p_script);
+				minfo.data_type = _kstype_from_datatype(variable->get_datatype(), p_script);
 
 				PropertyInfo prop_info = variable->get_datatype().to_property_info(name);
 				PropertyInfo export_info = variable->export_info;

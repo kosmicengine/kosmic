@@ -49,7 +49,7 @@
 // The test case is marked as failed, but does not fail the entire test run.
 #define TEST_CASE_MAY_FAIL(name) TEST_CASE(name *doctest::may_fail())
 
-// Provide aliases to conform with Godot naming conventions (see error macros).
+// Provide aliases to conform with Kosmic naming conventions (see error macros).
 #define TEST_COND(cond, ...) DOCTEST_CHECK_FALSE_MESSAGE(cond, __VA_ARGS__)
 #define TEST_FAIL(cond, ...) DOCTEST_FAIL(cond, __VA_ARGS__)
 #define TEST_FAIL_COND(cond, ...) DOCTEST_REQUIRE_FALSE_MESSAGE(cond, __VA_ARGS__)
@@ -127,7 +127,7 @@ DOCTEST_STRINGIFY_VARIANT(PackedVector4Array);
 
 // Register test commands to be launched from the command-line.
 // For instance: REGISTER_TEST_COMMAND("voyscript-parser" &test_parser_func).
-// Example usage: `godot --test voyscript-parser`.
+// Example usage: `kosmic --test voyscript-parser`.
 
 typedef void (*TestFunc)();
 extern HashMap<String, TestFunc> *test_commands;
@@ -175,20 +175,20 @@ int register_test_command(String p_command, TestFunc p_function);
 		MessageQueue::get_singleton()->flush();                              \
 	}
 
-#define _UPDATE_EVENT_MODIFERS(m_event, m_modifers)                                   \
-	m_event->set_shift_pressed(((m_modifers) & KeyModifierMask::SHIFT) != Key::NONE); \
-	m_event->set_alt_pressed(((m_modifers) & KeyModifierMask::ALT) != Key::NONE);     \
-	m_event->set_ctrl_pressed(((m_modifers) & KeyModifierMask::CTRL) != Key::NONE);   \
-	m_event->set_meta_pressed(((m_modifers) & KeyModifierMask::META) != Key::NONE);
+#define _UPDATE_EVENT_MODIFIERS(m_event, m_modifiers)                                  \
+	m_event->set_shift_pressed(((m_modifiers) & KeyModifierMask::SHIFT) != Key::NONE); \
+	m_event->set_alt_pressed(((m_modifiers) & KeyModifierMask::ALT) != Key::NONE);     \
+	m_event->set_ctrl_pressed(((m_modifiers) & KeyModifierMask::CTRL) != Key::NONE);   \
+	m_event->set_meta_pressed(((m_modifiers) & KeyModifierMask::META) != Key::NONE);
 
-#define _CREATE_GUI_MOUSE_EVENT(m_screen_pos, m_input, m_mask, m_modifers) \
-	Ref<InputEventMouseButton> event;                                      \
-	event.instantiate();                                                   \
-	event->set_position(m_screen_pos);                                     \
-	event->set_button_index(m_input);                                      \
-	event->set_button_mask(m_mask);                                        \
-	event->set_factor(1);                                                  \
-	_UPDATE_EVENT_MODIFERS(event, m_modifers);                             \
+#define _CREATE_GUI_MOUSE_EVENT(m_screen_pos, m_input, m_mask, m_modifiers) \
+	Ref<InputEventMouseButton> event;                                       \
+	event.instantiate();                                                    \
+	event->set_position(m_screen_pos);                                      \
+	event->set_button_index(m_input);                                       \
+	event->set_button_mask(m_mask);                                         \
+	event->set_factor(1);                                                   \
+	_UPDATE_EVENT_MODIFIERS(event, m_modifiers);                            \
 	event->set_pressed(true);
 
 #define _CREATE_GUI_TOUCH_EVENT(m_screen_pos, m_pressed, m_double) \
@@ -198,42 +198,42 @@ int register_test_command(String p_command, TestFunc p_function);
 	event->set_pressed(m_pressed);                                 \
 	event->set_double_tap(m_double);
 
-#define SEND_GUI_MOUSE_BUTTON_EVENT(m_screen_pos, m_input, m_mask, m_modifers) \
-	{                                                                          \
-		_CREATE_GUI_MOUSE_EVENT(m_screen_pos, m_input, m_mask, m_modifers);    \
-		_SEND_DISPLAYSERVER_EVENT(event);                                      \
-		MessageQueue::get_singleton()->flush();                                \
+#define SEND_GUI_MOUSE_BUTTON_EVENT(m_screen_pos, m_input, m_mask, m_modifiers) \
+	{                                                                           \
+		_CREATE_GUI_MOUSE_EVENT(m_screen_pos, m_input, m_mask, m_modifiers);    \
+		_SEND_DISPLAYSERVER_EVENT(event);                                       \
+		MessageQueue::get_singleton()->flush();                                 \
 	}
 
-#define SEND_GUI_MOUSE_BUTTON_RELEASED_EVENT(m_screen_pos, m_input, m_mask, m_modifers) \
-	{                                                                                   \
-		_CREATE_GUI_MOUSE_EVENT(m_screen_pos, m_input, m_mask, m_modifers);             \
-		event->set_pressed(false);                                                      \
-		_SEND_DISPLAYSERVER_EVENT(event);                                               \
-		MessageQueue::get_singleton()->flush();                                         \
+#define SEND_GUI_MOUSE_BUTTON_RELEASED_EVENT(m_screen_pos, m_input, m_mask, m_modifiers) \
+	{                                                                                    \
+		_CREATE_GUI_MOUSE_EVENT(m_screen_pos, m_input, m_mask, m_modifiers);             \
+		event->set_pressed(false);                                                       \
+		_SEND_DISPLAYSERVER_EVENT(event);                                                \
+		MessageQueue::get_singleton()->flush();                                          \
 	}
 
-#define SEND_GUI_DOUBLE_CLICK(m_screen_pos, m_modifers)                          \
-	{                                                                            \
-		_CREATE_GUI_MOUSE_EVENT(m_screen_pos, MouseButton::LEFT, 0, m_modifers); \
-		event->set_double_click(true);                                           \
-		_SEND_DISPLAYSERVER_EVENT(event);                                        \
-		MessageQueue::get_singleton()->flush();                                  \
+#define SEND_GUI_DOUBLE_CLICK(m_screen_pos, m_modifiers)                          \
+	{                                                                             \
+		_CREATE_GUI_MOUSE_EVENT(m_screen_pos, MouseButton::LEFT, 0, m_modifiers); \
+		event->set_double_click(true);                                            \
+		_SEND_DISPLAYSERVER_EVENT(event);                                         \
+		MessageQueue::get_singleton()->flush();                                   \
 	}
 
 // We toggle _print_error_enabled to prevent display server not supported warnings.
-#define SEND_GUI_MOUSE_MOTION_EVENT(m_screen_pos, m_mask, m_modifers) \
-	{                                                                 \
-		bool errors_enabled = CoreGlobals::print_error_enabled;       \
-		CoreGlobals::print_error_enabled = false;                     \
-		Ref<InputEventMouseMotion> event;                             \
-		event.instantiate();                                          \
-		event->set_position(m_screen_pos);                            \
-		event->set_button_mask(m_mask);                               \
-		_UPDATE_EVENT_MODIFERS(event, m_modifers);                    \
-		_SEND_DISPLAYSERVER_EVENT(event);                             \
-		MessageQueue::get_singleton()->flush();                       \
-		CoreGlobals::print_error_enabled = errors_enabled;            \
+#define SEND_GUI_MOUSE_MOTION_EVENT(m_screen_pos, m_mask, m_modifiers) \
+	{                                                                  \
+		bool errors_enabled = CoreGlobals::print_error_enabled;        \
+		CoreGlobals::print_error_enabled = false;                      \
+		Ref<InputEventMouseMotion> event;                              \
+		event.instantiate();                                           \
+		event->set_position(m_screen_pos);                             \
+		event->set_button_mask(m_mask);                                \
+		_UPDATE_EVENT_MODIFIERS(event, m_modifiers);                   \
+		_SEND_DISPLAYSERVER_EVENT(event);                              \
+		MessageQueue::get_singleton()->flush();                        \
+		CoreGlobals::print_error_enabled = errors_enabled;             \
 	}
 
 #define SEND_GUI_TOUCH_EVENT(m_screen_pos, m_pressed, m_double)    \

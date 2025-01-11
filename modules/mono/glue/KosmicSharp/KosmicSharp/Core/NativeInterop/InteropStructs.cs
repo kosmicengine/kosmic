@@ -12,18 +12,18 @@ namespace Kosmic.NativeInterop
     // NOTES:
     // ref structs cannot implement interfaces, but they still work in `using` directives if they declare Dispose()
 
-    public static class GodotBoolExtensions
+    public static class KosmicBoolExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe kosmic_bool ToGodotBool(this bool @bool)
+        public static unsafe kosmic_bool ToKosmicBool(this bool @bool)
         {
             return *(kosmic_bool*)&@bool;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe bool ToBool(this kosmic_bool godotBool)
+        public static unsafe bool ToBool(this kosmic_bool kosmicBool)
         {
-            return *(bool*)&godotBool;
+            return *(bool*)&kosmicBool;
         }
     }
 

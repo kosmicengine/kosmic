@@ -1,6 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
-using Godot;
+using Kosmic;
 using Kosmic.NativeInterop;
 
 namespace KosmicTools.Internals

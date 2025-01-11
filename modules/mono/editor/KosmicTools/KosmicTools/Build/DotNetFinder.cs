@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using OS = GodotTools.Utils.OS;
+using OS = KosmicTools.Utils.OS;
 
 namespace KosmicTools.Build
 {

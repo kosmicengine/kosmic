@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  kosmic.h                                                               */
+/*  kosmic.h                                                              */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             KOSMIC ENGINE                              */
@@ -31,7 +31,7 @@
 
 /**
  @file  kosmic.h
- @brief ENet Godot header
+ @brief ENet Kosmic header
 */
 
 #ifndef __ENET_KOSMIC_H__

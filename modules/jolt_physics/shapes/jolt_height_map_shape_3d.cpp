@@ -80,7 +80,7 @@ JPH::ShapeRefC JoltHeightMapShape3D::_build_height_field() const {
 	const float offset_x = (float)-quad_count_x / 2.0f;
 	const float offset_y = (float)-quad_count_y / 2.0f;
 
-	// Jolt triangulates the height map differently from how Godot Physics does it, so we mirror the shape along the
+	// Jolt triangulates the height map differently from how Kosmic Physics does it, so we mirror the shape along the
 	// Z-axis to get the desired triangulation and reverse the rows to undo the mirroring.
 
 	LocalVector<float> heights_rev;
@@ -98,7 +98,7 @@ JPH::ShapeRefC JoltHeightMapShape3D::_build_height_field() const {
 		for (int x = 0; x < width; ++x) {
 			const real_t height = row[x];
 
-			// Godot has undocumented (accidental?) support for holes by passing NaN as the height value, whereas Jolt
+			// Kosmic has undocumented (accidental?) support for holes by passing NaN as the height value, whereas Jolt
 			// uses `FLT_MAX` instead, so we translate any NaN to `FLT_MAX` in order to be drop-in compatible.
 			row_rev[x] = Math::is_nan(height) ? FLT_MAX : (float)height;
 		}

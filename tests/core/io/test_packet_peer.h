@@ -69,7 +69,7 @@ TEST_CASE("[PacketPeer][PacketPeerStream] Encode buffer max size") {
 }
 
 TEST_CASE("[PacketPeer][PacketPeerStream] Read a variant from peer") {
-	String kosmic_rules = "Godot Rules!!!";
+	String kosmic_rules = "Kosmic Rules!!!";
 
 	Ref<StreamPeerBuffer> spb;
 	spb.instantiate();
@@ -96,7 +96,7 @@ TEST_CASE("[PacketPeer][PacketPeerStream] Read a variant from peer fails") {
 }
 
 TEST_CASE("[PacketPeer][PacketPeerStream] Put a variant to peer") {
-	String kosmic_rules = "Godot Rules!!!";
+	String kosmic_rules = "Kosmic Rules!!!";
 
 	Ref<StreamPeerBuffer> spb;
 	spb.instantiate();
@@ -128,7 +128,7 @@ TEST_CASE("[PacketPeer][PacketPeerStream] Put a variant to peer out of memory fa
 }
 
 TEST_CASE("[PacketPeer][PacketPeerStream] Get packet buffer") {
-	String kosmic_rules = "Godot Rules!!!";
+	String kosmic_rules = "Kosmic Rules!!!";
 
 	Ref<StreamPeerBuffer> spb;
 	spb.instantiate();
@@ -165,7 +165,7 @@ TEST_CASE("[PacketPeer][PacketPeerStream] Get packet buffer from an empty peer")
 }
 
 TEST_CASE("[PacketPeer][PacketPeerStream] Put packet buffer") {
-	String kosmic_rules = "Godot Rules!!!";
+	String kosmic_rules = "Kosmic Rules!!!";
 
 	Ref<StreamPeerBuffer> spb;
 	spb.instantiate();

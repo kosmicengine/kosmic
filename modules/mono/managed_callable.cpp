@@ -32,7 +32,7 @@
 #include "managed_callable.h"
 
 #include "csharp_script.h"
-#include "mono_gd/gd_mono_cache.h"
+#include "mono_ks/ks_mono_cache.h"
 
 #ifdef KS_MONO_HOT_RELOAD
 SelfList<ManagedCallable>::List ManagedCallable::instances;

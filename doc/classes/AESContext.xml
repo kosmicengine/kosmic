@@ -38,7 +38,7 @@
 		    assert(decrypted == data.to_utf8_buffer())
 		[/voyscript]
 		[csharp]
-		using Godot;
+		using Kosmic;
 		using System.Diagnostics;
 
 		public partial class MyNode : Node

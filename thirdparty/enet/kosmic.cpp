@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  kosmic.cpp                                                             */
+/*  kosmic.cpp                                                            */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             KOSMIC ENGINE                              */
@@ -31,7 +31,7 @@
 
 /**
  @file  kosmic.cpp
- @brief ENet Godot specific functions
+ @brief ENet Kosmic specific functions
 */
 
 #include "core/io/dtls_server.h"

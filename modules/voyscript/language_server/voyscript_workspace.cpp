@@ -658,7 +658,7 @@ void VoyScriptWorkspace::completion(const lsp::CompletionParams &p_params, List<
 			}
 
 			Ref<VoyScript> scr = current->get_script();
-			if (!scr.is_valid() || !VoyScript::is_canonically_equal_paths(scr->get_path(), path)) {
+			if (scr.is_null() || !VoyScript::is_canonically_equal_paths(scr->get_path(), path)) {
 				current = owner_scene_node;
 			}
 		}

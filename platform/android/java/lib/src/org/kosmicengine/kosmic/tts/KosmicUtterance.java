@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  GodotUtterance.java                                                   */
+/*  KosmicUtterance.java                                                   */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             KOSMIC ENGINE                              */
@@ -32,9 +32,9 @@
 package org.kosmicengine.kosmic.tts;
 
 /**
- * A speech request for GodotTTS.
+ * A speech request for KosmicTTS.
  */
-class GodotUtterance {
+class KosmicUtterance {
 	final String text;
 	final String voice;
 	final int volume;
@@ -45,7 +45,7 @@ class GodotUtterance {
 	int offset = -1;
 	int start = 0;
 
-	GodotUtterance(String text, String voice, int volume, float pitch, float rate, int id) {
+	KosmicUtterance(String text, String voice, int volume, float pitch, float rate, int id) {
 		this.text = text;
 		this.voice = voice;
 		this.volume = volume;

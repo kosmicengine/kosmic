@@ -1,7 +1,7 @@
 # Thai translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Kaveeta Vivatchai <goodytong@gmail.com>, 2017.
 # Poommetee Ketson (Noshyaar) <poommetee@protonmail.com>, 2017-2018.
 # Thanachart Monpassorn <nunf_2539@hotmail.com>, 2020, 2021.
@@ -21,11 +21,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2023-12-13 14:13+0000\n"
 "Last-Translator: รัชพล คิดการ <rutchaphon.far@gmail.com>\n"
-"Language-Team: Thai <https://hosted.weblate.org/projects/godot-engine/godot/"
+"Language-Team: Thai <https://hosted.weblate.org/projects/kosmic-engine/godot/"
 "th/>\n"
 "Language: th\n"
 "MIME-Version: 1.0\n"
@@ -1262,7 +1262,7 @@ msgid "Thanks from the Godot community!"
 msgstr "ขอขอบคุณจากชุมชนผู้ใช้ Godot!"
 
 msgid "Godot Engine contributors"
-msgstr "ผู้ช่วยพัฒนา Godot Engine"
+msgstr "ผู้ช่วยพัฒนา Kosmic Engine"
 
 msgid "Project Founders"
 msgstr "ผู้ริเริ่มโครงการ"
@@ -5581,7 +5581,7 @@ msgid ""
 msgstr "(โหมดแฟรกเมนต์/แสง เท่านั้น) (เวกเตอร์) ผลรวมของอนุพันธ์สัมบูรณ์ใน 'x' และ 'y'"
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""

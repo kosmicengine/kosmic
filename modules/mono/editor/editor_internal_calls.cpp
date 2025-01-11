@@ -139,7 +139,7 @@ bool kosmic_icall_Internal_KosmicIsRealTDouble() {
 #endif
 }
 
-void kosmic_icall_Internal_GodotMainIteration() {
+void kosmic_icall_Internal_KosmicMainIteration() {
 	Main::iteration();
 }
 
@@ -191,7 +191,7 @@ void kosmic_icall_Internal_ScriptEditorDebugger_ReloadScripts() {
 
 void kosmic_icall_Internal_CodeCompletionRequest(int32_t p_kind, const kosmic_string *p_script_file, kosmic_packed_array *r_ret) {
 	String script_file = *reinterpret_cast<const String *>(p_script_file);
-	PackedStringArray suggestions = ksmono::get_code_completion((ksmono::CompletionKind)p_kind, script_file);
+	PackedStringArray suggestions = gdmono::get_code_completion((gdmono::CompletionKind)p_kind, script_file);
 	memnew_placement(r_ret, PackedStringArray(suggestions));
 }
 
@@ -256,7 +256,7 @@ bool kosmic_icall_Utils_OS_UnixFileHasExecutableAccess(const kosmic_string *p_fi
 #endif
 
 // The order in this array must match the declaration order of
-// the methods in 'GodotTools/Internals/Internal.cs'.
+// the methods in 'KosmicTools/Internals/Internal.cs'.
 static const void *unmanaged_callbacks[]{
 	(void *)kosmic_icall_KosmicSharpDirs_ResMetadataDir,
 	(void *)kosmic_icall_KosmicSharpDirs_MonoUserDir,
@@ -271,7 +271,7 @@ static const void *unmanaged_callbacks[]{
 	(void *)kosmic_icall_Internal_LipOCreateFile,
 	(void *)kosmic_icall_Internal_KosmicIs32Bits,
 	(void *)kosmic_icall_Internal_KosmicIsRealTDouble,
-	(void *)kosmic_icall_Internal_GodotMainIteration,
+	(void *)kosmic_icall_Internal_KosmicMainIteration,
 	(void *)kosmic_icall_Internal_IsAssembliesReloadingNeeded,
 	(void *)kosmic_icall_Internal_ReloadAssemblies,
 	(void *)kosmic_icall_Internal_EditorDebuggerNodeReloadScripts,

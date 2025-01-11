@@ -1,5 +1,5 @@
-using GodotTools.IdeMessaging.Requests;
-using GodotTools.IdeMessaging.Utils;
+using KosmicTools.IdeMessaging.Requests;
+using KosmicTools.IdeMessaging.Utils;
 using Newtonsoft.Json;
 
 namespace KosmicTools.IdeMessaging

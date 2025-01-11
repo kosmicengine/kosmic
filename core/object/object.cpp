@@ -521,7 +521,13 @@ void Object::get_property_list(List<PropertyInfo> *p_list, bool p_reversed) cons
 		PropertyInfo pi = PropertyInfo(K.value.get_type(), "metadata/" + K.key.operator String());
 		if (K.value.get_type() == Variant::OBJECT) {
 			pi.hint = PROPERTY_HINT_RESOURCE_TYPE;
-			pi.hint_string = "Resource";
+			Object *obj = K.value;
+			if (Object::cast_to<Script>(obj)) {
+				pi.hint_string = "Script";
+				pi.usage |= PROPERTY_USAGE_NEVER_DUPLICATE;
+			} else {
+				pi.hint_string = "Resource";
+			}
 		}
 		p_list->push_back(pi);
 	}
@@ -1746,7 +1752,7 @@ void Object::_bind_methods() {
 	{
 		MethodInfo mi("_notification");
 		mi.arguments.push_back(PropertyInfo(Variant::INT, "what"));
-		mi.arguments_metadata.push_back(GodotTypeInfo::Metadata::METADATA_INT_IS_INT32);
+		mi.arguments_metadata.push_back(KosmicTypeInfo::Metadata::METADATA_INT_IS_INT32);
 		BIND_OBJ_CORE_METHOD(mi);
 	}
 

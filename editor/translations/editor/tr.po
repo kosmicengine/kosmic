@@ -1,7 +1,7 @@
 # Turkish translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Aprın Çor Tigin <kabusturk38@gmail.com>, 2016-2017.
 # Aykut YILDIRIM <aykutyildirim@windowslive.com>, 2018.
 # Ceyhun Can Ulker <ceyhuncanu@gmail.com>, 2016.
@@ -113,11 +113,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-08-21 20:46+0000\n"
 "Last-Translator: Yılmaz Durmaz <yilmaz_durmaz@hotmail.com>\n"
-"Language-Team: Turkish <https://hosted.weblate.org/projects/godot-engine/"
+"Language-Team: Turkish <https://hosted.weblate.org/projects/kosmic-engine/"
 "godot/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -2599,7 +2599,7 @@ msgstr "[boş]"
 msgid "[unsaved]"
 msgstr "[kaydedilmemiş]"
 
-msgid "%s - Godot Engine"
+msgid "%s - Kosmic Engine"
 msgstr "%s - Godot Motoru"
 
 msgid "Move this dock right one tab."
@@ -13845,7 +13845,7 @@ msgstr ""
 "alan."
 
 msgid ""
-"Custom Kosmic Shader Language expression, with custom amount of input and "
+"Custom Godot Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
@@ -13855,7 +13855,7 @@ msgstr ""
 "kullanmayın."
 
 msgid ""
-"Custom Kosmic Shader Language expression, which is placed on top of the "
+"Custom Godot Shader Language expression, which is placed on top of the "
 "resulted shader. You can place various function definitions inside and call "
 "it later in the Expressions. You can also declare varyings, parameters and "
 "constants."

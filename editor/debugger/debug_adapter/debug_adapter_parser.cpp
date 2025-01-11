@@ -178,8 +178,8 @@ Dictionary DebugAdapterParser::req_launch(const Dictionary &p_params) const {
 		return prepare_error_response(p_params, DAP::ErrorType::WRONG_PATH, variables);
 	}
 
-	if (args.has("godot/custom_data")) {
-		DebugAdapterProtocol::get_singleton()->get_current_peer()->supportsCustomData = args["godot/custom_data"];
+	if (args.has("kosmic/custom_data")) {
+		DebugAdapterProtocol::get_singleton()->get_current_peer()->supportsCustomData = args["kosmic/custom_data"];
 	}
 
 	DebugAdapterProtocol::get_singleton()->get_current_peer()->pending_launch = p_params;
@@ -647,7 +647,7 @@ Dictionary DebugAdapterParser::ev_breakpoint(const DAP::Breakpoint &p_breakpoint
 
 Dictionary DebugAdapterParser::ev_custom_data(const String &p_msg, const Array &p_data) const {
 	Dictionary event = prepare_base_event(), body;
-	event["event"] = "godot/custom_data";
+	event["event"] = "kosmic/custom_data";
 	event["body"] = body;
 
 	body["message"] = p_msg;

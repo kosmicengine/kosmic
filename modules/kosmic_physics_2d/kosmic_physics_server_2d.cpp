@@ -220,7 +220,7 @@ RID KosmicPhysicsServer2D::space_create() {
 	RID id = space_owner.make_rid(space);
 	space->set_self(id);
 	RID area_id = area_create();
-	GodotArea2D *area = area_owner.get_or_null(area_id);
+	KosmicArea2D *area = area_owner.get_or_null(area_id);
 	ERR_FAIL_NULL_V(area, RID());
 	space->set_default_area(area);
 	area->set_space(space);
@@ -286,14 +286,14 @@ PhysicsDirectSpaceState2D *KosmicPhysicsServer2D::space_get_direct_state(RID p_s
 }
 
 RID KosmicPhysicsServer2D::area_create() {
-	GodotArea2D *area = memnew(GodotArea2D);
+	KosmicArea2D *area = memnew(KosmicArea2D);
 	RID rid = area_owner.make_rid(area);
 	area->set_self(rid);
 	return rid;
 }
 
 void KosmicPhysicsServer2D::area_set_space(RID p_area, RID p_space) {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	KosmicSpace2D *space = nullptr;
@@ -311,7 +311,7 @@ void KosmicPhysicsServer2D::area_set_space(RID p_area, RID p_space) {
 }
 
 RID KosmicPhysicsServer2D::area_get_space(RID p_area) const {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, RID());
 
 	KosmicSpace2D *space = area->get_space();
@@ -322,7 +322,7 @@ RID KosmicPhysicsServer2D::area_get_space(RID p_area) const {
 }
 
 void KosmicPhysicsServer2D::area_add_shape(RID p_area, RID p_shape, const Transform2D &p_transform, bool p_disabled) {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	KosmicShape2D *shape = shape_owner.get_or_null(p_shape);
@@ -332,7 +332,7 @@ void KosmicPhysicsServer2D::area_add_shape(RID p_area, RID p_shape, const Transf
 }
 
 void KosmicPhysicsServer2D::area_set_shape(RID p_area, int p_shape_idx, RID p_shape) {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	KosmicShape2D *shape = shape_owner.get_or_null(p_shape);
@@ -343,14 +343,14 @@ void KosmicPhysicsServer2D::area_set_shape(RID p_area, int p_shape_idx, RID p_sh
 }
 
 void KosmicPhysicsServer2D::area_set_shape_transform(RID p_area, int p_shape_idx, const Transform2D &p_transform) {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	area->set_shape_transform(p_shape_idx, p_transform);
 }
 
 void KosmicPhysicsServer2D::area_set_shape_disabled(RID p_area, int p_shape, bool p_disabled) {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 	ERR_FAIL_INDEX(p_shape, area->get_shape_count());
 	FLUSH_QUERY_CHECK(area);
@@ -359,14 +359,14 @@ void KosmicPhysicsServer2D::area_set_shape_disabled(RID p_area, int p_shape, boo
 }
 
 int KosmicPhysicsServer2D::area_get_shape_count(RID p_area) const {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, -1);
 
 	return area->get_shape_count();
 }
 
 RID KosmicPhysicsServer2D::area_get_shape(RID p_area, int p_shape_idx) const {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, RID());
 
 	KosmicShape2D *shape = area->get_shape(p_shape_idx);
@@ -376,21 +376,21 @@ RID KosmicPhysicsServer2D::area_get_shape(RID p_area, int p_shape_idx) const {
 }
 
 Transform2D KosmicPhysicsServer2D::area_get_shape_transform(RID p_area, int p_shape_idx) const {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, Transform2D());
 
 	return area->get_shape_transform(p_shape_idx);
 }
 
 void KosmicPhysicsServer2D::area_remove_shape(RID p_area, int p_shape_idx) {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	area->remove_shape(p_shape_idx);
 }
 
 void KosmicPhysicsServer2D::area_clear_shapes(RID p_area) {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	while (area->get_shape_count()) {
@@ -403,7 +403,7 @@ void KosmicPhysicsServer2D::area_attach_object_instance_id(RID p_area, ObjectID 
 		KosmicSpace2D *space = space_owner.get_or_null(p_area);
 		p_area = space->get_default_area()->get_self();
 	}
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 	area->set_instance_id(p_id);
 }
@@ -413,7 +413,7 @@ ObjectID KosmicPhysicsServer2D::area_get_object_instance_id(RID p_area) const {
 		KosmicSpace2D *space = space_owner.get_or_null(p_area);
 		p_area = space->get_default_area()->get_self();
 	}
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, ObjectID());
 	return area->get_instance_id();
 }
@@ -423,7 +423,7 @@ void KosmicPhysicsServer2D::area_attach_canvas_instance_id(RID p_area, ObjectID 
 		KosmicSpace2D *space = space_owner.get_or_null(p_area);
 		p_area = space->get_default_area()->get_self();
 	}
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 	area->set_canvas_instance_id(p_id);
 }
@@ -433,7 +433,7 @@ ObjectID KosmicPhysicsServer2D::area_get_canvas_instance_id(RID p_area) const {
 		KosmicSpace2D *space = space_owner.get_or_null(p_area);
 		p_area = space->get_default_area()->get_self();
 	}
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, ObjectID());
 	return area->get_canvas_instance_id();
 }
@@ -443,13 +443,13 @@ void KosmicPhysicsServer2D::area_set_param(RID p_area, AreaParameter p_param, co
 		KosmicSpace2D *space = space_owner.get_or_null(p_area);
 		p_area = space->get_default_area()->get_self();
 	}
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 	area->set_param(p_param, p_value);
 }
 
 void KosmicPhysicsServer2D::area_set_transform(RID p_area, const Transform2D &p_transform) {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 	area->set_transform(p_transform);
 }
@@ -459,27 +459,27 @@ Variant KosmicPhysicsServer2D::area_get_param(RID p_area, AreaParameter p_param)
 		KosmicSpace2D *space = space_owner.get_or_null(p_area);
 		p_area = space->get_default_area()->get_self();
 	}
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, Variant());
 
 	return area->get_param(p_param);
 }
 
 Transform2D KosmicPhysicsServer2D::area_get_transform(RID p_area) const {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, Transform2D());
 
 	return area->get_transform();
 }
 
 void KosmicPhysicsServer2D::area_set_pickable(RID p_area, bool p_pickable) {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 	area->set_pickable(p_pickable);
 }
 
 void KosmicPhysicsServer2D::area_set_monitorable(RID p_area, bool p_monitorable) {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 	FLUSH_QUERY_CHECK(area);
 
@@ -487,42 +487,42 @@ void KosmicPhysicsServer2D::area_set_monitorable(RID p_area, bool p_monitorable)
 }
 
 void KosmicPhysicsServer2D::area_set_collision_layer(RID p_area, uint32_t p_layer) {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	area->set_collision_layer(p_layer);
 }
 
 uint32_t KosmicPhysicsServer2D::area_get_collision_layer(RID p_area) const {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, 0);
 
 	return area->get_collision_layer();
 }
 
 void KosmicPhysicsServer2D::area_set_collision_mask(RID p_area, uint32_t p_mask) {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	area->set_collision_mask(p_mask);
 }
 
 uint32_t KosmicPhysicsServer2D::area_get_collision_mask(RID p_area) const {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL_V(area, 0);
 
 	return area->get_collision_mask();
 }
 
 void KosmicPhysicsServer2D::area_set_monitor_callback(RID p_area, const Callable &p_callback) {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	area->set_monitor_callback(p_callback.is_valid() ? p_callback : Callable());
 }
 
 void KosmicPhysicsServer2D::area_set_area_monitor_callback(RID p_area, const Callable &p_callback) {
-	GodotArea2D *area = area_owner.get_or_null(p_area);
+	KosmicArea2D *area = area_owner.get_or_null(p_area);
 	ERR_FAIL_NULL(area);
 
 	area->set_area_monitor_callback(p_callback.is_valid() ? p_callback : Callable());
@@ -531,14 +531,14 @@ void KosmicPhysicsServer2D::area_set_area_monitor_callback(RID p_area, const Cal
 /* BODY API */
 
 RID KosmicPhysicsServer2D::body_create() {
-	GodotBody2D *body = memnew(GodotBody2D);
+	KosmicBody2D *body = memnew(KosmicBody2D);
 	RID rid = body_owner.make_rid(body);
 	body->set_self(rid);
 	return rid;
 }
 
 void KosmicPhysicsServer2D::body_set_space(RID p_body, RID p_space) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	KosmicSpace2D *space = nullptr;
 	if (p_space.is_valid()) {
@@ -555,7 +555,7 @@ void KosmicPhysicsServer2D::body_set_space(RID p_body, RID p_space) {
 }
 
 RID KosmicPhysicsServer2D::body_get_space(RID p_body) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, RID());
 
 	KosmicSpace2D *space = body->get_space();
@@ -566,7 +566,7 @@ RID KosmicPhysicsServer2D::body_get_space(RID p_body) const {
 }
 
 void KosmicPhysicsServer2D::body_set_mode(RID p_body, BodyMode p_mode) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	FLUSH_QUERY_CHECK(body);
 
@@ -574,14 +574,14 @@ void KosmicPhysicsServer2D::body_set_mode(RID p_body, BodyMode p_mode) {
 }
 
 PhysicsServer2D::BodyMode KosmicPhysicsServer2D::body_get_mode(RID p_body) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, BODY_MODE_STATIC);
 
 	return body->get_mode();
 }
 
 void KosmicPhysicsServer2D::body_add_shape(RID p_body, RID p_shape, const Transform2D &p_transform, bool p_disabled) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	KosmicShape2D *shape = shape_owner.get_or_null(p_shape);
@@ -591,7 +591,7 @@ void KosmicPhysicsServer2D::body_add_shape(RID p_body, RID p_shape, const Transf
 }
 
 void KosmicPhysicsServer2D::body_set_shape(RID p_body, int p_shape_idx, RID p_shape) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	KosmicShape2D *shape = shape_owner.get_or_null(p_shape);
@@ -602,21 +602,21 @@ void KosmicPhysicsServer2D::body_set_shape(RID p_body, int p_shape_idx, RID p_sh
 }
 
 void KosmicPhysicsServer2D::body_set_shape_transform(RID p_body, int p_shape_idx, const Transform2D &p_transform) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_shape_transform(p_shape_idx, p_transform);
 }
 
 int KosmicPhysicsServer2D::body_get_shape_count(RID p_body) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, -1);
 
 	return body->get_shape_count();
 }
 
 RID KosmicPhysicsServer2D::body_get_shape(RID p_body, int p_shape_idx) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, RID());
 
 	KosmicShape2D *shape = body->get_shape(p_shape_idx);
@@ -626,21 +626,21 @@ RID KosmicPhysicsServer2D::body_get_shape(RID p_body, int p_shape_idx) const {
 }
 
 Transform2D KosmicPhysicsServer2D::body_get_shape_transform(RID p_body, int p_shape_idx) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, Transform2D());
 
 	return body->get_shape_transform(p_shape_idx);
 }
 
 void KosmicPhysicsServer2D::body_remove_shape(RID p_body, int p_shape_idx) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->remove_shape(p_shape_idx);
 }
 
 void KosmicPhysicsServer2D::body_clear_shapes(RID p_body) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	while (body->get_shape_count()) {
@@ -649,7 +649,7 @@ void KosmicPhysicsServer2D::body_clear_shapes(RID p_body) {
 }
 
 void KosmicPhysicsServer2D::body_set_shape_disabled(RID p_body, int p_shape_idx, bool p_disabled) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	ERR_FAIL_INDEX(p_shape_idx, body->get_shape_count());
 	FLUSH_QUERY_CHECK(body);
@@ -658,7 +658,7 @@ void KosmicPhysicsServer2D::body_set_shape_disabled(RID p_body, int p_shape_idx,
 }
 
 void KosmicPhysicsServer2D::body_set_shape_as_one_way_collision(RID p_body, int p_shape_idx, bool p_enable, real_t p_margin) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	ERR_FAIL_INDEX(p_shape_idx, body->get_shape_count());
 	FLUSH_QUERY_CHECK(body);
@@ -667,123 +667,123 @@ void KosmicPhysicsServer2D::body_set_shape_as_one_way_collision(RID p_body, int 
 }
 
 void KosmicPhysicsServer2D::body_set_continuous_collision_detection_mode(RID p_body, CCDMode p_mode) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	body->set_continuous_collision_detection_mode(p_mode);
 }
 
 KosmicPhysicsServer2D::CCDMode KosmicPhysicsServer2D::body_get_continuous_collision_detection_mode(RID p_body) const {
-	const GodotBody2D *body = body_owner.get_or_null(p_body);
+	const KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, CCD_MODE_DISABLED);
 
 	return body->get_continuous_collision_detection_mode();
 }
 
 void KosmicPhysicsServer2D::body_attach_object_instance_id(RID p_body, ObjectID p_id) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_instance_id(p_id);
 }
 
 ObjectID KosmicPhysicsServer2D::body_get_object_instance_id(RID p_body) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, ObjectID());
 
 	return body->get_instance_id();
 }
 
 void KosmicPhysicsServer2D::body_attach_canvas_instance_id(RID p_body, ObjectID p_id) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_canvas_instance_id(p_id);
 }
 
 ObjectID KosmicPhysicsServer2D::body_get_canvas_instance_id(RID p_body) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, ObjectID());
 
 	return body->get_canvas_instance_id();
 }
 
 void KosmicPhysicsServer2D::body_set_collision_layer(RID p_body, uint32_t p_layer) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	body->set_collision_layer(p_layer);
 }
 
 uint32_t KosmicPhysicsServer2D::body_get_collision_layer(RID p_body) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, 0);
 
 	return body->get_collision_layer();
 }
 
 void KosmicPhysicsServer2D::body_set_collision_mask(RID p_body, uint32_t p_mask) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	body->set_collision_mask(p_mask);
 }
 
 uint32_t KosmicPhysicsServer2D::body_get_collision_mask(RID p_body) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, 0);
 
 	return body->get_collision_mask();
 }
 
 void KosmicPhysicsServer2D::body_set_collision_priority(RID p_body, real_t p_priority) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_collision_priority(p_priority);
 }
 
 real_t KosmicPhysicsServer2D::body_get_collision_priority(RID p_body) const {
-	const GodotBody2D *body = body_owner.get_or_null(p_body);
+	const KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, 0);
 
 	return body->get_collision_priority();
 }
 
 void KosmicPhysicsServer2D::body_set_param(RID p_body, BodyParameter p_param, const Variant &p_value) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_param(p_param, p_value);
 }
 
 Variant KosmicPhysicsServer2D::body_get_param(RID p_body, BodyParameter p_param) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, 0);
 
 	return body->get_param(p_param);
 }
 
 void KosmicPhysicsServer2D::body_reset_mass_properties(RID p_body) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	return body->reset_mass_properties();
 }
 
 void KosmicPhysicsServer2D::body_set_state(RID p_body, BodyState p_state, const Variant &p_variant) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_state(p_state, p_variant);
 }
 
 Variant KosmicPhysicsServer2D::body_get_state(RID p_body, BodyState p_state) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, Variant());
 
 	return body->get_state(p_state);
 }
 
 void KosmicPhysicsServer2D::body_apply_central_impulse(RID p_body, const Vector2 &p_impulse) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->apply_central_impulse(p_impulse);
@@ -791,7 +791,7 @@ void KosmicPhysicsServer2D::body_apply_central_impulse(RID p_body, const Vector2
 }
 
 void KosmicPhysicsServer2D::body_apply_torque_impulse(RID p_body, real_t p_torque) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	_update_shapes();
@@ -801,7 +801,7 @@ void KosmicPhysicsServer2D::body_apply_torque_impulse(RID p_body, real_t p_torqu
 }
 
 void KosmicPhysicsServer2D::body_apply_impulse(RID p_body, const Vector2 &p_impulse, const Vector2 &p_position) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	_update_shapes();
@@ -811,7 +811,7 @@ void KosmicPhysicsServer2D::body_apply_impulse(RID p_body, const Vector2 &p_impu
 }
 
 void KosmicPhysicsServer2D::body_apply_central_force(RID p_body, const Vector2 &p_force) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->apply_central_force(p_force);
@@ -819,7 +819,7 @@ void KosmicPhysicsServer2D::body_apply_central_force(RID p_body, const Vector2 &
 }
 
 void KosmicPhysicsServer2D::body_apply_force(RID p_body, const Vector2 &p_force, const Vector2 &p_position) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->apply_force(p_force, p_position);
@@ -827,7 +827,7 @@ void KosmicPhysicsServer2D::body_apply_force(RID p_body, const Vector2 &p_force,
 }
 
 void KosmicPhysicsServer2D::body_apply_torque(RID p_body, real_t p_torque) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->apply_torque(p_torque);
@@ -835,7 +835,7 @@ void KosmicPhysicsServer2D::body_apply_torque(RID p_body, real_t p_torque) {
 }
 
 void KosmicPhysicsServer2D::body_add_constant_central_force(RID p_body, const Vector2 &p_force) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->add_constant_central_force(p_force);
@@ -843,7 +843,7 @@ void KosmicPhysicsServer2D::body_add_constant_central_force(RID p_body, const Ve
 }
 
 void KosmicPhysicsServer2D::body_add_constant_force(RID p_body, const Vector2 &p_force, const Vector2 &p_position) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->add_constant_force(p_force, p_position);
@@ -851,7 +851,7 @@ void KosmicPhysicsServer2D::body_add_constant_force(RID p_body, const Vector2 &p
 }
 
 void KosmicPhysicsServer2D::body_add_constant_torque(RID p_body, real_t p_torque) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->add_constant_torque(p_torque);
@@ -859,7 +859,7 @@ void KosmicPhysicsServer2D::body_add_constant_torque(RID p_body, real_t p_torque
 }
 
 void KosmicPhysicsServer2D::body_set_constant_force(RID p_body, const Vector2 &p_force) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_constant_force(p_force);
@@ -869,13 +869,13 @@ void KosmicPhysicsServer2D::body_set_constant_force(RID p_body, const Vector2 &p
 }
 
 Vector2 KosmicPhysicsServer2D::body_get_constant_force(RID p_body) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, Vector2());
 	return body->get_constant_force();
 }
 
 void KosmicPhysicsServer2D::body_set_constant_torque(RID p_body, real_t p_torque) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_constant_torque(p_torque);
@@ -885,14 +885,14 @@ void KosmicPhysicsServer2D::body_set_constant_torque(RID p_body, real_t p_torque
 }
 
 real_t KosmicPhysicsServer2D::body_get_constant_torque(RID p_body) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, 0);
 
 	return body->get_constant_torque();
 }
 
 void KosmicPhysicsServer2D::body_set_axis_velocity(RID p_body, const Vector2 &p_axis_velocity) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	_update_shapes();
@@ -906,7 +906,7 @@ void KosmicPhysicsServer2D::body_set_axis_velocity(RID p_body, const Vector2 &p_
 }
 
 void KosmicPhysicsServer2D::body_add_collision_exception(RID p_body, RID p_body_b) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->add_exception(p_body_b);
@@ -914,7 +914,7 @@ void KosmicPhysicsServer2D::body_add_collision_exception(RID p_body, RID p_body_
 }
 
 void KosmicPhysicsServer2D::body_remove_collision_exception(RID p_body, RID p_body_b) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->remove_exception(p_body_b);
@@ -922,7 +922,7 @@ void KosmicPhysicsServer2D::body_remove_collision_exception(RID p_body, RID p_bo
 }
 
 void KosmicPhysicsServer2D::body_get_collision_exceptions(RID p_body, List<RID> *p_exceptions) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	for (int i = 0; i < body->get_exceptions().size(); i++) {
@@ -931,55 +931,55 @@ void KosmicPhysicsServer2D::body_get_collision_exceptions(RID p_body, List<RID> 
 }
 
 void KosmicPhysicsServer2D::body_set_contacts_reported_depth_threshold(RID p_body, real_t p_threshold) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 }
 
 real_t KosmicPhysicsServer2D::body_get_contacts_reported_depth_threshold(RID p_body) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, 0);
 	return 0;
 }
 
 void KosmicPhysicsServer2D::body_set_omit_force_integration(RID p_body, bool p_omit) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 
 	body->set_omit_force_integration(p_omit);
 }
 
 bool KosmicPhysicsServer2D::body_is_omitting_force_integration(RID p_body) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, false);
 	return body->get_omit_force_integration();
 }
 
 void KosmicPhysicsServer2D::body_set_max_contacts_reported(RID p_body, int p_contacts) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	body->set_max_contacts_reported(p_contacts);
 }
 
 int KosmicPhysicsServer2D::body_get_max_contacts_reported(RID p_body) const {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, -1);
 	return body->get_max_contacts_reported();
 }
 
 void KosmicPhysicsServer2D::body_set_state_sync_callback(RID p_body, const Callable &p_callable) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	body->set_state_sync_callback(p_callable);
 }
 
 void KosmicPhysicsServer2D::body_set_force_integration_callback(RID p_body, const Callable &p_callable, const Variant &p_udata) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	body->set_force_integration_callback(p_callable, p_udata);
 }
 
 bool KosmicPhysicsServer2D::body_collide_shape(RID p_body, int p_body_shape, RID p_shape, const Transform2D &p_shape_xform, const Vector2 &p_motion, Vector2 *r_results, int p_result_max, int &r_result_count) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, false);
 	ERR_FAIL_INDEX_V(p_body_shape, body->get_shape_count(), false);
 
@@ -987,13 +987,13 @@ bool KosmicPhysicsServer2D::body_collide_shape(RID p_body, int p_body_shape, RID
 }
 
 void KosmicPhysicsServer2D::body_set_pickable(RID p_body, bool p_pickable) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL(body);
 	body->set_pickable(p_pickable);
 }
 
 bool KosmicPhysicsServer2D::body_test_motion(RID p_body, const MotionParameters &p_parameters, MotionResult *r_result) {
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, false);
 	ERR_FAIL_NULL_V(body->get_space(), false);
 	ERR_FAIL_COND_V(body->get_space()->is_locked(), false);
@@ -1010,7 +1010,7 @@ PhysicsDirectBodyState2D *KosmicPhysicsServer2D::body_get_direct_state(RID p_bod
 		return nullptr;
 	}
 
-	GodotBody2D *body = body_owner.get_or_null(p_body);
+	KosmicBody2D *body = body_owner.get_or_null(p_body);
 	ERR_FAIL_NULL_V(body, nullptr);
 
 	if (!body->get_space()) {
@@ -1086,8 +1086,8 @@ void KosmicPhysicsServer2D::joint_disable_collisions_between_bodies(RID p_joint,
 	joint->disable_collisions_between_bodies(p_disable);
 
 	if (2 == joint->get_body_count()) {
-		GodotBody2D *body_a = *joint->get_body_ptr();
-		GodotBody2D *body_b = *(joint->get_body_ptr() + 1);
+		KosmicBody2D *body_a = *joint->get_body_ptr();
+		KosmicBody2D *body_b = *(joint->get_body_ptr() + 1);
 
 		if (p_disable) {
 			body_add_collision_exception(body_a->get_self(), body_b->get_self());
@@ -1107,9 +1107,9 @@ bool KosmicPhysicsServer2D::joint_is_disabled_collisions_between_bodies(RID p_jo
 }
 
 void KosmicPhysicsServer2D::joint_make_pin(RID p_joint, const Vector2 &p_pos, RID p_body_a, RID p_body_b) {
-	GodotBody2D *A = body_owner.get_or_null(p_body_a);
+	KosmicBody2D *A = body_owner.get_or_null(p_body_a);
 	ERR_FAIL_NULL(A);
-	GodotBody2D *B = nullptr;
+	KosmicBody2D *B = nullptr;
 	if (body_owner.owns(p_body_b)) {
 		B = body_owner.get_or_null(p_body_b);
 		ERR_FAIL_NULL(B);
@@ -1126,16 +1126,16 @@ void KosmicPhysicsServer2D::joint_make_pin(RID p_joint, const Vector2 &p_pos, RI
 }
 
 void KosmicPhysicsServer2D::joint_make_groove(RID p_joint, const Vector2 &p_a_groove1, const Vector2 &p_a_groove2, const Vector2 &p_b_anchor, RID p_body_a, RID p_body_b) {
-	GodotBody2D *A = body_owner.get_or_null(p_body_a);
+	KosmicBody2D *A = body_owner.get_or_null(p_body_a);
 	ERR_FAIL_NULL(A);
 
-	GodotBody2D *B = body_owner.get_or_null(p_body_b);
+	KosmicBody2D *B = body_owner.get_or_null(p_body_b);
 	ERR_FAIL_NULL(B);
 
 	KosmicJoint2D *prev_joint = joint_owner.get_or_null(p_joint);
 	ERR_FAIL_NULL(prev_joint);
 
-	KosmicJoint2D *joint = memnew(GodotGrooveJoint2D(p_a_groove1, p_a_groove2, p_b_anchor, A, B));
+	KosmicJoint2D *joint = memnew(KosmicGrooveJoint2D(p_a_groove1, p_a_groove2, p_b_anchor, A, B));
 
 	joint_owner.replace(p_joint, joint);
 	joint->copy_settings_from(prev_joint);
@@ -1143,10 +1143,10 @@ void KosmicPhysicsServer2D::joint_make_groove(RID p_joint, const Vector2 &p_a_gr
 }
 
 void KosmicPhysicsServer2D::joint_make_damped_spring(RID p_joint, const Vector2 &p_anchor_a, const Vector2 &p_anchor_b, RID p_body_a, RID p_body_b) {
-	GodotBody2D *A = body_owner.get_or_null(p_body_a);
+	KosmicBody2D *A = body_owner.get_or_null(p_body_a);
 	ERR_FAIL_NULL(A);
 
-	GodotBody2D *B = body_owner.get_or_null(p_body_b);
+	KosmicBody2D *B = body_owner.get_or_null(p_body_b);
 	ERR_FAIL_NULL(B);
 
 	KosmicJoint2D *prev_joint = joint_owner.get_or_null(p_joint);
@@ -1234,7 +1234,7 @@ void KosmicPhysicsServer2D::free(RID p_rid) {
 		shape_owner.free(p_rid);
 		memdelete(shape);
 	} else if (body_owner.owns(p_rid)) {
-		GodotBody2D *body = body_owner.get_or_null(p_rid);
+		KosmicBody2D *body = body_owner.get_or_null(p_rid);
 
 		body_set_space(p_rid, RID());
 
@@ -1246,7 +1246,7 @@ void KosmicPhysicsServer2D::free(RID p_rid) {
 		memdelete(body);
 
 	} else if (area_owner.owns(p_rid)) {
-		GodotArea2D *area = area_owner.get_or_null(p_rid);
+		KosmicArea2D *area = area_owner.get_or_null(p_rid);
 
 		area->set_space(nullptr);
 
@@ -1394,7 +1394,7 @@ KosmicPhysicsServer2D *KosmicPhysicsServer2D::kosmic_singleton = nullptr;
 
 KosmicPhysicsServer2D::KosmicPhysicsServer2D(bool p_using_threads) {
 	kosmic_singleton = this;
-	GodotBroadPhase2D::create_func = GodotBroadPhase2DBVH::_create;
+	KosmicBroadPhase2D::create_func = KosmicBroadPhase2DBVH::_create;
 
 	using_threads = p_using_threads;
 }

@@ -362,14 +362,14 @@ VoyScriptFunction *VoyScriptByteCodeGenerator::write_end() {
 
 	if (gds_utilities_map.size()) {
 		function->gds_utilities.resize(gds_utilities_map.size());
-		function->_gds_utilities_ptr = function->gds_utilities.ptr();
-		function->_gds_utilities_count = gds_utilities_map.size();
+		function->_kss_utilities_ptr = function->gds_utilities.ptr();
+		function->_kss_utilities_count = gds_utilities_map.size();
 		for (const KeyValue<VoyScriptUtilityFunctions::FunctionPtr, int> &E : gds_utilities_map) {
 			function->gds_utilities.write[E.value] = E.key;
 		}
 	} else {
-		function->_gds_utilities_ptr = nullptr;
-		function->_gds_utilities_count = 0;
+		function->_kss_utilities_ptr = nullptr;
+		function->_kss_utilities_count = 0;
 	}
 
 	if (method_bind_map.size()) {
@@ -1134,7 +1134,7 @@ void VoyScriptByteCodeGenerator::write_call_voyscript_utility(const Address &p_t
 	append(gds_function);
 	ct.cleanup();
 #ifdef DEBUG_ENABLED
-	add_debug_name(gds_utilities_names, get_gds_utility_pos(gds_function), p_function);
+	add_debug_name(gds_utilities_names, get_kss_utility_pos(gds_function), p_function);
 #endif
 }
 

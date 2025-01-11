@@ -28,7 +28,7 @@
 		    print("  End time: %s" % str(time_elapsed))
 		[/voyscript]
 		[csharp]
-		using Godot;
+		using Kosmic;
 
 		[GlobalClass]
 		public partial class CustomMainLoop : MainLoop
@@ -37,8 +37,8 @@
 
 		    public override void _Initialize()
 		    {
-		        KS.Print("Initialized:");
-		        KS.Print($"  Starting Time: {_timeElapsed}");
+		        GD.Print("Initialized:");
+		        GD.Print($"  Starting Time: {_timeElapsed}");
 		    }
 
 		    public override bool _Process(double delta)
@@ -50,8 +50,8 @@
 
 		    private void _Finalize()
 		    {
-		        KS.Print("Finalized:");
-		        KS.Print($"  End Time: {_timeElapsed}");
+		        GD.Print("Finalized:");
+		        GD.Print($"  End Time: {_timeElapsed}");
 		    }
 		}
 		[/csharp]

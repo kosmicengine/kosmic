@@ -17,7 +17,7 @@ namespace Kosmic.NativeInterop
             => new() { Type = Variant.Type.Rid, Rid = from };
 
         public static kosmic_variant CreateFromBool(bool from)
-            => new() { Type = Variant.Type.Bool, Bool = from.ToGodotBool() };
+            => new() { Type = Variant.Type.Bool, Bool = from.ToKosmicBool() };
 
         public static kosmic_variant CreateFromInt(long from)
             => new() { Type = Variant.Type.Int, Int = from };
@@ -504,8 +504,8 @@ namespace Kosmic.NativeInterop
                 }
                 default:
                 {
-                    using kosmic_string godotString = NativeFuncs.kosmicsharp_variant_as_string(p_var);
-                    return Marshaling.ConvertStringToManaged(godotString);
+                    using kosmic_string kosmicString = NativeFuncs.kosmicsharp_variant_as_string(p_var);
+                    return Marshaling.ConvertStringToManaged(kosmicString);
                 }
             }
         }
@@ -638,27 +638,27 @@ namespace Kosmic.NativeInterop
 
         public static StringName[] ConvertToSystemArrayOfStringName(in kosmic_variant p_var)
         {
-            using var godotArray = NativeFuncs.kosmicsharp_variant_as_array(p_var);
-            return Marshaling.ConvertNativeGodotArrayToSystemArrayOfStringName(godotArray);
+            using var kosmicArray = NativeFuncs.kosmicsharp_variant_as_array(p_var);
+            return Marshaling.ConvertNativeKosmicArrayToSystemArrayOfStringName(kosmicArray);
         }
 
         public static NodePath[] ConvertToSystemArrayOfNodePath(in kosmic_variant p_var)
         {
-            using var godotArray = NativeFuncs.kosmicsharp_variant_as_array(p_var);
-            return Marshaling.ConvertNativeGodotArrayToSystemArrayOfNodePath(godotArray);
+            using var kosmicArray = NativeFuncs.kosmicsharp_variant_as_array(p_var);
+            return Marshaling.ConvertNativeKosmicArrayToSystemArrayOfNodePath(kosmicArray);
         }
 
         public static Rid[] ConvertToSystemArrayOfRid(in kosmic_variant p_var)
         {
-            using var godotArray = NativeFuncs.kosmicsharp_variant_as_array(p_var);
-            return Marshaling.ConvertNativeGodotArrayToSystemArrayOfRid(godotArray);
+            using var kosmicArray = NativeFuncs.kosmicsharp_variant_as_array(p_var);
+            return Marshaling.ConvertNativeKosmicArrayToSystemArrayOfRid(kosmicArray);
         }
 
         public static T[] ConvertToSystemArrayOfKosmicObject<T>(in kosmic_variant p_var)
             where T : KosmicObject
         {
-            using var godotArray = NativeFuncs.kosmicsharp_variant_as_array(p_var);
-            return Marshaling.ConvertNativeGodotArrayToSystemArrayOfKosmicObjectType<T>(godotArray);
+            using var kosmicArray = NativeFuncs.kosmicsharp_variant_as_array(p_var);
+            return Marshaling.ConvertNativeKosmicArrayToSystemArrayOfKosmicObjectType<T>(kosmicArray);
         }
     }
 }

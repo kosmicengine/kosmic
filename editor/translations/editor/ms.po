@@ -1,7 +1,7 @@
 # Malay translation of the Godot Engine editor interface.
 # Copyright (c) 2014-present Godot Engine contributors.
 # Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-# This file is distributed under the same license as the Godot source code.
+# This file is distributed under the same license as the Kosmic source code.
 # Sam Vanguard <syafz119@gmail.com>, 2018.
 # Shaqir Rafiq <moshamoradev@gmail.com>, 2018.
 # Syaz Amirin <amirin123z@gmail.com>, 2018.
@@ -16,11 +16,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor interface\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Report-Msgid-Bugs-To: https://github.com/kosmicengine/kosmic\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-03-01 21:04+0000\n"
 "Last-Translator: ghakindye vv <ghaffur2013@gmail.com>\n"
-"Language-Team: Malay <https://hosted.weblate.org/projects/godot-engine/godot/"
+"Language-Team: Malay <https://hosted.weblate.org/projects/kosmic-engine/godot/"
 "ms/>\n"
 "Language: ms\n"
 "MIME-Version: 1.0\n"

@@ -33,7 +33,7 @@
 #define RICH_TEXT_EFFECT_H
 
 #include "core/io/resource.h"
-#include "core/object/ksvirtual.gen.inc"
+#include "core/object/gdvirtual.gen.inc"
 
 class CharFXTransform : public RefCounted {
 	KSCLASS(CharFXTransform, RefCounted);

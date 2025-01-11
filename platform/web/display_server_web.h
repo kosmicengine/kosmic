@@ -109,7 +109,7 @@ private:
 
 	// utilities
 	static void dom2kosmic_mod(Ref<InputEventWithModifiers> ev, int p_mod, Key p_keycode);
-	static const char *godot2dom_cursor(DisplayServer::CursorShape p_shape);
+	static const char *kosmic2dom_cursor(DisplayServer::CursorShape p_shape);
 
 	// events
 	WASM_EXPORT static void fullscreen_change_callback(int p_fullscreen);

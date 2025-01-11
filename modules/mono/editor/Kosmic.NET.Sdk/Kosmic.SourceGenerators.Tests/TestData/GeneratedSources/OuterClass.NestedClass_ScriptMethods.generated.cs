@@ -1,4 +1,4 @@
-using Godot;
+using Kosmic;
 using Kosmic.NativeInterop;
 
 partial struct OuterClass
@@ -21,7 +21,7 @@ partial class NestedClass
     /// Do not call this method.
     /// </summary>
     [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-    internal new static global::System.Collections.Generic.List<global::Kosmic.Bridge.MethodInfo> GetGodotMethodList()
+    internal new static global::System.Collections.Generic.List<global::Kosmic.Bridge.MethodInfo> GetKosmicMethodList()
     {
         var methods = new global::System.Collections.Generic.List<global::Kosmic.Bridge.MethodInfo>(1);
         methods.Add(new(name: MethodName.@_Get, returnVal: new(type: (global::Kosmic.Variant.Type)0, name: "", hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)131078, exported: false), flags: (global::Kosmic.MethodFlags)1, arguments: new() { new(type: (global::Kosmic.Variant.Type)21, name: "property", hint: (global::Kosmic.PropertyHint)0, hintString: "", usage: (global::Kosmic.PropertyUsageFlags)6, exported: false),  }, defaultArguments: null));

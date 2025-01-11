@@ -19,7 +19,7 @@ namespace Kosmic.SourceGenerators
             if (context.IsKosmicSourceGeneratorDisabled("ScriptMethods"))
                 return;
 
-            INamedTypeSymbol[] godotClasses = context
+            INamedTypeSymbol[] kosmicClasses = context
                 .Compilation.SyntaxTrees
                 .SelectMany(tree =>
                     tree.GetRoot().DescendantNodes()
@@ -44,23 +44,23 @@ namespace Kosmic.SourceGenerators
                 .Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default)
                 .ToArray();
 
-            if (godotClasses.Length > 0)
+            if (kosmicClasses.Length > 0)
             {
                 var typeCache = new MarshalUtils.TypeCache(context.Compilation);
 
-                foreach (var godotClass in godotClasses)
+                foreach (var kosmicClass in kosmicClasses)
                 {
-                    VisitKosmicScriptClass(context, typeCache, godotClass);
+                    VisitKosmicScriptClass(context, typeCache, kosmicClass);
                 }
             }
         }
 
-        private class MethodOverloadEqualityComparer : IEqualityComparer<GodotMethodData>
+        private class MethodOverloadEqualityComparer : IEqualityComparer<KosmicMethodData>
         {
-            public bool Equals(GodotMethodData x, GodotMethodData y)
+            public bool Equals(KosmicMethodData x, KosmicMethodData y)
                 => x.ParamTypes.Length == y.ParamTypes.Length && x.Method.Name == y.Method.Name;
 
-            public int GetHashCode(GodotMethodData obj)
+            public int GetHashCode(KosmicMethodData obj)
             {
                 unchecked
                 {
@@ -88,7 +88,7 @@ namespace Kosmic.SourceGenerators
 
             var source = new StringBuilder();
 
-            source.Append("using Godot;\n");
+            source.Append("using Kosmic;\n");
             source.Append("using Kosmic.NativeInterop;\n");
             source.Append("\n");
 
@@ -130,7 +130,7 @@ namespace Kosmic.SourceGenerators
                 .Cast<IMethodSymbol>()
                 .Where(m => m.MethodKind == MethodKind.Ordinary);
 
-            var godotClassMethods = methodSymbols.WhereHasKosmicCompatibleSignature(typeCache)
+            var kosmicClassMethods = methodSymbols.WhereHasKosmicCompatibleSignature(typeCache)
                 .Distinct(new MethodOverloadEqualityComparer())
                 .ToArray();
 
@@ -145,7 +145,7 @@ namespace Kosmic.SourceGenerators
 
             // Generate cached StringNames for methods and properties, for fast lookup
 
-            var distinctMethodNames = godotClassMethods
+            var distinctMethodNames = kosmicClassMethods
                 .Select(m => m.Method.Name)
                 .Distinct()
                 .ToArray();
@@ -167,15 +167,15 @@ namespace Kosmic.SourceGenerators
 
             source.Append("    }\n"); // class KosmicInternal
 
-            // Generate GetGodotMethodList
+            // Generate GetKosmicMethodList
 
-            if (godotClassMethods.Length > 0)
+            if (kosmicClassMethods.Length > 0)
             {
                 const string ListType = "global::System.Collections.Generic.List<global::Kosmic.Bridge.MethodInfo>";
 
                 source.Append("    /// <summary>\n")
                     .Append("    /// Get the method information for all the methods declared in this class.\n")
-                    .Append("    /// This method is used by Godot to register the available methods in the editor.\n")
+                    .Append("    /// This method is used by Kosmic to register the available methods in the editor.\n")
                     .Append("    /// Do not call this method.\n")
                     .Append("    /// </summary>\n");
 
@@ -183,15 +183,15 @@ namespace Kosmic.SourceGenerators
 
                 source.Append("    internal new static ")
                     .Append(ListType)
-                    .Append(" GetGodotMethodList()\n    {\n");
+                    .Append(" GetKosmicMethodList()\n    {\n");
 
                 source.Append("        var methods = new ")
                     .Append(ListType)
                     .Append("(")
-                    .Append(godotClassMethods.Length)
+                    .Append(kosmicClassMethods.Length)
                     .Append(");\n");
 
-                foreach (var method in godotClassMethods)
+                foreach (var method in kosmicClassMethods)
                 {
                     var methodInfo = DetermineMethodInfo(method);
                     AppendMethodInfo(source, methodInfo);
@@ -205,14 +205,14 @@ namespace Kosmic.SourceGenerators
 
             // Generate InvokeKosmicClassMethod
 
-            if (godotClassMethods.Length > 0)
+            if (kosmicClassMethods.Length > 0)
             {
                 source.Append("    /// <inheritdoc/>\n");
                 source.Append("    [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]\n");
                 source.Append("    protected override bool InvokeKosmicClassMethod(in kosmic_string_name method, ");
                 source.Append("NativeVariantPtrArgs args, out kosmic_variant ret)\n    {\n");
 
-                foreach (var method in godotClassMethods)
+                foreach (var method in kosmicClassMethods)
                 {
                     GenerateMethodInvoker(method, source);
                 }
@@ -224,16 +224,16 @@ namespace Kosmic.SourceGenerators
 
             // Generate InvokeKosmicClassStaticMethod
 
-            var godotClassStaticMethods = godotClassMethods.Where(m => m.Method.IsStatic).ToArray();
+            var kosmicClassStaticMethods = kosmicClassMethods.Where(m => m.Method.IsStatic).ToArray();
 
-            if (godotClassStaticMethods.Length > 0)
+            if (kosmicClassStaticMethods.Length > 0)
             {
                 source.Append("#pragma warning disable CS0109 // Disable warning about redundant 'new' keyword\n");
                 source.Append("    [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]\n");
                 source.Append("    internal new static bool InvokeKosmicClassStaticMethod(in kosmic_string_name method, ");
                 source.Append("NativeVariantPtrArgs args, out kosmic_variant ret)\n    {\n");
 
-                foreach (var method in godotClassStaticMethods)
+                foreach (var method in kosmicClassStaticMethods)
                 {
                     GenerateMethodInvoker(method, source);
                 }
@@ -342,7 +342,7 @@ namespace Kosmic.SourceGenerators
             source.Append(")");
         }
 
-        private static MethodInfo DetermineMethodInfo(GodotMethodData method)
+        private static MethodInfo DetermineMethodInfo(KosmicMethodData method)
         {
             PropertyInfo returnVal;
 
@@ -420,7 +420,7 @@ namespace Kosmic.SourceGenerators
         }
 
         private static void GenerateMethodInvoker(
-            GodotMethodData method,
+            KosmicMethodData method,
             StringBuilder source
         )
         {

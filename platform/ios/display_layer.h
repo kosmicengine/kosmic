@@ -45,12 +45,12 @@
 #if defined(TARGET_OS_SIMULATOR) && TARGET_OS_SIMULATOR
 #if defined(__IPHONE_13_0)
 API_AVAILABLE(ios(13.0))
-@interface GodotMetalLayer : CAMetalLayer <DisplayLayer>
+@interface KosmicMetalLayer : CAMetalLayer <DisplayLayer>
 #else
-@interface GodotMetalLayer : CALayer <DisplayLayer>
+@interface KosmicMetalLayer : CALayer <DisplayLayer>
 #endif
 #else
-@interface GodotMetalLayer : CAMetalLayer <DisplayLayer>
+@interface KosmicMetalLayer : CAMetalLayer <DisplayLayer>
 #endif
 @end
 
